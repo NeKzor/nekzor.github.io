@@ -1,7 +1,7 @@
 ### Projects
 
 - [Portal2Boards.Net](Portal2Boards.Net)
-- [SourceDemoParser.Net](SourceDemoParser)
+- [SourceDemoParser.Net](SourceDemoParser.Net)
 - [SourceAutoRecord](SourceAutoRecord)
 
 ### Papers
