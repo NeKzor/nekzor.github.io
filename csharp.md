@@ -1,4 +1,4 @@
-# New features maybe aka the future of csharp
+# Inc. features aka the future of csharp
 Collection of my favourite proposals from [dotnet/csharplang](https://github.com/dotnet/csharplang) in alphabetical order.
 
 - [Async Streams](#async-streams)
@@ -93,7 +93,14 @@ extension Enrollee extends Person
 
 # [Generic Attributes](https://github.com/dotnet/csharplang/issues/124)
 ```cs
-// Todo
+class GenericAttribute<T> : Attribute
+{
+}
+
+[Generic<int>]
+class MyClass
+{
+}
 ```
 
 # [More Expressions](https://github.com/dotnet/csharplang/issues/867)
@@ -186,10 +193,10 @@ public struct Pair : IEquatable<Pair>
 # [Target-Typed New Expression](https://github.com/dotnet/csharplang/issues/100)
 ```cs
 // Nowadays
-private static Dictionary<string, List<int>> _cache = new Dictionary<string, List<int>>();
+Dictionary<string, List<int>> _cache = new Dictionary<string, List<int>>();
 
 // Future
-private static Dictionary<string, List<int>> _cache = new();
+Dictionary<string, List<int>> _cache = new();
 ```
 
 # [With Keyword](https://github.com/dotnet/csharplang/issues/162)

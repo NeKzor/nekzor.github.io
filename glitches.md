@@ -1,4 +1,4 @@
-# Weird stuff in the Portal 2 engine aka discovered Portal 2 exploits since 2011
+# Weird stuff in the Portal 2 engine aka discovered exploits since 2011
 
 A collection of tricks and glitches, mostly useful for speedrunning. Every game needs a list like this, right?
 
@@ -24,15 +24,15 @@ A collection of tricks and glitches, mostly useful for speedrunning. Every game 
 | [Moving Portal Physics](https://youtu.be/5dmV6geZvBc) | Glitch |  |
 | [Math Counter Manipulation](https://youtu.be/6P8Pv-yAn6I?t=2m27s) | Glitch |  |
 | [Door Pushing Abuse](https://youtu.be/OzTsZt0Sxoo) | Trick | Prevents you from getting stuck. |
-| [Turret Bullet Boosting](https://youtu.be/uKgNytZ1-DY) | Trick | Bullets cause physical impact to player's hitbox. |
+| [Damage Boosting](https://youtu.be/uKgNytZ1-DY) | Trick | Standard world physics. |
 | [Turret Collision Manipulation](https://youtu.be/jji7ojfqMgw?t=41s) | Glitch |  |
 | [Button Save Glitch](https://youtu.be/yjWDBQefmmo) | Glitch |  |
 | [Cube Button Save Glitch](https://youtu.be/YsmjyCbsd80) | Glitch |  |
 | [Button Lag Glitch](https://youtu.be/m6beBVijKao) | Glitch |  |
 | [Cancel Pending Abuse](https://youtu.be/p5pcE0Ibcak) | Trick | Logical input/output in map design. |
-| [Challenge Mode Wrong Warp](https://youtu.be/X1_u3PlM-bg) | Glitch |  |
+| [Challenge Mode Warp](https://youtu.be/X1_u3PlM-bg) | Glitch |  |
 | [Death Warp](https://youtu.be/llH6bW9_dMw) | Glitch |  |
-| [Changelevel Warp](https://youtu.be/fdw3n4RySxA) | Depends | Next map position is relative to current map position. |
+| [Portal Warp](https://youtu.be/fdw3n4RySxA) | Depends | Next map position is relative to current map position. |
 | [Light Bridge Cube Levitation](https://youtu.be/Pt8L9AQ30vI) | Glitch |  |
 | [Laser Cube Levitation](https://youtu.be/lv9SmZAqyLc?t=22s) | Glitch |  |
 | [Funnel Cube Levitation](https://youtu.be/61Cnb_wy9Qg?t=2m30s) | Glitch |  |
@@ -90,4 +90,4 @@ A collection of tricks and glitches, mostly useful for speedrunning. Every game 
 | Reload Abuse | Glitch |  |
 | Pause Abuse | Glitch |  |
 | No Game Session Bypass | Glitch |  |
-| Dialogue Interruption Abuse | ? |  |
+| Dialogue Interruption Abuse | Glitch |  |
