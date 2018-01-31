@@ -3,6 +3,7 @@
 - [Portal2Boards.Net](Portal2Boards.Net)
 - [SourceDemoParser.Net](SourceDemoParser.Net)
 - [SourceAutoRecord](SourceAutoRecord)
+- [NeKzBot](NeKzBot)
 
 ### Papers
 
