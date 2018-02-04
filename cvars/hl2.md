@@ -1,4 +1,4 @@
-# Half-Life 2
+# HalfLife2
 Made with [gen](https://github.com/NeKzor/NeKzBot/tree/master/src/gen).
 
 | Name | Default | Flags | Help Text |
@@ -435,7 +435,7 @@ Made with [gen](https://github.com/NeKzor/NeKzBot/tree/master/src/gen).
 | cl_npc_speedmod_outtime | 1 | a/cl | - |
 | cl_observercrosshair | 1 | a/cl | - |
 | cl_overdraw_test | 0 | cheat/numeric/cl | - |
-| cl_panelanimation | cmd | - | Shows panel animation variables: <panelname | blank for all panels>. |
+| cl_panelanimation | cmd | - | Shows panel animation variables: <panelname \| blank for all panels>. |
 | cl_particle_batch_mode | 1 | cl | - |
 | cl_particle_max_count | 0 | cl | - |
 | cl_particle_retire_cost | 0 | cheat/cl | - |
@@ -947,7 +947,7 @@ Made with [gen](https://github.com/NeKzor/NeKzBot/tree/master/src/gen).
 | load | cmd | - | Load a saved game. |
 | loadcommentary | cmd | - | - |
 | lod_TransitionDist | 800 | cl | - |
-| log | cmd | - | Enables logging to file, console, and udp < on | off >. |
+| log | cmd | - | Enables logging to file, console, and udp < on \| off >. |
 | log_verbose_enable | 0 | sv | Set to 1 to enable verbose server log on the server. |
 | log_verbose_interval | 3 | sv | Determines the interval (in seconds) for the verbose server log. |
 | logaddress_add | cmd | - | Set address and port for remote host <ip:port>. |
@@ -1434,7 +1434,7 @@ Made with [gen](https://github.com/NeKzor/NeKzBot/tree/master/src/gen).
 | nb_update_frequency | 0 | sv/cheat | - |
 | nb_update_maxslide | 2 | sv/cheat | - |
 | nb_warp_selected_here | cmd | - | Teleport the selected bot to your cursor position |
-| net_blockmsg | 0 | cheat | Discards incoming message: <0|1|name> |
+| net_blockmsg | 0 | cheat | Discards incoming message: <0\|1\|name> |
 | net_channels | cmd | - | Shows net channel info |
 | net_chokeloop | 0 | - | Apply bandwidth choke to loopback packets |
 | net_compresspackets | 1 | - | Use lz compression on game packets. |
@@ -1464,7 +1464,7 @@ Made with [gen](https://github.com/NeKzor/NeKzBot/tree/master/src/gen).
 | net_showdrop | 0 | - | Show dropped packets in console |
 | net_showevents | 0 | cheat | Dump game events to console (1=client only, 2=all). |
 | net_showfragments | 0 | - | Show netchannel fragments |
-| net_showmsg | 0 | - | Show incoming message: <0|1|name> |
+| net_showmsg | 0 | - | Show incoming message: <0\|1\|name> |
 | net_showpeaks | 0 | - | Show messages for large packets only: <size> |
 | net_showsplits | 0 | - | Show info about packet splits |
 | net_showtcp | 0 | - | Dump TCP stream summary to console |
@@ -1541,7 +1541,7 @@ Made with [gen](https://github.com/NeKzor/NeKzBot/tree/master/src/gen).
 | overview_alpha | 1 | a/clientcmd_can_execute/cl | Overview map translucency. |
 | overview_health | 1 | a/clientcmd_can_execute/cl | Show player's health in map overview. |
 | overview_locked | 1 | a/clientcmd_can_execute/cl | Locks map angle, doesn't follow view angle. |
-| overview_mode | cmd | - | Sets overview map mode off,small,large: <0|1|2> |
+| overview_mode | cmd | - | Sets overview map mode off,small,large: <0\|1\|2> |
 | overview_names | 1 | a/clientcmd_can_execute/cl | Show player's names in map overview. |
 | overview_tracks | 1 | a/clientcmd_can_execute/cl | Show player's tracks in map overview. |
 | overview_zoom | cmd | - | Sets overview map zoom: <zoom> [<time>] [rel] |

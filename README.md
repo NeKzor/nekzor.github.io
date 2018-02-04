@@ -7,13 +7,13 @@
 
 ### Papers
 
-- [Future of C#](csharp.md)
-- [P2 Exploits](glitches.md)
+- [Future of C#](csharp)
+- [P2 Exploits](glitches)
 
 ### Data
 
 #### Source Engine Cvars
 
-- [Half-Life 2](cvars/hl2.md)
-- [Portal](cvars/p1.md)
-- [Portal 2](cvars/p2.md)
+- [Half-Life 2](cvars/hl2)
+- [Portal](cvars/p1)
+- [Portal 2](cvars/p2)
