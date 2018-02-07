@@ -1,7 +1,20 @@
 # Weird stuff in the Portal 2 engine aka discovered exploits since 2011
-A collection of tricks and glitches, mostly useful for speedrunning. Every game needs a list like this, right?"
+A collection of tricks and glitches, mostly useful for speedrunning. Every game needs a list like this, right?
+## Overview
+- [Glitches](#glitches)
+  - [Physics](#physics-related)
+  - [Physics (Derived)](#physics-related-derived)
+  - [Menu](#menu-related)
+  - [Mapping](#mapping-related)
+  - [Networking](#networking-related)
+- [Tricks](#tricks)
+  - [Physics](#physics-related-1)
+  - [Mapping](#mapping-related-1)
+  - [Movement](#movement-related)
+- [Relevant Bugs](#relevant-bugs)
+- [Other Tricks](#other-tricks-debatable)
 ## Glitches
-### Menu Related
+#### Physics Related
 - [Save Load Clipping](https://youtu.be/qMMW4lvre9A)
 - [Portal Object Clipping](https://youtu.be/E5tv33dAAyA)
 - [Excursion Funnel Flying](https://youtu.be/KSoOjeFBqew)
@@ -38,7 +51,7 @@ A collection of tricks and glitches, mostly useful for speedrunning. Every game 
 - Reload Abuse
 - [Moving Portal Physics](https://youtu.be/5dmV6geZvBc)
 - [Object Climbing](https://youtu.be/wCTXHfhyBco?t=42s)
-### Physics Related (Derived)
+#### Physics Related (Derived)
 - [Super Reportal](https://youtu.be/yi08QYWrpdE)
 - [Edged Super Reportal](https://youtu.be/Hzx8o-KWrJE)
 - Advanced Funnel Flying
@@ -54,31 +67,31 @@ A collection of tricks and glitches, mostly useful for speedrunning. Every game 
 - [Funnel Jumping](https://youtu.be/Q3EXIFZer5I)
 - [Funnel Boost](https://youtu.be/jv3aGHTdick?t=4m13s)
 - [Funnel Hoover](https://youtu.be/gRlkG0p_Kgo?t=14s)
-### Menu Related
+#### Menu Related
 - [Wrong Warp](https://youtu.be/X1_u3PlM-bg)
 - [Pause Clipping](https://youtu.be/CLzVfyYZhQA)
 - [Pause Buffering](https://youtu.be/QdRcAm0rvGQ)
 - [Save Deletion](https://www.twitch.tv/videos/65365345)
 - [PTI Menu Glitch](https://youtu.be/L7YT5-dYIr0)
-### Mapping Related
+#### Mapping Related
 - [Math Counter Manipulation](https://youtu.be/6P8Pv-yAn6I?t=2m27s)
 - Dialogue Interruption Abuse
-### Networking Related
+#### Networking Related
 - [Button Lag Glitch](https://youtu.be/m6beBVijKao)
 ## Tricks
-### Physics Related
+#### Physics Related
 - [Door Pushing Abuse](https://youtu.be/OzTsZt0Sxoo)
 - [Damage Boosting](https://youtu.be/uKgNytZ1-DY)
 - [Repulsion Spam Jump](https://youtu.be/6yYUg8sJ-Jg)
 - [Peek-a-Portal](https://youtu.be/eoEW45F4DNk)
 - [Fling Peek-a-Portal](https://youtu.be/_J2qOA0Rq_E?t=24s)
-### Mapping Related
+#### Mapping Related
 - [Scripted Momentum Abuse](https://youtu.be/4kQpyOT0SN0?t=1m2s)
 - [Cancel Pending Abuse](https://youtu.be/p5pcE0Ibcak)
 - [Seem Shot](https://youtu.be/W0sVlmMOBAw)
 - [Cube Dropper Cloning Abuse](https://youtu.be/pPCKvEdjAGE)
 - [Portal Placement Helper Abuse](https://youtu.be/hTBDs4c0r90)
-### Movement Related
+#### Movement Related
 - [Bunny Hopping](https://youtu.be/4MB-aFiCWj4)
 - [Air Strafing](https://youtu.be/DDRrKy_sdAw)
 - [Wall Strafing](https://youtu.be/xrOwHTX0MD0)
