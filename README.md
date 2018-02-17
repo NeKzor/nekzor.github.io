@@ -8,7 +8,9 @@
 ### Papers
 
 - [Future of C#](csharp)
-- [P2 Exploits](glitches)
+- [Portal 2 Exploits](glitches)
+- [Source Engine Demo Format](dem.md)
+- [Portal Stories: Mel Least Portals](mel.md)
 
 ### Data
 
