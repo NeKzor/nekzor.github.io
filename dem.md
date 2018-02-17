@@ -65,13 +65,10 @@
 | Size | int | 4 | 32 | - |
 | Data | byte[] | Size | Size*8 | NET/SVC Messages |
 
-¹MSSC (MaxSplitScreenClients) can be greater than 1 in multiplayer games but default is 1 (doesn't actually exist in old engines)
+¹MSSC (MaxSplitScreenClients) can be greater than 1 in multiplayer games but default is 1.
 
 ### dem_synctick
-
-| Name | Type | Size in bytes | Size in bits | Value |
-| --- | --- | --- | --- | --- |
-| - | - | - | - | - |
+This message does not contain any data.
 
 ### dem_consolecmd
 
