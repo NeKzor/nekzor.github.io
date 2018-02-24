@@ -4,6 +4,7 @@
 - [SourceDemoParser.Net](SourceDemoParser.Net)
 - [SourceAutoRecord](SourceAutoRecord)
 - [NeKzBot](NeKzBot)
+- [SteamCommunity.Net](SteamCommunity.Net)
 
 ### Papers
 
@@ -11,6 +12,11 @@
 - [Portal 2 Exploits](glitches)
 - [Source Engine Demo Format](dem.md)
 - [Portal Stories: Mel Least Portals](mel.md)
+
+### Pages
+
+- [board.iverb.me Statistics](Portal2Boards.Net/sp)
+- [Portal 2 Least Portals](SteamCommunity.Net/lp)
 
 ### Data
 

@@ -14,7 +14,7 @@
   - [StringTables](#stringtables)
 - [Data Objects](#data-objects)
   - [CmdInfo](#cmdinfo)
-  - [NET/SVC Message](#net-svc-message)
+  - [NET/SVC Message](#netsvc-message)
     - [Types](#types-1)
   - [UserCmdInfo](#usercmdinfo)
   - [SendTable](#sendtable)
@@ -31,7 +31,7 @@
 | ClientName | string | 260 | 2080 | - |
 | MapName | string | 260 | 2080 | - |
 | GameDirectory | string | 260 | 2080 | - |
-| PlaybackTime | float | 8 | 64 | - |
+| PlaybackTime | float | 4 | 32 | - |
 | PlaybackTicks | int | 4 | 32 | - |
 | PlaybackFrames | int | 4 | 32 | - |
 | SignOnLength | int | 4 | 32 | - |
@@ -66,11 +66,11 @@
 
 | Name | Type | Size in bytes | Size in bits | Value |
 | --- | --- | --- | --- | --- |
-| PacketInfo | byte[] | 76\*MSSC¹ | 76\*MSSC\*8 | [CmdInfo[]](#cmdinfo) |
+| PacketInfo | byte[] | 76\*MSSC¹ | 76\*MSSC\*8 | [CmdInfo[MSSC]](#cmdinfo) |
 | InSequence | int | 4 | 32 | - |
 | OutSequence | int | 4 | 32 | - |
 | Size | int | 4 | 32 | - |
-| Data | byte[] | Size | Size*8 | [NET/SVC-Message[]](#net-svc-message) |
+| Data | byte[] | Size | Size*8 | [NET/SVC-Message[]](#netsvc-message) |
 
 ¹MSSC (MaxSplitScreenClients) can be greater than 1 for multiplayer games but default is 1.
 
