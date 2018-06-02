@@ -18,8 +18,6 @@
 - [board.iverb.me Statistics](Portal2Boards.Net/sp)
 - [Portal 2 Least Portals](lp)
 
-### Data
-
 #### Source Engine Cvars
 
 - [Half-Life 2](cvars/hl2)
