@@ -11,12 +11,12 @@
 - [Future of C#](csharp)
 - [Portal 2 Exploits](glitches)
 - [Source Engine Demo Format](dem)
-- [Portal Stories: Mel Least Portals](mel)
 
 ### Pages
 
 - [board.iverb.me Statistics](Portal2Boards.Net/sp)
 - [Portal 2 Least Portals](lp)
+- [Portal Stories: Mel Least Portals](mel)
 
 #### Source Engine Cvars
 
