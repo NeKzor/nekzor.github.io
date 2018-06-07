@@ -14,7 +14,7 @@
 
 ### Pages
 
-- [board.iverb.me Statistics](Portal2Boards.Net/sp)
+- [board.iverb.me Statistics](p2bn)
 - [Portal 2 Least Portals](lp)
 - [Portal Stories: Mel Least Portals](mel)
 
