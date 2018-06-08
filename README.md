@@ -9,11 +9,11 @@
 ### Papers
 
 - [Future of C#](csharp)
-- [Portal 2 Exploits](glitches)
 - [Source Engine Demo Format](dem)
 
 ### Pages
 
+- [Portal 2 Glitch Database](glitches)
 - [board.iverb.me Statistics](p2bn)
 - [Portal 2 Least Portals](lp)
 - [Portal Stories: Mel Least Portals](mel)
