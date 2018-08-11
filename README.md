@@ -23,3 +23,5 @@
 - [Half-Life 2](cvars/hl2)
 - [Portal](cvars/p1)
 - [Portal 2](cvars/p2)
+- [The Stanley Parable](cvars/tsp)
+- [The Beginners Guide](cvars/tbg)

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Portal 2 Cvars | nekzor.github.io</title>
+		<title>The Stanley Parable Cvars | nekzor.github.io</title>
 		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css" rel="stylesheet">
@@ -12,17 +12,17 @@
 			<div class="nav-wrapper">
 				<div class="col s12 hide-on-small-only">
 					<a href="../index.html" class="breadcrumb">&nbsp;&nbsp;&nbsp;nekzor.github.io</a>
-					<a href="p2.html" class="breadcrumb">Portal 2 Cvars</a>
+					<a href="tsp.html" class="breadcrumb">The Stanley Parable Cvars</a>
 				</div>
 				<div class="col s12 hide-on-med-and-up">
 					<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-					<a href="p2.html" class="brand-logo center">P2</a>
+					<a href="tsp.html" class="brand-logo center">TSP</a>
 				</div>
 			</div>
 		</nav>
 		<ul id="slide-out" class="sidenav hide-on-med-and-up">
-			<li><a href="../index.html">nekzor.github.io</a></li>
-			<li><a href="hl2.html">Half-Life 2 Cvars</a></li>
+            <li><a href="../index.html">nekzor.github.io</a></li>
+            <li><a href="hl2.html">Half-Life 2 Cvars</a></li>
 			<li><a href="p1.html">Portal Cvars</a></li>
 			<li><a href="p2.html">Portal 2 Cvars</a></li>
 			<li><a href="tsp.html">The Stanley Parable Cvars</a></li>
@@ -84,6 +84,27 @@
 						</thead>
 						<tbody class="list">
 							<tr>
+								<td class="name">_430</td>
+								<td class="default">cmd</td>
+                                <td class="flags">HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">_430_disable</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">_888</td>
+								<td class="default">cmd</td>
+                                <td class="flags">HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
 								<td class="name">_autosave</td>
 								<td class="default">cmd</td>
                                 <td class="flags">-</td>
@@ -96,6 +117,13 @@
                                 <td class="flags">-</td>
                                 <td class="os">-</td>
 								<td class="help-text">AutoSaveDangerous</td>
+							</tr>
+							<tr>
+								<td class="name">_beat</td>
+								<td class="default">cmd</td>
+                                <td class="flags">HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
 							</tr>
 							<tr>
 								<td class="name">_bugreporter_restart</td>
@@ -131,6 +159,13 @@
                                 <td class="flags">-</td>
                                 <td class="os">-</td>
 								<td class="help-text">Shutdown and restart the engine.</td>
+							</tr>
+							<tr>
+								<td class="name">_u</td>
+								<td class="default">cmd</td>
+                                <td class="flags">CLIENTDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
 							</tr>
 							<tr>
 								<td class="name">-alt1</td>
@@ -959,6 +994,34 @@
 								<td class="help-text">-</td>
 							</tr>
 							<tr>
+								<td class="name">~</td>
+								<td class="default">cmd</td>
+                                <td class="flags">CLIENTDLL</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">~_~</td>
+								<td class="default">cmd</td>
+                                <td class="flags">CLIENTDLL</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">~~</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">~~~</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
 								<td class="name">addip</td>
 								<td class="default">cmd</td>
                                 <td class="flags">-</td>
@@ -1074,6 +1137,13 @@
 								<td class="name">adsp_wall_height</td>
 								<td class="default">128</td>
                                 <td class="flags">-</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">ae</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL<br>HIDDEN</td>
                                 <td class="os">-</td>
 								<td class="help-text">-</td>
 							</tr>
@@ -1934,6 +2004,13 @@
 								<td class="help-text">Alias a command.</td>
 							</tr>
 							<tr>
+								<td class="name">am</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
 								<td class="name">anim_3wayblend</td>
 								<td class="default">1</td>
                                 <td class="flags">CLIENTDLL<br>REPLICATED</td>
@@ -1974,6 +2051,13 @@
                                 <td class="flags">DEVELOPMENTONLY<br>CLIENTDLL<br>REPLICATED<br>CHEAT</td>
                                 <td class="os">-</td>
 								<td class="help-text">1 to output anim_showstate to Msg(). 2 to store in AnimState.log. 3 for both.</td>
+							</tr>
+							<tr>
+								<td class="name">as</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
 							</tr>
 							<tr>
 								<td class="name">askconnect_accept</td>
@@ -2109,6 +2193,13 @@
 								<td class="help-text">Add an IP address to the ban list.</td>
 							</tr>
 							<tr>
+								<td class="name">bark</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
 								<td class="name">bench_end</td>
 								<td class="default">cmd</td>
                                 <td class="flags">CHEAT</td>
@@ -2165,32 +2256,11 @@
 								<td class="help-text">Dumps information about all precached Bink movies</td>
 							</tr>
 							<tr>
-								<td class="name">bink_mat_queue_mode</td>
-								<td class="default">1</td>
-                                <td class="flags">-</td>
-                                <td class="os">-</td>
-								<td class="help-text">Update bink on mat queue thread if mat_queue_mode is on (if turned off, always update bink on main thread; may cause stalls!)</td>
-							</tr>
-							<tr>
 								<td class="name">bink_preload_videopanel_movies</td>
 								<td class="default">1</td>
                                 <td class="flags">CLIENTDLL</td>
                                 <td class="os">-</td>
 								<td class="help-text">Preload Bink movies used by VideoPanel.</td>
-							</tr>
-							<tr>
-								<td class="name">bink_try_load_vmt</td>
-								<td class="default">0</td>
-                                <td class="flags">-</td>
-                                <td class="os">-</td>
-								<td class="help-text">Try and load a VMT with the same name as the BIK file to override settings</td>
-							</tr>
-							<tr>
-								<td class="name">bink_use_preallocated_scratch_texture</td>
-								<td class="default">1</td>
-                                <td class="flags">-</td>
-                                <td class="os">-</td>
-								<td class="help-text">Use a pre-allocated VTF instead of creating a new one and deleting it for every texture update. Gameconsole only.</td>
 							</tr>
 							<tr>
 								<td class="name">blackbox</td>
@@ -3087,6 +3157,13 @@ Print out a summary contents of cache memory.</td>
 								<td class="help-text">Transition to the specified map in single player</td>
 							</tr>
 							<tr>
+								<td class="name">changepaintto</td>
+								<td class="default">cmd</td>
+                                <td class="flags">CLIENTDLL</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
 								<td class="name">cheap_captions_fadetime</td>
 								<td class="default">0.5</td>
                                 <td class="flags">CLIENTDLL</td>
@@ -3369,13 +3446,6 @@ Print out a summary contents of cache memory.</td>
 							<tr>
 								<td class="name">cl_colorfastpath</td>
 								<td class="default">0</td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">-</td>
-							</tr>
-							<tr>
-								<td class="name">cl_communitycoop_progress_throttle_rate</td>
-								<td class="default">0.3f</td>
                                 <td class="flags">CLIENTDLL</td>
                                 <td class="os">-</td>
 								<td class="help-text">-</td>
@@ -4492,34 +4562,6 @@ Format: cl_find_ent_index &lt;index&gt;
 								<td class="help-text">When predicting projected bridges, the spatial partition AABB encompasses all AABB&#39;s for outstanding collideables</td>
 							</tr>
 							<tr>
-								<td class="name">cl_puzzlemaker_activate</td>
-								<td class="default">cmd</td>
-                                <td class="flags">DEVELOPMENTONLY<br>CLIENTDLL<br>HIDDEN</td>
-                                <td class="os">-</td>
-								<td class="help-text">This is called by puzzlemaker_internal when the editor is activated.</td>
-							</tr>
-							<tr>
-								<td class="name">cl_puzzlemaker_deactivate</td>
-								<td class="default">cmd</td>
-                                <td class="flags">DEVELOPMENTONLY<br>CLIENTDLL<br>HIDDEN</td>
-                                <td class="os">-</td>
-								<td class="help-text">This is called by puzzlemaker_internal when the editor is deactivated.</td>
-							</tr>
-							<tr>
-								<td class="name">cl_puzzlemaker_start_editing</td>
-								<td class="default">cmd</td>
-                                <td class="flags">DEVELOPMENTONLY<br>CLIENTDLL<br>HIDDEN</td>
-                                <td class="os">-</td>
-								<td class="help-text">This is called by puzzlemaker_internal when the view is fully in editor mode.</td>
-							</tr>
-							<tr>
-								<td class="name">cl_puzzlemaker_start_previewing</td>
-								<td class="default">cmd</td>
-                                <td class="flags">DEVELOPMENTONLY<br>CLIENTDLL<br>HIDDEN</td>
-                                <td class="os">-</td>
-								<td class="help-text">This is called by puzzlemaker_internal when the view is fully in preview mode.</td>
-							</tr>
-							<tr>
 								<td class="name">cl_quick_join_panel_accel</td>
 								<td class="default">0.025</td>
                                 <td class="flags">CLIENTDLL</td>
@@ -5262,13 +5304,6 @@ Format: cl_find_ent_index &lt;index&gt;
 								<td class="help-text">Enable close captioning.</td>
 							</tr>
 							<tr>
-								<td class="name">cm_community_debug_spew</td>
-								<td class="default">0</td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">-</td>
-							</tr>
-							<tr>
 								<td class="name">cm_current_community_map</td>
 								<td class="default">0</td>
                                 <td class="flags">CLIENTDLL<br>HIDDEN<br>REPLICATED</td>
@@ -5276,46 +5311,11 @@ Format: cl_find_ent_index &lt;index&gt;
 								<td class="help-text">-</td>
 							</tr>
 							<tr>
-								<td class="name">cm_filter_quickplay_with_history</td>
-								<td class="default">1</td>
-                                <td class="flags">CLIENTDLL<br>CHEAT</td>
-                                <td class="os">-</td>
-								<td class="help-text">Tells the client if it should filter maps in QuickPlay mode with history queue.</td>
-							</tr>
-							<tr>
-								<td class="name">cm_fix_orphaned_files</td>
-								<td class="default"></td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">-</td>
-							</tr>
-							<tr>
-								<td class="name">cm_is_current_community_map_coop</td>
-								<td class="default">0</td>
-                                <td class="flags">CLIENTDLL<br>HIDDEN<br>REPLICATED</td>
-                                <td class="os">-</td>
-								<td class="help-text">-</td>
-							</tr>
-							<tr>
-								<td class="name">cm_open_vote_dialog</td>
-								<td class="default">cmd</td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">Opens the map voting dialog for testing purposes</td>
-							</tr>
-							<tr>
 								<td class="name">cm_play_intro_video</td>
 								<td class="default">1</td>
                                 <td class="flags">CLIENTDLL<br>ARCHIVE</td>
                                 <td class="os">-</td>
 								<td class="help-text">-</td>
-							</tr>
-							<tr>
-								<td class="name">cm_reset_vo_progress</td>
-								<td class="default">cmd</td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">Reset the progress of the PeTI storyline.</td>
 							</tr>
 							<tr>
 								<td class="name">cmd</td>
@@ -6043,6 +6043,27 @@ Format: cl_find_ent_index &lt;index&gt;
                                 <td class="flags">DONTRECORD</td>
                                 <td class="os">-</td>
 								<td class="help-text">Used by the -makedevshots system to take a screenshot. For taking your own screenshots, use the &#39;screenshot&#39; command instead.</td>
+							</tr>
+							<tr>
+								<td class="name">diffcheck</td>
+								<td class="default">0</td>
+                                <td class="flags">CLIENTDLL<br>REPLICATED</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">diffcheck_playerslot</td>
+								<td class="default">0</td>
+                                <td class="flags">CLIENTDLL<br>REPLICATED</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">diffcheck_spew</td>
+								<td class="default">1</td>
+                                <td class="flags">CLIENTDLL<br>REPLICATED</td>
+                                <td class="os">-</td>
+								<td class="help-text">Actually show diffcheck results.</td>
 							</tr>
 							<tr>
 								<td class="name">differences</td>
@@ -8093,6 +8114,13 @@ The preftech is medium priority and non-persistent.</td>
 								<td class="help-text">Gives the gamestop promo helmets for coop bots. Requires a respawn or changelevel to start showing.</td>
 							</tr>
 							<tr>
+								<td class="name">giveallpaintpowers</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
 								<td class="name">givecurrentammo</td>
 								<td class="default">cmd</td>
                                 <td class="flags">GAMEDLL<br>CHEAT</td>
@@ -8104,7 +8132,14 @@ The preftech is medium priority and non-persistent.</td>
 								<td class="name">gl_amd_occlusion_workaround</td>
 								<td class="default">1</td>
                                 <td class="flags">-</td>
-                                <td class="os">-</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">gl_amd_occlusion_workaround</td>
+								<td class="default">1</td>
+                                <td class="flags">-</td>
+                                <td class="os">Linux</td>
 								<td class="help-text">-</td>
 							</tr>
 							<tr>
@@ -8405,7 +8440,14 @@ The preftech is medium priority and non-persistent.</td>
 								<td class="name">gl_nvidia_occlusion_workaround</td>
 								<td class="default">0</td>
                                 <td class="flags">-</td>
-                                <td class="os">-</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">gl_nvidia_occlusion_workaround</td>
+								<td class="default">0</td>
+                                <td class="flags">-</td>
+                                <td class="os">Linux</td>
 								<td class="help-text">-</td>
 							</tr>
 							<tr>
@@ -8810,7 +8852,7 @@ The preftech is medium priority and non-persistent.</td>
 							<tr>
 								<td class="name">hide_gun_when_holding</td>
 								<td class="default">0</td>
-                                <td class="flags">CLIENTDLL<br>REPLICATED</td>
+                                <td class="flags">DEVELOPMENTONLY<br>CLIENTDLL<br>REPLICATED</td>
                                 <td class="os">-</td>
 								<td class="help-text">-</td>
 							</tr>
@@ -8825,6 +8867,13 @@ The preftech is medium priority and non-persistent.</td>
 								<td class="name">hidehud</td>
 								<td class="default">0</td>
                                 <td class="flags">CLIENTDLL<br>CHEAT</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">hideous</td>
+								<td class="default">cmd</td>
+                                <td class="flags">CLIENTDLL</td>
                                 <td class="os">-</td>
 								<td class="help-text">-</td>
 							</tr>
@@ -9321,6 +9370,13 @@ The preftech is medium priority and non-persistent.</td>
 								<td class="help-text">-</td>
 							</tr>
 							<tr>
+								<td class="name">imabird</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
 								<td class="name">impulse</td>
 								<td class="default">cmd</td>
                                 <td class="flags">CLIENTDLL</td>
@@ -9347,6 +9403,13 @@ The preftech is medium priority and non-persistent.</td>
                                 <td class="flags">DONTRECORD</td>
                                 <td class="os">-</td>
 								<td class="help-text">Increment specified convar value.</td>
+							</tr>
+							<tr>
+								<td class="name">interruptvideos</td>
+								<td class="default">cmd</td>
+                                <td class="flags">CLIENTDLL</td>
+                                <td class="os">-</td>
+								<td class="help-text">Interrupt all interruptable videos playing to the screen</td>
 							</tr>
 							<tr>
 								<td class="name">invnext</td>
@@ -9604,7 +9667,14 @@ The preftech is medium priority and non-persistent.</td>
 								<td class="name">joy_debug_ouput</td>
 								<td class="default"></td>
                                 <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">joy_debug_ouput</td>
+								<td class="default"></td>
+                                <td class="flags">CLIENTDLL</td>
+                                <td class="os">Linux</td>
 								<td class="help-text">-</td>
 							</tr>
 							<tr>
@@ -9648,6 +9718,13 @@ The preftech is medium priority and non-persistent.</td>
                                 <td class="flags">ARCHIVE</td>
                                 <td class="os">Linux</td>
 								<td class="help-text">Game controller mapping (passed to SDL with SDL_HINT_GAMECONTROLLERCONFIG), can also be configured in Steam Big Picture mode.</td>
+							</tr>
+							<tr>
+								<td class="name">joy_invertlook</td>
+								<td class="default">0</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">-</td>
+								<td class="help-text">Whether to invert the Y axis of the joystick for looking.</td>
 							</tr>
 							<tr>
 								<td class="name">joy_invertx</td>
@@ -9776,34 +9853,6 @@ The preftech is medium priority and non-persistent.</td>
 								<td class="help-text">-</td>
 							</tr>
 							<tr>
-								<td class="name">joy_remap_player_for_controller1</td>
-								<td class="default">0</td>
-                                <td class="flags">ARCHIVE</td>
-                                <td class="os">Windows</td>
-								<td class="help-text">Force controller 1 to control a different player. 0 = default, 1-4 = player number</td>
-							</tr>
-							<tr>
-								<td class="name">joy_remap_player_for_controller2</td>
-								<td class="default">0</td>
-                                <td class="flags">ARCHIVE</td>
-                                <td class="os">Windows</td>
-								<td class="help-text">Force controller 2 to control a different player. 0 = default, 1-4 = player number</td>
-							</tr>
-							<tr>
-								<td class="name">joy_remap_player_for_controller3</td>
-								<td class="default">0</td>
-                                <td class="flags">ARCHIVE</td>
-                                <td class="os">Windows</td>
-								<td class="help-text">Force controller 3 to control a different player. 0 = default, 1-4 = player number</td>
-							</tr>
-							<tr>
-								<td class="name">joy_remap_player_for_controller4</td>
-								<td class="default">0</td>
-                                <td class="flags">ARCHIVE</td>
-                                <td class="os">Windows</td>
-								<td class="help-text">Force controller 4 to control a different player. 0 = default, 1-4 = player number</td>
-							</tr>
-							<tr>
 								<td class="name">joy_response_look</td>
 								<td class="default">0</td>
                                 <td class="flags">CLIENTDLL<br>ARCHIVE</td>
@@ -9863,7 +9912,14 @@ The preftech is medium priority and non-persistent.</td>
 								<td class="name">joy_steamcontroller_cfg_loaded</td>
 								<td class="default">0</td>
                                 <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">If 0, the steam controller .cfg file will be executed on startup &amp; option changes.</td>
+							</tr>
+							<tr>
+								<td class="name">joy_steamcontroller_cfg_loaded</td>
+								<td class="default">0</td>
+                                <td class="flags">CLIENTDLL</td>
+                                <td class="os">Linux</td>
 								<td class="help-text">If 0, the steam controller .cfg file will be executed on startup &amp; option changes.</td>
 							</tr>
 							<tr>
@@ -10614,13 +10670,6 @@ Creates a cubemap and a file indicating the local lighting in a subdirectory cal
                                 <td class="flags">GAMEDLL</td>
                                 <td class="os">-</td>
 								<td class="help-text">Name of the .txt file used to cycle the maps on multiplayer servers </td>
-							</tr>
-							<tr>
-								<td class="name">maps</td>
-								<td class="default">cmd</td>
-                                <td class="flags">-</td>
-                                <td class="os">-</td>
-								<td class="help-text">Displays list of maps.</td>
 							</tr>
 							<tr>
 								<td class="name">mat_aaquality</td>
@@ -11519,6 +11568,13 @@ Creates a cubemap and a file indicating the local lighting in a subdirectory cal
 								<td class="help-text">-</td>
 							</tr>
 							<tr>
+								<td class="name">mat_matoverride</td>
+								<td class="default"></td>
+                                <td class="flags">HIDDEN<br>CHEAT</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
 								<td class="name">mat_max_worldmesh_vertices</td>
 								<td class="default">65536</td>
                                 <td class="flags">-</td>
@@ -11759,7 +11815,7 @@ Creates a cubemap and a file indicating the local lighting in a subdirectory cal
 							<tr>
 								<td class="name">mat_postprocess_enable</td>
 								<td class="default">1</td>
-                                <td class="flags">CLIENTDLL<br>CHEAT</td>
+                                <td class="flags">CLIENTDLL</td>
                                 <td class="os">-</td>
 								<td class="help-text">-</td>
 							</tr>
@@ -12334,7 +12390,14 @@ Creates a cubemap and a file indicating the local lighting in a subdirectory cal
 								<td class="name">mat_viewportupscale</td>
 								<td class="default">1</td>
                                 <td class="flags">CLIENTDLL<br>CHEAT</td>
-                                <td class="os">-</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Scale the viewport back up</td>
+							</tr>
+							<tr>
+								<td class="name">mat_viewportupscale</td>
+								<td class="default">1</td>
+                                <td class="flags">CLIENTDLL<br>CHEAT</td>
+                                <td class="os">Linux</td>
 								<td class="help-text">Scale the viewport back up</td>
 							</tr>
 							<tr>
@@ -14608,7 +14671,14 @@ If the server is behind NAT, you can specify `0.0.0.0|privateip:port` and if ser
 								<td class="name">nb_shadow_dist</td>
 								<td class="default">400</td>
                                 <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">nb_shadow_dist</td>
+								<td class="default">400</td>
+                                <td class="flags">CLIENTDLL</td>
+                                <td class="os">Linux</td>
 								<td class="help-text">-</td>
 							</tr>
 							<tr>
@@ -15044,6 +15114,13 @@ If the server is behind NAT, you can specify `0.0.0.0|privateip:port` and if ser
                                 <td class="flags">GAMEDLL<br>NOTIFY</td>
                                 <td class="os">-</td>
 								<td class="help-text">If set to a valid map name, will change to this map during the next changelevel</td>
+							</tr>
+							<tr>
+								<td class="name">nextpaint</td>
+								<td class="default">cmd</td>
+                                <td class="flags">CLIENTDLL</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
 							</tr>
 							<tr>
 								<td class="name">noclip</td>
@@ -16958,6 +17035,13 @@ Arguments:   	{npc_name} / {npc_class_name} / no argument picks what player is l
 								<td class="help-text">Enable/Disable crouch jump prevention.</td>
 							</tr>
 							<tr>
+								<td class="name">prevpaint</td>
+								<td class="default">cmd</td>
+                                <td class="flags">CLIENTDLL</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
 								<td class="name">print_colorcorrection</td>
 								<td class="default">cmd</td>
                                 <td class="flags">CHEAT</td>
@@ -17077,167 +17161,6 @@ Arguments:   	{npc_name} / {npc_class_name} / no argument picks what player is l
                                 <td class="flags">CLIENTDLL<br>REPLICATED</td>
                                 <td class="os">-</td>
 								<td class="help-text">Maximum prop breakable piece count per frame (-1 = model default)</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_active</td>
-								<td class="default">0</td>
-                                <td class="flags">DEVELOPMENTONLY<br>CLIENTDLL<br>HIDDEN</td>
-                                <td class="os">-</td>
-								<td class="help-text">Active state of the puzzlemaker</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_autosave_dev</td>
-								<td class="default">cmd</td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">puzzlemaker_autosave_dev  -  autosaves the current puzzle as &#39;autosave.p2c&#39;</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_compile_and_preview</td>
-								<td class="default">cmd</td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">-</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_compile_and_publish</td>
-								<td class="default">cmd</td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">-</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_current_hint</td>
-								<td class="default">0</td>
-                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
-                                <td class="os">-</td>
-								<td class="help-text">-</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_drawselectionmeshes</td>
-								<td class="default">0</td>
-                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
-                                <td class="os">-</td>
-								<td class="help-text">draw wireframe item selection meshes in red</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_enable_budget_bar</td>
-								<td class="default">0</td>
-                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
-                                <td class="os">-</td>
-								<td class="help-text">Shows/Hides the budget bar</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_export</td>
-								<td class="default">cmd</td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">puzzlemaker_export &lt;name&gt;  -  export the current puzzle as &#39;name.vmf&#39;</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_load_dev</td>
-								<td class="default">cmd</td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">puzzlemaker_load_dev &lt;name&gt;  -  load the puzzle called &#39;name.p2c&#39;</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_new_chamber</td>
-								<td class="default">cmd</td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">-</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_open_chamber</td>
-								<td class="default">cmd</td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">-</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_play_sounds</td>
-								<td class="default">1</td>
-                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
-                                <td class="os">-</td>
-								<td class="help-text">sets if the puzzlemaker can play sounds or not</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_publish_dev</td>
-								<td class="default">cmd</td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">puzzlemaker_publish_dev  -  compile the current puzzle and publish it to the Steam Workshop (via the standlone publishing tool)</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_quit</td>
-								<td class="default">cmd</td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">-</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_request_publish</td>
-								<td class="default">cmd</td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">-</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_save_chamber</td>
-								<td class="default">cmd</td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">-</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_save_dev</td>
-								<td class="default">cmd</td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">puzzlemaker_save_dev &lt;name&gt;  -  save the current puzzle as &#39;name.p2c&#39;</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_shadows</td>
-								<td class="default">0</td>
-                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
-                                <td class="os">-</td>
-								<td class="help-text">Enable shadows in the Portal 2 Puzzle Maker</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_show</td>
-								<td class="default">0</td>
-                                <td class="flags">-</td>
-                                <td class="os">-</td>
-								<td class="help-text">1 shows the puzzle maker,  0 hides it</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_show_budget_numbers</td>
-								<td class="default">0</td>
-                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
-                                <td class="os">-</td>
-								<td class="help-text">Shows the current values for all the different map limits.</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_show_overlay_web_page</td>
-								<td class="default">cmd</td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">-</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_switch_session</td>
-								<td class="default">cmd</td>
-                                <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">-</td>
-							</tr>
-							<tr>
-								<td class="name">puzzlemaker_zoom_to_mouse</td>
-								<td class="default">1</td>
-                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
-                                <td class="os">-</td>
-								<td class="help-text">0-zoom to center of screen, 1-zoom to mouse cursor (smart), 2-zoom to mouse cursor (simple)</td>
 							</tr>
 							<tr>
 								<td class="name">pwatchent</td>
@@ -19983,6 +19906,13 @@ Arguments:   	{npc_name} / {npc_class_name} / no argument picks what player is l
 								<td class="help-text">After this many seconds of being basically stationary, the ragdoll will go to sleep.</td>
 							</tr>
 							<tr>
+								<td class="name">raphael</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
 								<td class="name">rate</td>
 								<td class="default">10000</td>
                                 <td class="flags">USERINFO</td>
@@ -20463,7 +20393,7 @@ criteria values are optional.
 							</tr>
 							<tr>
 								<td class="name">rr_remarkables_enabled</td>
-								<td class="default">1</td>
+								<td class="default">0</td>
                                 <td class="flags">GAMEDLL<br>CHEAT</td>
                                 <td class="os">-</td>
 								<td class="help-text">If 1, polling for info_remarkables and issuances of TLK_REMARK is enabled.</td>
@@ -20581,87 +20511,521 @@ criteria values are optional.
 								<td class="help-text">Display player message to team</td>
 							</tr>
 							<tr>
-								<td class="name">sc_debug_sets</td>
+								<td class="name">sc_accel_exponent</td>
+								<td class="default">1.001</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steam Controller look acceleration exponent</td>
+							</tr>
+							<tr>
+								<td class="name">sc_accel_exponent</td>
+								<td class="default">1.001</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steam Controller look acceleration exponent</td>
+							</tr>
+							<tr>
+								<td class="name">sc_accel_exponent2</td>
+								<td class="default">1.001</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steam Controller look acceleration exponent</td>
+							</tr>
+							<tr>
+								<td class="name">sc_accel_exponent2</td>
+								<td class="default">1.001</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steam Controller look acceleration exponent</td>
+							</tr>
+							<tr>
+								<td class="name">sc_accel_scale</td>
+								<td class="default">0.00375</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steam Controller look acceleration scale</td>
+							</tr>
+							<tr>
+								<td class="name">sc_accel_scale</td>
+								<td class="default">0.00375</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steam Controller look acceleration scale</td>
+							</tr>
+							<tr>
+								<td class="name">sc_accel_scale_default</td>
+								<td class="default">0.00375</td>
+                                <td class="flags">CLIENTDLL</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">sc_accel_scale_default</td>
+								<td class="default">0.00375</td>
+                                <td class="flags">CLIENTDLL</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">sc_accel_scale2</td>
+								<td class="default">0.00375</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steam Controller look acceleration scale</td>
+							</tr>
+							<tr>
+								<td class="name">sc_accel_scale2</td>
+								<td class="default">0.00375</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steam Controller look acceleration scale</td>
+							</tr>
+							<tr>
+								<td class="name">sc_debug</td>
 								<td class="default">0</td>
-                                <td class="flags">ARCHIVE</td>
-                                <td class="os">-</td>
-								<td class="help-text">Debugging</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">SteamController debugging info.</td>
+							</tr>
+							<tr>
+								<td class="name">sc_debug</td>
+								<td class="default">0</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">SteamController debugging info.</td>
 							</tr>
 							<tr>
 								<td class="name">sc_enable</td>
 								<td class="default">1.0</td>
                                 <td class="flags">CLIENTDLL<br>ARCHIVE</td>
-                                <td class="os">-</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Enable SteamController</td>
+							</tr>
+							<tr>
+								<td class="name">sc_enable</td>
+								<td class="default">1.0</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
 								<td class="help-text">Enable SteamController</td>
 							</tr>
 							<tr>
 								<td class="name">sc_enable2</td>
 								<td class="default">1.0</td>
                                 <td class="flags">CLIENTDLL<br>ARCHIVE</td>
-                                <td class="os">-</td>
+                                <td class="os">Linux</td>
 								<td class="help-text">Enable SteamController</td>
 							</tr>
 							<tr>
-								<td class="name">sc_joystick_inner_deadzone_scale</td>
+								<td class="name">sc_enable2</td>
+								<td class="default">1.0</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Enable SteamController</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics</td>
 								<td class="default">1</td>
                                 <td class="flags">CLIENTDLL<br>ARCHIVE</td>
-                                <td class="os">-</td>
-								<td class="help-text">Scale of the default inner deadzone</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Do haptic feedback on steam controller.</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics</td>
+								<td class="default">1</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Do haptic feedback on steam controller.</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics_stick_intensity</td>
+								<td class="default">400</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Strength of stick emulation haptics</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics_stick_intensity</td>
+								<td class="default">400</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Strength of stick emulation haptics</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics_stick_intensity2</td>
+								<td class="default">400</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Strength of stick emulation haptics</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics_stick_intensity2</td>
+								<td class="default">400</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Strength of stick emulation haptics</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics_stick_mode</td>
+								<td class="default">1</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">What type of haptics to perform for stick emulation</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics_stick_mode</td>
+								<td class="default">1</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">What type of haptics to perform for stick emulation</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics_stick_mode2</td>
+								<td class="default">1</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">What type of haptics to perform for stick emulation</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics_stick_mode2</td>
+								<td class="default">1</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">What type of haptics to perform for stick emulation</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics_trackball_tick_intensity</td>
+								<td class="default">200</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Strength of view ticks</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics_trackball_tick_intensity</td>
+								<td class="default">200</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Strength of view ticks</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics_trackball_tick_intensity2</td>
+								<td class="default">200</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Strength of view ticks</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics_trackball_tick_intensity2</td>
+								<td class="default">200</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Strength of view ticks</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics_trackball_tick_interval</td>
+								<td class="default">7</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Distance traveled per haptic tick</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics_trackball_tick_interval</td>
+								<td class="default">7</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Distance traveled per haptic tick</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics_trackball_tick_interval2</td>
+								<td class="default">7</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Distance traveled per haptic tick</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics_trackball_tick_interval2</td>
+								<td class="default">7</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Distance traveled per haptic tick</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics2</td>
+								<td class="default">1</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Do haptic feedback on steam controller.</td>
+							</tr>
+							<tr>
+								<td class="name">sc_haptics2</td>
+								<td class="default">1</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Do haptic feedback on steam controller.</td>
+							</tr>
+							<tr>
+								<td class="name">sc_jitter_mode</td>
+								<td class="default">1</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steam Controller - the jitter prevention mode, 0 clamps, 1 filters</td>
+							</tr>
+							<tr>
+								<td class="name">sc_jitter_mode</td>
+								<td class="default">1</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steam Controller - the jitter prevention mode, 0 clamps, 1 filters</td>
+							</tr>
+							<tr>
+								<td class="name">sc_jitter_mode2</td>
+								<td class="default">1</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steam Controller - the jitter prevention mode, 0 clamps, 1 filters</td>
+							</tr>
+							<tr>
+								<td class="name">sc_jitter_mode2</td>
+								<td class="default">1</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steam Controller - the jitter prevention mode, 0 clamps, 1 filters</td>
+							</tr>
+							<tr>
+								<td class="name">sc_jitter_threshold</td>
+								<td class="default">80</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steam Controller - any movement under this threshold will filtered to prevent jitter</td>
+							</tr>
+							<tr>
+								<td class="name">sc_jitter_threshold</td>
+								<td class="default">80</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steam Controller - any movement under this threshold will filtered to prevent jitter</td>
+							</tr>
+							<tr>
+								<td class="name">sc_jitter_threshold2</td>
+								<td class="default">80</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steam Controller - any movement under this threshold will filtered to prevent jitter</td>
+							</tr>
+							<tr>
+								<td class="name">sc_jitter_threshold2</td>
+								<td class="default">80</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steam Controller - any movement under this threshold will filtered to prevent jitter</td>
 							</tr>
 							<tr>
 								<td class="name">sc_joystick_map</td>
 								<td class="default">1</td>
                                 <td class="flags">ARCHIVE</td>
-                                <td class="os">-</td>
+                                <td class="os">Linux</td>
 								<td class="help-text">How to map the analog joystick deadzone and extents 0 = Scaled Cross, 1 = Concentric Mapping to Square.</td>
 							</tr>
 							<tr>
-								<td class="name">sc_joystick_outer_deadzone_scale</td>
-								<td class="default">0.75</td>
+								<td class="name">sc_joystick_map</td>
+								<td class="default">1</td>
+                                <td class="flags">ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">How to map the analog joystick deadzone and extents 0 = Scaled Cross, 1 = Concentric Mapping to Square.</td>
+							</tr>
+							<tr>
+								<td class="name">sc_look_pad</td>
+								<td class="default">2</td>
                                 <td class="flags">CLIENTDLL<br>ARCHIVE</td>
-                                <td class="os">-</td>
-								<td class="help-text">Scale of the default outer pegged amount</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Which pad controls 1:1 look - 0 = off, 1 = left, 2 = right</td>
+							</tr>
+							<tr>
+								<td class="name">sc_look_pad</td>
+								<td class="default">2</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Which pad controls 1:1 look - 0 = off, 1 = left, 2 = right</td>
+							</tr>
+							<tr>
+								<td class="name">sc_look_pad2</td>
+								<td class="default">2</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Which pad controls 1:1 look - 0 = off, 1 = left, 2 = right</td>
+							</tr>
+							<tr>
+								<td class="name">sc_look_pad2</td>
+								<td class="default">2</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Which pad controls 1:1 look - 0 = off, 1 = left, 2 = right</td>
+							</tr>
+							<tr>
+								<td class="name">sc_momentum_decay</td>
+								<td class="default">0.115</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steamcontroller momentum decay half life</td>
+							</tr>
+							<tr>
+								<td class="name">sc_momentum_decay</td>
+								<td class="default">0.115</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steamcontroller momentum decay half life</td>
+							</tr>
+							<tr>
+								<td class="name">sc_momentum_decay2</td>
+								<td class="default">0.115</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steamcontroller momentum decay half life</td>
+							</tr>
+							<tr>
+								<td class="name">sc_momentum_decay2</td>
+								<td class="default">0.115</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Steamcontroller momentum decay half life</td>
+							</tr>
+							<tr>
+								<td class="name">sc_momentum_minimum</td>
+								<td class="default">11000</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Velocities below this value will not impart momentum</td>
+							</tr>
+							<tr>
+								<td class="name">sc_momentum_minimum</td>
+								<td class="default">11000</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Velocities below this value will not impart momentum</td>
+							</tr>
+							<tr>
+								<td class="name">sc_momentum_minimum2</td>
+								<td class="default">11000</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Velocities below this value will not impart momentum</td>
+							</tr>
+							<tr>
+								<td class="name">sc_momentum_minimum2</td>
+								<td class="default">11000</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Velocities below this value will not impart momentum</td>
 							</tr>
 							<tr>
 								<td class="name">sc_pitch_sensitivity</td>
 								<td class="default">0.9</td>
                                 <td class="flags">CLIENTDLL<br>ARCHIVE</td>
-                                <td class="os">-</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">SteamController pitch factor.</td>
+							</tr>
+							<tr>
+								<td class="name">sc_pitch_sensitivity</td>
+								<td class="default">0.9</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
 								<td class="help-text">SteamController pitch factor.</td>
 							</tr>
 							<tr>
 								<td class="name">sc_pitch_sensitivity_default</td>
 								<td class="default">0.9</td>
                                 <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">sc_pitch_sensitivity_default</td>
+								<td class="default">0.9</td>
+                                <td class="flags">CLIENTDLL</td>
+                                <td class="os">Linux</td>
 								<td class="help-text">-</td>
 							</tr>
 							<tr>
 								<td class="name">sc_pitch_sensitivity2</td>
 								<td class="default">0.9</td>
                                 <td class="flags">CLIENTDLL<br>ARCHIVE</td>
-                                <td class="os">-</td>
+                                <td class="os">Linux</td>
 								<td class="help-text">SteamController pitch factor.</td>
+							</tr>
+							<tr>
+								<td class="name">sc_pitch_sensitivity2</td>
+								<td class="default">0.9</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">SteamController pitch factor.</td>
+							</tr>
+							<tr>
+								<td class="name">sc_yaw_bias</td>
+								<td class="default">2.25</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">SteamController momentum yaw bias blends away pitch based on the degree of yaw momentum.</td>
+							</tr>
+							<tr>
+								<td class="name">sc_yaw_bias</td>
+								<td class="default">2.25</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">SteamController momentum yaw bias blends away pitch based on the degree of yaw momentum.</td>
+							</tr>
+							<tr>
+								<td class="name">sc_yaw_bias2</td>
+								<td class="default">2.25</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">SteamController momentum yaw bias blends away pitch based on the degree of yaw momentum.</td>
+							</tr>
+							<tr>
+								<td class="name">sc_yaw_bias2</td>
+								<td class="default">2.25</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">SteamController momentum yaw bias blends away pitch based on the degree of yaw momentum.</td>
 							</tr>
 							<tr>
 								<td class="name">sc_yaw_sensitivity</td>
 								<td class="default">1.0</td>
                                 <td class="flags">CLIENTDLL<br>ARCHIVE</td>
-                                <td class="os">-</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">SteamController yaw factor.</td>
+							</tr>
+							<tr>
+								<td class="name">sc_yaw_sensitivity</td>
+								<td class="default">1.0</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
 								<td class="help-text">SteamController yaw factor.</td>
 							</tr>
 							<tr>
 								<td class="name">sc_yaw_sensitivity_default</td>
 								<td class="default">1.0</td>
                                 <td class="flags">CLIENTDLL</td>
-                                <td class="os">-</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">sc_yaw_sensitivity_default</td>
+								<td class="default">1.0</td>
+                                <td class="flags">CLIENTDLL</td>
+                                <td class="os">Linux</td>
 								<td class="help-text">-</td>
 							</tr>
 							<tr>
 								<td class="name">sc_yaw_sensitivity2</td>
 								<td class="default">1.0</td>
                                 <td class="flags">CLIENTDLL<br>ARCHIVE</td>
-                                <td class="os">-</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">SteamController yaw factor.</td>
+							</tr>
+							<tr>
+								<td class="name">sc_yaw_sensitivity2</td>
+								<td class="default">1.0</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">Linux</td>
 								<td class="help-text">SteamController yaw factor.</td>
 							</tr>
 							<tr>
@@ -22266,7 +22630,7 @@ criteria values are optional.
 								<td class="name">snd_mute_losefocus</td>
 								<td class="default">1</td>
                                 <td class="flags">ARCHIVE</td>
-                                <td class="os">-</td>
+                                <td class="os">Windows</td>
 								<td class="help-text">-</td>
 							</tr>
 							<tr>
@@ -23162,6 +23526,27 @@ criteria values are optional.
 								<td class="help-text">Route voice between splitscreen players on same system.</td>
 							</tr>
 							<tr>
+								<td class="name">stanley_animation</td>
+								<td class="default">0</td>
+                                <td class="flags">CLIENTDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">stanley_drawcredits</td>
+								<td class="default">0</td>
+                                <td class="flags">CLIENTDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">stanley_stopanimation</td>
+								<td class="default">0</td>
+                                <td class="flags">CLIENTDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
 								<td class="name">star_memory</td>
 								<td class="default">cmd</td>
                                 <td class="flags">-</td>
@@ -23276,7 +23661,7 @@ criteria values are optional.
 							<tr>
 								<td class="name">stopsound</td>
 								<td class="default">cmd</td>
-                                <td class="flags">CHEAT</td>
+                                <td class="flags">SERVER_CAN_EXECUTE<br>CLIENTCMD_CAN_EXECUTE</td>
                                 <td class="os">-</td>
 								<td class="help-text">-</td>
 							</tr>
@@ -23498,7 +23883,7 @@ criteria values are optional.
 							<tr>
 								<td class="name">sv_bonus_challenge</td>
 								<td class="default">0</td>
-                                <td class="flags">GAMEDLL<br>REPLICATED</td>
+                                <td class="flags">DEVELOPMENTONLY<br>GAMEDLL<br>HIDDEN<br>REPLICATED</td>
                                 <td class="os">-</td>
 								<td class="help-text">Set to values other than 0 to select a bonus map challenge type.</td>
 							</tr>
@@ -24035,7 +24420,7 @@ criteria values are optional.
 							<tr>
 								<td class="name">sv_laser_cube_autoaim</td>
 								<td class="default">0</td>
-                                <td class="flags">GAMEDLL<br>CHEAT</td>
+                                <td class="flags">DEVELOPMENTONLY<br>GAMEDLL<br>CHEAT</td>
                                 <td class="os">-</td>
 								<td class="help-text">-</td>
 							</tr>
@@ -25355,7 +25740,7 @@ criteria values are optional.
 							<tr>
 								<td class="name">sv_transition_fade_time</td>
 								<td class="default">0.5</td>
-                                <td class="flags">GAMEDLL<br>CHEAT</td>
+                                <td class="flags">DEVELOPMENTONLY<br>GAMEDLL</td>
                                 <td class="os">-</td>
 								<td class="help-text">-</td>
 							</tr>
@@ -25397,8 +25782,15 @@ criteria values are optional.
 							<tr>
 								<td class="name">sv_use_bendy_model</td>
 								<td class="default">1</td>
-                                <td class="flags">CLIENTDLL<br>REPLICATED</td>
-                                <td class="os">-</td>
+                                <td class="flags">GAMEDLL<br>REPLICATED</td>
+                                <td class="os">Linux</td>
+								<td class="help-text">Use the bendy stick-man as the player model</td>
+							</tr>
+							<tr>
+								<td class="name">sv_use_bendy_model</td>
+								<td class="default">1</td>
+                                <td class="flags">GAMEDLL<br>REPLICATED</td>
+                                <td class="os">Linux</td>
 								<td class="help-text">Use the bendy stick-man as the player model</td>
 							</tr>
 							<tr>
@@ -25559,13 +25951,6 @@ criteria values are optional.
 								<td class="name">swap_model_for_fizzler_fx</td>
 								<td class="default">0</td>
                                 <td class="flags">DEVELOPMENTONLY<br>GAMEDLL<br>CHEAT</td>
-                                <td class="os">-</td>
-								<td class="help-text">-</td>
-							</tr>
-							<tr>
-								<td class="name">swap_ss_input</td>
-								<td class="default">cmd</td>
-                                <td class="flags">CLIENTDLL</td>
                                 <td class="os">-</td>
 								<td class="help-text">-</td>
 							</tr>
@@ -26135,6 +26520,139 @@ criteria values are optional.
 								<td class="help-text">Transmits Game Events to &lt;address:port&gt;</td>
 							</tr>
 							<tr>
+								<td class="name">tsp_bosspass</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">tsp_bossskip</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">tsp_boxes</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">tsp_broompass</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">tsp_buttonpass</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">tsp_countpass</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">tsp_crash</td>
+								<td class="default">cmd</td>
+                                <td class="flags">CLIENTDLL</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">tsp_demo_grantcup</td>
+								<td class="default">cmd</td>
+                                <td class="flags">HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">Grants cup achievement</td>
+							</tr>
+							<tr>
+								<td class="name">tsp_demo_resetcup</td>
+								<td class="default">cmd</td>
+                                <td class="flags">HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">Resets cup achievement</td>
+							</tr>
+							<tr>
+								<td class="name">tsp_enablemenunarrator</td>
+								<td class="default">cmd</td>
+                                <td class="flags">CLIENTDLL</td>
+                                <td class="os">-</td>
+								<td class="help-text">?</td>
+							</tr>
+							<tr>
+								<td class="name">tsp_finish</td>
+								<td class="default">cmd</td>
+                                <td class="flags">CLIENTDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">tsp_inhibitcontroller</td>
+								<td class="default">0</td>
+                                <td class="flags">CLIENTDLL<br>DONTRECORD</td>
+                                <td class="os">-</td>
+								<td class="help-text">Disable controllers in apartment ending</td>
+							</tr>
+							<tr>
+								<td class="name">tsp_lightstyle</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL</td>
+                                <td class="os">-</td>
+								<td class="help-text">Test</td>
+							</tr>
+							<tr>
+								<td class="name">tsp_loungepass</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">tsp_paused</td>
+								<td class="default">0</td>
+                                <td class="flags">CLIENTDLL</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">tsp_reload</td>
+								<td class="default">cmd</td>
+                                <td class="flags">GAMEDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">tsp_resetzaxis</td>
+								<td class="default">cmd</td>
+                                <td class="flags">HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">Resets z-axis data</td>
+							</tr>
+							<tr>
+								<td class="name">tsp_start</td>
+								<td class="default">cmd</td>
+                                <td class="flags">CLIENTDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">tsp_startapartment</td>
+								<td class="default">cmd</td>
+                                <td class="flags">CLIENTDLL<br>HIDDEN</td>
+                                <td class="os">-</td>
+								<td class="help-text">Starts apartment ending sequence</td>
+							</tr>
+							<tr>
 								<td class="name">tv_allow_camera_man</td>
 								<td class="default">1</td>
                                 <td class="flags">GAMEDLL</td>
@@ -26529,7 +27047,7 @@ criteria values are optional.
 							<tr>
 								<td class="name">ui_loadingscreen_transition_time</td>
 								<td class="default">1.0</td>
-                                <td class="flags">CLIENTDLL<br>CHEAT</td>
+                                <td class="flags">DEVELOPMENTONLY<br>CLIENTDLL</td>
                                 <td class="os">-</td>
 								<td class="help-text">-</td>
 							</tr>
@@ -26588,6 +27106,17 @@ criteria values are optional.
                                 <td class="flags">CLIENTDLL<br>HIDDEN</td>
                                 <td class="os">-</td>
 								<td class="help-text">Brings up the old tabbed options dialog from Keyboard/Mouse when set to 1.</td>
+							</tr>
+							<tr>
+								<td class="name">ui_overlay_pos</td>
+								<td class="default">3</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">-</td>
+								<td class="help-text">Overlay position
+	0 - Top left
+	1 - Top right
+	2 - Bottom left
+	3 - Bottom right</td>
 							</tr>
 							<tr>
 								<td class="name">ui_play_online_browser</td>
@@ -26786,16 +27315,16 @@ criteria values are optional.
 								<td class="help-text">Reloads the resource files for the active UI window</td>
 							</tr>
 							<tr>
+								<td class="name">ui_saves</td>
+								<td class="default">0</td>
+                                <td class="flags">CLIENTDLL<br>ARCHIVE</td>
+                                <td class="os">-</td>
+								<td class="help-text">saves</td>
+							</tr>
+							<tr>
 								<td class="name">ui_show_attract_moviename</td>
 								<td class="default">0</td>
                                 <td class="flags">DEVELOPMENTONLY<br>CLIENTDLL</td>
-                                <td class="os">-</td>
-								<td class="help-text">-</td>
-							</tr>
-							<tr>
-								<td class="name">ui_show_community_map_names</td>
-								<td class="default">0</td>
-                                <td class="flags">CLIENTDLL</td>
                                 <td class="os">-</td>
 								<td class="help-text">-</td>
 							</tr>
@@ -27343,7 +27872,7 @@ Arguments: &lt;weapon_name&gt;</td>
 							</tr>
 							<tr>
 								<td class="name">voice_enable</td>
-								<td class="default">1</td>
+								<td class="default">0</td>
                                 <td class="flags">ARCHIVE</td>
                                 <td class="os">-</td>
 								<td class="help-text">Toggle voice transmit and receive.</td>
@@ -27635,6 +28164,13 @@ Arguments: &lt;weapon_name&gt;</td>
                                 <td class="flags">GAMEDLL<br>CHEAT</td>
                                 <td class="os">-</td>
 								<td class="help-text">View entities in the voxel-tree.</td>
+							</tr>
+							<tr>
+								<td class="name">vp8_mat_queue_mode</td>
+								<td class="default">1</td>
+                                <td class="flags">-</td>
+                                <td class="os">-</td>
+								<td class="help-text">Update vp8 on mat queue thread if mat_queue_mode is on (if turned off, always update vp8 on main thread; may cause stalls!)</td>
 							</tr>
 							<tr>
 								<td class="name">vphys_sleep_timeout</td>
@@ -28249,6 +28785,13 @@ Arguments: &lt;weapon_name&gt;</td>
 								<td class="name">z_ragdoll_impact_strength</td>
 								<td class="default">500</td>
                                 <td class="flags">CLIENTDLL</td>
+                                <td class="os">-</td>
+								<td class="help-text">-</td>
+							</tr>
+							<tr>
+								<td class="name">zaxis_increase</td>
+								<td class="default">cmd</td>
+                                <td class="flags">CLIENTDLL<br>HIDDEN<br>CLIENTCMD_CAN_EXECUTE</td>
                                 <td class="os">-</td>
 								<td class="help-text">-</td>
 							</tr>
