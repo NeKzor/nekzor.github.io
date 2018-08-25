@@ -5,6 +5,7 @@
 - [SourceAutoRecord](SourceAutoRecord)
 - [NeKzBot](NeKzBot)
 - [SteamCommunity.Net](SteamCommunity.Net)
+- [sugar-glider](sugar-glider)
 
 ### Papers
 
