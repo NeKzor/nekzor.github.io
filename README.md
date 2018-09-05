@@ -16,6 +16,8 @@
 
 - [Portal 2 Glitch Database](glitches)
 - [board.iverb.me Statistics](p2bn)
+  - [History](history)
+  - [Skill Points](skill)
 - [Portal 2 Least Portals](lp)
 - [Portal Stories: Mel Least Portals](mel)
 
