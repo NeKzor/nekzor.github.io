@@ -15,10 +15,10 @@
 ### Pages
 
 - [Portal 2 Glitch Database](glitches)
-- [board.iverb.me Statistics](p2bn)
-  - [History](history)
-  - [Skill Points](skill)
 - [Portal 2 Least Portals](lp)
+- [board.iverb.me Statistics](stats)
+- [board.iverb.me History](history)
+- [board.iverb.me Skill Points](skill)
 - [Portal Stories: Mel Least Portals](mel)
 
 #### Source Engine Cvars

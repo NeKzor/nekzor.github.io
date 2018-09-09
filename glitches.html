@@ -1,786 +1,982 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Portal 2 Glitches | nekzor.github.io</title>
-		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css" rel="stylesheet">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	</head>
-	<body class="white-text blue-grey darken-4">
-		<nav class="nav-extended blue-grey darken-3">
-			<div class="nav-wrapper">
-				<div class="col s12 hide-on-small-only">
-					<a href="index.html" class="breadcrumb">&nbsp;&nbsp;&nbsp;nekzor.github.io</a>
-					<a href="glitches.html" class="breadcrumb">Portal 2 Glitches</a>
-				</div>
-				<div class="col s12 hide-on-med-and-up">
-					<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-					<a href="glitches.html" class="brand-logo center">P2G</a>
-				</div>
-			</div>
-			<div class="nav-content">
-				<ul class="tabs tabs-transparent">
-					<li class="tab"><a href="#database">Database</a></li>
-					<li class="tab"><a href="#about">About</a></li>
-				</ul>
-			</div>
-		</nav>
-		<ul id="slide-out" class="sidenav hide-on-med-and-up">
-			<li><a href="index.html">nekzor.github.io</a></li>
-			<li><a href="glitches.html">Portal 2 Glitches</a></li>
-		</ul>
-		<div id="database">
-			<div id="discoveries">
-				<div class="row"></div>
-				<div class="row">
-					<div class="col s12 m12 l2 push-l2">
-						<input id="search-box" class="search white-text" placeholder="Search" />
-					</div>
-					<div class="col s12 m12 l1 push-l2">
-						<br>
-						<label>
-							<input id="cbx-name" type="checkbox" checked="checked" onclick="updateFilter()" />
-							<span>Name</span>
-						</label>
-					</div>
-					<div class="col s12 m12 l1 push-l2">
-						<br>
-						<label>
-							<input id="cbx-type" type="checkbox" checked="checked" onclick="updateFilter()" />
-							<span>Type</span>
-						</label>
-					</div>
-					<div class="col s12 m12 l1 push-l2">
-						<br>
-						<label>
-							<input id="cbx-category" type="checkbox" checked="checked" onclick="updateFilter()" />
-							<span>Category</span>
-						</label>
-					</div>
-					<div class="col s12 m12 l1 push-l2">
-						<br>
-						<label>
-							<input id="cbx-status" type="checkbox" checked="checked" onclick="updateFilter()" />
-							<span>Status</span>
-						</label>
-					</div>
-				</div>
-				<div class="database">
-					<div class="row">
-						<div class="col s12 m12 l8 push-l2">
-							<table class="highlight">
-								<thead>
-									<tr>
-										<th>Name</th>
-										<th>Type</th>
-										<th>Category</th>
-										<th>Status</th>
-										<th>Showcase</th>
-									</tr>
-								</thead>
-								<tbody class="list">
-									<tr>
-										<td class="name">Save Load Clipping</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/qMMW4lvre9A" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Portal Object Clipping</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/E5tv33dAAyA" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Excursion Funnel Flying</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/KSoOjeFBqew" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Stuck-Launch</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/GzIskErNB00" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Super Physics Deformation</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/-5lWT9XinB0?t=17s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Bounding Box Deformation</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/jKcGkQDG2e8" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Angled Portal Boosting</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/HEQ6retXwOI?t=17s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Object Boosting</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/4YNVzNS0xnQ" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Turret Collision Manipulation</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/jji7ojfqMgw?t=41s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Button Save Glitch</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/7_Unn8vftEM" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Cube Button Save Glitch</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/YsmjyCbsd80" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Light Bridge Cube Levitation</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/Pt8L9AQ30vI" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Laser Cube Levitation</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/lv9SmZAqyLc?t=22s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Holding Laser Cube Levitation</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/61Cnb_wy9Qg?t=2m30s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Quick Grab Levitation</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/EAqsc5cLGhc" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Frankenturret Flying</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/OaGZvmh5XUc?t=29s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Frankenturret Abuse</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/5eq-C4qQ9g4?t=11s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Propulsion Acceleration Abuse</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/FK8fs-mC6KQ?t=1m59s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Physics Grab Controller Abuse</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/UfTA1vB2OZ8?t=36s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Portal Use Abuse</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/onE7u016clI?t=12s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">View Model Abuse</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/ojlBlWnTGpk?t=2m19s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Shadow Clone Abuse</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/dQVQ325qWz0" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Save Load Object Climbing</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/SgdK1y0KLWQ" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Wall Peek-a-Portal</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/pZjQZgw8S78" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Crouch Toggle Hopping</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/M-bQyzbPV4o" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Portal Laser Clipping</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/J5YGjKFr4K0" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Getting Physically Stuck</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/sH3j10ZN4DA" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Unstuck Code Abuse</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/VmdDZXs1Yno" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Fizzle Boost</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/ZAQWTxcUKB8?t=32s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Water Clipping</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/jcHg2Ck7NDQ?t=2m35s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Body Hitbox Abuse</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/zK0N2TFVZHA?t=4m3s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Moving Portal Physics</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/5dmV6geZvBc" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Object Climbing</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/wCTXHfhyBco?t=42s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Cube Laser Clipping</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/Iepdw1-k_QY" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Reload Abuse</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/0ORMyfvlwB8" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Super Reportal</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/yi08QYWrpdE" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Edged Super Reportal</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/Hzx8o-KWrJE" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Quantum Loading</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/CmZq0e9HPtc" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Reversed Angled Portal Boosting</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/MIAZWBrCPSk?t=52m11s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Defective Turret Boosting</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/Jh5J7bur4WQ?t=34s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Object Peek-a-Portal</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/B-vKjbEcvsc?t=57s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Cube Dropper Cloning Glitch</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/lL7YufE0HfQ" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Clone Object Boosting</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/2dgtziis7Jw?t=7s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Clone Object Clipping</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/dSzIjCMYYA4" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Funnel Bouncing</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/pqIhtlz6DC4" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Funnel Jumping</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/Q3EXIFZer5I" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Funnel Boost</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/jv3aGHTdick?t=4m13s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Funnel Hoover</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/gRlkG0p_Kgo?t=14s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Funnel Inversion</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/pJjCw_Qj8-c?t=7s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Replacement Clipping</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/KTVtyk0TpOs" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Object Use Abuse</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/96-6fhLGJHs" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Fizzler Object Preservation</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/-liFzIK1nWI" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Super Jump</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/hNBXRfNZCUc" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Death Warp</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/llH6bW9_dMw" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Light Bridge Clipping</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/aXHcxVXyXQs?t=25s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Portal Quick Reentry</td>
-										<td class="type">Glitch²</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/yVycFAY3_cc?t=2m13s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Wrong Warp</td>
-										<td class="type">Glitch</td>
-										<td class="category">Menu</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/X1_u3PlM-bg" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Pause Clipping</td>
-										<td class="type">Glitch</td>
-										<td class="category">Menu</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/CLzVfyYZhQA" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Pause Buffering</td>
-										<td class="type">Glitch</td>
-										<td class="category">Menu</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/QdRcAm0rvGQ" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Save Deletion</td>
-										<td class="type">Glitch</td>
-										<td class="category">Menu</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://www.twitch.tv/videos/65365345" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Menu Glitch</td>
-										<td class="type">Glitch</td>
-										<td class="category">Menu</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/L7YT5-dYIr0" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Math Counter Manipulation</td>
-										<td class="type">Glitch</td>
-										<td class="category">Logic</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/6P8Pv-yAn6I?t=2m27s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Dialogue Interruption Abuse</td>
-										<td class="type">Glitch</td>
-										<td class="category">Logic</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/tcfJEeyERJc?t=23m43s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Button Lag Glitch</td>
-										<td class="type">Glitch</td>
-										<td class="category">Network</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/m6beBVijKao" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Camera Lag Glitch</td>
-										<td class="type">Glitch</td>
-										<td class="category">Network</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/BUQgo4h_ng8?t=47s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Ground Reportal</td>
-										<td class="type">Depends</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/CoBY81_XK-E" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Collision Issues</td>
-										<td class="type">Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/UuxdbOv_vJE" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Door Pushing Abuse</td>
-										<td class="type">Trick</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/OzTsZt0Sxoo" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Damage Boosting</td>
-										<td class="type">Trick</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/i0_ziJ01ba4" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Repulsion Spam Jump</td>
-										<td class="type">Trick</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/6yYUg8sJ-Jg" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Peek-a-Portal</td>
-										<td class="type">Trick</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/eoEW45F4DNk" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Fling Peek-a-Portal</td>
-										<td class="type">Trick</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/_J2qOA0Rq_E?t=24s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Reversed Fling</td>
-										<td class="type">Trick</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/5eq-C4qQ9g4?t=11s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Scripted Momentum Abuse</td>
-										<td class="type">Trick</td>
-										<td class="category">Logic</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/4kQpyOT0SN0?t=1m2s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Cancel Pending Abuse</td>
-										<td class="type">Trick</td>
-										<td class="category">Logic</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/ppT8Y4_hyJY?t=12s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Seem Shot</td>
-										<td class="type">Trick</td>
-										<td class="category">Logic</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/W0sVlmMOBAw" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Cube Dropper Cloning Abuse</td>
-										<td class="type">Trick</td>
-										<td class="category">Logic</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/pPCKvEdjAGE" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Portal Placement Helper Abuse</td>
-										<td class="type">Trick</td>
-										<td class="category">Logic</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/hTBDs4c0r90" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Bunny Hopping</td>
-										<td class="type">Trick</td>
-										<td class="category">Movement</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/4MB-aFiCWj4" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Air Strafing</td>
-										<td class="type">Trick</td>
-										<td class="category">Movement</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/DDRrKy_sdAw" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Wall Strafing</td>
-										<td class="type">Trick</td>
-										<td class="category">Movement</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/xrOwHTX0MD0" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Propulsion Gel Strafing</td>
-										<td class="type">Trick</td>
-										<td class="category">Movement</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/n7ZxMF2ou7I" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Object Jumping</td>
-										<td class="type">Trick</td>
-										<td class="category">Movement</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/0eFngI_NOF4?t=38s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Object Throwing</td>
-										<td class="type">Trick</td>
-										<td class="category">Movement</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/9NhfVHLl6uE" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Partner Repulsion Launch</td>
-										<td class="type">Trick</td>
-										<td class="category">Movement</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/K-xwADkZCKA?t=15s" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Portal Stand</td>
-										<td class="type">Trick</td>
-										<td class="category">Movement</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/ppT8Y4_hyJY" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Stair Hops</td>
-										<td class="type">Trick</td>
-										<td class="category">Movement</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/ePxkyK17DwY" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Circle Jump</td>
-										<td class="type">Trick</td>
-										<td class="category">Movement</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/HuJrAagKoK0" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Fullscreen Pause Abuse</td>
-										<td class="type">Bug</td>
-										<td class="category">Menu</td>
-										<td class="status">Banned</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/tWjyVopD5Eo" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Default Cvar Bypass</td>
-										<td class="type">Bug</td>
-										<td class="category">Menu</td>
-										<td class="status">Banned</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/kd2wxmOJo0c" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Pause Abuse</td>
-										<td class="type">Bug</td>
-										<td class="category">Menu</td>
-										<td class="status">Banned</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/V0u5r3g-DVs" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Reportal</td>
-										<td class="type">Trick/Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/AWS34Seh9JA" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Portal Warp</td>
-										<td class="type">Trick/Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/fdw3n4RySxA" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-									<tr>
-										<td class="name">Portal Bumping</td>
-										<td class="type">Trick/Glitch</td>
-										<td class="category">Physics</td>
-										<td class="status">Allowed</td>
-										<td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red" title="Watch Example Video"href="https://youtu.be/V_K7N257t8M" target="_blank"><i class="material-icons">play_arrow</i></a></td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div id="about">
-			<div class="row">
-				<div class="row"></div>
-				<div class="row">
-					<div class="col s12 m12 l10 push-l2">
-						<h3>Weird Stuff in the Portal 2 Engine</h3>
-						<p>
-							A collection of tricks and glitches, mostly useful for speedrunning. Every game needs a list like this, right?
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
-		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/js/materialize.min.js"></script>
-		<script>
-			$(document).ready(function() {
-				$('.sidenav').sidenav();
-				$('.tabs').tabs();
-			});
-		</script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
-		<script>
-			var discoveries = new List('discoveries', { valueNames: [ 'name', 'type', 'category', 'status' ] });
 
-			function updateFilter() {
-				var filter = [];
-				if (document.getElementById("cbx-name").checked) filter.push("name");
-				if (document.getElementById("cbx-type").checked) filter.push("type");
-				if (document.getElementById("cbx-category").checked) filter.push("category");
-				if (document.getElementById("cbx-status").checked) filter.push("status");
-				discoveries.valueNames = filter;
-				discoveries.search();
-				discoveries.reIndex();
-				discoveries.search(document.getElementById("search-box").value);
-			}
-		</script>
-	</body>
+<head>
+    <title>Glitches | nekzor.github.io</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body class="white-text blue-grey darken-4">
+    <nav class="nav-extended blue-grey darken-3">
+        <div class="nav-wrapper">
+            <div class="col s12 hide-on-small-only">
+                <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
+                <a href="index.html">&nbsp;&nbsp;&nbsp;nekzor.github.io</a>
+                <a class="breadcrumb"></a>
+                <a href="glitches.html">Glitches</a>
+            </div>
+            <div class="col s12 hide-on-med-and-up">
+                <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <a href="glitches.html" class="brand-logo center">Glitches</a>
+            </div>
+        </div>
+        <div class="nav-content">
+            <ul class="tabs tabs-transparent">
+                <li class="tab"><a href="#database">Database</a></li>
+                <li class="tab"><a href="#about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+    <ul id="slide-out" class="sidenav">
+        <li><a href="index.html">nekzor.github.io</a></li>
+        <li><a href="glitches.html">Glitches</a></li>
+        <li><a href="lp.html">Least Portals</a></li>
+    </ul>
+    <div id="database">
+        <div id="discoveries">
+            <div class="row"></div>
+            <div class="row">
+                <div class="col s12 m12 l2 push-l2">
+                    <input id="search-box" class="search white-text" placeholder="Search" />
+                </div>
+                <div class="col s12 m12 l1 push-l2">
+                    <br>
+                    <label>
+                        <input id="cbx-name" type="checkbox" checked="checked" onclick="updateFilter()" />
+                        <span>Name</span>
+                    </label>
+                </div>
+                <div class="col s12 m12 l1 push-l2">
+                    <br>
+                    <label>
+                        <input id="cbx-type" type="checkbox" checked="checked" onclick="updateFilter()" />
+                        <span>Type</span>
+                    </label>
+                </div>
+                <div class="col s12 m12 l1 push-l2">
+                    <br>
+                    <label>
+                        <input id="cbx-category" type="checkbox" checked="checked" onclick="updateFilter()" />
+                        <span>Category</span>
+                    </label>
+                </div>
+                <div class="col s12 m12 l1 push-l2">
+                    <br>
+                    <label>
+                        <input id="cbx-status" type="checkbox" checked="checked" onclick="updateFilter()" />
+                        <span>Status</span>
+                    </label>
+                </div>
+            </div>
+            <div class="database">
+                <div class="row">
+                    <div class="col s12 m12 l8 push-l2">
+                        <table class="highlight">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Showcase</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                <tr>
+                                    <td class="name">Save Load Clipping</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/qMMW4lvre9A" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Portal Object Clipping</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/E5tv33dAAyA" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Excursion Funnel Flying</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/KSoOjeFBqew" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Stuck-Launch</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/GzIskErNB00" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Super Physics Deformation</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/-5lWT9XinB0?t=17s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Bounding Box Deformation</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/jKcGkQDG2e8" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Angled Portal Boosting</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/HEQ6retXwOI?t=17s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Object Boosting</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/4YNVzNS0xnQ" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Turret Collision Manipulation</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/jji7ojfqMgw?t=41s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Button Save Glitch</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/7_Unn8vftEM" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Cube Button Save Glitch</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/YsmjyCbsd80" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Light Bridge Cube Levitation</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/Pt8L9AQ30vI" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Laser Cube Levitation</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/lv9SmZAqyLc?t=22s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Holding Laser Cube Levitation</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/61Cnb_wy9Qg?t=2m30s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Quick Grab Levitation</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/EAqsc5cLGhc" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Frankenturret Flying</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/OaGZvmh5XUc?t=29s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Frankenturret Abuse</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/5eq-C4qQ9g4?t=11s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Propulsion Acceleration Abuse</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/FK8fs-mC6KQ?t=1m59s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Physics Grab Controller Abuse</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/UfTA1vB2OZ8?t=36s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Portal Use Abuse</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/onE7u016clI?t=12s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">View Model Abuse</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/ojlBlWnTGpk?t=2m19s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Shadow Clone Abuse</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/dQVQ325qWz0" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Save Load Object Climbing</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/SgdK1y0KLWQ" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Wall Peek-a-Portal</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/pZjQZgw8S78" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Crouch Toggle Hopping</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/M-bQyzbPV4o" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Portal Laser Clipping</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/J5YGjKFr4K0" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Getting Physically Stuck</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/sH3j10ZN4DA" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Unstuck Code Abuse</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/VmdDZXs1Yno" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Fizzle Boost</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/ZAQWTxcUKB8?t=32s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Water Clipping</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/jcHg2Ck7NDQ?t=2m35s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Body Hitbox Abuse</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/zK0N2TFVZHA?t=4m3s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Moving Portal Physics</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/5dmV6geZvBc" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Object Climbing</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/wCTXHfhyBco?t=42s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Cube Laser Clipping</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/Iepdw1-k_QY" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Reload Abuse</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/0ORMyfvlwB8" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Super Reportal</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/yi08QYWrpdE" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Edged Super Reportal</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/Hzx8o-KWrJE" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Quantum Loading</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/CmZq0e9HPtc" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Reversed Angled Portal Boosting</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/MIAZWBrCPSk?t=52m11s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Defective Turret Boosting</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/Jh5J7bur4WQ?t=34s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Object Peek-a-Portal</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/B-vKjbEcvsc?t=57s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Cube Dropper Cloning Glitch</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/lL7YufE0HfQ" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Clone Object Boosting</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/2dgtziis7Jw?t=7s" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Clone Object Clipping</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/dSzIjCMYYA4" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Funnel Bouncing</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/pqIhtlz6DC4" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Funnel Jumping</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/Q3EXIFZer5I" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Funnel Boost</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/jv3aGHTdick?t=4m13s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Funnel Hoover</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/gRlkG0p_Kgo?t=14s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Funnel Inversion</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/pJjCw_Qj8-c?t=7s" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Replacement Clipping</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/KTVtyk0TpOs" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Object Use Abuse</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/96-6fhLGJHs" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Fizzler Object Preservation</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/-liFzIK1nWI" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Super Jump</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/hNBXRfNZCUc" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Death Warp</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/llH6bW9_dMw" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Light Bridge Clipping</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/aXHcxVXyXQs?t=25s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Portal Quick Reentry</td>
+                                    <td class="type">Glitch²</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/yVycFAY3_cc?t=2m13s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Wrong Warp</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Menu</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/X1_u3PlM-bg" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Pause Clipping</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Menu</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/CLzVfyYZhQA" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Pause Buffering</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Menu</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/QdRcAm0rvGQ" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Save Deletion</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Menu</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://www.twitch.tv/videos/65365345"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Menu Glitch</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Menu</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/L7YT5-dYIr0" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Math Counter Manipulation</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Logic</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/6P8Pv-yAn6I?t=2m27s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Dialogue Interruption Abuse</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Logic</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/tcfJEeyERJc?t=23m43s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Button Lag Glitch</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Network</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/m6beBVijKao" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Camera Lag Glitch</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Network</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/BUQgo4h_ng8?t=47s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Ground Reportal</td>
+                                    <td class="type">Depends</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/CoBY81_XK-E" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Collision Issues</td>
+                                    <td class="type">Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/UuxdbOv_vJE" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Door Pushing Abuse</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/OzTsZt0Sxoo" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Damage Boosting</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/i0_ziJ01ba4" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Repulsion Spam Jump</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/6yYUg8sJ-Jg" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Peek-a-Portal</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/eoEW45F4DNk" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Fling Peek-a-Portal</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/_J2qOA0Rq_E?t=24s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Reversed Fling</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/5eq-C4qQ9g4?t=11s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Scripted Momentum Abuse</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Logic</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/4kQpyOT0SN0?t=1m2s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Cancel Pending Abuse</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Logic</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/ppT8Y4_hyJY?t=12s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Seem Shot</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Logic</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/W0sVlmMOBAw" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Cube Dropper Cloning Abuse</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Logic</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/pPCKvEdjAGE" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Portal Placement Helper Abuse</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Logic</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/hTBDs4c0r90" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Bunny Hopping</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Movement</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/4MB-aFiCWj4" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Air Strafing</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Movement</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/DDRrKy_sdAw" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Wall Strafing</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Movement</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/xrOwHTX0MD0" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Propulsion Gel Strafing</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Movement</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/n7ZxMF2ou7I" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Object Jumping</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Movement</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/0eFngI_NOF4?t=38s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Object Throwing</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Movement</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/9NhfVHLl6uE" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Partner Repulsion Launch</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Movement</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/K-xwADkZCKA?t=15s"
+                                            target="_blank"><i class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Portal Stand</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Movement</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/ppT8Y4_hyJY" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Stair Hops</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Movement</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/ePxkyK17DwY" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Circle Jump</td>
+                                    <td class="type">Trick</td>
+                                    <td class="category">Movement</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/HuJrAagKoK0" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Fullscreen Pause Abuse</td>
+                                    <td class="type">Bug</td>
+                                    <td class="category">Menu</td>
+                                    <td class="status">Banned</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/tWjyVopD5Eo" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Default Cvar Bypass</td>
+                                    <td class="type">Bug</td>
+                                    <td class="category">Menu</td>
+                                    <td class="status">Banned</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/kd2wxmOJo0c" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Pause Abuse</td>
+                                    <td class="type">Bug</td>
+                                    <td class="category">Menu</td>
+                                    <td class="status">Banned</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/V0u5r3g-DVs" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Reportal</td>
+                                    <td class="type">Trick/Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/AWS34Seh9JA" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Portal Warp</td>
+                                    <td class="type">Trick/Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/fdw3n4RySxA" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="name">Portal Bumping</td>
+                                    <td class="type">Trick/Glitch</td>
+                                    <td class="category">Physics</td>
+                                    <td class="status">Allowed</td>
+                                    <td class="showcase">&nbsp;&nbsp;&nbsp;<a class="btn-floating waves-effect waves-light red"
+                                            title="Watch Example Video" href="https://youtu.be/V_K7N257t8M" target="_blank"><i
+                                                class="material-icons">play_arrow</i></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="about">
+        <div class="row">
+            <div class="row"></div>
+            <div class="row">
+                <div class="col s12 m12 l10 push-l2">
+                    <h3>Weird Stuff in the Portal 2 Engine</h3>
+                    <p>
+                        A collection of tricks and glitches, mostly useful for speedrunning. Every game needs a list
+                        like this, right?
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/js/materialize.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.sidenav').sidenav();
+            $('.tabs').tabs();
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+    <script>
+        var discoveries = new List('discoveries', { valueNames: ['name', 'type', 'category', 'status'] });
+
+        function updateFilter() {
+            var filter = [];
+            if (document.getElementById("cbx-name").checked) filter.push("name");
+            if (document.getElementById("cbx-type").checked) filter.push("type");
+            if (document.getElementById("cbx-category").checked) filter.push("category");
+            if (document.getElementById("cbx-status").checked) filter.push("status");
+            discoveries.valueNames = filter;
+            discoveries.search();
+            discoveries.reIndex();
+            discoveries.search(document.getElementById("search-box").value);
+        }
+    </script>
+</body>
+
 </html>
