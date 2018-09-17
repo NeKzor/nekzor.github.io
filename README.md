@@ -19,6 +19,7 @@
 - [board.iverb.me Statistics](stats)
 - [board.iverb.me History](history)
 - [board.iverb.me Skill Points](skill)
+- [board.iverb.me SEUM](seum)
 - [Portal Stories: Mel Least Portals](mel)
 
 #### Source Engine Cvars
