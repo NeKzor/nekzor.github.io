@@ -55,9 +55,12 @@
             </div>
         </div>
         <div class="row">
-            <div class="col s12 m12 l8 push-l2" style="height:100%;position: absolute;" ondrop="dropHandler(event);"
+            <div class="col s12 m6 l4 push-l2" style="height:100%;position: absolute;" ondrop="dropHandler(event);"
                 ondragover="dragOverHandler(event);">
                 <pre id="file-content"></pre>
+            </div>
+            <div class="col s12 m6 push-m6 l4 push-l6 hide-on-small-only">
+                <div id="plot"></div>
             </div>
         </div>
     </div>
@@ -88,21 +91,22 @@
             $('.tabs').tabs();
         });
     </script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script type="text/javascript" src="js/browser.sdp.js"></script>
     <script type="text/javascript">
         function dropHandler(ev) {
             ev.preventDefault();
 
             if (ev.dataTransfer.items) {
-                for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+                for (let i = 0; i < ev.dataTransfer.items.length; i++) {
                     if (ev.dataTransfer.items[i].kind === 'file') {
-                        var file = ev.dataTransfer.items[i].getAsFile();
+                        let file = ev.dataTransfer.items[i].getAsFile();
                         readFile(file);
                     }
                 }
             } else {
-                for (var i = 0; i < ev.dataTransfer.files.length; i++) {
-                    var file = ev.dataTransfer.files[i];
+                for (let i = 0; i < ev.dataTransfer.files.length; i++) {
+                    let file = ev.dataTransfer.files[i];
                     readFile(file);
                 }
             }
@@ -120,9 +124,9 @@
             }
         }
         function readFile(file) {
-            var reader = new FileReader();
+            let reader = new FileReader();
             reader.onload = function (e) {
-                var contents = e.target.result;
+                let contents = e.target.result;
                 demo = parser.parseDemo(new Buffer(contents));
                 displayContents();
             };
@@ -132,28 +136,74 @@
         var fileContent = document.getElementById('file-content');
         var parser = new sdp.SourceDemoParser();
         var demo = null;
-        var commands = {};
+        var positions = null;
+        var commands = null;
 
         function displayContents() {
             fileContent.innerHTML = "";
             if (demo !== null) {
                 fileContent.innerHTML += `Header:&#10;${JSON.stringify(demo.header, null, 4)}&#10;&#10;Commands:&#10;`;
 
+                positions = {
+                    x: [],
+                    y: [],
+                    z: []
+                };
                 commands = {};
 
                 demo.messages.forEach((msg) => {
-                    if (msg.type == 0x04) {
+                    if (msg.type == 0x02) {
+                        positions.x.push(msg.message.packetInfo[0].viewOrigin[0].x);
+                        positions.y.push(msg.message.packetInfo[0].viewOrigin[0].y);
+                        positions.z.push(msg.message.packetInfo[0].viewOrigin[0].z);
+                    } else if (msg.type == 0x04) {
                         commands[msg.tick] = msg.message.command;
                     }
                 });
 
                 fileContent.innerHTML += `${JSON.stringify(commands, null, 4)}&#10;`;
+
+                let unpack = () => (rows, key) => rows.map((row) => row[key]);
+
+                let playerPosition = {
+                    x: positions.x,
+                    y: positions.y,
+                    z: positions.z,
+                    mode: 'lines+markers',
+                    marker: {
+                        color: '#1f77b4',
+                        size: 3,
+                        symbol: 'circle'
+                    },
+                    line: {
+                        color: '#1f77b4',
+                        width: 1
+                    },
+                    type: 'scatter3d'
+                };
+
+                let layout = {
+                    title: 'View Origin',
+                    autosize: true,
+                    width: 460,
+                    height: 350,
+                    margin: {
+                        l: 0,
+                        r: 0,
+                        b: 0,
+                        t: 100
+                    }
+                };
+
+                Plotly.newPlot('plot', [playerPosition], layout, {
+                    displayModeBar: true
+                });
             }
         }
 
         document.getElementById('file-input')
             .addEventListener('change', function (e) {
-                var file = e.target.files[0];
+                let file = e.target.files[0];
                 if (!file) {
                     return;
                 }

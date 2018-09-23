@@ -1182,6 +1182,23 @@
         .bit6("weaponSubtype") // 39
         .bit15("rest"); // 40-41
     
+    var userCmdInfo42Parser = new Parser()
+        .endianess("little")
+        .int32("commandNumber") // 0-4
+        .int32("tickCount") // 5-8
+        .float("viewangleX") // 9-12
+        .float("viewangleY") // 13-16
+        .float("viewangleZ") // 17-20
+        .float("forwardMove") // 21-24
+        .float("sideMove") // 25-28
+        .float("upMove") // 29-32
+        .int32("buttons") // 33-36
+        .int8("impulse") // 37
+        .bit11("weaponSelect") // 38-39
+        .bit5("weaponSubtype") // 39
+        .int16("mouseDx") // 40-41
+        .int8("rest"); // 42
+    
     var userCmdInfoParser = new Parser()
         .endianess("little")
         .int32("size")
@@ -1210,7 +1227,8 @@
                 37: userCmdInfo37Parser,
                 38: userCmdInfo38Parser,
                 39: userCmdInfo39Parser,
-                41: userCmdInfo41Parser
+                41: userCmdInfo41Parser,
+                42: userCmdInfo42Parser
             }
         });
     
