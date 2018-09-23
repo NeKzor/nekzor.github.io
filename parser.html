@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>.link { color: white } .link:hover { color: aquamarine  }</style>
 </head>
 
 <body class="white-text blue-grey darken-4">
@@ -38,7 +39,7 @@
     </ul>
     <div id="parser">
         <div class="row"></div>
-        <div class="row" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+        <div class="row">
             <div class="col s12 m12 l8 push-l2">
                 <form action="#">
                     <div class="file-field input-field">
@@ -54,7 +55,8 @@
             </div>
         </div>
         <div class="row">
-            <div class="col s12 m12 l8 push-l2">
+            <div class="col s12 m12 l8 push-l2" style="height:100%;position: absolute;" ondrop="dropHandler(event);"
+                ondragover="dragOverHandler(event);">
                 <pre id="file-content"></pre>
             </div>
         </div>
@@ -64,12 +66,17 @@
             <div class="row"></div>
             <div class="row">
                 <div class="col s12 m12 l10 push-l2">
-                    <h3>sdp.js</h3>
+                    <h3><a class="link" href="https://gist.github.com/NeKzor/c94b05003e42ebc34dc7b32a8d306f10">sdp.js</a></h3>
                     <p>
                         Experimental Source Engine demo parser for Node.js.
                     </p>
                 </div>
             </div>
+            <!-- <div class="row">
+                <div class="col s12 m12 l8 push-l2">
+                    <script src="https://gist.github.com/NeKzor/c94b05003e42ebc34dc7b32a8d306f10.js"></script>
+                </div>
+            </div> -->
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -116,27 +123,30 @@
             var reader = new FileReader();
             reader.onload = function (e) {
                 var contents = e.target.result;
-                parsedDemo = sdp.SourceDemoParser.parse(new Buffer(contents));
+                demo = parser.parseDemo(new Buffer(contents));
                 displayContents();
             };
             reader.readAsArrayBuffer(file);
         }
 
         var fileContent = document.getElementById('file-content');
-        var parsedDemo = null;
+        var parser = new sdp.SourceDemoParser();
+        var demo = null;
+        var commands = {};
 
         function displayContents() {
             fileContent.innerHTML = "";
-            if (parsedDemo !== null) {
-                //fileContent.innerHTML = JSON.stringify(parsedDemo, null, 4);
+            if (demo !== null) {
+                fileContent.innerHTML += `Header:&#10;${JSON.stringify(demo.header, null, 4)}&#10;&#10;Commands:&#10;`;
 
-                fileContent.innerHTML += `Header:&#10;${JSON.stringify(parsedDemo.header, null, 4)}&#10;&#10;Commands:&#10;`;
 
-                parsedDemo.messages.forEach((msg) => {
+                demo.messages.forEach((msg) => {
                     if (msg.type == 0x04) {
-                        fileContent.innerHTML += `[${msg.tick}] ${msg.message.command}&#10;`;
+                        commands[msg.tick] = msg.message.command;
                     }
                 });
+
+                fileContent.innerHTML += `${JSON.stringify(commands, null, 4)}&#10;`;
             }
         }
 
