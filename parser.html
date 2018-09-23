@@ -139,6 +139,7 @@
             if (demo !== null) {
                 fileContent.innerHTML += `Header:&#10;${JSON.stringify(demo.header, null, 4)}&#10;&#10;Commands:&#10;`;
 
+                commands = {};
 
                 demo.messages.forEach((msg) => {
                     if (msg.type == 0x04) {

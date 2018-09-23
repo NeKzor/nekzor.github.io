@@ -91,6 +91,10 @@ This message does not contain any data.
 | Cmd | int | 4 | 32 | - |
 | Size | int | 4 | 32 | - |
 | Data | byte[] | Size | Size*8 | [UserCmdInfo](#usercmdinfo) |
+
+### DataTables
+
+| Name | Type | Size in bytes | Size in bits | Value |
 | Size | int | 4 | 32 | - |
 | Data | byte[] | Size | Size*8 | [SendTable[]](#sendtable)<br>[ServerClassInfo[]](#serverclassinfo) |
 
@@ -172,7 +176,12 @@ This message does not contain any data.
 | SvcMenu | 29 | - |
 | SvcGameEventList | 30 | - |
 | SvcGetCvarValue | 31 | - |
-| SvcCmdKeyValues | 32 | - |
+| SvcCmdKeyValues | 32 | 34 in CS:GO. |
+| SvcPaintmapData | 33 | New engines. |
+| SvcEncryptedData | 35 | Seen in CS:GO. |
+| SvcHltvReplay | 36 | Seen in CS:GO. |
+| SvcBroadcastCommand | 38 | Seen in CS:GO. |
+| NetPlayerAvatarData | 100 | Seen in CS:GO. |
 
 ### UserCmdInfo
 
