@@ -163,8 +163,6 @@
 
                 fileContent.innerHTML += `${JSON.stringify(commands, null, 4)}&#10;`;
 
-                let unpack = () => (rows, key) => rows.map((row) => row[key]);
-
                 let playerPosition = {
                     x: positions.x,
                     y: positions.y,

@@ -888,6 +888,7 @@
     exports.Context = Context;
     
     },{}],4:[function(require,module,exports){
+    (function (Buffer){
     var Parser = require("binary-parser").Parser;
     
     var dataParser = new Parser()
@@ -1233,15 +1234,10 @@
         });
     
     // 0x05
-    var defaultUserCmdParser = new Parser()
+    var userCmdParser = new Parser()
         .endianess("little")
         .int32("cmd")
         .array("data", { length: 1, type: userCmdInfoParser });
-    
-    var oldUserCmdParser = new Parser()
-        .endianess("little")
-        .int32("cmd")
-        .array("data", { length: 1, type: dataParser });
     
     // 0x06
     var dataTableParser = new Parser()
@@ -1259,7 +1255,7 @@
         .int32("unk")
         .array("data", { length: 1, type: dataParser });
     
-    // 0x09
+    // 0x09 (0x08)
     var stringTablesParser = new Parser()
         .endianess("little")
         .array("data", { length: 1, type: dataParser });
@@ -1276,7 +1272,7 @@
                 0x02: defaultPacketParser,
                 0x03: syncTickParser,
                 0x04: consoleCmdParser,
-                0x05: defaultUserCmdParser,
+                0x05: userCmdParser,
                 0x06: dataTableParser,
                 0x07: stopParser,
                 0x08: customDataParser,
@@ -1295,7 +1291,7 @@
                 0x02: oldPacketParser,
                 0x03: syncTickParser,
                 0x04: consoleCmdParser,
-                0x05: oldUserCmdParser,
+                0x05: userCmdParser,
                 0x06: dataTableParser,
                 0x07: stopParser,
                 0x08: stringTablesParser
@@ -1333,7 +1329,7 @@
             }
     
             let synced = false;
-            var last = 0;
+            let last = 0;
             for (let message of this.messages) {
                 if (message.type == 0x03) {
                     synced = true;
@@ -1379,32 +1375,38 @@
             return this.messageParser.parse(buffer).messages;
         }
         parseDemo(buffer) {
-            var demo = new SourceDemo();
+            let demo = new SourceDemo();
             demo.header = this.parseDemoHeader(buffer);
     
             if (demo.header.demoFileStamp != "HL2DEMO") {
                 throw new Error(`Invalid demo file stamp: ${demo.header.demoFileStamp}`);
             }
     
-            this.messageParser = new Parser()
-                .endianess("little")
-                .skip(8 + 4 + 4 + 4 * 260 + 4 + 4 + 4 + 4);
-    
-            if (this.autoConfigure) {
-                switch (demo.header.demoProtocol) {
-                    case 2:
-                    case 3:
-                        this.messageParser.array("messages", { readUntil: "eof", type: oldMessageParser });
-                        break;
-                    case 4:
-                        this.messageParser.array("messages", { readUntil: "eof", type: defaultMessageParser });
-                        break;
-                    default:
-                        throw new Error(`Invalid demo protocol: ${demo.header.demoProtocol}`);
-                }
-            }
-    
             if (!this.headerOnly) {
+                this.messageParser = new Parser()
+                    .endianess("little")
+                    .skip(8 + 4 + 4 + 4 * 260 + 4 + 4 + 4 + 4);
+    
+                if (this.autoConfigure) {
+                    switch (demo.header.demoProtocol) {
+                        case 2:
+                        case 3:
+                            this.messageParser.array("messages", { readUntil: "eof", type: oldMessageParser });
+                            break;
+                        case 4:
+                            this.messageParser.array("messages", { readUntil: "eof", type: defaultMessageParser });
+                            break;
+                        default:
+                            throw new Error(`Invalid demo protocol: ${demo.header.demoProtocol}`);
+                    }
+                }
+    
+                // Oof
+                let rest = 4 - (buffer.length % 4);
+                while (rest--) {
+                    buffer = Buffer.concat([buffer], buffer.length + 1);
+                }
+    
                 demo.messages = this.parseDemoMessages(buffer);
     
                 if (this.autoAdjust) {
@@ -1418,7 +1420,8 @@
     
     module.exports = { SourceDemo, SourceDemoParser };
     
-    },{"binary-parser":2}],5:[function(require,module,exports){
+    }).call(this,require("buffer").Buffer)
+    },{"binary-parser":2,"buffer":6}],5:[function(require,module,exports){
     'use strict'
     
     exports.byteLength = byteLength
