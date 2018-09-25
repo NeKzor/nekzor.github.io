@@ -2,7 +2,567 @@
     window.Buffer = require('buffer').Buffer;
     window.sdp = require('./sdp.js');
     
-    },{"./sdp.js":4,"buffer":6}],2:[function(require,module,exports){
+    },{"./sdp.js":13,"buffer":10}],2:[function(require,module,exports){
+    var SourceGames = [
+        require('./games/portal.js'),
+        require('./games/portal2.js'),
+        require('./games/mel.js'),
+        require('./games/tag.js')
+    ];
+    
+    class SourceGame {
+        constructor(gameList = undefined) {
+            this.gameList = (gameList == undefined) ? SourceGames : gameList;
+        }
+        adjustByRules(demo) {
+            let game = this.gameList.find((game) => {
+                return demo.header.gameDirectory == game.directory
+                    && demo.tickrate() == game.tickrate;
+            });
+    
+            if (game != undefined) {
+                let gameInfo = (() => {
+                    let map = new Map();
+    
+                    let packets = demo.messages.filter(msg => msg.type == 0x02);
+                    let commands = demo.messages.filter(msg => msg.type == 0x04);
+    
+                    packets.forEach(p => map.set(p.tick, {}));
+                    commands.forEach(p => map.set(p.tick, {}));
+    
+                    let oldPosition = { x: 0, y: 0, z: 0 };
+                    let oldCommands = [];
+    
+                    for (let [tick, info] of map) {
+                        let packet = packets.find(p => p.tick == tick);
+                        if (packet != undefined) {
+                            let newPosition = packet.message.packetInfo[0].viewOrigin[0];
+                            if (newPosition != undefined) {
+                                info.position = {
+                                    previous: oldPosition,
+                                    current: oldPosition = newPosition
+                                };
+                            }
+                        }
+    
+                        let newCommands = commands.filter(c => c.tick == tick).map(c => c.message.command);
+                        if (newCommands.length != 0) {
+                            info.commands = {
+                                previous: oldCommands,
+                                current: oldCommands = newCommands
+                            };
+                        }
+                    }
+    
+                    return map;
+                })();
+    
+                let checkRules = (rules) => {
+                    if (rules.length == 0) {
+                        return undefined;
+                    }
+    
+                    let matches = [];
+                    for (let [tick, info] of gameInfo) {
+                        for (let rule of rules) {
+                            if (rule.callback(info.position, info.commands) == true) {
+                                matches.push({ rule: rule, tick: tick });
+                            }
+                        }
+                    }
+    
+                    if (matches.length > 0) {
+                        if (matches.length == 1) {
+                            return matches[0].tick + matches[0].rule.offset;
+                        }
+    
+                        let isStart = matches[0].rule.type == 'start';
+                        let matchTick = (isStart)
+                            ? matches.map(m => m.tick).reduce((a, b) => Math.max(a, b))
+                            : matches.map(m => m.tick).reduce((a, b) => Math.min(a, b));
+    
+                        matches = matches.filter(m => m.tick == matchTick);
+                        if (matches.length == 1) {
+                            return matches[0].tick + matches[0].rule.offset;
+                        }
+    
+                        let matchOffset = (isStart)
+                            ? matches.map(m => m.rule.offset).reduce((a, b) => Math.min(a, b))
+                            : matches.map(m => m.rule.offset).reduce((a, b) => Math.max(a, b));
+    
+                        matches = matches.filter(m => m.rule.offset == matchOffset);
+                        if (matches.length == 1) {
+                            return matches[0].tick + matches[0].rule.offset;
+                        }
+    
+                        throw new Error(`Multiple adjustment matches: ${JSON.stringify(matches)}`);
+                    }
+    
+                    return undefined;
+                };
+    
+                let getRules = (type) => {
+                    let candidates = game.rules.filter(rule => rule.type == type);
+    
+                    let rules = candidates.filter(rule => {
+                        if (Array.isArray(rule.map)) {
+                            return rule.map.includes(demo.header.mapName);
+                        }
+                        return rule.map == demo.header.mapName;
+                    });
+    
+                    if (rules.length == 0) {
+                        rules = candidates.filter(rule => rule.map == undefined);
+                    }
+    
+                    return rules;
+                };
+    
+                let startTick = checkRules(getRules('start'));
+                let endTick = checkRules(getRules('end'));
+    
+                if (startTick != undefined && endTick != undefined) {
+                    return demo.adjust(endTick, startTick);
+                }
+                if (startTick != undefined) {
+                    return demo.adjust(0, startTick);
+                }
+                if (endTick != undefined) {
+                    return demo.adjust(endTick, 0);
+                }
+            }
+    
+            return demo;
+        }
+    }
+    
+    module.exports = { SourceGames, SourceGame };
+    
+    },{"./games/mel.js":3,"./games/portal.js":4,"./games/portal2.js":5,"./games/tag.js":6}],3:[function(require,module,exports){
+    var PortalStoriesMel = {
+        directory: 'portal_stories',
+        tickrate: 60,
+        rules: [
+            {
+                map: [
+                    'sp_a1_tramride',
+                    'st_a1_tramride'
+                ],
+                offset: 0,
+                type: 'start',
+                callback: (pos, _) => {
+                    if (pos != undefined) {
+                        let startPos = { x: -4592.00, y: -4475.4052734375, z: 108.683975219727 };
+                        return pos.previous.x == startPos.x
+                            && pos.previous.y == startPos.y
+                            && pos.previous.z == startPos.z
+                            && pos.current.x != startPos.x
+                            && pos.current.y != startPos.y
+                            && pos.current.z != startPos.z;
+                    }
+                    return false;
+                }
+            },
+            {
+                map: [
+                    'sp_a4_finale',
+                    'st_a4_finale'
+                ],
+                offset: 0,
+                type: 'end',
+                callback: (_, cmd) => {
+                    if (cmds != undefined) {
+                        let outro = 'playvideo_exitcommand_nointerrupt aegis_interior.bik end_movie movie_aegis_interior';
+                        return cmds.current.includes(outro);
+                    }
+                    return false;
+                }
+            }
+        ]
+    };
+    
+    module.exports = PortalStoriesMel;
+    
+    },{}],4:[function(require,module,exports){
+    var Portal = {
+        directory: 'portal',
+        tickrate: 66,
+        rules: [
+            {
+                map: 'testchmb_a_00',
+                offset: 1,
+                type: 'start',
+                callback: (pos, _) => {
+                    if (pos != undefined) {
+                        let startPos = { x: -544, y: -368.75, z: 160 };
+                        return pos.current.x == startPos.x
+                            && pos.current.y == startPos.y
+                            && pos.current.z == startPos.z;
+                    }
+                    return false;
+                }
+            },
+            {
+                map: 'escape_02',
+                offset: 1,
+                type: 'end',
+                callback: (_, cmd) => {
+                    if (cmds != undefined) {
+                        return cmds.current.includes('startneurotoxins 99999');
+                    }
+                    return false;
+                }
+            }
+        ]
+    };
+    
+    module.exports = Portal;
+    
+    },{}],5:[function(require,module,exports){
+    var Portal2 = {
+        directory: 'portal2',
+        tickrate: 60,
+        rules: [
+            {
+                map: 'sp_a1_intro1',
+                offset: 1,
+                type: 'start',
+                callback: (pos, _) => {
+                    if (pos != undefined) {
+                        let startPos = { x: -8709.20, y: 1690.07, z: 28.00 };
+                        let tolerance = { x: 0.02, y: 0.02, z: 0.05 };
+                        return !(Math.abs(pos.current.x - startPos.x) > tolerance.x)
+                            && !(Math.abs(pos.current.y - startPos.y) > tolerance.y)
+                            && !(Math.abs(pos.current.z - startPos.z) > tolerance.z);
+                    }
+                    return false;
+                }
+            },
+            {
+                map: 'e1912',
+                offset: -2,
+                type: 'start',
+                callback: (pos, _) => {
+                    if (pos != undefined) {
+                        let startPos = { x: -655.748779296875, y: -918.37353515625, z: -4.96875 };
+                        return pos.previous.x == startPos.x
+                            && pos.previous.y == startPos.y
+                            && pos.previous.z == startPos.z
+                            && pos.current.x != startPos.x
+                            && pos.current.y != startPos.y
+                            && pos.current.z != startPos.z;
+                    }
+                    return false;
+                }
+            },
+            {
+                map: undefined,
+                offset: 0,
+                type: 'start',
+                callback: (_, cmds) => {
+                    if (cmds != undefined) {
+                        return cmds.previous.find(cmd => cmd.startsWith('dsp_player')) != undefined
+                            && cmds.current.includes('ss_force_primary_fullscreen 0');
+                    }
+                    return false;
+                }
+            },
+            {
+                map: 'mp_coop_start',
+                offset: 0,
+                type: 'start',
+                callback: (pos, _) => {
+                    if (pos != undefined) {
+                        let startPosBlue = { x: -9896, y: -4400, z: 3048 };
+                        let startPosOrange = { x: -11168, y: -4384, z: 3040.03125 };
+                        return (pos.current.x == startPosBlue.x
+                            && pos.current.y == startPosBlue.y
+                            && pos.current.z == startPosBlue.z)
+                            || (pos.current.x == startPosOrange.x
+                                && pos.current.y == startPosOrange.y
+                                && pos.current.z == startPosOrange.z);
+                    }
+                    return false;
+                }
+            },
+            {
+                map: 'sp_a4_finale4',
+                offset: -852,
+                type: 'end',
+                callback: (pos, _) => {
+                    if (pos != undefined) {
+                        let endPos = { x: 54.1, y: 159.2, z: -201.4 };
+                        let a = (pos.current.x - endPos.x) ** 2;
+                        let b = (pos.current.y - endPos.y) ** 2;
+                        let c = 50 ** 2;
+                        return a + b < c
+                            && pos.current.z < endPos.z;
+                    }
+                    return false;
+                }
+            },
+            {
+                map: undefined,
+                offset: 0,
+                type: 'end',
+                callback: (_, cmds) => {
+                    if (cmds != undefined) {
+                        let outroBlue = 'playvideo_end_level_transition coop_bluebot_load 2';
+                        let outroOrange = 'playvideo_end_level_transition coop_orangebot_load 2';
+                        return cmds.current.find(cmd => cmd.startsWith(outroBlue) || cmd.startsWith(outroOrange))
+                            != undefined;
+                    }
+                    return false;
+                }
+            },
+            {
+                map: 'mp_coop_paint_longjump_intro',
+                offset: 0,
+                type: 'end',
+                callback: (_, cmds) => {
+                    if (cmds != undefined) {
+                        let outro = 'playvideo_exitcommand_nointerrupt coop_outro end_movie vault-movie_outro';
+                        return cmds.current.includes(outro);
+                    }
+                    return false;
+                }
+            },
+            {
+                map: 'mp_coop_paint_crazy_box',
+                offset: 0,
+                type: 'end',
+                callback: (_, cmds) => {
+                    if (cmds != undefined) {
+                        let outro = 'playvideo_exitcommand_nointerrupt dlc1_endmovie end_movie movie_outro';
+                        return cmds.current.includes(outro);
+                    }
+                    return false;
+                }
+            }
+        ]
+    };
+    
+    module.exports = Portal2;
+    
+    },{}],6:[function(require,module,exports){
+    var ApertureTag = {
+        directory: 'aperturetag',
+        tickrate: 60,
+        rules: [
+            {
+                map: 'gg_intro_wakeup',
+                offset: 0,
+                type: 'start',
+                callback: (pos, _) => {
+                    if (pos != undefined) {
+                        let startPos = { x: -723.00, y: -2481.00, z: 17.00 };
+                        return pos.previous.x == startPos.x
+                            && pos.previous.y == startPos.y
+                            && pos.previous.z == startPos.z
+                            && pos.current.x != startPos.x
+                            && pos.current.y != startPos.y
+                            && pos.current.z != startPos.z;
+                    }
+                    return false;
+                }
+            },
+            {
+                map: 'gg_stage_theend',
+                offset: 0,
+                type: 'end',
+                callback: (_, cmd) => {
+                    if (cmds != undefined) {
+                        let outro = 'playvideo_exitcommand_nointerrupt at_credits end_movie credits_video';
+                        return cmds.current.includes(outro);
+                    }
+                    return false;
+                }
+            },
+            {
+                map: undefined,
+                offset: 0,
+                type: 'start',
+                callback: (_, cmds) => {
+                    if (cmds != undefined) {
+                        return cmds.previous.find(cmd => cmd.startsWith('dsp_player')) != undefined
+                            && cmds.current.includes('ss_force_primary_fullscreen 0');
+                    }
+                    return false;
+                }
+            },
+            {
+                map: undefined,
+                offset: 0,
+                type: 'end',
+                callback: (_, cmds) => {
+                    if (cmds != undefined) {
+                        let outroBlue = 'playvideo_end_level_transition coop_bluebot_load 2';
+                        let outroOrange = 'playvideo_end_level_transition coop_orangebot_load 2';
+                        return cmds.current.find(cmd => cmd.startsWith(outroBlue) || cmd.startsWith(outroOrange))
+                            != undefined;
+                    }
+                    return false;
+                }
+            }
+        ]
+    };
+    
+    module.exports = ApertureTag;
+    
+    },{}],7:[function(require,module,exports){
+    'use strict'
+    
+    exports.byteLength = byteLength
+    exports.toByteArray = toByteArray
+    exports.fromByteArray = fromByteArray
+    
+    var lookup = []
+    var revLookup = []
+    var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
+    
+    var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+    for (var i = 0, len = code.length; i < len; ++i) {
+      lookup[i] = code[i]
+      revLookup[code.charCodeAt(i)] = i
+    }
+    
+    // Support decoding URL-safe base64 strings, as Node.js does.
+    // See: https://en.wikipedia.org/wiki/Base64#URL_applications
+    revLookup['-'.charCodeAt(0)] = 62
+    revLookup['_'.charCodeAt(0)] = 63
+    
+    function getLens (b64) {
+      var len = b64.length
+    
+      if (len % 4 > 0) {
+        throw new Error('Invalid string. Length must be a multiple of 4')
+      }
+    
+      // Trim off extra bytes after placeholder bytes are found
+      // See: https://github.com/beatgammit/base64-js/issues/42
+      var validLen = b64.indexOf('=')
+      if (validLen === -1) validLen = len
+    
+      var placeHoldersLen = validLen === len
+        ? 0
+        : 4 - (validLen % 4)
+    
+      return [validLen, placeHoldersLen]
+    }
+    
+    // base64 is 4/3 + up to two characters of the original data
+    function byteLength (b64) {
+      var lens = getLens(b64)
+      var validLen = lens[0]
+      var placeHoldersLen = lens[1]
+      return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+    }
+    
+    function _byteLength (b64, validLen, placeHoldersLen) {
+      return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+    }
+    
+    function toByteArray (b64) {
+      var tmp
+      var lens = getLens(b64)
+      var validLen = lens[0]
+      var placeHoldersLen = lens[1]
+    
+      var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))
+    
+      var curByte = 0
+    
+      // if there are placeholders, only get up to the last complete 4 chars
+      var len = placeHoldersLen > 0
+        ? validLen - 4
+        : validLen
+    
+      for (var i = 0; i < len; i += 4) {
+        tmp =
+          (revLookup[b64.charCodeAt(i)] << 18) |
+          (revLookup[b64.charCodeAt(i + 1)] << 12) |
+          (revLookup[b64.charCodeAt(i + 2)] << 6) |
+          revLookup[b64.charCodeAt(i + 3)]
+        arr[curByte++] = (tmp >> 16) & 0xFF
+        arr[curByte++] = (tmp >> 8) & 0xFF
+        arr[curByte++] = tmp & 0xFF
+      }
+    
+      if (placeHoldersLen === 2) {
+        tmp =
+          (revLookup[b64.charCodeAt(i)] << 2) |
+          (revLookup[b64.charCodeAt(i + 1)] >> 4)
+        arr[curByte++] = tmp & 0xFF
+      }
+    
+      if (placeHoldersLen === 1) {
+        tmp =
+          (revLookup[b64.charCodeAt(i)] << 10) |
+          (revLookup[b64.charCodeAt(i + 1)] << 4) |
+          (revLookup[b64.charCodeAt(i + 2)] >> 2)
+        arr[curByte++] = (tmp >> 8) & 0xFF
+        arr[curByte++] = tmp & 0xFF
+      }
+    
+      return arr
+    }
+    
+    function tripletToBase64 (num) {
+      return lookup[num >> 18 & 0x3F] +
+        lookup[num >> 12 & 0x3F] +
+        lookup[num >> 6 & 0x3F] +
+        lookup[num & 0x3F]
+    }
+    
+    function encodeChunk (uint8, start, end) {
+      var tmp
+      var output = []
+      for (var i = start; i < end; i += 3) {
+        tmp =
+          ((uint8[i] << 16) & 0xFF0000) +
+          ((uint8[i + 1] << 8) & 0xFF00) +
+          (uint8[i + 2] & 0xFF)
+        output.push(tripletToBase64(tmp))
+      }
+      return output.join('')
+    }
+    
+    function fromByteArray (uint8) {
+      var tmp
+      var len = uint8.length
+      var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
+      var parts = []
+      var maxChunkLength = 16383 // must be multiple of 3
+    
+      // go through the array every three bytes, we'll deal with trailing stuff later
+      for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
+        parts.push(encodeChunk(
+          uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)
+        ))
+      }
+    
+      // pad the end with zeros, but make sure to not forget the extra bytes
+      if (extraBytes === 1) {
+        tmp = uint8[len - 1]
+        parts.push(
+          lookup[tmp >> 2] +
+          lookup[(tmp << 4) & 0x3F] +
+          '=='
+        )
+      } else if (extraBytes === 2) {
+        tmp = (uint8[len - 2] << 8) + uint8[len - 1]
+        parts.push(
+          lookup[tmp >> 10] +
+          lookup[(tmp >> 4) & 0x3F] +
+          lookup[(tmp << 2) & 0x3F] +
+          '='
+        )
+      }
+    
+      return parts.join('')
+    }
+    
+    },{}],8:[function(require,module,exports){
     //========================================================================================
     // Globals
     //========================================================================================
@@ -753,7 +1313,7 @@
     
     exports.Parser = Parser;
     
-    },{"./context":3,"vm":8}],3:[function(require,module,exports){
+    },{"./context":9,"vm":12}],9:[function(require,module,exports){
     //========================================================================================
     // class Context
     //========================================================================================
@@ -887,694 +1447,7 @@
     
     exports.Context = Context;
     
-    },{}],4:[function(require,module,exports){
-    (function (Buffer){
-    var Parser = require("binary-parser").Parser;
-    
-    var dataParser = new Parser()
-        .endianess("little")
-        .int32("size")
-        .array("data", { type: "int8", lengthInBytes: "size" });
-    
-    // Vector
-    var vectorParser = new Parser()
-        .endianess("little")
-        .float("x") // vec_t 0-4
-        .float("y") // vec_t 5-8
-        .float("z"); // vec_t 9-12
-    
-    // QAngle
-    var qAngleParser = vectorParser;
-    
-    // democmdinfo_t
-    var cmdInfoParser = new Parser()
-        .endianess("little")
-        .int32("flags")
-        .array("viewOrigin", { length: 1, type: vectorParser })
-        .array("viewAngles", { length: 1, type: qAngleParser })
-        .array("localViewAngles", { length: 1, type: qAngleParser })
-        .array("viewOrigin2", { length: 1, type: vectorParser })
-        .array("viewAngles2", { length: 1, type: qAngleParser })
-        .array("localViewAngles2", { length: 1, type: qAngleParser });
-    
-    // 0x1 & 0x02
-    var defaultPacketParser = new Parser()
-        .endianess("little")
-        .array("packetInfo", { length: 2, type: cmdInfoParser })
-        .int32("inSequence")
-        .int32("outSequence")
-        .array("data", { length: 1, type: dataParser });
-    
-    var oldPacketParser = new Parser()
-        .endianess("little")
-        .array("packetInfo", { length: 1, type: cmdInfoParser })
-        .int32("inSequence")
-        .int32("outSequence")
-        .array("data", { length: 1, type: dataParser });
-    
-    // 0x03
-    var syncTickParser = new Parser();
-    
-    // 0x04
-    var consoleCmdParser = new Parser()
-        .endianess("little")
-        .int32("size")
-        .string("command", { encoding: "ascii", length: "size", stripNull: true });
-    
-    // CUserCmd
-    var userCmdInfo13Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .int8("rest"); // 13
-    
-    var userCmdInfo17Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .int8("rest"); // 17
-    
-    var userCmdInfo18Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .int16("rest"); // 17-18
-    
-    var userCmdInfo19Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .bit24("rest"); // 17-19
-    
-    var userCmdInfo20Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ"); // 17-20
-    
-    var userCmdInfo21Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .int8("rest"); // 21
-    
-    var userCmdInfo22Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .int16("rest"); // 21-22
-    
-    var userCmdInfo23Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .bit24("rest"); // 21-23
-    
-    var userCmdInfo24Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .float("forwardMove"); // 21-24
-    
-    var userCmdInfo25Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .float("forwardMove") // 21-24
-        .int8("rest"); // 25
-    
-    var userCmdInfo26Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .float("forwardMove") // 21-24
-        .int16("rest"); // 25-26
-    
-    var userCmdInfo27Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .float("forwardMove") // 21-24
-        .bit24("rest"); // 25-27
-    
-    var userCmdInfo28Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .float("forwardMove") // 21-24
-        .float("sideMove") // 25-28
-    
-    var userCmdInfo29Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .float("forwardMove") // 21-24
-        .float("sideMove") // 25-28
-        .int8("rest"); // 29
-    
-    var userCmdInfo30Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .float("forwardMove") // 21-24
-        .float("sideMove") // 25-28
-        .int16("rest"); // 29-30
-    
-    var userCmdInfo31Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .float("forwardMove") // 21-24
-        .float("sideMove") // 25-28
-        .bit24("rest"); // 29-31
-    
-    var userCmdInfo33Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .float("forwardMove") // 21-24
-        .float("sideMove") // 25-28
-        .float("upMove") // 29-32
-        .int8("rest"); // 33
-    
-    var userCmdInfo34Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .float("forwardMove") // 21-24
-        .float("sideMove") // 25-28
-        .float("upMove") // 29-32
-        .int16("rest"); // 33-34
-    
-    var userCmdInfo35Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .float("forwardMove") // 21-24
-        .float("sideMove") // 25-28
-        .float("upMove") // 29-32
-        .bit24("rest"); // 33-35
-    
-    var userCmdInfo37Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .float("forwardMove") // 21-24
-        .float("sideMove") // 25-28
-        .float("upMove") // 29-32
-        .int32("buttons") // 33-36
-        .int8("rest"); // 37
-    
-    var userCmdInfo38Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .float("forwardMove") // 21-24
-        .float("sideMove") // 25-28
-        .float("upMove") // 29-32
-        .int32("buttons") // 33-36
-        .int16("rest"); // 37-38
-    
-    var userCmdInfo39Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .float("forwardMove") // 21-24
-        .float("sideMove") // 25-28
-        .float("upMove") // 29-32
-        .int32("buttons") // 33-36
-        .int8("impulse") // 37
-        .bit11("weaponSelect") // 38-39
-        .bit5("reset"); // 39
-    
-    var userCmdInfo41Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .float("forwardMove") // 21-24
-        .float("sideMove") // 25-28
-        .float("upMove") // 29-32
-        .int32("buttons") // 33-36
-        .int8("impulse") // 37
-        .bit11("weaponSelect") // 38-39
-        .bit6("weaponSubtype") // 39
-        .bit15("rest"); // 40-41
-    
-    var userCmdInfo42Parser = new Parser()
-        .endianess("little")
-        .int32("commandNumber") // 0-4
-        .int32("tickCount") // 5-8
-        .float("viewangleX") // 9-12
-        .float("viewangleY") // 13-16
-        .float("viewangleZ") // 17-20
-        .float("forwardMove") // 21-24
-        .float("sideMove") // 25-28
-        .float("upMove") // 29-32
-        .int32("buttons") // 33-36
-        .int8("impulse") // 37
-        .bit11("weaponSelect") // 38-39
-        .bit5("weaponSubtype") // 39
-        .int16("mouseDx") // 40-41
-        .int8("rest"); // 42
-    
-    var userCmdInfoParser = new Parser()
-        .endianess("little")
-        .int32("size")
-        .choice("data", {
-            tag: "size",
-            choices: {
-                13: userCmdInfo13Parser,
-                17: userCmdInfo17Parser,
-                18: userCmdInfo18Parser,
-                19: userCmdInfo19Parser,
-                20: userCmdInfo20Parser,
-                21: userCmdInfo21Parser,
-                22: userCmdInfo22Parser,
-                23: userCmdInfo23Parser,
-                24: userCmdInfo24Parser,
-                25: userCmdInfo25Parser,
-                27: userCmdInfo27Parser,
-                26: userCmdInfo26Parser,
-                28: userCmdInfo28Parser,
-                29: userCmdInfo29Parser,
-                30: userCmdInfo30Parser,
-                31: userCmdInfo31Parser,
-                33: userCmdInfo33Parser,
-                34: userCmdInfo34Parser,
-                35: userCmdInfo35Parser,
-                37: userCmdInfo37Parser,
-                38: userCmdInfo38Parser,
-                39: userCmdInfo39Parser,
-                41: userCmdInfo41Parser,
-                42: userCmdInfo42Parser
-            }
-        });
-    
-    // 0x05
-    var userCmdParser = new Parser()
-        .endianess("little")
-        .int32("cmd")
-        .array("data", { length: 1, type: userCmdInfoParser });
-    
-    // 0x06
-    var dataTableParser = new Parser()
-        .endianess("little")
-        .array("data", { length: 1, type: dataParser });
-    
-    // 0x07
-    var stopParser = new Parser()
-        .endianess("little")
-        .array("rest", { readUntil: "eof", type: "int8" });
-    
-    // 0x08
-    var customDataParser = new Parser()
-        .endianess("little")
-        .int32("unk")
-        .array("data", { length: 1, type: dataParser });
-    
-    // 0x09 (0x08)
-    var stringTablesParser = new Parser()
-        .endianess("little")
-        .array("data", { length: 1, type: dataParser });
-    
-    var defaultMessageParser = new Parser()
-        .endianess("little")
-        .bit8("type")
-        .int32("tick")
-        .bit8("alignment")
-        .choice("message", {
-            tag: "type",
-            choices: {
-                0x01: defaultPacketParser,
-                0x02: defaultPacketParser,
-                0x03: syncTickParser,
-                0x04: consoleCmdParser,
-                0x05: userCmdParser,
-                0x06: dataTableParser,
-                0x07: stopParser,
-                0x08: customDataParser,
-                0x09: stringTablesParser
-            }
-        });
-    
-    var oldMessageParser = new Parser()
-        .endianess("little")
-        .bit8("type")
-        .int32("tick")
-        .choice("message", {
-            tag: "type",
-            choices: {
-                0x01: oldPacketParser,
-                0x02: oldPacketParser,
-                0x03: syncTickParser,
-                0x04: consoleCmdParser,
-                0x05: userCmdParser,
-                0x06: dataTableParser,
-                0x07: stopParser,
-                0x08: stringTablesParser
-            }
-        });
-    
-    var headerParser = new Parser()
-        .endianess("little")
-        .string("demoFileStamp", { encoding: "ascii", length: 8, stripNull: true })
-        .int32("demoProtocol")
-        .int32("networkProtocol")
-        .string("serverName", { encoding: "ascii", length: 260, stripNull: true })
-        .string("clientName", { encoding: "ascii", length: 260, stripNull: true })
-        .string("mapName", { encoding: "ascii", length: 260, stripNull: true })
-        .string("gameDirectory", { encoding: "ascii", length: 260, stripNull: true })
-        .float("playbackTime")
-        .int32("playbackTicks")
-        .int32("playbackFrames")
-        .int32("signOnLength");
-    
-    class SourceDemo {
-        constructor() {
-            this.header = undefined;
-            this.messages = undefined;
-        }
-        intervalPerTick() {
-            return this.header.playbackTime / this.header.playbackTicks;
-        }
-        tickrate() {
-            return Math.ceil(this.header.playbackTicks / this.header.playbackTime);
-        }
-        adjust(endTick = 0, startTick = 0) {
-            if (this.messages.length == 0) {
-                throw new Error("Cannot adjust demo without parsed messages.");
-            }
-    
-            let synced = false;
-            let last = 0;
-            for (let message of this.messages) {
-                if (message.type == 0x03) {
-                    synced = true;
-                }
-    
-                if (!synced) {
-                    message.tick = 0;
-                } else if (message.tick < 0) {
-                    message.tick = last;
-                }
-                last = message.tick;
-            }
-    
-            if (endTick < 1) {
-                endTick = this.messages[this.messages.length - 1].tick;
-            }
-    
-            let delta = endTick - startTick;
-            if (delta < 0) {
-                throw new Error("Start tick is greater than end tick.");
-            }
-    
-            let ipt = this.intervalPerTick();
-            this.header.playbackTicks = delta;
-            this.header.playbackTime = ipt * delta;
-        }
-    }
-    
-    class SourceDemoParser {
-        constructor() {
-            this.headerParser = headerParser;
-            this.messageParser = new Parser()
-                .endianess("little")
-                .skip(8 + 4 + 4 + 4 * 260 + 4 + 4 + 4 + 4);
-            this.autoConfigure = true;
-            this.autoAdjust = true;
-            this.headerOnly = false;
-        }
-        parseDemoHeader(buffer) {
-            return this.headerParser.parse(buffer);
-        }
-        parseDemoMessages(buffer) {
-            return this.messageParser.parse(buffer).messages;
-        }
-        parseDemo(buffer) {
-            let demo = new SourceDemo();
-            demo.header = this.parseDemoHeader(buffer);
-    
-            if (demo.header.demoFileStamp != "HL2DEMO") {
-                throw new Error(`Invalid demo file stamp: ${demo.header.demoFileStamp}`);
-            }
-    
-            if (!this.headerOnly) {
-                this.messageParser = new Parser()
-                    .endianess("little")
-                    .skip(8 + 4 + 4 + 4 * 260 + 4 + 4 + 4 + 4);
-    
-                if (this.autoConfigure) {
-                    switch (demo.header.demoProtocol) {
-                        case 2:
-                        case 3:
-                            this.messageParser.array("messages", { readUntil: "eof", type: oldMessageParser });
-                            break;
-                        case 4:
-                            this.messageParser.array("messages", { readUntil: "eof", type: defaultMessageParser });
-                            break;
-                        default:
-                            throw new Error(`Invalid demo protocol: ${demo.header.demoProtocol}`);
-                    }
-                }
-    
-                // Oof
-                let rest = 4 - (buffer.length % 4);
-                while (rest--) {
-                    buffer = Buffer.concat([buffer], buffer.length + 1);
-                }
-    
-                demo.messages = this.parseDemoMessages(buffer);
-    
-                if (this.autoAdjust) {
-                    demo.adjust();
-                }
-            }
-    
-            return demo;
-        }
-    }
-    
-    module.exports = { SourceDemo, SourceDemoParser };
-    
-    }).call(this,require("buffer").Buffer)
-    },{"binary-parser":2,"buffer":6}],5:[function(require,module,exports){
-    'use strict'
-    
-    exports.byteLength = byteLength
-    exports.toByteArray = toByteArray
-    exports.fromByteArray = fromByteArray
-    
-    var lookup = []
-    var revLookup = []
-    var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
-    
-    var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-    for (var i = 0, len = code.length; i < len; ++i) {
-      lookup[i] = code[i]
-      revLookup[code.charCodeAt(i)] = i
-    }
-    
-    // Support decoding URL-safe base64 strings, as Node.js does.
-    // See: https://en.wikipedia.org/wiki/Base64#URL_applications
-    revLookup['-'.charCodeAt(0)] = 62
-    revLookup['_'.charCodeAt(0)] = 63
-    
-    function getLens (b64) {
-      var len = b64.length
-    
-      if (len % 4 > 0) {
-        throw new Error('Invalid string. Length must be a multiple of 4')
-      }
-    
-      // Trim off extra bytes after placeholder bytes are found
-      // See: https://github.com/beatgammit/base64-js/issues/42
-      var validLen = b64.indexOf('=')
-      if (validLen === -1) validLen = len
-    
-      var placeHoldersLen = validLen === len
-        ? 0
-        : 4 - (validLen % 4)
-    
-      return [validLen, placeHoldersLen]
-    }
-    
-    // base64 is 4/3 + up to two characters of the original data
-    function byteLength (b64) {
-      var lens = getLens(b64)
-      var validLen = lens[0]
-      var placeHoldersLen = lens[1]
-      return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
-    }
-    
-    function _byteLength (b64, validLen, placeHoldersLen) {
-      return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
-    }
-    
-    function toByteArray (b64) {
-      var tmp
-      var lens = getLens(b64)
-      var validLen = lens[0]
-      var placeHoldersLen = lens[1]
-    
-      var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))
-    
-      var curByte = 0
-    
-      // if there are placeholders, only get up to the last complete 4 chars
-      var len = placeHoldersLen > 0
-        ? validLen - 4
-        : validLen
-    
-      for (var i = 0; i < len; i += 4) {
-        tmp =
-          (revLookup[b64.charCodeAt(i)] << 18) |
-          (revLookup[b64.charCodeAt(i + 1)] << 12) |
-          (revLookup[b64.charCodeAt(i + 2)] << 6) |
-          revLookup[b64.charCodeAt(i + 3)]
-        arr[curByte++] = (tmp >> 16) & 0xFF
-        arr[curByte++] = (tmp >> 8) & 0xFF
-        arr[curByte++] = tmp & 0xFF
-      }
-    
-      if (placeHoldersLen === 2) {
-        tmp =
-          (revLookup[b64.charCodeAt(i)] << 2) |
-          (revLookup[b64.charCodeAt(i + 1)] >> 4)
-        arr[curByte++] = tmp & 0xFF
-      }
-    
-      if (placeHoldersLen === 1) {
-        tmp =
-          (revLookup[b64.charCodeAt(i)] << 10) |
-          (revLookup[b64.charCodeAt(i + 1)] << 4) |
-          (revLookup[b64.charCodeAt(i + 2)] >> 2)
-        arr[curByte++] = (tmp >> 8) & 0xFF
-        arr[curByte++] = tmp & 0xFF
-      }
-    
-      return arr
-    }
-    
-    function tripletToBase64 (num) {
-      return lookup[num >> 18 & 0x3F] +
-        lookup[num >> 12 & 0x3F] +
-        lookup[num >> 6 & 0x3F] +
-        lookup[num & 0x3F]
-    }
-    
-    function encodeChunk (uint8, start, end) {
-      var tmp
-      var output = []
-      for (var i = start; i < end; i += 3) {
-        tmp =
-          ((uint8[i] << 16) & 0xFF0000) +
-          ((uint8[i + 1] << 8) & 0xFF00) +
-          (uint8[i + 2] & 0xFF)
-        output.push(tripletToBase64(tmp))
-      }
-      return output.join('')
-    }
-    
-    function fromByteArray (uint8) {
-      var tmp
-      var len = uint8.length
-      var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
-      var parts = []
-      var maxChunkLength = 16383 // must be multiple of 3
-    
-      // go through the array every three bytes, we'll deal with trailing stuff later
-      for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
-        parts.push(encodeChunk(
-          uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)
-        ))
-      }
-    
-      // pad the end with zeros, but make sure to not forget the extra bytes
-      if (extraBytes === 1) {
-        tmp = uint8[len - 1]
-        parts.push(
-          lookup[tmp >> 2] +
-          lookup[(tmp << 4) & 0x3F] +
-          '=='
-        )
-      } else if (extraBytes === 2) {
-        tmp = (uint8[len - 2] << 8) + uint8[len - 1]
-        parts.push(
-          lookup[tmp >> 10] +
-          lookup[(tmp >> 4) & 0x3F] +
-          lookup[(tmp << 2) & 0x3F] +
-          '='
-        )
-      }
-    
-      return parts.join('')
-    }
-    
-    },{}],6:[function(require,module,exports){
+    },{}],10:[function(require,module,exports){
     /*!
      * The buffer module from node.js, for the browser.
      *
@@ -3353,7 +3226,7 @@
       return obj !== obj // eslint-disable-line no-self-compare
     }
     
-    },{"base64-js":5,"ieee754":7}],7:[function(require,module,exports){
+    },{"base64-js":7,"ieee754":11}],11:[function(require,module,exports){
     exports.read = function (buffer, offset, isLE, mLen, nBytes) {
       var e, m
       var eLen = (nBytes * 8) - mLen - 1
@@ -3439,7 +3312,7 @@
       buffer[offset + i - d] |= s * 128
     }
     
-    },{}],8:[function(require,module,exports){
+    },{}],12:[function(require,module,exports){
     var indexOf = function (xs, item) {
         if (xs.indexOf) return xs.indexOf(item);
         else for (var i = 0; i < xs.length; i++) {
@@ -3590,5 +3463,260 @@
         return copy;
     };
     
-    },{}]},{},[1]);
+    },{}],13:[function(require,module,exports){
+    (function (Buffer){
+    var Parser = require('binary-parser').Parser;
+    
+    var dataParser = new Parser()
+        .endianess('little')
+        .int32('size')
+        .array('data', { type: 'int8', lengthInBytes: 'size' });
+    
+    // Vector
+    var vectorParser = new Parser()
+        .endianess('little')
+        .float('x') // vec_t 0-4
+        .float('y') // vec_t 5-8
+        .float('z'); // vec_t 9-12
+    
+    // QAngle
+    var qAngleParser = vectorParser;
+    
+    // democmdinfo_t
+    var cmdInfoParser = new Parser()
+        .endianess('little')
+        .int32('flags')
+        .array('viewOrigin', { length: 1, type: vectorParser })
+        .array('viewAngles', { length: 1, type: qAngleParser })
+        .array('localViewAngles', { length: 1, type: qAngleParser })
+        .array('viewOrigin2', { length: 1, type: vectorParser })
+        .array('viewAngles2', { length: 1, type: qAngleParser })
+        .array('localViewAngles2', { length: 1, type: qAngleParser });
+    
+    // 0x1 & 0x02
+    var defaultPacketParser = new Parser()
+        .endianess('little')
+        .array('packetInfo', { length: 2, type: cmdInfoParser })
+        .int32('inSequence')
+        .int32('outSequence')
+        .array('data', { length: 1, type: dataParser });
+    
+    var oldPacketParser = new Parser()
+        .endianess('little')
+        .array('packetInfo', { length: 1, type: cmdInfoParser })
+        .int32('inSequence')
+        .int32('outSequence')
+        .array('data', { length: 1, type: dataParser });
+    
+    // 0x03
+    var syncTickParser = new Parser();
+    
+    // 0x04
+    var consoleCmdParser = new Parser()
+        .endianess('little')
+        .int32('size')
+        .string('command', { encoding: 'ascii', length: 'size', stripNull: true });
+    
+    // 0x05
+    var userCmdParser = new Parser()
+        .endianess('little')
+        .int32('cmd')
+        .array('data', { length: 1, type: dataParser });
+    
+    // 0x06
+    var dataTableParser = new Parser()
+        .endianess('little')
+        .array('data', { length: 1, type: dataParser });
+    
+    // 0x07
+    var stopParser = new Parser()
+        .endianess('little')
+        .array('rest', { readUntil: 'eof', type: 'int8' });
+    
+    // 0x08
+    var customDataParser = new Parser()
+        .endianess('little')
+        .int32('unk')
+        .array('data', { length: 1, type: dataParser });
+    
+    // 0x09 (0x08)
+    var stringTablesParser = new Parser()
+        .endianess('little')
+        .array('data', { length: 1, type: dataParser });
+    
+    // Protocol 4
+    var defaultMessageParser = new Parser()
+        .endianess('little')
+        .bit8('type')
+        .int32('tick')
+        .bit8('alignment')
+        .choice('message', {
+            tag: 'type',
+            choices: {
+                0x01: defaultPacketParser,
+                0x02: defaultPacketParser,
+                0x03: syncTickParser,
+                0x04: consoleCmdParser,
+                0x05: userCmdParser,
+                0x06: dataTableParser,
+                0x07: stopParser,
+                0x08: customDataParser,
+                0x09: stringTablesParser
+            }
+        });
+    
+    // Protocol 2 & 3
+    var oldMessageParser = new Parser()
+        .endianess('little')
+        .bit8('type')
+        .int32('tick')
+        .choice('message', {
+            tag: 'type',
+            choices: {
+                0x01: oldPacketParser,
+                0x02: oldPacketParser,
+                0x03: syncTickParser,
+                0x04: consoleCmdParser,
+                0x05: userCmdParser,
+                0x06: dataTableParser,
+                0x07: stopParser,
+                0x08: stringTablesParser
+            }
+        });
+    
+    var headerParser = new Parser()
+        .endianess('little')
+        .string('demoFileStamp', { encoding: 'ascii', length: 8, stripNull: true })
+        .int32('demoProtocol')
+        .int32('networkProtocol')
+        .string('serverName', { encoding: 'ascii', length: 260, stripNull: true })
+        .string('clientName', { encoding: 'ascii', length: 260, stripNull: true })
+        .string('mapName', { encoding: 'ascii', length: 260, stripNull: true })
+        .string('gameDirectory', { encoding: 'ascii', length: 260, stripNull: true })
+        .float('playbackTime')
+        .int32('playbackTicks')
+        .int32('playbackFrames')
+        .int32('signOnLength');
+    
+    class SourceDemo {
+        constructor() {
+            this.header = undefined;
+            this.messages = undefined;
+        }
+        intervalPerTick() {
+            return this.header.playbackTime / this.header.playbackTicks;
+        }
+        tickrate() {
+            return Math.ceil(this.header.playbackTicks / this.header.playbackTime);
+        }
+        adjust(endTick = 0, startTick = 0, sourceGame = undefined) {
+            if (this.messages.length == 0) {
+                throw new Error('Cannot adjust demo without parsed messages.');
+            }
+    
+            let synced = false;
+            let last = 0;
+            for (let message of this.messages) {
+                if (message.type == 0x03) {
+                    synced = true;
+                }
+    
+                if (!synced) {
+                    message.tick = 0;
+                } else if (message.tick < 0) {
+                    message.tick = last;
+                }
+                last = message.tick;
+            }
+    
+            if (endTick < 1) {
+                endTick = this.messages[this.messages.length - 1].tick;
+            }
+    
+            let delta = endTick - startTick;
+            if (delta < 0) {
+                throw new Error('Start tick is greater than end tick.');
+            }
+    
+            let ipt = this.intervalPerTick();
+            this.header.playbackTicks = delta;
+            this.header.playbackTime = ipt * delta;
+    
+            if (sourceGame != undefined) {
+                return sourceGame.adjustByRules(this);
+            }
+    
+            return this;
+        }
+    }
+    
+    class SourceDemoParser {
+        constructor() {
+            this.headerParser = headerParser;
+            this.messageParser = undefined;
+            this.autoConfigure = true;
+            this.autoAdjust = false;
+            this.headerOnly = false;
+        }
+        parseDemoHeader(demo, buffer) {
+            demo.header = this.headerParser.parse(buffer);
+    
+            if (demo.header.demoFileStamp != 'HL2DEMO') {
+                throw new Error(`Invalid demo file stamp: ${demo.header.demoFileStamp}`);
+            }
+    
+            return this;
+        }
+        parseDemoMessages(demo, buffer) {
+            this.messageParser = new Parser()
+                .endianess('little')
+                .skip(8 + 4 + 4 + 4 * 260 + 4 + 4 + 4 + 4);
+    
+            if (this.autoConfigure) {
+                switch (demo.header.demoProtocol) {
+                    case 2:
+                    case 3:
+                        this.messageParser.array('messages', { readUntil: 'eof', type: oldMessageParser });
+                        break;
+                    case 4:
+                        this.messageParser.array('messages', { readUntil: 'eof', type: defaultMessageParser });
+                        break;
+                    default:
+                        throw new Error(`Invalid demo protocol: ${demo.header.demoProtocol}`);
+                }
+            }
+    
+            // Oof
+            let rest = 4 - (buffer.length % 4);
+            while (rest--) {
+                buffer = Buffer.concat([buffer], buffer.length + 1);
+            }
+    
+            demo.messages = this.messageParser.parse(buffer).messages;
+    
+            if (this.autoAdjust) {
+                demo.adjust();
+            }
+    
+            return this;
+        }
+        parseDemo(buffer) {
+            let demo = new SourceDemo();
+    
+            this.parseDemoHeader(demo, buffer);
+    
+            if (!this.headerOnly) {
+                this.parseDemoMessages(demo, buffer);
+            }
+    
+            return demo;
+        }
+    }
+    
+    var { SourceGames, SourceGame } = require('./game.js');
+    
+    module.exports = { SourceDemo, SourceDemoParser, SourceGames, SourceGame };
+    
+    }).call(this,require("buffer").Buffer)
+    },{"./game.js":2,"binary-parser":8,"buffer":10}]},{},[1]);
     
