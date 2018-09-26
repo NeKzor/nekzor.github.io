@@ -2,7 +2,90 @@
     window.Buffer = require('buffer').Buffer;
     window.sdp = require('./sdp.js');
     
-    },{"./sdp.js":13,"buffer":10}],2:[function(require,module,exports){
+    },{"./sdp.js":15,"buffer":11}],2:[function(require,module,exports){
+    class SourceDemo {
+        constructor() {
+            this.header = undefined;
+            this.messages = undefined;
+            this.game = undefined;
+        }
+        detectGame(sourceGame) {
+            this.game = sourceGame.gameList.find(game => game.directory == this.header.gameDirectory);
+            if (this.game != undefined) {
+                this.game.source = sourceGame;
+            }
+            return this.game;
+        }
+        intervalPerTick() {
+            if (this.header.playbackTicks == 0) {
+                if (this.game != undefined) {
+                    return 1 / this.game.tickrate;
+                }
+                throw new Error('Cannot find ipt of null tick demo.');
+            }
+            return this.header.playbackTime / this.header.playbackTicks;
+        }
+        tickrate() {
+            if (this.header.playbackTime == 0) {
+                if (this.game != undefined) {
+                    return this.game.tickrate;
+                }
+                throw new Error('Cannot find tickrate of null tick demo.');
+            }
+            return Math.ceil(this.header.playbackTicks / this.header.playbackTime);
+        }
+        adjustTicks() {
+            if (this.messages.length == 0) {
+                throw new Error('Cannot adjust ticks without parsed messages.');
+            }
+    
+            let synced = false;
+            let last = 0;
+            for (let message of this.messages) {
+                if (message.type == 0x03) {
+                    synced = true;
+                }
+    
+                if (!synced) {
+                    message.tick = 0;
+                } else if (message.tick < 0) {
+                    message.tick = last;
+                }
+                last = message.tick;
+            }
+        }
+        adjustRange(endTick = 0, startTick = 0) {
+            if (this.messages.length == 0) {
+                throw new Error('Cannot adjust range without parsed messages.');
+            }
+    
+            if (endTick < 1) {
+                endTick = this.messages[this.messages.length - 1].tick;
+            }
+    
+            let delta = endTick - startTick;
+            if (delta < 0) {
+                throw new Error('Start tick is greater than end tick.');
+            }
+    
+            let ipt = this.intervalPerTick();
+            this.header.playbackTicks = delta;
+            this.header.playbackTime = ipt * delta;
+    
+            return this;
+        }
+        adjust() {
+            this.adjustTicks();
+            this.adjustRange();
+            return (this.game != undefined)
+                ? this.game.source.adjustByRules(this)
+                : this;
+        }
+    }
+    
+    module.exports = { SourceDemo };
+    
+    },{}],3:[function(require,module,exports){
     var SourceGames = [
         require('./games/portal.js'),
         require('./games/portal2.js'),
@@ -11,16 +94,18 @@
     ];
     
     class SourceGame {
-        constructor(gameList = undefined) {
-            this.gameList = (gameList == undefined) ? SourceGames : gameList;
+        constructor() {
+            this.gameList = SourceGames;
+        }
+        static default() {
+            return new SourceGame();
+        }
+        withGameList(gameList) {
+            this.gameList = gameList;
+            return this;
         }
         adjustByRules(demo) {
-            let game = this.gameList.find((game) => {
-                return demo.header.gameDirectory == game.directory
-                    && demo.tickrate() == game.tickrate;
-            });
-    
-            if (game != undefined) {
+            if (demo.game != undefined && demo.game.tickrate == demo.tickrate()) {
                 let gameInfo = (() => {
                     let map = new Map();
     
@@ -102,7 +187,7 @@
                 };
     
                 let getRules = (type) => {
-                    let candidates = game.rules.filter(rule => rule.type == type);
+                    let candidates = demo.game.rules.filter(rule => rule.type == type);
     
                     let rules = candidates.filter(rule => {
                         if (Array.isArray(rule.map)) {
@@ -122,13 +207,13 @@
                 let endTick = checkRules(getRules('end'));
     
                 if (startTick != undefined && endTick != undefined) {
-                    return demo.adjust(endTick, startTick);
+                    return demo.adjustRange(endTick, startTick);
                 }
                 if (startTick != undefined) {
-                    return demo.adjust(0, startTick);
+                    return demo.adjustRange(0, startTick);
                 }
                 if (endTick != undefined) {
-                    return demo.adjust(endTick, 0);
+                    return demo.adjustRange(endTick, 0);
                 }
             }
     
@@ -138,7 +223,7 @@
     
     module.exports = { SourceGames, SourceGame };
     
-    },{"./games/mel.js":3,"./games/portal.js":4,"./games/portal2.js":5,"./games/tag.js":6}],3:[function(require,module,exports){
+    },{"./games/mel.js":4,"./games/portal.js":5,"./games/portal2.js":6,"./games/tag.js":7}],4:[function(require,module,exports){
     var PortalStoriesMel = {
         directory: 'portal_stories',
         tickrate: 60,
@@ -183,7 +268,7 @@
     
     module.exports = PortalStoriesMel;
     
-    },{}],4:[function(require,module,exports){
+    },{}],5:[function(require,module,exports){
     var Portal = {
         directory: 'portal',
         tickrate: 66,
@@ -218,7 +303,7 @@
     
     module.exports = Portal;
     
-    },{}],5:[function(require,module,exports){
+    },{}],6:[function(require,module,exports){
     var Portal2 = {
         directory: 'portal2',
         tickrate: 60,
@@ -344,7 +429,7 @@
     
     module.exports = Portal2;
     
-    },{}],6:[function(require,module,exports){
+    },{}],7:[function(require,module,exports){
     var ApertureTag = {
         directory: 'aperturetag',
         tickrate: 60,
@@ -409,7 +494,7 @@
     
     module.exports = ApertureTag;
     
-    },{}],7:[function(require,module,exports){
+    },{}],8:[function(require,module,exports){
     'use strict'
     
     exports.byteLength = byteLength
@@ -562,7 +647,7 @@
       return parts.join('')
     }
     
-    },{}],8:[function(require,module,exports){
+    },{}],9:[function(require,module,exports){
     //========================================================================================
     // Globals
     //========================================================================================
@@ -1313,7 +1398,7 @@
     
     exports.Parser = Parser;
     
-    },{"./context":9,"vm":12}],9:[function(require,module,exports){
+    },{"./context":10,"vm":13}],10:[function(require,module,exports){
     //========================================================================================
     // class Context
     //========================================================================================
@@ -1447,7 +1532,7 @@
     
     exports.Context = Context;
     
-    },{}],10:[function(require,module,exports){
+    },{}],11:[function(require,module,exports){
     /*!
      * The buffer module from node.js, for the browser.
      *
@@ -3226,7 +3311,7 @@
       return obj !== obj // eslint-disable-line no-self-compare
     }
     
-    },{"base64-js":7,"ieee754":11}],11:[function(require,module,exports){
+    },{"base64-js":8,"ieee754":12}],12:[function(require,module,exports){
     exports.read = function (buffer, offset, isLE, mLen, nBytes) {
       var e, m
       var eLen = (nBytes * 8) - mLen - 1
@@ -3312,7 +3397,7 @@
       buffer[offset + i - d] |= s * 128
     }
     
-    },{}],12:[function(require,module,exports){
+    },{}],13:[function(require,module,exports){
     var indexOf = function (xs, item) {
         if (xs.indexOf) return xs.indexOf(item);
         else for (var i = 0; i < xs.length; i++) {
@@ -3463,7 +3548,7 @@
         return copy;
     };
     
-    },{}],13:[function(require,module,exports){
+    },{}],14:[function(require,module,exports){
     (function (Buffer){
     var Parser = require('binary-parser').Parser;
     
@@ -3598,65 +3683,43 @@
         .int32('playbackFrames')
         .int32('signOnLength');
     
-    class SourceDemo {
-        constructor() {
-            this.header = undefined;
-            this.messages = undefined;
-        }
-        intervalPerTick() {
-            return this.header.playbackTime / this.header.playbackTicks;
-        }
-        tickrate() {
-            return Math.ceil(this.header.playbackTicks / this.header.playbackTime);
-        }
-        adjust(endTick = 0, startTick = 0, sourceGame = undefined) {
-            if (this.messages.length == 0) {
-                throw new Error('Cannot adjust demo without parsed messages.');
-            }
-    
-            let synced = false;
-            let last = 0;
-            for (let message of this.messages) {
-                if (message.type == 0x03) {
-                    synced = true;
-                }
-    
-                if (!synced) {
-                    message.tick = 0;
-                } else if (message.tick < 0) {
-                    message.tick = last;
-                }
-                last = message.tick;
-            }
-    
-            if (endTick < 1) {
-                endTick = this.messages[this.messages.length - 1].tick;
-            }
-    
-            let delta = endTick - startTick;
-            if (delta < 0) {
-                throw new Error('Start tick is greater than end tick.');
-            }
-    
-            let ipt = this.intervalPerTick();
-            this.header.playbackTicks = delta;
-            this.header.playbackTime = ipt * delta;
-    
-            if (sourceGame != undefined) {
-                return sourceGame.adjustByRules(this);
-            }
-    
-            return this;
-        }
-    }
+    var { SourceDemo } = require('./demo.js');
     
     class SourceDemoParser {
         constructor() {
+            this.headerOnly = false;
             this.headerParser = headerParser;
             this.messageParser = undefined;
             this.autoConfigure = true;
             this.autoAdjust = false;
-            this.headerOnly = false;
+            this.defaultGame = undefined;
+        }
+        static default() {
+            return new SourceDemoParser();
+        }
+        withHeaderOnly(headerOnly) {
+            this.headerOnly = headerOnly;
+            return this;
+        }
+        withHeaderParser(headerParser) {
+            this.headerParser = headerParser;
+            return this;
+        }
+        withMessageParser(messageParser) {
+            this.messageParser = messageParser;
+            return this;
+        }
+        withAutoConfiguration(autoConfigure) {
+            this.autoConfigure = autoConfigure;
+            return this;
+        }
+        withAutoAdjustment(autoAdjust) {
+            this.autoAdjust = autoAdjust;
+            return this;
+        }
+        withDefaultGame(defaultGame) {
+            this.defaultGame = defaultGame;
+            return this;
         }
         parseDemoHeader(demo, buffer) {
             demo.header = this.headerParser.parse(buffer);
@@ -3695,6 +3758,9 @@
             demo.messages = this.messageParser.parse(buffer).messages;
     
             if (this.autoAdjust) {
+                if (this.defaultGame != undefined) {
+                    demo.detectGame(this.defaultGame);
+                }
                 demo.adjust();
             }
     
@@ -3713,10 +3779,14 @@
         }
     }
     
-    var { SourceGames, SourceGame } = require('./game.js');
-    
-    module.exports = { SourceDemo, SourceDemoParser, SourceGames, SourceGame };
+    module.exports = { SourceDemoParser };
     
     }).call(this,require("buffer").Buffer)
-    },{"./game.js":2,"binary-parser":8,"buffer":10}]},{},[1]);
+    },{"./demo.js":2,"binary-parser":9,"buffer":11}],15:[function(require,module,exports){
+    var { SourceDemo } = require('./demo.js');
+    var { SourceGames, SourceGame } = require('./game.js');
+    var { SourceDemoParser } = require('./parser.js');
+    module.exports = { SourceDemo, SourceGames, SourceGame, SourceDemoParser };
+    
+    },{"./demo.js":2,"./game.js":3,"./parser.js":14}]},{},[1]);
     
