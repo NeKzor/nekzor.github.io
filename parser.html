@@ -88,7 +88,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col s12 m12 l1 push-l2">
+            <div class="col s12 m12 l10 push-l2">
                 <div class="file-field input-field">
                     <div class="btn-floating waves-effect waves-light green" title="Add Demo">
                         <i class="material-icons">add</i>
@@ -97,6 +97,10 @@
                     &nbsp;&nbsp;&nbsp;
                     <div id="clear-list" class="btn-floating waves-effect waves-light green" title="Clear All">
                         <i class="material-icons">clear_all</i>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;
+                    <div id="save-list" class="btn-floating waves-effect waves-light green" title="Save Table">
+                        <i class="material-icons">save</i>
                     </div>
                 </div>
             </div>
@@ -255,6 +259,24 @@
             demos = demos.filter(demo => demo != demos[index]);
             displayList();
         };
+        var saveList = () => {
+            if (demos.length > 0) {
+                var rows = ['Map,Client,Ticks,Time,Total Ticks,Total Time'];
+                for (let row of tableEntries.children) {
+                    let items = [];
+                    for (let i = 0; i < row.children.length - 2; ++i) {
+                        items.push(row.children[i].innerHTML);
+                    }
+                    rows.push(items.join(','));
+                }
+
+                var data = new Blob([rows.join('\n')]);
+                var save = document.createElement('a');
+                save.setAttribute('href', window.URL.createObjectURL(data, { type: 'text/csv' }));
+                save.setAttribute('download', 'demo_list.csv');
+                save.click();
+            }
+        };
         var clearList = () => {
             demos = [];
             tableEntries.innerHTML = '';
@@ -371,6 +393,7 @@
         document.getElementById('file-input').addEventListener('change', getSingleFile, false);
         document.getElementById('add-list').addEventListener('change', getMultipleFiles, false);
         document.getElementById('clear-list').addEventListener('click', clearList, false);
+        document.getElementById('save-list').addEventListener('click', saveList, false);
     </script>
 </body>
 
