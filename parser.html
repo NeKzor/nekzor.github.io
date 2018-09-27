@@ -212,6 +212,8 @@
             let index = 0;
 
             if (sortByFileName) {
+                demos = demos.sort((a, b) => a.fileInfo.name.localeCompare(b.fileInfo.name));
+            } else {
                 demos = demos.sort((a, b) => (a.fileInfo.index < b.fileInfo.index) ? -1 : 1);
             }
 
