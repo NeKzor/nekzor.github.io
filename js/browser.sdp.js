@@ -32,7 +32,7 @@
                 }
                 throw new Error('Cannot find tickrate of null tick demo.');
             }
-            return Math.ceil(this.header.playbackTicks / this.header.playbackTime);
+            return this.header.playbackTicks / this.header.playbackTime;
         }
         adjustTicks() {
             if (this.messages.length == 0) {
@@ -53,6 +53,8 @@
                 }
                 last = message.tick;
             }
+    
+            return this;
         }
         adjustRange(endTick = 0, startTick = 0) {
             if (this.messages.length == 0) {
@@ -105,7 +107,7 @@
             return this;
         }
         adjustByRules(demo) {
-            if (demo.game != undefined && demo.game.tickrate == demo.tickrate()) {
+            if (demo.game != undefined) {
                 let gameInfo = (() => {
                     let map = new Map();
     
@@ -255,7 +257,7 @@
                 ],
                 offset: 0,
                 type: 'end',
-                callback: (_, cmd) => {
+                callback: (_, cmds) => {
                     if (cmds != undefined) {
                         let outro = 'playvideo_exitcommand_nointerrupt aegis_interior.bik end_movie movie_aegis_interior';
                         return cmds.current.includes(outro);
@@ -271,7 +273,7 @@
     },{}],5:[function(require,module,exports){
     var Portal = {
         directory: 'portal',
-        tickrate: 66,
+        tickrate: 1 / 0.015,
         rules: [
             {
                 map: 'testchmb_a_00',
@@ -291,7 +293,7 @@
                 map: 'escape_02',
                 offset: 1,
                 type: 'end',
-                callback: (_, cmd) => {
+                callback: (_, cmds) => {
                     if (cmds != undefined) {
                         return cmds.current.includes('startneurotoxins 99999');
                     }
@@ -455,7 +457,7 @@
                 map: 'gg_stage_theend',
                 offset: 0,
                 type: 'end',
-                callback: (_, cmd) => {
+                callback: (_, cmds) => {
                     if (cmds != undefined) {
                         let outro = 'playvideo_exitcommand_nointerrupt at_credits end_movie credits_video';
                         return cmds.current.includes(outro);
