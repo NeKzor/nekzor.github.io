@@ -26,8 +26,9 @@
         </div>
         <div class="nav-content">
             <ul class="tabs tabs-transparent">
-                <li class="tab"><a href="#inspect">Inspect</a></li>
+                <li class="tab"><a href="#info">Info</a></li>
                 <li class="tab"><a href="#list">List</a></li>
+                <li class="tab"><a href="#view">View</a></li>
                 <li class="tab"><a href="#about">About</a></li>
             </ul>
         </div>
@@ -38,15 +39,15 @@
         <li><a href="lp.html">Least Portals</a></li>
         <li><a href="parser.html">Demo Parser</a></li>
     </ul>
-    <div id="inspect">
+    <div id="info" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)">
         <div class="row"></div>
         <div class="row">
             <div class="col s12 m12 l8 push-l2">
                 <form action="#">
                     <div class="file-field input-field">
                         <div class="btn green darken-2">
-                            <span>File</span>
-                            <input type="file" id="file-input">
+                            <span>Open</span>
+                            <input type="file" id="info-input">
                         </div>
                         <div class="file-path-wrapper">
                             <input class="file-path validate white-text" type="text">
@@ -56,19 +57,15 @@
             </div>
         </div>
         <div class="row">
-            <div class="col s12 m6 l4 push-l2" style="height:100%;position: absolute;" ondrop="dropHandler(event)"
-                ondragover="dragOverHandler(event)">
-                <pre id="file-content"></pre>
-            </div>
-            <div class="col s12 m6 push-m6 l4 push-l6 hide-on-small-only">
-                <div id="plot"></div>
+            <div class="col s12 m6 l4 push-l2" style="height:100%;position: absolute;">
+                <pre id="demo-info"></pre>
             </div>
         </div>
     </div>
-    <div id="list">
+    <div id="list" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)">
         <div class="row"></div>
         <div class="row">
-            <div class="col s12 m12 l8 push-l2" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)">
+            <div class="col s12 m12 l8 push-l2">
                 <table class="highlight">
                     <thead>
                         <tr>
@@ -79,11 +76,9 @@
                             <th>Total Ticks</th>
                             <th>Total Time</th>
                             <th></th>
-                            <th></th>
                         </tr>
                     </thead>
-                    <tbody id="table-entries">
-                    </tbody>
+                    <tbody id="list-entries"></tbody>
                 </table>
             </div>
         </div>
@@ -92,19 +87,49 @@
                 <div class="file-field input-field">
                     <div class="btn-floating waves-effect waves-light green" title="Add Demo">
                         <i class="material-icons">add</i>
-                        <input id="add-list" type="file" multiple>
+                        <input id="add-list-item" type="file" multiple>
                     </div>
                     &nbsp;&nbsp;&nbsp;
-                    <div id="clear-list" class="btn-floating waves-effect waves-light green" title="Clear All">
+                    <div id="clear-list" class="btn-floating waves-effect waves-light green" title="Clear List">
                         <i class="material-icons">clear_all</i>
                     </div>
                     &nbsp;&nbsp;&nbsp;
-                    <div id="save-list" class="btn-floating waves-effect waves-light green" title="Save Table">
+                    <div id="save-list" class="btn-floating waves-effect waves-light green" title="Save List">
                         <i class="material-icons">save</i>
+                    </div>
+                </div>
+                <div class="switch">
+                    <label>
+                        Sort by file name
+                        <input id="change-sort-list-method" type="checkbox" checked>
+                        <span class="lever"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="view" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)">
+        <div class="row"></div>
+        <div class="row">
+            <div class="col s12 m12 l8 push-l2">
+                <div id="view-plot"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l8 push-l2">
+                <div class="file-field input-field">
+                    <div class="btn-floating waves-effect waves-light green" title="Add Demo">
+                        <i class="material-icons">add</i>
+                        <input id="add-view" type="file" multiple>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;
+                    <div id="clear-view" class="btn-floating waves-effect waves-light green" title="Clear All">
+                        <i class="material-icons">clear_all</i>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <div id="about">
         <div class="row">
@@ -123,166 +148,64 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script type="text/javascript" src="js/browser.sdp.js"></script>
     <script type="text/javascript">
+        M.Sidenav.init(document.querySelectorAll('.sidenav'), null);
+
         var tabs = M.Tabs.init(document.querySelector('.tabs'), null);
-        var sidenav = M.Sidenav.init(document.querySelectorAll('.sidenav'), null);
+        var demoInfo = document.querySelector('#demo-info');
+        var listEntries = document.querySelector('#list-entries');
 
-        var fileContent = document.getElementById('file-content');
-        var tableEntries = document.getElementById('table-entries');
-
-        var parser = sdp.SourceDemoParser.default()
+        var demoParser = sdp.SourceDemoParser.default()
             .withAutoAdjustment(true)
             .withDefaultGame(new sdp.SourceGame());
 
+        // Info Tab
         var demo = null;
-        var demos = [];
-        var positions = null;
         var commands = null;
-        var sortByFileName = true;
+        var displayInfo = () => {
+            demoInfo.innerHTML = '';
+            if (demo !== null) {
+                demoInfo.innerHTML += `Header:&#10;${JSON.stringify(demo.header, null, 4)}&#10;&#10;Commands:&#10;`;
 
-        var plotData = {
-            mode: 'lines',
-            line: {
-                color: '#1f77b4',
-                width: 3
-            },
-            type: 'scatter3d'
-        };
-        var plotLayout = {
-            title: 'View Origin',
-            width: 460,
-            height: 350,
-            margin: {
-                l: 0,
-                r: 0,
-                b: 0,
-                t: 100
-            },
-            scene: {
-                aspectmode: 'data'
-            }
-        };
-
-        var updatePlot = () => {
-            Plotly.newPlot('plot', [plotData], plotLayout);
-        };
-
-        var dropHandler = (ev) => {
-            ev.preventDefault();
-
-            let files = [];
-
-            if (ev.dataTransfer.items) {
-                for (let i = 0; i < ev.dataTransfer.items.length; ++i) {
-                    if (ev.dataTransfer.items[i].kind === 'file') {
-                        files.push(ev.dataTransfer.items[i].getAsFile());
+                commands = {};
+                demo.messages.forEach((msg) => {
+                    if (msg.type == 0x04) {
+                        commands[msg.tick] = msg.message.command;
                     }
-                }
-            }
+                });
 
-            if (files.length == 1) {
-                parseSingleFile(files[0]);
-            } else if (files.length > 0) {
-                parseMultipleFiles(files);
-            }
-
-            removeDragData(ev)
-        };
-        var dragOverHandler = (ev) => {
-            ev.preventDefault();
-        };
-        var removeDragData = (ev) => {
-            if (ev.dataTransfer.items) {
-                ev.dataTransfer.items.clear();
-            } else {
-                ev.dataTransfer.clearData();
+                demoInfo.innerHTML += `${JSON.stringify(commands, null, 4)}&#10;`;
             }
         };
-
-        var parseSingleFile = (file) => {
+        var parseInfoFile = (file) => {
             let reader = new FileReader();
             reader.onload = (ev) => {
-                demo = parser.parseDemo(new Buffer(ev.target.result));
-                displayInspection();
+                demo = demoParser.parseDemo(new Buffer(ev.target.result));
+                displayInfo();
             };
             reader.readAsArrayBuffer(file);
         };
-        var parseMultipleFiles = (files) => {
-            let count = 0;
-            let index = 0;
-            for (let file of files) {
-                let fileInfo = {
-                    index: index++,
-                    name: file.name
-                };
 
-                let reader = new FileReader();
-                reader.onload = (ev) => {
-                    let source = ev.target.source;
-                    console.log(`Parsing: ${source.name}`);
-
-                    let demo = parser.parseDemo(new Buffer(ev.target.result));
-                    demo.fileInfo = source;
-                    demos.push(demo);
-
-                    if (++count == files.length) {
-                        displayList();
-                    }
-                };
-                reader.source = fileInfo;
-                reader.readAsArrayBuffer(file);
-            }
-        };
-
-        var formatTime = (time) => {
-            let sec = Math.floor(time);
-            let ms = Math.ceil((time - sec) * 1000);
-
-            if (sec >= 60) {
-                let min = sec / 60;
-                sec = sec % 60;
-                if (min >= 60) {
-                    let hrs = min / 60;
-                    min = Math.floor(min % 60);
-                    return `${Math.floor(hrs)}:${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}.${ms.toString().padStart(3, '0')}`;
-                }
-                return `${Math.floor(min)}:${sec.toString().padStart(2, '0')}.${ms.toString().padStart(3, '0')}`;
-            }
-            return `${Math.floor(sec)}.${ms.toString().padStart(3, '0')}`;
-        };
-        var inspectListItem = (index) => {
+        // List Tab
+        var demos = [];
+        var sortByFileName = true;
+        var infoListItem = (index) => {
             demo = demos[index];
-            displayInspection();
-            tabs.select('inspect');
+            displayInfo();
+            tabs.select('info');
             window.scrollTo(0, 0);
+        };
+        var viewListItem = (index) => {
+            addView(demos[index]);
+            tabs.select('view');
+            window.scrollTo(0, 0);
+            displayViewPlot();
         };
         var removeListItem = (index) => {
             demos = demos.filter(demo => demo != demos[index]);
             displayList();
         };
-        var saveList = () => {
-            if (demos.length > 0) {
-                var rows = ['Map,Client,Ticks,Time,Total Ticks,Total Time'];
-                for (let row of tableEntries.children) {
-                    let items = [];
-                    for (let i = 0; i < row.children.length - 2; ++i) {
-                        items.push(row.children[i].innerHTML);
-                    }
-                    rows.push(items.join(','));
-                }
-
-                var data = new Blob([rows.join('\n')]);
-                var save = document.createElement('a');
-                save.setAttribute('href', window.URL.createObjectURL(data, { type: 'text/csv' }));
-                save.setAttribute('download', 'demo_list.csv');
-                save.click();
-            }
-        };
-        var clearList = () => {
-            demos = [];
-            tableEntries.innerHTML = '';
-        };
         var displayList = () => {
-            tableEntries.innerHTML = '';
+            listEntries.innerHTML = '';
 
             let curTicks = 0;
             let curTime = 0;
@@ -303,8 +226,7 @@
                 let time = document.createElement('td');
                 let totalTicks = document.createElement('td');
                 let totalTime = document.createElement('td');
-                let btnInspect = document.createElement('td');
-                let btnRemove = document.createElement('td');
+                let btnOptions = document.createElement('td');
 
                 map.innerHTML = demo.header.mapName;
                 client.innerHTML = demo.header.clientName;
@@ -312,12 +234,17 @@
                 time.innerHTML = formatTime(demo.header.playbackTime);
                 totalTicks.innerHTML = curTicks;
                 totalTime.innerHTML = formatTime(curTime);
-                btnInspect.innerHTML = `
-                    <div class="btn-floating waves-effect waves-light green" title="Inspect Demo"
-                        onclick="inspectListItem(${index})">
-                        <i class="material-icons">search</i>
-                    </div>`;
-                btnRemove.innerHTML = `
+                btnOptions.innerHTML = `
+                    <div class="btn-floating waves-effect waves-light green" title="Switch To Info"
+                        onclick="infoListItem(${index})">
+                        <i class="material-icons">notes</i>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;
+                    <div class="btn-floating waves-effect waves-light green" title="Switch To View"
+                        onclick="viewListItem(${index})">
+                        <i class="material-icons">show_chart</i>
+                    </div>
+                    &nbsp;&nbsp;&nbsp;
                     <div class="btn-floating waves-effect waves-light green" title="Remove Demo"
                         onclick="removeListItem(${index})">
                         <i class="material-icons">clear</i>
@@ -330,70 +257,233 @@
                 entry.appendChild(time);
                 entry.appendChild(totalTicks);
                 entry.appendChild(totalTime);
-                entry.appendChild(btnInspect);
-                entry.appendChild(btnRemove);
+                entry.appendChild(btnOptions);
 
-                tableEntries.appendChild(entry);
+                listEntries.appendChild(entry);
                 ++index;
             }
         };
-        var displayInspection = () => {
-            fileContent.innerHTML = '';
-            if (demo !== null) {
-                fileContent.innerHTML += `Header:&#10;${JSON.stringify(demo.header, null, 4)}&#10;&#10;Commands:&#10;`;
-
-                positions = {
-                    x: [],
-                    y: [],
-                    z: [],
-                    lable: []
+        var parseListFiles = (files) => {
+            let count = 0;
+            let index = demos.length;
+            for (let file of files) {
+                let fileInfo = {
+                    index: index++,
+                    name: file.name
                 };
-                commands = {};
 
-                demo.messages.forEach((msg) => {
-                    if (msg.type == 0x02
-                        && msg.message.packetInfo[0].viewOrigin[0].x != 0
-                        && msg.message.packetInfo[0].viewOrigin[0].y != 0
-                        && msg.message.packetInfo[0].viewOrigin[0].z != 0) {
-                        positions.x.push(msg.message.packetInfo[0].viewOrigin[0].x);
-                        positions.y.push(msg.message.packetInfo[0].viewOrigin[0].y);
-                        positions.z.push(msg.message.packetInfo[0].viewOrigin[0].z);
-                        positions.lable.push(`Tick ${msg.tick}`);
-                    } else if (msg.type == 0x04) {
-                        commands[msg.tick] = msg.message.command;
+                let reader = new FileReader();
+                reader.onload = (ev) => {
+                    let source = ev.target.source;
+                    console.log(`Parsing: ${source.name}`);
+
+                    let demo = demoParser.parseDemo(new Buffer(ev.target.result));
+                    demo.fileInfo = source;
+                    demos.push(demo);
+
+                    if (++count == files.length) {
+                        displayList();
                     }
-                });
-
-                fileContent.innerHTML += `${JSON.stringify(commands, null, 4)}&#10;`;
-
-                plotData.x = positions.x;
-                plotData.y = positions.y;
-                plotData.z = positions.z;
-                plotData.text = positions.lable;
-
-                updatePlot();
+                };
+                reader.source = fileInfo;
+                reader.readAsArrayBuffer(file);
             }
         };
 
-        var getSingleFile = (ev) => {
+        // View Tab
+        var views = [];
+        var viewLayout = {
+            margin: {
+                l: 0,
+                r: 0,
+                b: 0,
+                t: 33
+            },
+            scene: {
+                aspectmode: 'data'
+            },
+            showlegend: true
+        };
+        var addView = (demo) => {
+            let view = {
+                mode: 'lines',
+                line: {
+                    width: 3
+                },
+                type: 'scatter3d',
+                name: demo.fileInfo.name,
+                x: [],
+                y: [],
+                z: [],
+                text: []
+            };
+
+            demo.messages.forEach((msg) => {
+                if (msg.type == 0x02
+                    && msg.message.packetInfo[0].viewOrigin[0].x != 0
+                    && msg.message.packetInfo[0].viewOrigin[0].y != 0
+                    && msg.message.packetInfo[0].viewOrigin[0].z != 0) {
+                    view.x.push(msg.message.packetInfo[0].viewOrigin[0].x);
+                    view.y.push(msg.message.packetInfo[0].viewOrigin[0].y);
+                    view.z.push(msg.message.packetInfo[0].viewOrigin[0].z);
+                    view.text.push(`Tick ${msg.tick}`);
+                }
+            });
+
+            views.push(view);
+        };
+        var displayViewPlot = () => {
+            Plotly.newPlot('view-plot', views, viewLayout, { responsive: true });
+        };
+        var parseViewFiles = (files) => {
+            let count = 0;
+            let index = 0;
+            for (let file of files) {
+                let fileInfo = {
+                    index: index++,
+                    name: file.name
+                };
+
+                let reader = new FileReader();
+                reader.onload = (ev) => {
+                    let source = ev.target.source;
+                    console.log(`Parsing: ${source.name}`);
+
+                    let demo = demoParser.parseDemo(new Buffer(ev.target.result));
+                    demo.fileInfo = source;
+                    addView(demo);
+
+                    if (++count == files.length) {
+                        displayViewPlot();
+                    }
+                };
+                reader.source = fileInfo;
+                reader.readAsArrayBuffer(file);
+            }
+        };
+
+        // Drag & Drop Support
+        var dropHandler = (ev) => {
+            ev.preventDefault();
+
+            let files = [];
+
+            if (ev.dataTransfer.items) {
+                for (let i = 0; i < ev.dataTransfer.items.length; ++i) {
+                    if (ev.dataTransfer.items[i].kind === 'file') {
+                        files.push(ev.dataTransfer.items[i].getAsFile());
+                    }
+                }
+            }
+
+            if (files.length > 0) {
+                switch (ev.target.parentElement.id) {
+                    case 'info':
+                        parseInfoFile(files[0]);
+                        break;
+                    case 'list':
+                        parseListFiles(files);
+                        break;
+                    case 'view':
+                        parseViewFiles(files);
+                        break;
+                }
+            }
+
+            removeDragData(ev)
+        };
+        var dragOverHandler = (ev) => {
+            ev.preventDefault();
+        };
+        var removeDragData = (ev) => {
+            if (ev.dataTransfer.items) {
+                ev.dataTransfer.items.clear();
+            } else {
+                ev.dataTransfer.clearData();
+            }
+        };
+
+        // Util
+        var formatTime = (time) => {
+            let sec = Math.floor(time);
+            let ms = Math.ceil((time - sec) * 1000000).toString().slice(0, 3);
+
+            if (sec >= 60) {
+                let min = sec / 60;
+                sec = sec % 60;
+                if (min >= 60) {
+                    let hrs = min / 60;
+                    min = Math.floor(min % 60);
+                    return `${Math.floor(hrs)}:${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}.${ms.padStart(3, '0')}`;
+                }
+                return `${Math.floor(min)}:${sec.toString().padStart(2, '0')}.${ms.padStart(3, '0')}`;
+            }
+            return `${Math.floor(sec)}.${ms.padStart(3, '0')}`;
+        };
+
+        // Event Listeners
+        document.getElementById('info-input').addEventListener('change', (ev) => {
             let file = ev.target.files[0];
-            if (!file) {
-                return;
+            if (file) {
+                parseInfoFile(file);
             }
-            parseSingleFile(file);
-        };
-        var getMultipleFiles = (ev) => {
+        });
+        document.getElementById('add-list-item').addEventListener('change', (ev) => {
             let files = ev.target.files;
             if (files.length == 0) {
                 return;
             }
-            parseMultipleFiles(files);
-        };
+            parseListFiles(files);
+        });
+        document.getElementById('clear-list').addEventListener('click', () => {
+            demos = [];
+            listEntries.innerHTML = '';
+        });
+        document.getElementById('save-list').addEventListener('click', () => {
+            if (demos.length > 0) {
+                var rows = ['Map,Client,Ticks,Time,Total Ticks,Total Time'];
+                for (let row of listEntries.children) {
+                    let items = [];
+                    for (let i = 0; i < row.children.length - 2; ++i) {
+                        items.push(row.children[i].innerHTML);
+                    }
+                    rows.push(items.join(','));
+                }
 
-        document.getElementById('file-input').addEventListener('change', getSingleFile, false);
-        document.getElementById('add-list').addEventListener('change', getMultipleFiles, false);
-        document.getElementById('clear-list').addEventListener('click', clearList, false);
-        document.getElementById('save-list').addEventListener('click', saveList, false);
+                var data = new Blob([rows.join('\n')]);
+                var save = document.createElement('a');
+                save.setAttribute('href', window.URL.createObjectURL(data, { type: 'text/csv' }));
+                save.setAttribute('download', 'demo_list.csv');
+                save.click();
+            }
+        });
+        document.getElementById('change-sort-list-method').addEventListener('change', (ev) => {
+            sortByFileName = ev.target.checked;
+            displayList();
+        });
+        document.getElementById('add-view').addEventListener('change', (ev) => {
+            let files = ev.target.files;
+            if (files.length == 0) {
+                return;
+            }
+            parseViewFiles(files);
+        });
+        document.getElementById('clear-view').addEventListener('click', (ev) => {
+            let view = {
+                mode: 'lines',
+                line: {
+                    width: 3
+                },
+                type: 'scatter3d',
+                x: [],
+                y: [],
+                z: [],
+                text: []
+            };
+            views = [];
+            views.push(view);
+            displayViewPlot();
+        });
     </script>
 </body>
 
