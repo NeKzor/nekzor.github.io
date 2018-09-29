@@ -42,23 +42,40 @@
     <div id="info" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)">
         <div class="row"></div>
         <div class="row">
-            <div class="col s12 m12 l8 push-l2">
-                <form action="#">
-                    <div class="file-field input-field">
-                        <div class="btn green darken-2">
-                            <span>Open</span>
-                            <input type="file" id="info-input">
-                        </div>
+            <div class="col s12 m12 l2 push-l2">
+                <div class="file-field input-field">
+                    <div class="btn-floating waves-effect waves-light green" title="Open File">
+                        <i class="material-icons">folder_open</i>
+                        <input id="add-info" type="file">
                         <div class="file-path-wrapper">
                             <input class="file-path validate white-text" type="text">
                         </div>
                     </div>
-                </form>
+                    &nbsp;&nbsp;&nbsp;
+                    <div id="add-info-view" class="btn-floating waves-effect waves-light green" title="Add To View">
+                        <i class="material-icons">show_chart</i>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m12 l6 push-l1 center-align">
+                <h4 id="info-header"></h4>
             </div>
         </div>
         <div class="row">
-            <div class="col s12 m6 l4 push-l2" style="height:100%;position: absolute;">
-                <pre id="demo-info"></pre>
+            <div class="col s12 m12 l8 push-l2">
+                <h3 id="info-header"></h3>
+                <h5>Header</h5>
+                <table>
+                    <tbody id="info-header-entries"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l8 push-l2">
+                <h5>Commands</h5>
+                <table>
+                    <tbody id="info-commands-entries"></tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -66,7 +83,7 @@
         <div class="row"></div>
         <div class="row">
             <div class="col s12 m12 l8 push-l2">
-                <table class="highlight">
+                <table>
                     <thead>
                         <tr>
                             <th>Map</th>
@@ -88,6 +105,9 @@
                     <div class="btn-floating waves-effect waves-light green" title="Add Demo">
                         <i class="material-icons">add</i>
                         <input id="add-list-item" type="file" multiple>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate white-text" type="text">
+                        </div>
                     </div>
                     &nbsp;&nbsp;&nbsp;
                     <div id="clear-list" class="btn-floating waves-effect waves-light green" title="Clear List">
@@ -121,6 +141,9 @@
                     <div class="btn-floating waves-effect waves-light green" title="Add Demo">
                         <i class="material-icons">add</i>
                         <input id="add-view" type="file" multiple>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate white-text" type="text">
+                        </div>
                     </div>
                     &nbsp;&nbsp;&nbsp;
                     <div id="clear-view" class="btn-floating waves-effect waves-light green" title="Clear All">
@@ -129,7 +152,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
     <div id="about">
         <div class="row">
@@ -151,37 +173,145 @@
         M.Sidenav.init(document.querySelectorAll('.sidenav'), null);
 
         var tabs = M.Tabs.init(document.querySelector('.tabs'), null);
-        var demoInfo = document.querySelector('#demo-info');
+        var infoHeader = document.querySelector('#info-header');
+        var infoHeaderEntries = document.querySelector('#info-header-entries');
+        var infoCommandsEntries = document.querySelector('#info-commands-entries');
         var listEntries = document.querySelector('#list-entries');
 
-        var demoParser = sdp.SourceDemoParser.default()
-            .withAutoAdjustment(true)
-            .withDefaultGame(new sdp.SourceGame());
+        infoHeaderEntries.innerHTML = '-';
+        infoCommandsEntries.innerHTML = '-';
+
+        var demoParser = new sdp.SourceDemoParser();
+        var defaultGame = new sdp.SourceGame();
+
+        // Demo Parsing & Adjusting
+        var tryParseDemo = (ev, fullAdjustment = true) => {
+            let demo = null;
+            try {
+                console.log(`Parsing: ${ev.target.source.name}`);
+                demo = demoParser.parseDemo(new Buffer(ev.target.result));
+                demo.fileInfo = ev.target.source;
+
+                demo.detectGame(defaultGame)
+                    .adjustTicks(); // Fix message ticks
+
+                if (fullAdjustment) {
+                    demo.adjustment = {
+                        ticks: {},
+                        time: {},
+                        delta: 0
+                    };
+
+                    demo.adjustRange(); // Fix header
+
+                    demo.adjustment.ticks.before = demo.header.playbackTicks;
+                    demo.adjustment.time.before = demo.header.playbackTime;
+
+                    defaultGame.adjustByRules(demo); // Speedrun rules apply here
+
+                    // Adjust 0-tick demos manually
+                    if (demo.header.playbackTicks == 0) {
+                        let ipt = demo.intervalPerTick();
+                        // A TICK IS A TICK, YOU CAN'T SAY ITS NOTHING
+                        demo.header.playbackTicks = 1;
+                        demo.header.playbackTime = ipt;
+                    }
+
+                    demo.adjustment.ticks.after = demo.header.playbackTicks;
+                    demo.adjustment.time.after = demo.header.playbackTime;
+                    demo.adjustment.delta = Math.abs(demo.adjustment.ticks.before - demo.adjustment.ticks.after);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+            return demo;
+        };
+        var getAdjustmentResult = (demo) => {
+            return {
+                ticks: `
+Adjusted by ${demo.adjustment.delta} ticks
+Before: ${demo.adjustment.ticks.before}`,
+                time: `
+Adjusted by ${formatTime(demo.adjustment.delta * demo.intervalPerTick())}
+Before: ${formatTime(demo.adjustment.time.before)}`
+            };
+        };
 
         // Info Tab
         var demo = null;
-        var commands = null;
         var displayInfo = () => {
-            demoInfo.innerHTML = '';
-            if (demo !== null) {
-                demoInfo.innerHTML += `Header:&#10;${JSON.stringify(demo.header, null, 4)}&#10;&#10;Commands:&#10;`;
+            if (demo != null) {
+                let generateRows = (table, rows, setTitleName = true) => {
+                    for (let row of rows) {
+                        let entry = document.createElement('tr');
+                        let name = document.createElement('td');
+                        let data = document.createElement('td');
+                        name.innerHTML = row[0];
+                        data.innerHTML = row[1];
+                        if (row.length == 3) {
+                            if (setTitleName) {
+                                name.setAttribute('title', row[2]);
+                            } else {
+                                data.setAttribute('title', row[2]);
+                            }
+                        }
+                        entry.appendChild(name);
+                        entry.appendChild(data);
+                        table.appendChild(entry);
+                    }
+                };
 
-                commands = {};
+                let header = [
+                    ['Demo File Stamp', demo.header.demoFileStamp],
+                    ['Demo Protocol', demo.header.demoProtocol],
+                    ['Network Protocol', demo.header.networkProtocol],
+                    ['Server Name', demo.header.serverName],
+                    ['Client Name', demo.header.clientName],
+                    ['Map Name', demo.header.mapName],
+                    ['Game Directory', demo.header.gameDirectory],
+                    ['Playback Time', formatTime(demo.header.playbackTime)],
+                    ['Playback Ticks', demo.header.playbackTicks],
+                    ['Playback Frames', demo.header.playbackFrames],
+                    ['Sign On Length', demo.header.signOnLength]
+                ];
+
+                if (demo.adjustment.delta != 0) {
+                    let adjustmentResult = getAdjustmentResult(demo);
+                    header[7].push(adjustmentResult.time);
+                    header[8].push(adjustmentResult.ticks);
+                }
+
+                let commands = [];
+                let ipt = demo.intervalPerTick();
                 demo.messages.forEach((msg) => {
                     if (msg.type == 0x04) {
-                        commands[msg.tick] = msg.message.command;
+                        commands.push([msg.tick, msg.message.command, formatTime(msg.tick * ipt)]);
                     }
                 });
 
-                demoInfo.innerHTML += `${JSON.stringify(commands, null, 4)}&#10;`;
+                infoHeader.innerHTML = demo.fileInfo.name;
+                infoHeaderEntries.innerHTML = '';
+                infoCommandsEntries.innerHTML = '';
+                generateRows(infoHeaderEntries, header, false);
+                generateRows(infoCommandsEntries, commands);
+            } else {
+                infoHeader.innerHTML = 'oof :(';
+                infoHeaderEntries.innerHTML = '-';
+                infoCommandsEntries.innerHTML = '-';
             }
         };
         var parseInfoFile = (file) => {
+            demo = null;
+            let fileInfo = {
+                name: file.name
+            };
+
             let reader = new FileReader();
             reader.onload = (ev) => {
-                demo = demoParser.parseDemo(new Buffer(ev.target.result));
+                demo = tryParseDemo(ev);
                 displayInfo();
             };
+            reader.source = fileInfo;
             reader.readAsArrayBuffer(file);
         };
 
@@ -212,7 +342,7 @@
             let index = 0;
 
             if (sortByFileName) {
-                demos = demos.sort((a, b) => a.fileInfo.name.localeCompare(b.fileInfo.name));
+                demos = demos.sort((a, b) => a.fileInfo.name.localeCompare(b.fileInfo.name, undefined, { numeric: true }));
             } else {
                 demos = demos.sort((a, b) => (a.fileInfo.index < b.fileInfo.index) ? -1 : 1);
             }
@@ -237,12 +367,12 @@
                 totalTicks.innerHTML = curTicks;
                 totalTime.innerHTML = formatTime(curTime);
                 btnOptions.innerHTML = `
-                    <div class="btn-floating waves-effect waves-light green" title="Switch To Info"
+                    <div class="btn-floating waves-effect waves-light green" title="View Info"
                         onclick="infoListItem(${index})">
                         <i class="material-icons">notes</i>
                     </div>
                     &nbsp;&nbsp;&nbsp;
-                    <div class="btn-floating waves-effect waves-light green" title="Switch To View"
+                    <div class="btn-floating waves-effect waves-light green" title="Add To View"
                         onclick="viewListItem(${index})">
                         <i class="material-icons">show_chart</i>
                     </div>
@@ -251,6 +381,12 @@
                         onclick="removeListItem(${index})">
                         <i class="material-icons">clear</i>
                     </div>`;
+
+                if (demo.adjustment.delta != 0) {
+                    let adjustmentResult = getAdjustmentResult(demo);
+                    time.setAttribute('title', adjustmentResult.time);
+                    ticks.setAttribute('title', adjustmentResult.ticks);
+                }
 
                 let entry = document.createElement('tr');
                 entry.appendChild(map);
@@ -276,12 +412,10 @@
 
                 let reader = new FileReader();
                 reader.onload = (ev) => {
-                    let source = ev.target.source;
-                    console.log(`Parsing: ${source.name}`);
-
-                    let demo = demoParser.parseDemo(new Buffer(ev.target.result));
-                    demo.fileInfo = source;
-                    demos.push(demo);
+                    let demo = tryParseDemo(ev);
+                    if (demo != null) {
+                        demos.push(demo);
+                    }
 
                     if (++count == files.length) {
                         displayList();
@@ -307,6 +441,10 @@
             showlegend: true
         };
         var addView = (demo) => {
+            if (demo == null) {
+                return;
+            }
+
             let view = {
                 mode: 'lines',
                 line: {
@@ -348,12 +486,7 @@
 
                 let reader = new FileReader();
                 reader.onload = (ev) => {
-                    let source = ev.target.source;
-                    console.log(`Parsing: ${source.name}`);
-
-                    let demo = demoParser.parseDemo(new Buffer(ev.target.result));
-                    demo.fileInfo = source;
-                    addView(demo);
+                    addView(tryParseDemo(ev, false));
 
                     if (++count == files.length) {
                         displayViewPlot();
@@ -408,7 +541,10 @@
         // Util
         var formatTime = (time) => {
             let sec = Math.floor(time);
-            let ms = Math.ceil((time - sec) * 1000000).toString().slice(0, 3);
+            let ms = Math.ceil((time - sec) * 1000000)
+                .toString()
+                .padStart(6, '0')
+                .slice(0, 3);
 
             if (sec >= 60) {
                 let min = sec / 60;
@@ -416,19 +552,29 @@
                 if (min >= 60) {
                     let hrs = min / 60;
                     min = Math.floor(min % 60);
-                    return `${Math.floor(hrs)}:${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}.${ms.padStart(3, '0')}`;
+                    return `${Math.floor(hrs)}:${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}.${ms}`;
                 }
-                return `${Math.floor(min)}:${sec.toString().padStart(2, '0')}.${ms.padStart(3, '0')}`;
+                return `${Math.floor(min)}:${sec.toString().padStart(2, '0')}.${ms}`;
             }
-            return `${Math.floor(sec)}.${ms.padStart(3, '0')}`;
+            return `${Math.floor(sec)}.${ms}`;
         };
 
         // Event Listeners
-        document.getElementById('info-input').addEventListener('change', (ev) => {
+        document.getElementById('add-info').addEventListener('change', (ev) => {
             let file = ev.target.files[0];
             if (file) {
                 parseInfoFile(file);
             }
+        });
+        document.getElementById('add-info-view').addEventListener('click', (ev) => {
+            if (demo == null) {
+                return;
+            }
+
+            addView(demo);
+            tabs.select('view');
+            window.scrollTo(0, 0);
+            displayViewPlot();
         });
         document.getElementById('add-list-item').addEventListener('change', (ev) => {
             let files = ev.target.files;
