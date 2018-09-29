@@ -229,7 +229,7 @@
         var getAdjustmentResult = (demo) => {
             return {
                 ticks: `
-Adjusted by ${demo.adjustment.delta} ticks
+Adjusted by ${demo.adjustment.delta} tick${(demo.adjustment.delta == 1) ? '' : 's'}
 Before: ${demo.adjustment.ticks.before}`,
                 time: `
 Adjusted by ${formatTime(demo.adjustment.delta * demo.intervalPerTick())}
