@@ -73,6 +73,16 @@
         <div class="row">
             <div class="col s12 m12 l8 push-l2">
                 <h5>Commands</h5>
+                <div class="row">
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field col s12 m12 l12">
+                                <textarea id="info-commands-filter" class="materialize-textarea white-text" spellcheck="false"></textarea>
+                                <label for="info-commands-filter">Filter out</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
                 <table>
                     <tbody id="info-commands-entries"></tbody>
                 </table>
@@ -207,14 +217,14 @@
                     demo.adjustment.ticks.before = demo.header.playbackTicks;
                     demo.adjustment.time.before = demo.header.playbackTime;
 
-                    defaultGame.adjustByRules(demo); // Speedrun rules apply here
-
                     // Adjust 0-tick demos manually
                     if (demo.header.playbackTicks == 0) {
                         let ipt = demo.intervalPerTick();
                         // A TICK IS A TICK, YOU CAN'T SAY ITS NOTHING
                         demo.header.playbackTicks = 1;
                         demo.header.playbackTime = ipt;
+                    } else {
+                        defaultGame.adjustByRules(demo); // Speedrun rules apply here
                     }
 
                     demo.adjustment.ticks.after = demo.header.playbackTicks;
@@ -239,6 +249,8 @@ Before: ${formatTime(demo.adjustment.time.before)}`
 
         // Info Tab
         var demo = null;
+        var commandsFilter = [];
+        var commandsFilterTimeout = null;
         var displayInfo = () => {
             if (demo != null) {
                 let generateRows = (table, rows, setTitleName = true) => {
@@ -285,6 +297,9 @@ Before: ${formatTime(demo.adjustment.time.before)}`
                 let ipt = demo.intervalPerTick();
                 demo.messages.forEach((msg) => {
                     if (msg.type == 0x04) {
+                        if (commandsFilter.length != 0 && commandsFilter.includes(msg.message.command)) {
+                            return;
+                        }
                         commands.push([msg.tick, msg.message.command, formatTime(msg.tick * ipt)]);
                     }
                 });
@@ -512,7 +527,7 @@ Before: ${formatTime(demo.adjustment.time.before)}`
             }
 
             if (files.length > 0) {
-                switch (ev.target.parentElement.id) {
+                switch (ev.currentTarget.id) {
                     case 'info':
                         parseInfoFile(files[0]);
                         break;
@@ -631,6 +646,16 @@ Before: ${formatTime(demo.adjustment.time.before)}`
             views = [];
             views.push(view);
             displayViewPlot();
+        });
+        document.getElementById('info-commands-filter').addEventListener('input', (ev) => {
+            clearTimeout(commandsFilterTimeout);
+            commandsFilterTimeout = setTimeout(() => {
+                commandsFilter = [];
+                if (ev.target.value != "") {
+                    commandsFilter = ev.target.value.split('\n');
+                }
+                displayInfo();
+            }, 1000);
         });
     </script>
 </body>
