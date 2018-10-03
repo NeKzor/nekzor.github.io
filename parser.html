@@ -170,19 +170,34 @@
                 <div class="col s12 m12 l10 push-l2">
                     <h3><a class="link" href="https://github.com/NeKzor/sdp.js">sdp.js</a></h3>
                     <p>
-                        Experimental Source Engine demo parser for Node.js.
+                        Simple Source Engine demo parser for Node.js.
+                    </p>
+                    <br>
+                    <h5>Features</h5>
+                    <ul>
+                        <li><b>•</b>&nbsp;&nbsp;&nbsp;Support for protocol 2, 3 and 4</li>
+                        <li><b>•</b>&nbsp;&nbsp;&nbsp;Automatic tick adjustment with rules made by speedrunning communities</li>
+                        <li><b>•</b>&nbsp;&nbsp;&nbsp;Console command inspection with filter function</li>
+                        <li><b>•</b>&nbsp;&nbsp;&nbsp;List multiple demos and export table to csv</li>
+                        <li><b>•</b>&nbsp;&nbsp;&nbsp;View camera position in 3D plot</li>
+                    </ul>
+                    <br>
+                    <p>
+                        Special thanks to spidda for testing this first!
                     </p>
                 </div>
             </div>
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        M.Sidenav.init(document.querySelectorAll('.sidenav'));
+        M.Tabs.init(document.querySelector('.tabs'));
+    </script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script type="text/javascript" src="js/browser.sdp.js"></script>
     <script type="text/javascript">
-        M.Sidenav.init(document.querySelectorAll('.sidenav'), null);
-
-        var tabs = M.Tabs.init(document.querySelector('.tabs'), null);
+        var tabs = M.Tabs.getInstance(document.querySelector('.tabs'));
         var infoHeader = document.querySelector('#info-header');
         var infoHeaderEntries = document.querySelector('#info-header-entries');
         var infoCommandsEntries = document.querySelector('#info-commands-entries');
@@ -473,6 +488,10 @@ Before: ${formatTime(demo.adjustment.time.before)}`
                 text: []
             };
 
+            if (views.length == 1 && views[0].unused) {
+                views.pop();
+            }
+
             demo.messages.forEach((msg) => {
                 if (msg.type == 0x02
                     && msg.message.packetInfo[0].viewOrigin[0].x != 0
@@ -574,6 +593,66 @@ Before: ${formatTime(demo.adjustment.time.before)}`
             return `${Math.floor(sec)}.${ms}`;
         };
 
+        // Unused extensions
+        // Rebase from tick 14: [13, 14, 15] -> [0, 0, 1]
+        sdp.SourceDemo.prototype.rebaseFrom = function (tick) {
+            if (this.messages.length == 0) {
+                throw new Error('Cannot adjust ticks without parsed messages.');
+            }
+
+            let synced = false;
+            let last = 0;
+            for (let message of this.messages) {
+                if (message.tick == tick) {
+                    synced = true;
+                }
+
+                if (!synced) {
+                    message.tick = 0;
+                } else if (message.tick < 0) {
+                    message.tick = last;
+                } else {
+                    message.tick -= tick;
+                }
+
+                last = message.tick;
+            }
+        };
+        // Get potential overlapping ticks between two demos
+        sdp.SourceDemo.prototype.getSyncedTicks = function (demo, viewTolerance = 1) {
+            if (this.messages.length == 0 || demo.messages.length == 0) {
+                throw new Error('Cannot adjust ticks without parsed messages.');
+            }
+
+            let syncedTicks = [];
+            for (let message of this.messages) {
+                if (message.type == 0x02) {
+                    let view = message.message.packetInfo[0].viewOrigin[0];
+                    let result = demo.messages.find(msg => {
+                        if (msg.type != 0x02) {
+                            return false;
+                        }
+                        let match = msg.message.packetInfo[0].viewOrigin[0];
+                        return Math.abs(match.x - view.x) <= viewTolerance
+                            && Math.abs(match.y - view.y) <= viewTolerance
+                            && Math.abs(match.z - view.z) <= viewTolerance;
+                    });
+                    if (result != undefined) {
+                        syncedTicks.push({
+                            source: message.tick,
+                            destination: result.tick,
+                            delta: Math.abs(message.tick - result.tick),
+                            x: message.message.packetInfo[0].viewOrigin[0].x,
+                            y: message.message.packetInfo[0].viewOrigin[0].y,
+                            z: message.message.packetInfo[0].viewOrigin[0].z
+                        });
+                    }
+                }
+            }
+
+            return syncedTicks;
+        };
+
         // Event Listeners
         document.getElementById('add-info').addEventListener('change', (ev) => {
             let file = ev.target.files[0];
@@ -641,7 +720,8 @@ Before: ${formatTime(demo.adjustment.time.before)}`
                 x: [],
                 y: [],
                 z: [],
-                text: []
+                text: [],
+                unused: true
             };
             views = [];
             views.push(view);
