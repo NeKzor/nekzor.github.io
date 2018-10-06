@@ -72,6 +72,13 @@
         </div>
         <div class="row">
             <div class="col s12 m12 l8 push-l2">
+                <h3 id="info-inputs"></h3>
+                <h5>Inputs</h5>
+                <canvas id="inputs"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l8 push-l2">
                 <h5>Commands</h5>
                 <div class="row">
                     <form class="col s12">
@@ -176,10 +183,14 @@
                     <h5>Features</h5>
                     <ul>
                         <li><b>•</b>&nbsp;&nbsp;&nbsp;Support for protocol 2, 3 and 4</li>
-                        <li><b>•</b>&nbsp;&nbsp;&nbsp;Automatic tick adjustment with rules made by speedrunning communities</li>
+                        <li><b>•</b>&nbsp;&nbsp;&nbsp;Automatic tick adjustment with rules defined by speedrunning
+                            communities</li>
                         <li><b>•</b>&nbsp;&nbsp;&nbsp;Console command inspection with filter function</li>
-                        <li><b>•</b>&nbsp;&nbsp;&nbsp;List multiple demos and export table to csv</li>
-                        <li><b>•</b>&nbsp;&nbsp;&nbsp;View camera position in 3D plot</li>
+                        <li><b>•</b>&nbsp;&nbsp;&nbsp;Demo listing and csv exporter</li>
+                        <li><b>•</b>&nbsp;&nbsp;&nbsp;Camera position in 3D plot</li>
+                        <li><b>•</b>&nbsp;&nbsp;&nbsp;Button inputs view</li>
+                        <li><b>•</b>&nbsp;&nbsp;&nbsp;<a class="link" href="https://github.com/NeKzor/SourceAutoRecord">SourceAutoRecord</a>
+                            timing</li>
                     </ul>
                     <br>
                     <p>
@@ -200,6 +211,7 @@
         var tabs = M.Tabs.getInstance(document.querySelector('.tabs'));
         var infoHeader = document.querySelector('#info-header');
         var infoHeaderEntries = document.querySelector('#info-header-entries');
+        var infoInputsCanvas = document.querySelector('#inputs');
         var infoCommandsEntries = document.querySelector('#info-commands-entries');
         var listEntries = document.querySelector('#list-entries');
 
@@ -240,6 +252,9 @@
                         demo.header.playbackTime = ipt;
                     } else {
                         defaultGame.adjustByRules(demo); // Speedrun rules apply here
+
+                        // Check SAR support
+                        demo.sar = demo.findSourceAutoRecordTiming();
                     }
 
                     demo.adjustment.ticks.after = demo.header.playbackTicks;
@@ -261,6 +276,130 @@ Adjusted by ${formatTime(demo.adjustment.delta * demo.intervalPerTick())}
 Before: ${formatTime(demo.adjustment.time.before)}`
             };
         };
+        var getSourceAutoRecordResult = (demo) => {
+            return {
+                ticks: `
+SAR: ${demo.sar.delta} tick${(demo.sar.delta == 1) ? '' : 's'}`,
+                time: `
+SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`
+            };
+        }
+
+        // Drawing stuff
+        var inputContext = infoInputsCanvas.getContext('2d');
+        var inputs = [];
+        var inputsIndex = 0;
+        var buttonSize = 50;
+        var buttonPadding = 2;
+        var drawingActive = false;
+        var drawingFps = 60;
+        var prepareInputs = () => {
+            drawingActive = false;
+            inputsIndex = 0;
+
+            let userCmds = [];
+            try {
+                userCmds = demoParser.encodeUserCmdMessages(demo);
+            } catch (error) {
+                console.error(error);
+                return;
+            }
+
+            let map = [];
+            userCmds.forEach((cmd) => {
+                if (cmd.buttons) {
+                    if (cmd.buttons & (1 << 0)) map.push({ tick: cmd.source.tick, type: 'IN_ATTACK' });
+                    if (cmd.buttons & (1 << 1)) map.push({ tick: cmd.source.tick, type: 'IN_JUMP' });
+                    if (cmd.buttons & (1 << 2)) map.push({ tick: cmd.source.tick, type: 'IN_DUCK' });
+                    if (cmd.buttons & (1 << 3)) map.push({ tick: cmd.source.tick, type: 'IN_FORWARD' });
+                    if (cmd.buttons & (1 << 4)) map.push({ tick: cmd.source.tick, type: 'IN_BACK' });
+                    if (cmd.buttons & (1 << 5)) map.push({ tick: cmd.source.tick, type: 'IN_USE' });
+                    if (cmd.buttons & (1 << 9)) map.push({ tick: cmd.source.tick, type: 'IN_MOVELEFT' });
+                    if (cmd.buttons & (1 << 10)) map.push({ tick: cmd.source.tick, type: 'IN_MOVERIGHT' });
+                    if (cmd.buttons & (1 << 11)) map.push({ tick: cmd.source.tick, type: 'IN_ATTACK2' });
+                    if (cmd.buttons & (1 << 13)) map.push({ tick: cmd.source.tick, type: 'IN_RELOAD' });
+                    if (cmd.buttons & (1 << 17)) map.push({ tick: cmd.source.tick, type: 'IN_SPEED' });
+                }
+            });
+
+            inputs = [];
+            if (map.length > 0) {
+                let lastTick = map[map.length - 1].tick;
+
+                for (let tick = 0; tick <= lastTick; ++tick) {
+                    inputs.push(map.filter(cmd => cmd.tick == tick));
+                }
+
+                drawingActive = inputs.length > 0;
+            }
+        };
+        var drawInputs = () => {
+            if (!drawingActive) {
+                return;
+            }
+
+            inputContext.clearRect(0, 0, infoInputsCanvas.width, infoInputsCanvas.height);
+
+            let input = inputs[inputsIndex];
+            if (inputsIndex + 1 >= inputs.length) {
+                inputsIndex = 0;
+            }
+
+            if (input.length > 0) {
+                if (input.find(i => i.type == 'IN_FORWARD') != undefined) drawButton('W', 2, 0, buttonSize);
+                if (input.find(i => i.type == 'IN_USE') != undefined) drawButton('E', 3, 0, buttonSize);
+                if (input.find(i => i.type == 'IN_RELOAD') != undefined) drawButton('R', 4, 0, buttonSize);
+                if (input.find(i => i.type == 'IN_MOVELEFT') != undefined) drawButton('A', 1, 1, buttonSize);
+                if (input.find(i => i.type == 'IN_BACK') != undefined) drawButton('S', 2, 1, buttonSize);
+                if (input.find(i => i.type == 'IN_MOVERIGHT') != undefined) drawButton('D', 3, 1, buttonSize);
+                if (input.find(i => i.type == 'IN_SPEED') != undefined) drawButton('Shift', 0, 1, buttonSize);
+                if (input.find(i => i.type == 'IN_DUCK') != undefined) drawButton('Ctrl', 0, 2, buttonSize);
+                if (input.find(i => i.type == 'IN_JUMP') != undefined) drawButton('Spacebar', 1, 2, buttonSize, buttonSize, 4);
+                if (input.find(i => i.type == 'IN_ATTACK') != undefined) drawButton('LMB', 5, 2, buttonSize);
+                if (input.find(i => i.type == 'IN_ATTACK2') != undefined) drawButton('RMB', 6, 2, buttonSize);
+            }
+
+            // Tick count label
+            inputContext.fillStyle = 'rgba(255, 255, 255, 1)';
+            inputContext.font = '12px Arial';
+            inputContext.textAlign = 'left';
+            inputContext.textBaseline = 'middle';
+            inputContext.fillText(`Tick: ${inputsIndex++}`, 10, 10);
+
+            setTimeout(() => window.requestAnimationFrame(drawInputs), 1000 / drawingFps);
+        };
+        var drawButton = (text, column, row, width, height, widthFactor = 1, heightFactor = 1) => {
+            height = height || width;
+            // Rectangle
+            inputContext.fillStyle = `rgba(0, 0, 0, 0.5)`;
+            let rX = (width * column) + (buttonPadding * column);
+            let rY = (height * row) + (buttonPadding * row);
+            let rWidth = width * widthFactor + (buttonPadding * (widthFactor - 1));
+            let rHeight = height * heightFactor + (buttonPadding * (heightFactor - 1));
+            inputContext.fillRect(rX, rY, rWidth, rHeight);
+            // Label
+            inputContext.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            inputContext.font = '12px Arial';
+            inputContext.textAlign = 'center';
+            inputContext.textBaseline = 'middle';
+            inputContext.fillText(text, rX + (rWidth / 2), rY + (rHeight / 2));
+        };
+        var initButtons = () => {
+            infoInputsCanvas.width = (buttonSize * 7) + (buttonPadding * 7);
+            infoInputsCanvas.height = (buttonSize * 3) + (buttonPadding * 3);
+            drawButton('W', 2, 0, buttonSize);
+            drawButton('E', 3, 0, buttonSize);
+            drawButton('R', 4, 0, buttonSize);
+            drawButton('A', 1, 1, buttonSize);
+            drawButton('S', 2, 1, buttonSize);
+            drawButton('D', 3, 1, buttonSize);
+            drawButton('Shift', 0, 1, buttonSize);
+            drawButton('Ctrl', 0, 2, buttonSize);
+            drawButton('Spacebar', 1, 2, buttonSize, buttonSize, 4);
+            drawButton('LMB', 5, 2, buttonSize);
+            drawButton('RMB', 6, 2, buttonSize);
+        };
+        initButtons();
 
         // Info Tab
         var demo = null;
@@ -306,6 +445,10 @@ Before: ${formatTime(demo.adjustment.time.before)}`
                     let adjustmentResult = getAdjustmentResult(demo);
                     header[7].push(adjustmentResult.time);
                     header[8].push(adjustmentResult.ticks);
+                } else if (demo.sar && demo.sar.delta >= 0) {
+                    let sarResult = getSourceAutoRecordResult(demo);
+                    header[7].push(sarResult.time);
+                    header[8].push(sarResult.ticks);
                 }
 
                 let commands = [];
@@ -340,6 +483,8 @@ Before: ${formatTime(demo.adjustment.time.before)}`
             reader.onload = (ev) => {
                 demo = tryParseDemo(ev);
                 displayInfo();
+                prepareInputs();
+                drawInputs();
             };
             reader.source = fileInfo;
             reader.readAsArrayBuffer(file);
@@ -416,6 +561,10 @@ Before: ${formatTime(demo.adjustment.time.before)}`
                     let adjustmentResult = getAdjustmentResult(demo);
                     time.setAttribute('title', adjustmentResult.time);
                     ticks.setAttribute('title', adjustmentResult.ticks);
+                }  else if (demo.sar && demo.sar.delta >= 0) {
+                    let sarResult = getSourceAutoRecordResult(demo);
+                    time.setAttribute('title', sarResult.time);
+                    ticks.setAttribute('title', sarResult.ticks);
                 }
 
                 let entry = document.createElement('tr');
@@ -652,6 +801,30 @@ Before: ${formatTime(demo.adjustment.time.before)}`
 
             return syncedTicks;
         };
+        // Calculate ticks for SAR runs
+        sdp.SourceDemo.prototype.findSourceAutoRecordTiming = function () {
+            if (this.messages.length == 0) {
+                throw new Error('Cannot adjust ticks without parsed messages.');
+            }
+
+            let SAR = [];
+            for (let message of this.messages) {
+                if (message.type == 0x04) {
+                    if (message.message.command == 'sar_timer_start') {
+                        SAR.push({ tick: message.tick, type: 'start' })
+                    } else if (message.message.command == 'sar_timer_stop') {
+                        SAR.push({ tick: message.tick, type: 'stop' })
+                    }
+                }
+            }
+
+            let start = SAR.reverse().find(x => x.type == 'start');
+            let end = SAR.find(x => x.type == 'stop');
+
+            return (start != undefined && end != undefined)
+                ? { startTick: start.tick, endTick: end.tick, delta: end.tick - start.tick }
+                : undefined;
+        };
 
         // Event Listeners
         document.getElementById('add-info').addEventListener('change', (ev) => {
@@ -728,6 +901,10 @@ Before: ${formatTime(demo.adjustment.time.before)}`
             displayViewPlot();
         });
         document.getElementById('info-commands-filter').addEventListener('input', (ev) => {
+            if (demo == null) {
+                return;
+            }
+
             clearTimeout(commandsFilterTimeout);
             commandsFilterTimeout = setTimeout(() => {
                 commandsFilter = [];
@@ -736,6 +913,21 @@ Before: ${formatTime(demo.adjustment.time.before)}`
                 }
                 displayInfo();
             }, 1000);
+        });
+        document.getElementById('inputs').addEventListener('click', (ev) => {
+            if (inputs.length > 0) {
+                if (drawingActive) {
+                    drawingActive = false;
+                } else {
+                    drawingActive = true;
+                    drawInputs();
+                }
+            }
+        });
+        document.getElementById('inputs').addEventListener('dblclick', (ev) => {
+            if (inputs.length > 0) {
+                inputsIndex = 0;
+            }
         });
     </script>
 </body>
