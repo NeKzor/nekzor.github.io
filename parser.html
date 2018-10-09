@@ -385,6 +385,7 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`
             inputContext.fillText(text, rX + (rWidth / 2), rY + (rHeight / 2));
         };
         var initButtons = () => {
+            inputs = [];
             drawingActive = false;
             inputsIndex = 0;
             infoInputsCanvas.width = (buttonSize * 7) + (buttonPadding * 7);
