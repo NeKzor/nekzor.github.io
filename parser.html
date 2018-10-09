@@ -251,7 +251,7 @@
                         demo.header.playbackTicks = 1;
                         demo.header.playbackTime = ipt;
                     } else {
-                        defaultGame.adjustByRules(demo); // Speedrun rules apply here
+                        defaultGame.adjustByRules(demo, splitScreenIndex); // Speedrun rules apply here
 
                         // Check SAR support
                         demo.sar = demo.findSourceAutoRecordTiming();
@@ -385,6 +385,8 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`
             inputContext.fillText(text, rX + (rWidth / 2), rY + (rHeight / 2));
         };
         var initButtons = () => {
+            drawingActive = false;
+            inputsIndex = 0;
             infoInputsCanvas.width = (buttonSize * 7) + (buttonPadding * 7);
             infoInputsCanvas.height = (buttonSize * 3) + (buttonPadding * 3);
             drawButton('W', 2, 0, buttonSize);
@@ -471,6 +473,7 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`
                 infoHeader.innerHTML = 'oof :(';
                 infoHeaderEntries.innerHTML = '-';
                 infoCommandsEntries.innerHTML = '-';
+                initButtons();
             }
         };
         var parseInfoFile = (file) => {
@@ -607,6 +610,7 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`
 
         // View Tab
         var views = [];
+        var splitScreenIndex = 0;
         var viewLayout = {
             margin: {
                 l: 0,
@@ -643,12 +647,12 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`
 
             demo.messages.forEach((msg) => {
                 if (msg.type == 0x02
-                    && msg.message.packetInfo[0].viewOrigin[0].x != 0
-                    && msg.message.packetInfo[0].viewOrigin[0].y != 0
-                    && msg.message.packetInfo[0].viewOrigin[0].z != 0) {
-                    view.x.push(msg.message.packetInfo[0].viewOrigin[0].x);
-                    view.y.push(msg.message.packetInfo[0].viewOrigin[0].y);
-                    view.z.push(msg.message.packetInfo[0].viewOrigin[0].z);
+                    && msg.message.packetInfo[splitScreenIndex].viewOrigin[0].x != 0
+                    && msg.message.packetInfo[splitScreenIndex].viewOrigin[0].y != 0
+                    && msg.message.packetInfo[splitScreenIndex].viewOrigin[0].z != 0) {
+                    view.x.push(msg.message.packetInfo[splitScreenIndex].viewOrigin[0].x);
+                    view.y.push(msg.message.packetInfo[splitScreenIndex].viewOrigin[0].y);
+                    view.z.push(msg.message.packetInfo[splitScreenIndex].viewOrigin[0].z);
                     view.text.push(`Tick ${msg.tick}`);
                 }
             });
@@ -768,7 +772,7 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`
             }
         };
         // Get potential overlapping ticks between two demos
-        sdp.SourceDemo.prototype.getSyncedTicks = function (demo, viewTolerance = 1) {
+        sdp.SourceDemo.prototype.getSyncedTicks = function (demo, viewTolerance = 1, splitScreenIndex = 0) {
             if (this.messages.length == 0 || demo.messages.length == 0) {
                 throw new Error('Cannot adjust ticks without parsed messages.');
             }
@@ -776,12 +780,12 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`
             let syncedTicks = [];
             for (let message of this.messages) {
                 if (message.type == 0x02) {
-                    let view = message.message.packetInfo[0].viewOrigin[0];
+                    let view = message.message.packetInfo[splitScreenIndex].viewOrigin[0];
                     let result = demo.messages.find(msg => {
                         if (msg.type != 0x02) {
                             return false;
                         }
-                        let match = msg.message.packetInfo[0].viewOrigin[0];
+                        let match = msg.message.packetInfo[splitScreenIndex].viewOrigin[0];
                         return Math.abs(match.x - view.x) <= viewTolerance
                             && Math.abs(match.y - view.y) <= viewTolerance
                             && Math.abs(match.z - view.z) <= viewTolerance;
@@ -791,9 +795,9 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`
                             source: message.tick,
                             destination: result.tick,
                             delta: Math.abs(message.tick - result.tick),
-                            x: message.message.packetInfo[0].viewOrigin[0].x,
-                            y: message.message.packetInfo[0].viewOrigin[0].y,
-                            z: message.message.packetInfo[0].viewOrigin[0].z
+                            x: message.message.packetInfo[splitScreenIndex].viewOrigin[0].x,
+                            y: message.message.packetInfo[splitScreenIndex].viewOrigin[0].y,
+                            z: message.message.packetInfo[splitScreenIndex].viewOrigin[0].z
                         });
                     }
                 }

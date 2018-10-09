@@ -76,11 +76,11 @@
     
             return this;
         }
-        adjust() {
+        adjust(splitScreenIndex = 0) {
             this.adjustTicks();
             this.adjustRange();
             return (this.game != undefined)
-                ? this.game.source.adjustByRules(this)
+                ? this.game.source.adjustByRules(this, splitScreenIndex)
                 : this;
         }
     }
@@ -106,7 +106,7 @@
             this.gameList = gameList;
             return this;
         }
-        adjustByRules(demo) {
+        adjustByRules(demo, splitScreenIndex = 0) {
             if (demo.game != undefined) {
                 let gameInfo = (() => {
                     let map = new Map();
@@ -123,7 +123,7 @@
                     for (let [tick, info] of map) {
                         let packet = packets.find(p => p.tick == tick);
                         if (packet != undefined) {
-                            let newPosition = packet.message.packetInfo[0].viewOrigin[0];
+                            let newPosition = packet.message.packetInfo[splitScreenIndex].viewOrigin[0];
                             if (newPosition != undefined) {
                                 info.position = {
                                     previous: oldPosition,
