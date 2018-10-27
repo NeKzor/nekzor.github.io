@@ -29,6 +29,7 @@
 - [History](history)
 - [Skill Points](skill)
 - [SEUM](seum)
+- [Yearly](yearly)
 
 #### Source Engine Cvars
 
