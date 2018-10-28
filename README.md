@@ -12,11 +12,6 @@
 #### JS
 - [sdp.js](https://github.com/NeKzor/sdp.js)
 
-### Papers
-
-- [Future of C#](csharp)
-- [Source Engine Demo Format](dem)
-
 ### Pages
 
 - [Portal 2 Glitch Database](glitches)
@@ -42,3 +37,9 @@
 #### Others
 - [Portal Stories: Mel Least Portals](mel)
 - [SAR Cvars](cvars/sar)
+
+### Docs & Lists
+
+- [Future of C#](csharp)
+- [Source Engine Demo Format](dem)
+- [board.iverb.me Todo List](https://github.com/NeKzor/Portal2Boards/projects/1)
