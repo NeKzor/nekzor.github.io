@@ -7,8 +7,12 @@ using System.Web;
 
 namespace nekzor.github.io
 {
-    internal class Program
+    internal class App
     {
+        public static readonly string Version = "nekzor.github.io/1.0";
+        public static readonly string Destination = "../../cvars/";
+        public static readonly string Data = "../data/";
+
         internal static async Task Main()
         {
             var builder = new PageBuilder(OperatingSystem.Linux);
@@ -172,7 +176,7 @@ namespace nekzor.github.io
         {
             Cvars.Clear();
 
-            using (var fs = System.IO.File.OpenRead("../data/" + file))
+            using (var fs = System.IO.File.OpenRead(App.Data + file))
             using (var sr = new System.IO.StreamReader(fs))
             {
                 var text = sr.ReadToEnd();
@@ -233,14 +237,15 @@ namespace nekzor.github.io
 
         public Task Build(string file, string title)
         {
-            if (System.IO.File.Exists("../../cvars/" + file))
-                System.IO.File.Delete("../../cvars/" + file);
+            if (System.IO.File.Exists(App.Destination + file))
+                System.IO.File.Delete(App.Destination + file);
 
-            using (var fs = System.IO.File.OpenWrite("../../cvars/" +  file))
+            using (var fs = System.IO.File.OpenWrite(App.Destination +  file))
             using (var sw = new System.IO.StreamWriter(fs))
             {
                 sw.WriteLine(
-$@"<!DOCTYPE html>
+$@"<!-- {App.Version} -->
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>{title} Cvars | nekzor.github.io</title>

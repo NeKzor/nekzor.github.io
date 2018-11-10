@@ -9,19 +9,20 @@
         public string Showcase { get; set; }
     }
 
-    internal class Program
+    internal class App
     {
+        public static readonly string Version = "nekzor.github.io/1.0";
+        public static readonly string Destination = "../../glitches.html";
+        public static readonly string Research = "../research/discoveries.csv";
+
         static void Main(string[] args)
         {
-            const string destination = "../../glitches.html";
-            const string research = "../research/discoveries.csv";
-
             var discoveries = new System.Collections.Generic.List<Discovery>();
 
-            if (!System.IO.File.Exists(research))
-                throw new System.Exception($"Reasearch file {research} does not exist!");
+            if (!System.IO.File.Exists(Research))
+                throw new System.Exception($"Reasearch file {Research} does not exist!");
 
-            using (var fs = System.IO.File.OpenRead(research))
+            using (var fs = System.IO.File.OpenRead(Research))
             using (var sr = new System.IO.StreamReader(fs))
             {
                 sr.ReadLine();
@@ -39,14 +40,15 @@
                 }
             }
 
-            if (System.IO.File.Exists(destination))
-                System.IO.File.Delete(destination);
+            if (System.IO.File.Exists(App.Destination))
+                System.IO.File.Delete(App.Destination);
 
-            using (var fs = System.IO.File.OpenWrite(destination))
+            using (var fs = System.IO.File.OpenWrite(App.Destination))
             using (var sw = new System.IO.StreamWriter(fs))
             {
                 sw.WriteLine(
-$@"<!DOCTYPE html>
+$@"<!-- {App.Version} -->
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>Glitches | nekzor.github.io</title>
@@ -62,11 +64,11 @@ $@"<!DOCTYPE html>
                     <a href=""#"" data-target=""slide-out"" class=""sidenav-trigger show-on-large""><i class=""material-icons"">menu</i></a>
                     <a href=""index.html"">&nbsp;&nbsp;&nbsp;nekzor.github.io</a>
                     <a class=""breadcrumb""></a>
-                    <a href=""{output}"">Glitches</a>
+                    <a href=""{Destination}"">Glitches</a>
                 </div>
                 <div class=""col s12 hide-on-med-and-up"">
                     <a href=""#"" data-target=""slide-out"" class=""sidenav-trigger""><i class=""material-icons"">menu</i></a>
-                    <a href=""{output}"" class=""brand-logo center"">Glitches</a>
+                    <a href=""{Destination}"" class=""brand-logo center"">Glitches</a>
                 </div>
             </div>
 			<div class=""nav-content"">
@@ -78,7 +80,7 @@ $@"<!DOCTYPE html>
 		</nav>
 		<ul id=""slide-out"" class=""sidenav"">
 			<li><a href=""index.html"">nekzor.github.io</a></li>
-			<li><a href=""{output}"">Glitches</a></li>
+			<li><a href=""{Destination}"">Glitches</a></li>
             <li><a href=""lp.html"">Least Portals</a></li>
 		</ul>
 		<div id=""database"">
