@@ -1,3 +1,4 @@
 #!/bin/bash
 dotnet restore
-dotnet build
+dotnet build -c Release
+dotnet publish -c Release -r linux-arm

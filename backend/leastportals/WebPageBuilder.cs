@@ -387,7 +387,7 @@ $@"<!-- {App.Version} -->
 					<h6>Made with <a class=""link"" href=""https://github.com/NeKzor/SteamCommunity.Net"">SteamCommunity.Net</a></h6>
 					<br>
 					<h6>Number of detected cheaters: {_stats.Cheaters.Count}</h6>
-					<br>
+                    <br>
 					<h6>Last Update: {DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss '(UTC)'")}</h6>
 				</div>
 			</div>

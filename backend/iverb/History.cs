@@ -350,6 +350,8 @@ $@"		<div id=""about"">
                     </p>
                     <br>
                     <h6>Made with <a class=""link"" href=""https://github.com/NeKzor/Portal2Boards.Net"">Portal2Boards.Net</a></h6>
+                    <br>
+					<h6>Last Update: {DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss '(UTC)'")}</h6>
 				</div>
 			</div>
 		</div>
