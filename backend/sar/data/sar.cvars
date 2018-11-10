@@ -1,0 +1,167 @@
+sar_debug_game_events[cvar_data]0[cvar_data]4096[cvar_data]Prints game event data, similar to net_showevents.
+[end_of_cvar]sar_debug_event_queue[cvar_data]0[cvar_data]4096[cvar_data]Prints entitity events when they are fired, similar to developer.
+[end_of_cvar]sar_tas_autoplay[cvar_data]1[cvar_data]4096[cvar_data]Starts playing back recorded inputs on first frame after a load.
+[end_of_cvar]sar_tas_autorecord[cvar_data]0[cvar_data]4096[cvar_data]Starts recording inputs on first frame after a load.
+[end_of_cvar]sar_tas_autostart[cvar_data]1[cvar_data]4096[cvar_data]Starts queued commands automatically on first frame after a load.
+[end_of_cvar]sar_disable_challenge_stats_hud[cvar_data]0[cvar_data]4096[cvar_data]Disables opening the challenge mode stats HUD.
+[end_of_cvar]sar_aircontrol[cvar_data]0[cvar_data]4096[cvar_data]Enables more air-control on the server.
+[end_of_cvar]sar_jumpboost[cvar_data]0[cvar_data]4096[cvar_data]Enables special game movement on the server.
+0 = Default,
+1 = Orange Box Engine,
+2 = Pre-OBE
+[end_of_cvar]sar_autojump[cvar_data]0[cvar_data]4096[cvar_data]Enables automatic jumping on the server.
+[end_of_cvar]sar_stats_auto_reset[cvar_data]0[cvar_data]4096[cvar_data]Resets all stats automatically.
+0 = default,
+1 = restart or disconnect only,
+2 = any load & sar_timer_start.
+Note: Portal counter is not part of the "stats" feature.
+[end_of_cvar]sar_stats_velocity_peak_xy[cvar_data]0[cvar_data]4096[cvar_data]Saves velocity peak as 2D vector.
+[end_of_cvar]sar_stats_jumps_xy[cvar_data]0[cvar_data]4096[cvar_data]Saves jump distance as 2D vector.
+[end_of_cvar]sar_sr_hud_font_index[cvar_data]70[cvar_data]4096[cvar_data]Font index of speedrun timer HUD.
+[end_of_cvar]sar_sr_hud_font_color[cvar_data]255 255 255 255[cvar_data]0[cvar_data]RGBA font color of speedrun timer HUD.
+[end_of_cvar]sar_sr_hud_y[cvar_data]100[cvar_data]4096[cvar_data]Y offset of speedrun timer HUD.
+[end_of_cvar]sar_sr_hud_x[cvar_data]0[cvar_data]4096[cvar_data]X offset of speedrun timer HUD.
+[end_of_cvar]sar_sr_hud[cvar_data]0[cvar_data]4096[cvar_data]Draws speedrun timer.
+[end_of_cvar]sar_ihud_shadow_font_color[cvar_data]255 255 255 32[cvar_data]0[cvar_data]RGBA button shadow font color of input HUD.
+[end_of_cvar]sar_ihud_shadow_color[cvar_data]0 0 0 32[cvar_data]0[cvar_data]RGBA button shadow color of input HUD.
+[end_of_cvar]sar_ihud_shadow[cvar_data]1[cvar_data]4096[cvar_data]Draws button shadows of input HUD.
+[end_of_cvar]sar_ihud_layout[cvar_data]WASDCSELRSR[cvar_data]0[cvar_data]Layout of input HUD.
+Characters are in this order:
+forward,
+back,
+moveleft,
+moveright,
+duck,
+jump,
+use,
+attack,
+attack2,
+speed,
+reload.
+Keep it empty to disable drawing characters.
+[end_of_cvar]sar_ihud_font_index[cvar_data]1[cvar_data]4096[cvar_data]Font index of input HUD.
+[end_of_cvar]sar_ihud_font_color[cvar_data]255 255 255 255[cvar_data]0[cvar_data]RGBA font color of input HUD.
+[end_of_cvar]sar_ihud_button_color[cvar_data]0 0 0 233[cvar_data]0[cvar_data]RGBA button color of input HUD.
+[end_of_cvar]sar_ihud_button_size[cvar_data]60[cvar_data]4096[cvar_data]Button size of input HUD.
+[end_of_cvar]sar_ihud_button_padding[cvar_data]2[cvar_data]4096[cvar_data]Padding between buttons of input HUD.
+[end_of_cvar]sar_ihud_y[cvar_data]0[cvar_data]4096[cvar_data]Y offset of input HUD.
+[end_of_cvar]sar_ihud_x[cvar_data]0[cvar_data]4096[cvar_data]X offset of input HUD.
+[end_of_cvar]sar_ihud[cvar_data]0[cvar_data]4096[cvar_data]Draws keyboard events of client.
+0 = default,
+1 = forward;back;moveleft;moveright,
+2 = 1 + duck;jump;use,
+3 = 2 + attack;attack2,
+4 = 3 + speed;reload.
+[end_of_cvar]sar_hud_default_font_color[cvar_data]255 255 255 255[cvar_data]0[cvar_data]RGBA font color of HUD.
+[end_of_cvar]sar_hud_default_font_index[cvar_data]0[cvar_data]4096[cvar_data]Font index of HUD.
+[end_of_cvar]sar_hud_default_padding_y[cvar_data]2[cvar_data]4096[cvar_data]Y padding of HUD.
+[end_of_cvar]sar_hud_default_padding_x[cvar_data]2[cvar_data]4096[cvar_data]X padding of HUD.
+[end_of_cvar]sar_hud_default_spacing[cvar_data]4[cvar_data]4096[cvar_data]Spacing between elements of HUD.
+[end_of_cvar]sar_hud_velocity_peak[cvar_data]0[cvar_data]4096[cvar_data]Draws last saved velocity peak.
+[end_of_cvar]sar_hud_last_frame[cvar_data]0[cvar_data]4096[cvar_data]Draws last saved frame value.
+[end_of_cvar]sar_hud_frame[cvar_data]0[cvar_data]4096[cvar_data]Draws current frame count.
+[end_of_cvar]sar_hud_trace[cvar_data]0[cvar_data]4096[cvar_data]Draws distance values of tracer. 0 = default,
+1 = vec3,
+2 = vec2.
+[end_of_cvar]sar_hud_jump_peak[cvar_data]0[cvar_data]4096[cvar_data]Draws longest jump distance.
+[end_of_cvar]sar_hud_jump[cvar_data]0[cvar_data]4096[cvar_data]Draws current jump distance.
+[end_of_cvar]sar_hud_steps[cvar_data]0[cvar_data]4096[cvar_data]Draws total step count.
+[end_of_cvar]sar_hud_portals[cvar_data]0[cvar_data]4096[cvar_data]Draws total portal count.
+[end_of_cvar]sar_hud_jumps[cvar_data]0[cvar_data]4096[cvar_data]Draws total jump count.
+[end_of_cvar]sar_hud_demo[cvar_data]0[cvar_data]4096[cvar_data]Draws name, tick and time of current demo.
+[end_of_cvar]sar_hud_cps[cvar_data]0[cvar_data]4096[cvar_data]Draws latest checkpoint of timer.
+[end_of_cvar]sar_hud_avg[cvar_data]0[cvar_data]4096[cvar_data]Draws calculated average of timer.
+[end_of_cvar]sar_hud_timer[cvar_data]0[cvar_data]4096[cvar_data]Draws current value of timer.
+[end_of_cvar]sar_hud_sum[cvar_data]0[cvar_data]4096[cvar_data]Draws summary value of sessions.
+[end_of_cvar]sar_hud_last_session[cvar_data]0[cvar_data]4096[cvar_data]Draws value of latest completed session.
+[end_of_cvar]sar_hud_session[cvar_data]0[cvar_data]4096[cvar_data]Draws current session tick.
+[end_of_cvar]sar_hud_velocity[cvar_data]0[cvar_data]4096[cvar_data]Draws velocity of the client.
+0 = default,
+1 = x/y/z,
+2 = x/y
+[end_of_cvar]sar_hud_angles[cvar_data]0[cvar_data]4096[cvar_data]Draws absolute view angles of the client.
+0 = default,
+1 = xy,
+2 = xyz.
+[end_of_cvar]sar_hud_position[cvar_data]0[cvar_data]4096[cvar_data]Draws absolute position of the client.
+[end_of_cvar]sar_hud_text[cvar_data][cvar_data]0[cvar_data]Draws specified text when not empty.
+[end_of_cvar]sar_timer_always_running[cvar_data]1[cvar_data]4096[cvar_data]Timer will save current value when disconnecting.
+[end_of_cvar]sar_sum_during_session[cvar_data]1[cvar_data]4096[cvar_data]Updates the summary counter automatically during a session.
+[end_of_cvar]sar_time_demo_dev[cvar_data]0[cvar_data]4096[cvar_data]Printing mode when using sar_time_demo.
+0 = default,
+1 = console commands,
+2 = console commands & packets.
+[end_of_cvar]sar_save_flag[cvar_data]#SAVE#[cvar_data]0[cvar_data]Echo message when using sar_bind_save.
+Default is "#SAVE#", a SourceRuns standard.
+Keep this empty if no echo message should be binded.
+[end_of_cvar]sar_autorecord[cvar_data]0[cvar_data]4096[cvar_data]Enables automatic demo recording.
+[end_of_cvar]sar_exit[cvar_data]cmd[cvar_data]0[cvar_data]Removes all function hooks, registered commands and unloads the module.
+[end_of_cvar]sar_rename[cvar_data]cmd[cvar_data]0[cvar_data]Changes your name.
+[end_of_cvar]sar_cvarlist[cvar_data]cmd[cvar_data]0[cvar_data]Lists all SAR cvars and unlocked engine cvars.
+[end_of_cvar]sar_cvars_dump[cvar_data]cmd[cvar_data]0[cvar_data]Dumps all cvars to a file.
+[end_of_cvar]sar_cvars_load[cvar_data]cmd[cvar_data]0[cvar_data]Loads important SAR cvars.
+[end_of_cvar]sar_cvars_save[cvar_data]cmd[cvar_data]0[cvar_data]Saves important SAR cvars.
+[end_of_cvar]sar_about[cvar_data]cmd[cvar_data]0[cvar_data]Prints info about this tool.
+[end_of_cvar]sar_session[cvar_data]cmd[cvar_data]0[cvar_data]Prints the current tick of the server since it has loaded.
+[end_of_cvar]sar_cps_result[cvar_data]cmd[cvar_data]0[cvar_data]Prints result of timer checkpoints.
+[end_of_cvar]sar_cps_clear[cvar_data]cmd[cvar_data]0[cvar_data]Resets saved times of timer.
+[end_of_cvar]sar_cps_add[cvar_data]cmd[cvar_data]0[cvar_data]Saves current time of timer.
+[end_of_cvar]sar_avg_result[cvar_data]cmd[cvar_data]0[cvar_data]Prints result of average.
+[end_of_cvar]sar_avg_stop[cvar_data]cmd[cvar_data]0[cvar_data]Stops average calculation.
+[end_of_cvar]sar_avg_start[cvar_data]cmd[cvar_data]0[cvar_data]Starts calculating the average when using timer.
+[end_of_cvar]sar_timer_result[cvar_data]cmd[cvar_data]0[cvar_data]Prints result of timer.
+[end_of_cvar]sar_timer_stop[cvar_data]cmd[cvar_data]0[cvar_data]Stops timer.
+[end_of_cvar]sar_timer_start[cvar_data]cmd[cvar_data]0[cvar_data]Starts timer.
+[end_of_cvar]sar_teleport_setpos[cvar_data]cmd[cvar_data]0[cvar_data]Saves current location for teleportation.
+[end_of_cvar]sar_teleport[cvar_data]cmd[cvar_data]0[cvar_data]Teleports the player to the last saved location.
+[end_of_cvar]sar_tas_import[cvar_data]cmd[cvar_data]0[cvar_data]Import TAS replay file.[end_of_cvar]sar_tas_export[cvar_data]cmd[cvar_data]0[cvar_data]Export TAS replay to a file.
+[end_of_cvar]sar_tas_stop[cvar_data]cmd[cvar_data]0[cvar_data]Stops recording or playing user inputs.
+[end_of_cvar]sar_tas_play[cvar_data]cmd[cvar_data]0[cvar_data]Plays back recorded user inputs.
+[end_of_cvar]sar_tas_record_again[cvar_data]cmd[cvar_data]0[cvar_data]Starts recording in play back mode.
+[end_of_cvar]sar_tas_record[cvar_data]cmd[cvar_data]0[cvar_data]Starts recording user inputs.
+[end_of_cvar]sar_tas_reset[cvar_data]cmd[cvar_data]0[cvar_data]Stops executing commands and clears them from the queue.
+[end_of_cvar]sar_tas_start[cvar_data]cmd[cvar_data]0[cvar_data]Starts executing queued commands.
+[end_of_cvar]sar_tas_frames_after[cvar_data]cmd[cvar_data]0[cvar_data]Adds command frame multiple times to the queue after waiting for specified amount of frames.
+Usage: sar_tas_frames_after <frames_to_wait> <interval> <length> [command_to_execute]
+[end_of_cvar]sar_tas_frame_after[cvar_data]cmd[cvar_data]0[cvar_data]Adds command frame to the queue after waiting for specified amount of frames.
+Usage: sar_tas_frame_after <frames_to_wait> [command_to_execute]
+[end_of_cvar]sar_tas_frames_at[cvar_data]cmd[cvar_data]0[cvar_data]Adds command frame multiple times to the queue at specified frame.
+Usage: sar_tas_frames_at <frame> <interval> <last_frame> [command_to_execute]
+[end_of_cvar]sar_tas_frame_at[cvar_data]cmd[cvar_data]0[cvar_data]Adds command frame to the queue at specified frame.
+Usage: sar_tas_frame_at <frame> [command_to_execute]
+[end_of_cvar]sar_sum_result[cvar_data]cmd[cvar_data]0[cvar_data]Prints result of summary.
+[end_of_cvar]sar_sum_stop[cvar_data]cmd[cvar_data]0[cvar_data]Stops summary counter.
+[end_of_cvar]sar_sum_here[cvar_data]cmd[cvar_data]0[cvar_data]Starts counting total ticks of sessions.
+[end_of_cvar]sar_stats_reset[cvar_data]cmd[cvar_data]0[cvar_data]Resets all saved stats.
+[end_of_cvar]sar_stats_velocity_reset[cvar_data]cmd[cvar_data]0[cvar_data]Resets velocity peak.
+[end_of_cvar]sar_stats_steps_reset[cvar_data]cmd[cvar_data]0[cvar_data]Resets total step count.
+[end_of_cvar]sar_stats_jumps_reset[cvar_data]cmd[cvar_data]0[cvar_data]Resets total jump count and jump distance peak.
+[end_of_cvar]sar_stats_velocity[cvar_data]cmd[cvar_data]0[cvar_data]Prints velocity stats.
+[end_of_cvar]sar_stats_steps[cvar_data]cmd[cvar_data]0[cvar_data]Prints total amount of steps.
+[end_of_cvar]sar_stats_jump[cvar_data]cmd[cvar_data]0[cvar_data]Prints jump stats.
+[end_of_cvar]sar_speedrun_rules[cvar_data]cmd[cvar_data]0[cvar_data]Prints loaded rules which the timer will follow.
+[end_of_cvar]sar_speedrun_import[cvar_data]cmd[cvar_data]0[cvar_data]Imports speedrun data file.[end_of_cvar]sar_speedrun_export_pb[cvar_data]cmd[cvar_data]0[cvar_data]Saves speedrun personal best to a csv file.
+[end_of_cvar]sar_speedrun_export[cvar_data]cmd[cvar_data]0[cvar_data]Saves speedrun result to a csv file.
+[end_of_cvar]sar_speedrun_result[cvar_data]cmd[cvar_data]0[cvar_data]Prints result of speedrun.
+[end_of_cvar]sar_trace_reset[cvar_data]cmd[cvar_data]0[cvar_data]Resets tracer.
+[end_of_cvar]sar_trace_result[cvar_data]cmd[cvar_data]0[cvar_data]Prints tracing result.
+[end_of_cvar]sar_trace_b[cvar_data]cmd[cvar_data]0[cvar_data]Saves location B for tracing.
+[end_of_cvar]sar_trace_a[cvar_data]cmd[cvar_data]0[cvar_data]Saves location A for tracing.
+[end_of_cvar]sar_togglewait[cvar_data]cmd[cvar_data]0[cvar_data]Enables or disables "wait" for the command buffer.
+[end_of_cvar]sar_workshop_list[cvar_data]cmd[cvar_data]0[cvar_data]Prints all workshop maps.
+[end_of_cvar]sar_workshop_update[cvar_data]cmd[cvar_data]0[cvar_data]Updates the workshop map list.
+[end_of_cvar]sar_workshop[cvar_data]cmd[cvar_data]0[cvar_data]Same as "map" command but lists workshop maps.
+[end_of_cvar]sar_anti_anti_cheat[cvar_data]cmd[cvar_data]0[cvar_data]Sets sv_cheats to 1.
+[end_of_cvar]-bhop[cvar_data]cmd[cvar_data]0[cvar_data]Client sends a key-up event for the in_jump state.
+[end_of_cvar]+bhop[cvar_data]cmd[cvar_data]0[cvar_data]Client sends a key-down event for the in_jump state.
+[end_of_cvar]sar_time_demos[cvar_data]cmd[cvar_data]0[cvar_data]Parses multiple demos and prints the total sum of them.[end_of_cvar]sar_time_demo[cvar_data]cmd[cvar_data]0[cvar_data]Parses a demo and prints some information about it.[end_of_cvar]sar_unbind_reload[cvar_data]cmd[cvar_data]0[cvar_data]Unbinds current save-reload rebinder.
+[end_of_cvar]sar_unbind_save[cvar_data]cmd[cvar_data]0[cvar_data]Unbinds current save rebinder.
+[end_of_cvar]sar_bind_reload[cvar_data]cmd[cvar_data]0[cvar_data]Automatic save-reload rebinding when server has loaded.
+File indexing will be synced when recording demos.
+Usage: sar_bind_reload <key> [save_name]
+[end_of_cvar]sar_bind_save[cvar_data]cmd[cvar_data]0[cvar_data]Automatic save rebinding when server has loaded.
+File indexing will be synced when recording demos.
+Usage: sar_bind_save <key> [save_name]
+[end_of_cvar]sar_ihud_setpos[cvar_data]cmd[cvar_data]0[cvar_data]Sets automatically the position of input HUD.
+Usage: sar_ihud_setpos <top, center or bottom> <left, center or right>
+[end_of_cvar]
