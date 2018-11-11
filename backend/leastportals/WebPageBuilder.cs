@@ -51,7 +51,7 @@ namespace nekzor.github.io
                     var entries = new List<CacheItem>();
                     var wr = _wrs.First(x => x.Id == (ulong)lb.Id).WorldRecord;
 
-                    var cache = $"{App.Cache}{lb.Id}.json";
+                    var cache = $"{App.Cache}lp_{lb.Id}.json";
                     if (!File.Exists(cache)
                         || (entries = JsonConvert.DeserializeObject<List<CacheItem>>(await File.ReadAllTextAsync(cache))) == null)
                     {

@@ -83,7 +83,7 @@ namespace nekzor.github.io
             foreach (var mapId in _campaign
                 .Select(m => (ulong)m.BestTimeId))
             {
-                var cache = $"{App.Cache}{mapId}.json";
+                var cache = $"{App.Cache}seum_{mapId}.json";
                 var item = JsonConvert.DeserializeObject<ScoreItem>(await File.ReadAllTextAsync(cache));
                 Console.WriteLine($"{mapId} -> {item.Ranks.First()} & {item.Ranks.ElementAt(9)}");
 
@@ -138,7 +138,7 @@ namespace nekzor.github.io
             foreach (var mapId in _campaign
                 .Select(m => (ulong)m.BestTimeId))
             {
-                var cache = $"{App.Cache}{mapId}.json";
+                var cache = $"{App.Cache}seum_{mapId}.json";
                 var score = default(ScoreItem);
                 if (!File.Exists(cache)
                     || (score = JsonConvert.DeserializeObject<ScoreItem>(await File.ReadAllTextAsync(cache))) == null)
