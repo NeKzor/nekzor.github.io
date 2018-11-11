@@ -53,7 +53,7 @@ namespace nekzor.github.io
 
                     var cache = $"{App.Cache}{lb.Id}.json";
                     if (!File.Exists(cache)
-                        || score = JsonConvert.DeserializeObject<ScoreItem>(await File.ReadAllTextAsync(cache)) == null)
+                        || (entries = JsonConvert.DeserializeObject<List<CacheItem>>(await File.ReadAllTextAsync(cache))) == null)
                     {
                         var page = await _client.GetLeaderboardAsync("Portal 2", lb.Id);
                         foreach (var entry in page.Entries)

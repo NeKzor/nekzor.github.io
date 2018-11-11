@@ -141,7 +141,7 @@ namespace nekzor.github.io
                 var cache = $"{App.Cache}{mapId}.json";
                 var score = default(ScoreItem);
                 if (!File.Exists(cache)
-                    || score = JsonConvert.DeserializeObject<ScoreItem>(await File.ReadAllTextAsync(cache)) == null)
+                    || (score = JsonConvert.DeserializeObject<ScoreItem>(await File.ReadAllTextAsync(cache))) == null)
                 {
                     score = new ScoreItem()
                     {
