@@ -7,5 +7,5 @@ git add --all
 git commit -m "$(date --iso-8601)"
 git push -u origin master
 
-rm -rf leastportals/cache/
-rm -rf seum/cache/
+rm -rf /home/pi/nekzor.github.io/_backend/leastportals/cache/
+rm -rf /home/pi/nekzor.github.io/_backend/seum/cache/
