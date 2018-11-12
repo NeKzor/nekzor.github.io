@@ -1,0 +1,6 @@
+[submodule "backend/lib/Portal2Boards.Net"]
+	path = backend/lib/Portal2Boards.Net
+	url = https://github.com/NeKzor/Portal2Boards.Net
+[submodule "backend/lib/SteamCommunity.Net"]
+	path = backend/lib/SteamCommunity.Net
+	url = https://github.com/NeKzor/SteamCommunity.Net
