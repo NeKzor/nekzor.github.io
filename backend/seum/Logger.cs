@@ -7,15 +7,18 @@ namespace nekzor.github.io
 {
     internal static class Logger
     {
+        public static void Log(string message)
+        {
+            Console.WriteLine($"[{DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")}] [seum] {message}");
+        }
         public static Task LogSteamCommunityClient(object _, SteamCommunity.LogMessage message)
         {
-            Console.WriteLine(message);
+            Log(message.ToString());
             return Task.CompletedTask;
         }
-
         public static Task LogPortal2BoardsClient(object _, Portal2Boards.LogMessage message)
         {
-            Console.WriteLine(message);
+            Log(message.ToString());
             return Task.CompletedTask;
         }
     }

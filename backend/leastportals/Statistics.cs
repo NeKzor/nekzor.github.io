@@ -14,10 +14,13 @@ namespace nekzor.github.io
 
         [JsonIgnore]
         private string _file { get; set; }
+        [JsonIgnore]
+        private string _copy { get; set; }
 
         public Statistics(string file)
         {
-            _file = file;
+            _file = App.CurDir + file;
+            _copy = App.Copy + file;
             TiedRecords = new Dictionary<ulong, int>();
             Cheaters = new HashSet<ulong>();
         }
@@ -35,6 +38,8 @@ namespace nekzor.github.io
         {
             if (File.Exists(_file)) File.Delete(_file);
             await File.WriteAllTextAsync(_file, JsonConvert.SerializeObject(this, Formatting.Indented));
+            if (File.Exists(_copy)) File.Delete(_copy);
+            await File.WriteAllTextAsync(_copy, JsonConvert.SerializeObject(this, Formatting.Indented));
         }
         public async Task Import()
         {

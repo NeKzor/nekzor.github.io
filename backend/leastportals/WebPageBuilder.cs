@@ -25,12 +25,13 @@ namespace nekzor.github.io
             _client = new SteamCommunityClient(userAgent, false);
             _client.Log += Logger.LogSteamCommunityClient;
 
-            _wrs = JsonConvert.DeserializeObject<List<Map>>(File.ReadAllText("lp_wrs.json"));
+            _wrs = JsonConvert.DeserializeObject<List<Map>>(File.ReadAllText(App.CurDir + "lp_wrs.json"));
         }
 
         public async Task Initialize()
         {
             var game = await _client.GetLeaderboardsAsync("Portal 2");
+            Logger.Log("Fetched Portal 2 leaderboard");
 
             var excluded = _wrs
                 .Where(x => x.Excluded)
@@ -52,6 +53,7 @@ namespace nekzor.github.io
                     var wr = _wrs.First(x => x.Id == (ulong)lb.Id).WorldRecord;
 
                     var cache = $"{App.Cache}lp_{lb.Id}.json";
+                    var logmsg = string.Empty;
                     if (!File.Exists(cache)
                         || (entries = JsonConvert.DeserializeObject<List<CacheItem>>(await File.ReadAllTextAsync(cache))) == null)
                     {
@@ -60,22 +62,22 @@ namespace nekzor.github.io
                             entries.Add(new CacheItem() { Id = entry.Id, Score = entry.Score });
                         await File.WriteAllTextAsync(cache, JsonConvert.SerializeObject(entries, Formatting.Indented));
                         await Task.Delay(1000);
-                        Console.Write("[DOWNLOADED] ");
+                        logmsg = "[DOWNLOADED] ";
                     }
                     else
                     {
                         entries = JsonConvert.DeserializeObject<List<CacheItem>>(await File.ReadAllTextAsync(cache));
-                        Console.Write("[FROM CACHE] ");
+                        logmsg = "[FROM CACHE] ";
                     }
 
                     // Check if we need a second page
                     if (entries.Last().Score == wr)
-                        Console.Write($" [LIMITED] ");
+                        logmsg += " [LIMITED] ";
 
                     foreach (var cheater in entries.Where(entry => entry.Score < wr))
                         _stats.AddCheater(cheater.Id);
 
-                    Console.WriteLine(lb.Id);
+                    Logger.Log(logmsg + lb.Id);
                     maps.Add(lb, entries);
                 }
 
@@ -104,7 +106,7 @@ namespace nekzor.github.io
 
                     _stats.SetRecordCount((ulong)lb.Id, ties);
 
-                    Console.WriteLine($"[{lb.Id}] {lb.DisplayName} -> {ties} ({current}/{maps.Count})");
+                    Logger.Log($"[{lb.Id}] {lb.DisplayName} -> {ties} ({current}/{maps.Count})");
                     current++;
                 }
 
@@ -116,6 +118,7 @@ namespace nekzor.github.io
         }
         public Task Filter()
         {
+            Logger.Log("Filtering...");
             foreach (var player in _players)
                 player.CalculateTotalScore();
 
@@ -123,15 +126,15 @@ namespace nekzor.github.io
             _players.RemoveAll(p => !p.IsSinglePlayer && !p.IsCooperative);
             var after = _players.Count;
 
-            Console.WriteLine($"Filtered {after} from {before} players.");
-            Console.WriteLine();
+            Logger.Log($"Filtered {after} from {before} players.");
             return Task.CompletedTask;
         }
         public async Task Export(string file)
         {
-            if (File.Exists(file)) File.Delete(file);
-            await File.WriteAllTextAsync(file, JsonConvert.SerializeObject(_players, Formatting.Indented));
+            if (File.Exists(App.CurDir + file)) File.Delete(App.CurDir + file);
+            await File.WriteAllTextAsync(App.CurDir + file, JsonConvert.SerializeObject(_players));
             await _stats.Export();
+            Logger.Log($"Exported page: {file}");
         }
         public async Task Import(string file)
         {
@@ -172,7 +175,7 @@ namespace nekzor.github.io
                         var profile = await _client.GetProfileAsync(player.Id);
                         cache.Add(player.Id, profile);
                         await Task.Delay(1000);
-                        Console.WriteLine($"[{player.Id}] {player.GetTotalScore(mode)} by {cache[player.Id].Name}");
+                        Logger.Log($"[{player.Id}] {player.GetTotalScore(mode)} by {cache[player.Id].Name}");
                     }
 
                     rows.Add(FillRow(player, cache[player.Id], perfectScore, rank, mode));

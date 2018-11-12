@@ -38,10 +38,10 @@ namespace nekzor.github.io
             _players = new List<Player>();
             _scores = new Dictionary<ulong, ScoreItem>();
 
-            _steam = new SteamCommunityClient(userAgent, false);
+            _steam = new SteamCommunityClient(userAgent, true);
             _steam.Log += Logger.LogSteamCommunityClient;
 
-            _iverb = new Portal2BoardsClient(userAgent, false);
+            _iverb = new Portal2BoardsClient(userAgent, true);
             _iverb.Log += Logger.LogPortal2BoardsClient;
 
             var excluded = new List<ulong>()
@@ -85,7 +85,7 @@ namespace nekzor.github.io
             {
                 var cache = $"{App.Cache}seum_{mapId}.json";
                 var item = JsonConvert.DeserializeObject<ScoreItem>(await File.ReadAllTextAsync(cache));
-                Console.WriteLine($"{mapId} -> {item.Ranks.First()} & {item.Ranks.ElementAt(9)}");
+                Logger.Log($"{mapId} -> {item.Ranks.First()} & {item.Ranks.ElementAt(9)}");
 
                 _scores.Add(mapId, item);
 
@@ -124,13 +124,14 @@ namespace nekzor.github.io
                 }
             }
 
-            Console.WriteLine($"From Rank 1-{minranks}:");
-            Console.WriteLine($"MaxAvg = {maxavg} ({Portal2Map.Search(max.Key).Alias})");
-            Console.WriteLine($"MinAvg = {minavg} ({Portal2Map.Search(min.Key).Alias})");
+            Logger.Log($"From Rank 1-{minranks}:");
+            Logger.Log($"MaxAvg = {maxavg} ({Portal2Map.Search(max.Key).Alias})");
+            Logger.Log($"MinAvg = {minavg} ({Portal2Map.Search(min.Key).Alias})");
         }
         public async Task Fetch(int max = 5)
         {
             _game = await _steam.GetLeaderboardsAsync("Portal 2");
+            Logger.Log("Fetched Portal 2 leaderboard");
 
             _scores.Clear();
 
@@ -140,6 +141,7 @@ namespace nekzor.github.io
             {
                 var cache = $"{App.Cache}seum_{mapId}.json";
                 var score = default(ScoreItem);
+                var logmsg = string.Empty;
                 if (!File.Exists(cache)
                     || (score = JsonConvert.DeserializeObject<ScoreItem>(await File.ReadAllTextAsync(cache))) == null)
                 {
@@ -164,14 +166,14 @@ namespace nekzor.github.io
 
                     await File.WriteAllTextAsync(cache, JsonConvert.SerializeObject(score, Formatting.Indented));
                     await Task.Delay(1337);
-                    Console.Write("[DOWNLOADED] ");
+                    logmsg = "[DOWNLOADED] ";
                 }
                 else
                 {
                     score = JsonConvert.DeserializeObject<ScoreItem>(await File.ReadAllTextAsync(cache));
-                    Console.Write("[FROM CACHE] ");
+                    logmsg = "[FROM CACHE] ";
                 }
-                Console.WriteLine($"{mapId} -> {score.Ranks.First()} & {score.Ranks.ElementAt(9)}");
+                Logger.Log($"{logmsg}{mapId} -> {score.Ranks.First()} & {score.Ranks.ElementAt(9)}");
                 _scores.Add(mapId, score);
             }
 
@@ -179,6 +181,7 @@ namespace nekzor.github.io
             async Task InternalFetch(AggregatedMode mode)
             {
                 var entries = await _iverb.GetAggregatedAsync(mode);
+                Logger.Log($"Fetched aggregated leaderboard: {mode}");
                 foreach (var entry in entries.Points.Take(max))
                 {
                     var id = (entry.Player as SteamUser).Id;
@@ -187,7 +190,7 @@ namespace nekzor.github.io
                     var profile = await _iverb.GetProfileAsync(id);
                     var player = new Player(profile, _campaign);
 
-                    Console.WriteLine($"[{player.Id}] {player.Name}");
+                    Logger.Log($"[{player.Id}] {player.Name}");
 
                     // Merge all chapters
                     var chapters = profile.Times.SinglePlayerChapters.Chambers
@@ -223,10 +226,11 @@ namespace nekzor.github.io
             await InternalFetch(AggregatedMode.SinglePlayer);
             await InternalFetch(AggregatedMode.Cooperative);
 
-            Console.WriteLine($"Fetched {_players.Count} profiles!");
+            Logger.Log($"Fetched {_players.Count} profiles!");
         }
         public async Task Build(string file, int max = 10)
         {
+            Logger.Log("Building page...");
             if (File.Exists(App.Destination + file)) File.Delete(App.Destination + file);
 
             // Local function 1
@@ -274,6 +278,7 @@ namespace nekzor.github.io
             var pr = await BuildProfileRows(_players);
 
             await File.WriteAllTextAsync(App.Destination + file, GetPage(sp, mp, ov, pr));
+            Logger.Log($"Done: {file}");
         }
 
         private string GetPage(

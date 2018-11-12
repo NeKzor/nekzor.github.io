@@ -18,24 +18,32 @@ namespace nekzor.github.io
             _page = new List<string>();
         }
 
-        public Task ExportPage(string path)
+        public Task ExportPage(string file)
         {
-            if (File.Exists(App.Destination + path))
-                File.Delete(App.Destination + path);
-            File.AppendAllLines(App.Destination + path, _page);
+            if (File.Exists(App.Destination + file))
+                File.Delete(App.Destination + file);
+            File.AppendAllLines(App.Destination + file, _page);
+            Logger.Log($"Exported page: {file}");
             return Task.CompletedTask;
         }
         public async Task Build()
         {
+            Logger.Log("Building Stats...");
             var watch = Stopwatch.StartNew();
             _page.Clear();
+            Logger.Log("Single Player");
             await GenerateRecordsAsync(Portal2MapType.SinglePlayer);
+            Logger.Log("Cooperative");
             await GenerateRecordsAsync(Portal2MapType.Cooperative);
+            Logger.Log("Stats");
             await GenerateStatsPageAsync();
+            Logger.Log("Community");
             await GenerateCommunityStatsPageAsync();
             StartPage();
             EndPage();
+            watch.Stop();
             _page.Insert(0, $"<!-- Generated static page in {watch.Elapsed.TotalSeconds} seconds. -->");
+            Logger.Log($"Finished in: {watch.Elapsed.TotalSeconds}");
         }
         public async Task GenerateRecordsAsync(Portal2MapType mode)
         {
