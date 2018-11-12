@@ -1,7 +1,7 @@
 #!/bin/bash
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games:/home/pi/n/bin"
 
-node formatter/formatter.js
+node /home/pi/nekzor.github.io/backend/formatter/formatter.js
 
 git add --all
 git commit -m "$(date --iso-8601)"
