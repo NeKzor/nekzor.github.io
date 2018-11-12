@@ -2,1001 +2,1002 @@
 <html>
 
 <head>
-    <title>SourceAutoRecord Cvars | nekzor.github.io</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SourceAutoRecord Cvars | nekzor.github.io</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
 <body class="white-text blue-grey darken-4">
-    <nav class="nav-extended blue-grey darken-3">
-        <div class="nav-wrapper">
-            <div class="col s12 hide-on-small-only">
-                <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
-                <a href="../index.html">&nbsp;&nbsp;&nbsp;nekzor.github.io</a>
-                <a class="breadcrumb"></a>
-                <a href="sar.html">SourceAutoRecord Cvars</a>
-            </div>
-            <div class="col s12 hide-on-med-and-up">
-                <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-                <a href="sar.html" class="brand-logo center">SAR</a>
-            </div>
-        </div>
-    </nav>
-    <ul id="slide-out" class="sidenav">
-        <li><a href="../index.html">nekzor.github.io</a></li>
-        <li><a href="sar.html">SourceAutoRecord Cvars</a></li>
-    </ul>
-    <div id="cvars">
-        <div class="row"></div>
-        <div class="row">
-            <div class="col s12 m12 l3">
-                <input id="search-box" class="search white-text" placeholder="Search" />
-            </div>
-            <div class="col s12 m12 l1">
-                <br>
-                <label>
-                    <input id="cbx-name" type="checkbox" checked="checked" onclick="updateFilter()" />
-                    <span>Name</span>
-                </label>
-            </div>
-            <div class="col s12 m12 l1">
-                <br>
-                <label>
-                    <input id="cbx-default" type="checkbox" checked="checked" onclick="updateFilter()" />
-                    <span>Default</span>
-                </label>
-            </div>
-            <div class="col s12 m12 l1">
-                <br>
-                <label>
-                    <input id="cbx-flags" type="checkbox" checked="checked" onclick="updateFilter()" />
-                    <span>Flags</span>
-                </label>
-            </div>
-            <div class="col s12 m12 l1">
-                <br>
-                <label>
-                    <input id="cbx-exclusive" type="checkbox" checked="checked" onclick="updateFilter()" />
-                    <span>Exclusive</span>
-                </label>
-            </div>
-            <div class="col s12 m12 l1">
-                <br>
-                <label>
-                    <input id="cbx-help-text" type="checkbox" checked="checked" onclick="updateFilter()" />
-                    <span>Help Text</span>
-                </label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col s12">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Default</th>
-                            <th>Flags</th>
-                            <th>Exclusive</th>
-                            <th>Help Text</th>
-                        </tr>
-                    </thead>
-                    <tbody class="list">
-                        <tr>
-                            <td class="name">-bhop</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">The Stanley Parable</td>
-                            <td class="help-text">Client sends a key-up event for the in_jump state.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">+bhop</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">The Stanley Parable</td>
-                            <td class="help-text">Client sends a key-down event for the in_jump state.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_about</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Prints info about this tool.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_aircontrol</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">Portal 2 Engine</td>
-                            <td class="help-text">Enables more air-control on the server.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_anti_anti_cheat</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">The Stanley Parable</td>
-                            <td class="help-text">Sets sv_cheats to 1.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_autojump</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Enables automatic jumping on the server.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_autorecord</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Enables automatic demo recording.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_avg_result</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Prints result of average.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_avg_start</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Starts calculating the average when using timer.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_avg_stop</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Stops average calculation.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_bind_reload</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Automatic save-reload rebinding when server has loaded.<br>File
-                                indexing will be synced when recording demos.<br>Usage: sar_bind_reload &lt;key&gt;
-                                [save_name]<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_bind_save</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Automatic save rebinding when server has loaded.<br>File indexing
-                                will be synced when recording demos.<br>Usage: sar_bind_save &lt;key&gt; [save_name]<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_cps_add</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Saves current time of timer.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_cps_clear</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Resets saved times of timer.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_cps_result</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Prints result of timer checkpoints.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_cvarlist</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Lists all SAR cvars and unlocked engine cvars.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_cvars_dump</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Dumps all cvars to a file.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_cvars_load</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Loads important SAR cvars.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_cvars_save</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Saves important SAR cvars.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_debug_event_queue</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Prints entitity events when they are fired, similar to developer.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_debug_game_events</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">Portal 2</td>
-                            <td class="help-text">Prints game event data, similar to net_showevents.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_disable_challenge_stats_hud</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">Portal 2</td>
-                            <td class="help-text">Disables opening the challenge mode stats HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_exit</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Removes all function hooks, registered commands and unloads the
-                                module.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_angles</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws absolute view angles of the client.<br>0 = default,<br>1 = xy,<br>2
-                                = xyz.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_avg</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws calculated average of timer.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_cps</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws latest checkpoint of timer.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_default_font_color</td>
-                            <td class="default">255 255 255 255</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">RGBA font color of HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_default_font_index</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Font index of HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_default_padding_x</td>
-                            <td class="default">2</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">X padding of HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_default_padding_y</td>
-                            <td class="default">2</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Y padding of HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_default_spacing</td>
-                            <td class="default">4</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Spacing between elements of HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_demo</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws name, tick and time of current demo.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_frame</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws current frame count.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_jump</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws current jump distance.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_jump_peak</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws longest jump distance.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_jumps</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws total jump count.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_last_frame</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws last saved frame value.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_last_session</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws value of latest completed session.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_portals</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">Portal Games</td>
-                            <td class="help-text">Draws total portal count.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_position</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws absolute position of the client.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_session</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws current session tick.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_steps</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws total step count.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_sum</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws summary value of sessions.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_text</td>
-                            <td class="default"></td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws specified text when not empty.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_timer</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws current value of timer.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_trace</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws distance values of tracer. 0 = default,<br>1 = vec3,<br>2 =
-                                vec2.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_velocity</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws velocity of the client.<br>0 = default,<br>1 = x/y/z,<br>2 =
-                                x/y<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_hud_velocity_peak</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws last saved velocity peak.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_ihud</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws keyboard events of client.<br>0 = default,<br>1 =
-                                forward;back;moveleft;moveright,<br>2 = 1 + duck;jump;use,<br>3 = 2 + attack;attack2,<br>4
-                                = 3 + speed;reload.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_ihud_button_color</td>
-                            <td class="default">0 0 0 233</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">RGBA button color of input HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_ihud_button_padding</td>
-                            <td class="default">2</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Padding between buttons of input HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_ihud_button_size</td>
-                            <td class="default">60</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Button size of input HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_ihud_font_color</td>
-                            <td class="default">255 255 255 255</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">RGBA font color of input HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_ihud_font_index</td>
-                            <td class="default">1</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Font index of input HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_ihud_layout</td>
-                            <td class="default">WASDCSELRSR</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Layout of input HUD.<br>Characters are in this order:<br>forward,<br>back,<br>moveleft,<br>moveright,<br>duck,<br>jump,<br>use,<br>attack,<br>attack2,<br>speed,<br>reload.<br>Keep
-                                it empty to disable drawing characters.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_ihud_setpos</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Sets automatically the position of input HUD.<br>Usage:
-                                sar_ihud_setpos &lt;top, center or bottom&gt; &lt;left, center or right&gt;<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_ihud_shadow</td>
-                            <td class="default">1</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Draws button shadows of input HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_ihud_shadow_color</td>
-                            <td class="default">0 0 0 32</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">RGBA button shadow color of input HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_ihud_shadow_font_color</td>
-                            <td class="default">255 255 255 32</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">RGBA button shadow font color of input HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_ihud_x</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">X offset of input HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_ihud_y</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Y offset of input HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_jumpboost</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">Portal 2 Engine</td>
-                            <td class="help-text">Enables special game movement on the server.<br>0 = Default,<br>1 =
-                                Orange Box Engine,<br>2 = Pre-OBE<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_rename</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Changes your name.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_save_flag</td>
-                            <td class="default">#SAVE#</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Echo message when using sar_bind_save.<br>Default is
-                                &quot;#SAVE#&quot;, a SourceRuns standard.<br>Keep this empty if no echo message should
-                                be binded.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_session</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Prints the current tick of the server since it has loaded.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_speedrun_export</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">Portal 2</td>
-                            <td class="help-text">Saves speedrun result to a csv file.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_speedrun_export_pb</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">Portal 2</td>
-                            <td class="help-text">Saves speedrun personal best to a csv file.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_speedrun_import</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">Portal 2</td>
-                            <td class="help-text">Imports speedrun data file.</td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_speedrun_result</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">Portal 2</td>
-                            <td class="help-text">Prints result of speedrun.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_speedrun_rules</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">Portal 2</td>
-                            <td class="help-text">Prints loaded rules which the timer will follow.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_sr_hud</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">Portal 2</td>
-                            <td class="help-text">Draws speedrun timer.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_sr_hud_font_color</td>
-                            <td class="default">255 255 255 255</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">Portal 2</td>
-                            <td class="help-text">RGBA font color of speedrun timer HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_sr_hud_font_index</td>
-                            <td class="default">70</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">Portal 2</td>
-                            <td class="help-text">Font index of speedrun timer HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_sr_hud_x</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">Portal 2</td>
-                            <td class="help-text">X offset of speedrun timer HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_sr_hud_y</td>
-                            <td class="default">100</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">Portal 2</td>
-                            <td class="help-text">Y offset of speedrun timer HUD.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_stats_auto_reset</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Resets all stats automatically.<br>0 = default,<br>1 = restart or
-                                disconnect only,<br>2 = any load &amp; sar_timer_start.<br>Note: Portal counter is not
-                                part of the &quot;stats&quot; feature.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_stats_jump</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Prints jump stats.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_stats_jumps_reset</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Resets total jump count and jump distance peak.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_stats_jumps_xy</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Saves jump distance as 2D vector.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_stats_reset</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Resets all saved stats.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_stats_steps</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Prints total amount of steps.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_stats_steps_reset</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Resets total step count.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_stats_velocity</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Prints velocity stats.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_stats_velocity_peak_xy</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Saves velocity peak as 2D vector.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_stats_velocity_reset</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Resets velocity peak.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_sum_during_session</td>
-                            <td class="default">1</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Updates the summary counter automatically during a session.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_sum_here</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Starts counting total ticks of sessions.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_sum_result</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Prints result of summary.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_sum_stop</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Stops summary counter.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_tas_autoplay</td>
-                            <td class="default">1</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Starts playing back recorded inputs on first frame after a load.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_tas_autorecord</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Starts recording inputs on first frame after a load.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_tas_autostart</td>
-                            <td class="default">1</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Starts queued commands automatically on first frame after a load.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_tas_export</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Export TAS replay to a file.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_tas_frame_after</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Adds command frame to the queue after waiting for specified amount of
-                                frames.<br>Usage: sar_tas_frame_after &lt;frames_to_wait&gt; [command_to_execute]<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_tas_frame_at</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Adds command frame to the queue at specified frame.<br>Usage:
-                                sar_tas_frame_at &lt;frame&gt; [command_to_execute]<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_tas_frames_after</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Adds command frame multiple times to the queue after waiting for
-                                specified amount of frames.<br>Usage: sar_tas_frames_after &lt;frames_to_wait&gt;
-                                &lt;interval&gt; &lt;length&gt; [command_to_execute]<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_tas_frames_at</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Adds command frame multiple times to the queue at specified frame.<br>Usage:
-                                sar_tas_frames_at &lt;frame&gt; &lt;interval&gt; &lt;last_frame&gt;
-                                [command_to_execute]<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_tas_import</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Import TAS replay file.</td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_tas_play</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Plays back recorded user inputs.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_tas_record</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Starts recording user inputs.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_tas_record_again</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Starts recording in play back mode.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_tas_reset</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Stops executing commands and clears them from the queue.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_tas_start</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Starts executing queued commands.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_tas_stop</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Stops recording or playing user inputs.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_teleport</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Teleports the player to the last saved location.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_teleport_setpos</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Saves current location for teleportation.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_time_demo</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Parses a demo and prints some information about it.</td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_time_demo_dev</td>
-                            <td class="default">0</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Printing mode when using sar_time_demo.<br>0 = default,<br>1 =
-                                console commands,<br>2 = console commands &amp; packets.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_time_demos</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Parses multiple demos and prints the total sum of them.</td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_timer_always_running</td>
-                            <td class="default">1</td>
-                            <td class="flags">NEVER_AS_STRING</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Timer will save current value when disconnecting.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_timer_result</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Prints result of timer.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_timer_start</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Starts timer.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_timer_stop</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Stops timer.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_togglewait</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">Portal 2</td>
-                            <td class="help-text">Enables or disables &quot;wait&quot; for the command buffer.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_trace_a</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Saves location A for tracing.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_trace_b</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Saves location B for tracing.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_trace_reset</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Resets tracer.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_trace_result</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Prints tracing result.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_unbind_reload</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Unbinds current save-reload rebinder.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_unbind_save</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">-</td>
-                            <td class="help-text">Unbinds current save rebinder.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_workshop</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">Portal 2</td>
-                            <td class="help-text">Same as &quot;map&quot; command but lists workshop maps.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_workshop_list</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">Portal 2</td>
-                            <td class="help-text">Prints all workshop maps.<br></td>
-                        </tr>
-                        <tr>
-                            <td class="name">sar_workshop_update</td>
-                            <td class="default">cmd</td>
-                            <td class="flags">-</td>
-                            <td class="exclusive">Portal 2</td>
-                            <td class="help-text">Updates the workshop map list.<br></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <nav class="nav-extended blue-grey darken-3">
+    <div class="nav-wrapper">
+      <div class="col s12 hide-on-small-only">
+        <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
+        <a href="../index.html">&nbsp;&nbsp;&nbsp;nekzor.github.io</a>
+        <a class="breadcrumb"></a>
+        <a href="sar.html">SourceAutoRecord Cvars</a>
+      </div>
+      <div class="col s12 hide-on-med-and-up">
+        <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <a href="sar.html" class="brand-logo center">SAR</a>
+      </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/js/materialize.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('.sidenav').sidenav();
-        });
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
-    <script>
-        var cvars = new List('cvars', { valueNames: ['name', 'default', 'flags', 'exclusive', 'help-text'] });
+  </nav>
+  <ul id="slide-out" class="sidenav">
+    <li><a href="../index.html">nekzor.github.io</a></li>
+    <li><a href="sar.html">SourceAutoRecord Cvars</a></li>
+  </ul>
+  <div id="cvars">
+    <div class="row"></div>
+    <div class="row">
+      <div class="col s12 m12 l3">
+        <input id="search-box" class="search white-text" placeholder="Search" />
+      </div>
+      <div class="col s12 m12 l1">
+        <br>
+        <label>
+          <input id="cbx-name" type="checkbox" checked="checked" onclick="updateFilter()" />
+          <span>Name</span>
+        </label>
+      </div>
+      <div class="col s12 m12 l1">
+        <br>
+        <label>
+          <input id="cbx-default" type="checkbox" checked="checked" onclick="updateFilter()" />
+          <span>Default</span>
+        </label>
+      </div>
+      <div class="col s12 m12 l1">
+        <br>
+        <label>
+          <input id="cbx-flags" type="checkbox" checked="checked" onclick="updateFilter()" />
+          <span>Flags</span>
+        </label>
+      </div>
+      <div class="col s12 m12 l1">
+        <br>
+        <label>
+          <input id="cbx-exclusive" type="checkbox" checked="checked" onclick="updateFilter()" />
+          <span>Exclusive</span>
+        </label>
+      </div>
+      <div class="col s12 m12 l1">
+        <br>
+        <label>
+          <input id="cbx-help-text" type="checkbox" checked="checked" onclick="updateFilter()" />
+          <span>Help Text</span>
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Default</th>
+              <th>Flags</th>
+              <th>Exclusive</th>
+              <th>Help Text</th>
+            </tr>
+          </thead>
+          <tbody class="list">
+            <tr>
+              <td class="name">-bhop</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">The Stanley Parable</td>
+              <td class="help-text">Client sends a key-up event for the in_jump state.<br></td>
+            </tr>
+            <tr>
+              <td class="name">+bhop</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">The Stanley Parable</td>
+              <td class="help-text">Client sends a key-down event for the in_jump state.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_about</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Prints info about this tool.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_aircontrol</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">Portal 2 Engine</td>
+              <td class="help-text">Enables more air-control on the server.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_anti_anti_cheat</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">The Stanley Parable</td>
+              <td class="help-text">Sets sv_cheats to 1.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_autojump</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Enables automatic jumping on the server.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_autorecord</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Enables automatic demo recording.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_avg_result</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Prints result of average.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_avg_start</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Starts calculating the average when using timer.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_avg_stop</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Stops average calculation.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_bind_reload</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Automatic save-reload rebinding when server has loaded.<br>File
+                indexing will be synced when recording demos.<br>Usage: sar_bind_reload &lt;key&gt;
+                [save_name]<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_bind_save</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Automatic save rebinding when server has loaded.<br>File indexing
+                will be synced when recording demos.<br>Usage: sar_bind_save &lt;key&gt; [save_name]<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_cps_add</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Saves current time of timer.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_cps_clear</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Resets saved times of timer.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_cps_result</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Prints result of timer checkpoints.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_cvarlist</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Lists all SAR cvars and unlocked engine cvars.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_cvars_dump</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Dumps all cvars to a file.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_cvars_load</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Loads important SAR cvars.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_cvars_save</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Saves important SAR cvars.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_debug_event_queue</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Prints entitity events when they are fired, similar to developer.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_debug_game_events</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">Portal 2</td>
+              <td class="help-text">Prints game event data, similar to net_showevents.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_disable_challenge_stats_hud</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">Portal 2</td>
+              <td class="help-text">Disables opening the challenge mode stats HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_exit</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Removes all function hooks, registered commands and unloads the
+                module.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_angles</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws absolute view angles of the client.<br>0 = default,<br>1 = xy,<br>2
+                = xyz.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_avg</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws calculated average of timer.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_cps</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws latest checkpoint of timer.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_default_font_color</td>
+              <td class="default">255 255 255 255</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">RGBA font color of HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_default_font_index</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Font index of HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_default_padding_x</td>
+              <td class="default">2</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">X padding of HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_default_padding_y</td>
+              <td class="default">2</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Y padding of HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_default_spacing</td>
+              <td class="default">4</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Spacing between elements of HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_demo</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws name, tick and time of current demo.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_frame</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws current frame count.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_jump</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws current jump distance.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_jump_peak</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws longest jump distance.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_jumps</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws total jump count.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_last_frame</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws last saved frame value.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_last_session</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws value of latest completed session.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_portals</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">Portal Games</td>
+              <td class="help-text">Draws total portal count.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_position</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws absolute position of the client.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_session</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws current session tick.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_steps</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws total step count.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_sum</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws summary value of sessions.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_text</td>
+              <td class="default"></td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws specified text when not empty.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_timer</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws current value of timer.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_trace</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws distance values of tracer. 0 = default,<br>1 = vec3,<br>2 =
+                vec2.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_velocity</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws velocity of the client.<br>0 = default,<br>1 = x/y/z,<br>2 =
+                x/y<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_hud_velocity_peak</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws last saved velocity peak.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_ihud</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws keyboard events of client.<br>0 = default,<br>1 =
+                forward;back;moveleft;moveright,<br>2 = 1 + duck;jump;use,<br>3 = 2 + attack;attack2,<br>4
+                = 3 + speed;reload.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_ihud_button_color</td>
+              <td class="default">0 0 0 233</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">RGBA button color of input HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_ihud_button_padding</td>
+              <td class="default">2</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Padding between buttons of input HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_ihud_button_size</td>
+              <td class="default">60</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Button size of input HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_ihud_font_color</td>
+              <td class="default">255 255 255 255</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">RGBA font color of input HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_ihud_font_index</td>
+              <td class="default">1</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Font index of input HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_ihud_layout</td>
+              <td class="default">WASDCSELRSR</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Layout of input HUD.<br>Characters are in this order:<br>forward,<br>back,<br>moveleft,<br>moveright,<br>duck,<br>jump,<br>use,<br>attack,<br>attack2,<br>speed,<br>reload.<br>Keep
+                it empty to disable drawing characters.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_ihud_setpos</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Sets automatically the position of input HUD.<br>Usage:
+                sar_ihud_setpos &lt;top, center or bottom&gt; &lt;left, center or right&gt;<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_ihud_shadow</td>
+              <td class="default">1</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Draws button shadows of input HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_ihud_shadow_color</td>
+              <td class="default">0 0 0 32</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">RGBA button shadow color of input HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_ihud_shadow_font_color</td>
+              <td class="default">255 255 255 32</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">RGBA button shadow font color of input HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_ihud_x</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">X offset of input HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_ihud_y</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Y offset of input HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_jumpboost</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">Portal 2 Engine</td>
+              <td class="help-text">Enables special game movement on the server.<br>0 = Default,<br>1 =
+                Orange Box Engine,<br>2 = Pre-OBE<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_rename</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Changes your name.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_save_flag</td>
+              <td class="default">#SAVE#</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Echo message when using sar_bind_save.<br>Default is
+                &quot;#SAVE#&quot;, a SourceRuns standard.<br>Keep this empty if no echo message should
+                be binded.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_session</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Prints the current tick of the server since it has loaded.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_speedrun_export</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">Portal 2</td>
+              <td class="help-text">Saves speedrun result to a csv file.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_speedrun_export_pb</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">Portal 2</td>
+              <td class="help-text">Saves speedrun personal best to a csv file.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_speedrun_import</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">Portal 2</td>
+              <td class="help-text">Imports speedrun data file.</td>
+            </tr>
+            <tr>
+              <td class="name">sar_speedrun_result</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">Portal 2</td>
+              <td class="help-text">Prints result of speedrun.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_speedrun_rules</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">Portal 2</td>
+              <td class="help-text">Prints loaded rules which the timer will follow.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_sr_hud</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">Portal 2</td>
+              <td class="help-text">Draws speedrun timer.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_sr_hud_font_color</td>
+              <td class="default">255 255 255 255</td>
+              <td class="flags">-</td>
+              <td class="exclusive">Portal 2</td>
+              <td class="help-text">RGBA font color of speedrun timer HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_sr_hud_font_index</td>
+              <td class="default">70</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">Portal 2</td>
+              <td class="help-text">Font index of speedrun timer HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_sr_hud_x</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">Portal 2</td>
+              <td class="help-text">X offset of speedrun timer HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_sr_hud_y</td>
+              <td class="default">100</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">Portal 2</td>
+              <td class="help-text">Y offset of speedrun timer HUD.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_stats_auto_reset</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Resets all stats automatically.<br>0 = default,<br>1 = restart or
+                disconnect only,<br>2 = any load &amp; sar_timer_start.<br>Note: Portal counter is not
+                part of the &quot;stats&quot; feature.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_stats_jump</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Prints jump stats.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_stats_jumps_reset</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Resets total jump count and jump distance peak.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_stats_jumps_xy</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Saves jump distance as 2D vector.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_stats_reset</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Resets all saved stats.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_stats_steps</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Prints total amount of steps.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_stats_steps_reset</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Resets total step count.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_stats_velocity</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Prints velocity stats.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_stats_velocity_peak_xy</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Saves velocity peak as 2D vector.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_stats_velocity_reset</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Resets velocity peak.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_sum_during_session</td>
+              <td class="default">1</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Updates the summary counter automatically during a session.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_sum_here</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Starts counting total ticks of sessions.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_sum_result</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Prints result of summary.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_sum_stop</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Stops summary counter.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_tas_autoplay</td>
+              <td class="default">1</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Starts playing back recorded inputs on first frame after a load.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_tas_autorecord</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Starts recording inputs on first frame after a load.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_tas_autostart</td>
+              <td class="default">1</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Starts queued commands automatically on first frame after a load.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_tas_export</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Export TAS replay to a file.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_tas_frame_after</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Adds command frame to the queue after waiting for specified amount of
+                frames.<br>Usage: sar_tas_frame_after &lt;frames_to_wait&gt; [command_to_execute]<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_tas_frame_at</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Adds command frame to the queue at specified frame.<br>Usage:
+                sar_tas_frame_at &lt;frame&gt; [command_to_execute]<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_tas_frames_after</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Adds command frame multiple times to the queue after waiting for
+                specified amount of frames.<br>Usage: sar_tas_frames_after &lt;frames_to_wait&gt;
+                &lt;interval&gt; &lt;length&gt; [command_to_execute]<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_tas_frames_at</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Adds command frame multiple times to the queue at specified frame.<br>Usage:
+                sar_tas_frames_at &lt;frame&gt; &lt;interval&gt; &lt;last_frame&gt;
+                [command_to_execute]<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_tas_import</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Import TAS replay file.</td>
+            </tr>
+            <tr>
+              <td class="name">sar_tas_play</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Plays back recorded user inputs.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_tas_record</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Starts recording user inputs.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_tas_record_again</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Starts recording in play back mode.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_tas_reset</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Stops executing commands and clears them from the queue.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_tas_start</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Starts executing queued commands.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_tas_stop</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Stops recording or playing user inputs.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_teleport</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Teleports the player to the last saved location.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_teleport_setpos</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Saves current location for teleportation.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_time_demo</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Parses a demo and prints some information about it.</td>
+            </tr>
+            <tr>
+              <td class="name">sar_time_demo_dev</td>
+              <td class="default">0</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Printing mode when using sar_time_demo.<br>0 = default,<br>1 =
+                console commands,<br>2 = console commands &amp; packets.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_time_demos</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Parses multiple demos and prints the total sum of them.</td>
+            </tr>
+            <tr>
+              <td class="name">sar_timer_always_running</td>
+              <td class="default">1</td>
+              <td class="flags">NEVER_AS_STRING</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Timer will save current value when disconnecting.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_timer_result</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Prints result of timer.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_timer_start</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Starts timer.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_timer_stop</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Stops timer.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_togglewait</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">Portal 2</td>
+              <td class="help-text">Enables or disables &quot;wait&quot; for the command buffer.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_trace_a</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Saves location A for tracing.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_trace_b</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Saves location B for tracing.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_trace_reset</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Resets tracer.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_trace_result</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Prints tracing result.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_unbind_reload</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Unbinds current save-reload rebinder.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_unbind_save</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">-</td>
+              <td class="help-text">Unbinds current save rebinder.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_workshop</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">Portal 2</td>
+              <td class="help-text">Same as &quot;map&quot; command but lists workshop maps.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_workshop_list</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">Portal 2</td>
+              <td class="help-text">Prints all workshop maps.<br></td>
+            </tr>
+            <tr>
+              <td class="name">sar_workshop_update</td>
+              <td class="default">cmd</td>
+              <td class="flags">-</td>
+              <td class="exclusive">Portal 2</td>
+              <td class="help-text">Updates the workshop map list.<br></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/js/materialize.min.js"></script>
+  <script>
+    $(document).ready(function() {
+        $('.sidenav').sidenav();
+    });
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+  <script>
+    var cvars = new List('cvars', {
+        valueNames: ['name', 'default', 'flags', 'exclusive', 'help-text']
+    });
 
-        function updateFilter() {
-            var filter = [];
-            if (document.getElementById("cbx-name").checked) filter.push("name");
-            if (document.getElementById("cbx-default").checked) filter.push("default");
-            if (document.getElementById("cbx-flags").checked) filter.push("flags");
-            if (document.getElementById("cbx-exclusive").checked) filter.push("exclusive");
-            if (document.getElementById("cbx-help-text").checked) filter.push("help-text");
-            cvars.valueNames = filter;
-            cvars.search();
-            cvars.reIndex();
-            cvars.search(document.getElementById("search-box").value);
-        }
-    </script>
+    function updateFilter() {
+        var filter = [];
+        if (document.getElementById("cbx-name").checked) filter.push("name");
+        if (document.getElementById("cbx-default").checked) filter.push("default");
+        if (document.getElementById("cbx-flags").checked) filter.push("flags");
+        if (document.getElementById("cbx-exclusive").checked) filter.push("exclusive");
+        if (document.getElementById("cbx-help-text").checked) filter.push("help-text");
+        cvars.valueNames = filter;
+        cvars.search();
+        cvars.reIndex();
+        cvars.search(document.getElementById("search-box").value);
+    }
+  </script>
 </body>
 
 </html>

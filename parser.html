@@ -2,550 +2,585 @@
 <html>
 
 <head>
-    <title>Demo Parser | nekzor.github.io</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style>.link { color: white } .link:hover { color: aquamarine }</style>
+  <title>Demo Parser | nekzor.github.io</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>.link { color: white } .link:hover { color: aquamarine }</style>
 </head>
 
 <body class="white-text blue-grey darken-4">
-    <nav class="nav-extended blue-grey darken-3">
-        <div class="nav-wrapper">
-            <div class="col s12 hide-on-small-only">
-                <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
-                <a href="index.html">&nbsp;&nbsp;&nbsp;nekzor.github.io</a>
-                <a class="breadcrumb"></a>
-                <a href="parser.html">Demo Parser</a>
-            </div>
-            <div class="col s12 hide-on-med-and-up">
-                <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-                <a href="parser.html" class="brand-logo center">DP</a>
-            </div>
-        </div>
-        <div class="nav-content">
-            <ul class="tabs tabs-transparent">
-                <li class="tab"><a href="#info">Info</a></li>
-                <li class="tab"><a href="#list">List</a></li>
-                <li class="tab"><a href="#view">View</a></li>
-                <li class="tab"><a href="#about">About</a></li>
-            </ul>
-        </div>
-    </nav>
-    <ul id="slide-out" class="sidenav">
-        <li><a href="index.html">nekzor.github.io</a></li>
-        <li><a href="glitches.html">Glitches</a></li>
-        <li><a href="lp.html">Least Portals</a></li>
-        <li><a href="parser.html">Demo Parser</a></li>
-    </ul>
-    <div id="info" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)">
-        <div class="row"></div>
-        <div class="row">
-            <div class="col s12 m12 l2 push-l2">
-                <div class="file-field input-field">
-                    <div class="btn-floating waves-effect waves-light green" title="Open File">
-                        <i class="material-icons">folder_open</i>
-                        <input id="add-info" type="file">
-                        <div class="file-path-wrapper">
-                            <input class="file-path validate white-text" type="text">
-                        </div>
-                    </div>
-                    &nbsp;&nbsp;&nbsp;
-                    <div id="add-info-view" class="btn-floating waves-effect waves-light green" title="Add To View">
-                        <i class="material-icons">show_chart</i>
-                    </div>
-                </div>
-            </div>
-            <div class="col s12 m12 l6 push-l1 center-align">
-                <h4 id="info-header"></h4>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col s12 m12 l8 push-l2">
-                <h3 id="info-header"></h3>
-                <h5>Header</h5>
-                <table>
-                    <tbody id="info-header-entries"></tbody>
-                </table>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col s12 m12 l8 push-l2">
-                <h3 id="info-inputs"></h3>
-                <h5>Inputs</h5>
-                <canvas id="inputs"></canvas>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col s12 m12 l8 push-l2">
-                <h5>Commands</h5>
-                <div class="row">
-                    <form class="col s12">
-                        <div class="row">
-                            <div class="input-field col s12 m12 l12">
-                                <textarea id="info-commands-filter" class="materialize-textarea white-text" spellcheck="false"></textarea>
-                                <label for="info-commands-filter">Filter out</label>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <table>
-                    <tbody id="info-commands-entries"></tbody>
-                </table>
-            </div>
-        </div>
+  <nav class="nav-extended blue-grey darken-3">
+    <div class="nav-wrapper">
+      <div class="col s12 hide-on-small-only">
+        <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
+        <a href="index.html">&nbsp;&nbsp;&nbsp;nekzor.github.io</a>
+        <a class="breadcrumb"></a>
+        <a href="parser.html">Demo Parser</a>
+      </div>
+      <div class="col s12 hide-on-med-and-up">
+        <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <a href="parser.html" class="brand-logo center">DP</a>
+      </div>
     </div>
-    <div id="list" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)">
-        <div class="row"></div>
-        <div class="row">
-            <div class="col s12 m12 l8 push-l2">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Map</th>
-                            <th>Client</th>
-                            <th>Ticks</th>
-                            <th>Time</th>
-                            <th>Total Ticks</th>
-                            <th>Total Time</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="list-entries"></tbody>
-                </table>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col s12 m12 l10 push-l2">
-                <div class="file-field input-field">
-                    <div class="btn-floating waves-effect waves-light green" title="Add Demo">
-                        <i class="material-icons">add</i>
-                        <input id="add-list-item" type="file" multiple>
-                        <div class="file-path-wrapper">
-                            <input class="file-path validate white-text" type="text">
-                        </div>
-                    </div>
-                    &nbsp;&nbsp;&nbsp;
-                    <div id="clear-list" class="btn-floating waves-effect waves-light green" title="Clear List">
-                        <i class="material-icons">clear_all</i>
-                    </div>
-                    &nbsp;&nbsp;&nbsp;
-                    <div id="save-list" class="btn-floating waves-effect waves-light green" title="Save List">
-                        <i class="material-icons">save</i>
-                    </div>
-                </div>
-                <div class="switch">
-                    <label>
-                        Sort by file name
-                        <input id="change-sort-list-method" type="checkbox" checked>
-                        <span class="lever"></span>
-                    </label>
-                </div>
-            </div>
-        </div>
+    <div class="nav-content">
+      <ul class="tabs tabs-transparent">
+        <li class="tab"><a href="#info">Info</a></li>
+        <li class="tab"><a href="#list">List</a></li>
+        <li class="tab"><a href="#view">View</a></li>
+        <li class="tab"><a href="#about">About</a></li>
+      </ul>
     </div>
-    <div id="view" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)">
-        <div class="row"></div>
-        <div class="row">
-            <div class="col s12 m12 l8 push-l2">
-                <div id="view-plot"></div>
+  </nav>
+  <ul id="slide-out" class="sidenav">
+    <li><a href="index.html">nekzor.github.io</a></li>
+    <li><a href="glitches.html">Glitches</a></li>
+    <li><a href="lp.html">Least Portals</a></li>
+    <li><a href="parser.html">Demo Parser</a></li>
+  </ul>
+  <div id="info" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)">
+    <div class="row"></div>
+    <div class="row">
+      <div class="col s12 m12 l2 push-l2">
+        <div class="file-field input-field">
+          <div class="btn-floating waves-effect waves-light green" title="Open File">
+            <i class="material-icons">folder_open</i>
+            <input id="add-info" type="file">
+            <div class="file-path-wrapper">
+              <input class="file-path validate white-text" type="text">
             </div>
+          </div>
+          &nbsp;&nbsp;&nbsp;
+          <div id="add-info-view" class="btn-floating waves-effect waves-light green" title="Add To View">
+            <i class="material-icons">show_chart</i>
+          </div>
         </div>
-        <div class="row">
-            <div class="col s12 m12 l8 push-l2">
-                <div class="file-field input-field">
-                    <div class="btn-floating waves-effect waves-light green" title="Add Demo">
-                        <i class="material-icons">add</i>
-                        <input id="add-view" type="file" multiple>
-                        <div class="file-path-wrapper">
-                            <input class="file-path validate white-text" type="text">
-                        </div>
-                    </div>
-                    &nbsp;&nbsp;&nbsp;
-                    <div id="clear-view" class="btn-floating waves-effect waves-light green" title="Clear All">
-                        <i class="material-icons">clear_all</i>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
+      <div class="col s12 m12 l6 push-l1 center-align">
+        <h4 id="info-header"></h4>
+      </div>
     </div>
-    <div id="about">
+    <div class="row">
+      <div class="col s12 m12 l8 push-l2">
+        <h3 id="info-header"></h3>
+        <h5>Header</h5>
+        <table>
+          <tbody id="info-header-entries"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12 m12 l8 push-l2">
+        <h3 id="info-inputs"></h3>
+        <h5>Inputs</h5>
+        <canvas id="inputs"></canvas>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12 m12 l8 push-l2">
+        <h5>Commands</h5>
         <div class="row">
-            <div class="row"></div>
+          <form class="col s12">
             <div class="row">
-                <div class="col s12 m12 l10 push-l2">
-                    <h3><a class="link" href="https://github.com/NeKzor/sdp.js">sdp.js</a></h3>
-                    <p>
-                        Simple Source Engine demo parser for Node.js.
-                    </p>
-                    <br>
-                    <h5>Features</h5>
-                    <ul>
-                        <li><b>•</b>&nbsp;&nbsp;&nbsp;Support for protocol 2, 3 and 4</li>
-                        <li><b>•</b>&nbsp;&nbsp;&nbsp;Automatic tick adjustment with rules defined by speedrunning
-                            communities</li>
-                        <li><b>•</b>&nbsp;&nbsp;&nbsp;Console command inspection with filter function</li>
-                        <li><b>•</b>&nbsp;&nbsp;&nbsp;Demo listing and csv exporter</li>
-                        <li><b>•</b>&nbsp;&nbsp;&nbsp;Camera position in 3D plot</li>
-                        <li><b>•</b>&nbsp;&nbsp;&nbsp;Button inputs view</li>
-                        <li><b>•</b>&nbsp;&nbsp;&nbsp;<a class="link" href="https://github.com/NeKzor/SourceAutoRecord">SourceAutoRecord</a>
-                            timing</li>
-                    </ul>
-                    <br>
-                    <p>
-                        Special thanks to spidda for testing this first!
-                    </p>
-                </div>
+              <div class="input-field col s12 m12 l12">
+                <textarea id="info-commands-filter" class="materialize-textarea white-text" spellcheck="false"></textarea>
+                <label for="info-commands-filter">Filter out</label>
+              </div>
             </div>
+          </form>
         </div>
+        <table>
+          <tbody id="info-commands-entries"></tbody>
+        </table>
+      </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script>
-        M.Sidenav.init(document.querySelectorAll('.sidenav'));
-        M.Tabs.init(document.querySelector('.tabs'));
-    </script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script type="text/javascript" src="js/browser.sdp.js"></script>
-    <script type="text/javascript">
-        var tabs = M.Tabs.getInstance(document.querySelector('.tabs'));
-        var infoHeader = document.querySelector('#info-header');
-        var infoHeaderEntries = document.querySelector('#info-header-entries');
-        var infoInputsCanvas = document.querySelector('#inputs');
-        var infoCommandsEntries = document.querySelector('#info-commands-entries');
-        var listEntries = document.querySelector('#list-entries');
+  </div>
+  <div id="list" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)">
+    <div class="row"></div>
+    <div class="row">
+      <div class="col s12 m12 l8 push-l2">
+        <table>
+          <thead>
+            <tr>
+              <th>Map</th>
+              <th>Client</th>
+              <th>Ticks</th>
+              <th>Time</th>
+              <th>Total Ticks</th>
+              <th>Total Time</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="list-entries"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12 m12 l10 push-l2">
+        <div class="file-field input-field">
+          <div class="btn-floating waves-effect waves-light green" title="Add Demo">
+            <i class="material-icons">add</i>
+            <input id="add-list-item" type="file" multiple>
+            <div class="file-path-wrapper">
+              <input class="file-path validate white-text" type="text">
+            </div>
+          </div>
+          &nbsp;&nbsp;&nbsp;
+          <div id="clear-list" class="btn-floating waves-effect waves-light green" title="Clear List">
+            <i class="material-icons">clear_all</i>
+          </div>
+          &nbsp;&nbsp;&nbsp;
+          <div id="save-list" class="btn-floating waves-effect waves-light green" title="Save List">
+            <i class="material-icons">save</i>
+          </div>
+        </div>
+        <div class="switch">
+          <label>
+            Sort by file name
+            <input id="change-sort-list-method" type="checkbox" checked>
+            <span class="lever"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="view" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)">
+    <div class="row"></div>
+    <div class="row">
+      <div class="col s12 m12 l8 push-l2">
+        <div id="view-plot"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12 m12 l8 push-l2">
+        <div class="file-field input-field">
+          <div class="btn-floating waves-effect waves-light green" title="Add Demo">
+            <i class="material-icons">add</i>
+            <input id="add-view" type="file" multiple>
+            <div class="file-path-wrapper">
+              <input class="file-path validate white-text" type="text">
+            </div>
+          </div>
+          &nbsp;&nbsp;&nbsp;
+          <div id="clear-view" class="btn-floating waves-effect waves-light green" title="Clear All">
+            <i class="material-icons">clear_all</i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="about">
+    <div class="row">
+      <div class="row"></div>
+      <div class="row">
+        <div class="col s12 m12 l10 push-l2">
+          <h3><a class="link" href="https://github.com/NeKzor/sdp.js">sdp.js</a></h3>
+          <p>
+            Simple Source Engine demo parser for Node.js.
+          </p>
+          <br>
+          <h5>Features</h5>
+          <ul>
+            <li><b>•</b>&nbsp;&nbsp;&nbsp;Support for protocol 2, 3 and 4</li>
+            <li><b>•</b>&nbsp;&nbsp;&nbsp;Automatic tick adjustment with rules defined by speedrunning
+              communities</li>
+            <li><b>•</b>&nbsp;&nbsp;&nbsp;Console command inspection with filter function</li>
+            <li><b>•</b>&nbsp;&nbsp;&nbsp;Demo listing and csv exporter</li>
+            <li><b>•</b>&nbsp;&nbsp;&nbsp;Camera position in 3D plot</li>
+            <li><b>•</b>&nbsp;&nbsp;&nbsp;Button inputs view</li>
+            <li><b>•</b>&nbsp;&nbsp;&nbsp;<a class="link" href="https://github.com/NeKzor/SourceAutoRecord">SourceAutoRecord</a>
+              timing</li>
+          </ul>
+          <br>
+          <p>
+            Special thanks to spidda for testing this first!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    M.Sidenav.init(document.querySelectorAll('.sidenav'));
+    M.Tabs.init(document.querySelector('.tabs'));
+  </script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script type="text/javascript" src="js/browser.sdp.js"></script>
+  <script type="text/javascript">
+    var tabs = M.Tabs.getInstance(document.querySelector('.tabs'));
+    var infoHeader = document.querySelector('#info-header');
+    var infoHeaderEntries = document.querySelector('#info-header-entries');
+    var infoInputsCanvas = document.querySelector('#inputs');
+    var infoCommandsEntries = document.querySelector('#info-commands-entries');
+    var listEntries = document.querySelector('#list-entries');
 
-        infoHeaderEntries.innerHTML = '-';
-        infoCommandsEntries.innerHTML = '-';
+    infoHeaderEntries.innerHTML = '-';
+    infoCommandsEntries.innerHTML = '-';
 
-        var demoParser = new sdp.SourceDemoParser();
-        var defaultGame = new sdp.SourceGame();
+    var demoParser = new sdp.SourceDemoParser();
+    var defaultGame = new sdp.SourceGame();
 
-        // Demo Parsing & Adjusting
-        var tryParseDemo = (ev, fullAdjustment = true) => {
-            let demo = null;
-            try {
-                console.log(`Parsing: ${ev.target.source.name}`);
-                demo = demoParser.parseDemo(new Buffer(ev.target.result));
-                demo.fileInfo = ev.target.source;
+    // Demo Parsing & Adjusting
+    var tryParseDemo = (ev, fullAdjustment = true) => {
+        let demo = null;
+        try {
+            console.log(`Parsing: ${ev.target.source.name}`);
+            demo = demoParser.parseDemo(new Buffer(ev.target.result));
+            demo.fileInfo = ev.target.source;
 
-                demo.detectGame(defaultGame)
-                    .adjustTicks(); // Fix message ticks
+            demo.detectGame(defaultGame)
+                .adjustTicks(); // Fix message ticks
 
-                if (fullAdjustment) {
-                    demo.adjustment = {
-                        ticks: {},
-                        time: {},
-                        delta: 0
-                    };
+            if (fullAdjustment) {
+                demo.adjustment = {
+                    ticks: {},
+                    time: {},
+                    delta: 0
+                };
 
-                    demo.adjustRange(); // Fix header
+                demo.adjustRange(); // Fix header
 
-                    demo.adjustment.ticks.before = demo.header.playbackTicks;
-                    demo.adjustment.time.before = demo.header.playbackTime;
+                demo.adjustment.ticks.before = demo.header.playbackTicks;
+                demo.adjustment.time.before = demo.header.playbackTime;
 
-                    // Adjust 0-tick demos manually
-                    if (demo.header.playbackTicks == 0) {
-                        let ipt = demo.intervalPerTick();
-                        // A TICK IS A TICK, YOU CAN'T SAY ITS NOTHING
-                        demo.header.playbackTicks = 1;
-                        demo.header.playbackTime = ipt;
-                    } else {
-                        defaultGame.adjustByRules(demo, splitScreenIndex); // Speedrun rules apply here
+                // Adjust 0-tick demos manually
+                if (demo.header.playbackTicks == 0) {
+                    let ipt = demo.intervalPerTick();
+                    // A TICK IS A TICK, YOU CAN'T SAY ITS NOTHING
+                    demo.header.playbackTicks = 1;
+                    demo.header.playbackTime = ipt;
+                } else {
+                    defaultGame.adjustByRules(demo, splitScreenIndex); // Speedrun rules apply here
 
-                        // Check SAR support
-                        demo.sar = demo.findSourceAutoRecordTiming();
-                    }
-
-                    demo.adjustment.ticks.after = demo.header.playbackTicks;
-                    demo.adjustment.time.after = demo.header.playbackTime;
-                    demo.adjustment.delta = Math.abs(demo.adjustment.ticks.before - demo.adjustment.ticks.after);
+                    // Check SAR support
+                    demo.sar = demo.findSourceAutoRecordTiming();
                 }
-            } catch (error) {
-                console.error(error);
+
+                demo.adjustment.ticks.after = demo.header.playbackTicks;
+                demo.adjustment.time.after = demo.header.playbackTime;
+                demo.adjustment.delta = Math.abs(demo.adjustment.ticks.before - demo.adjustment.ticks.after);
             }
-            return demo;
-        };
-        var getAdjustmentResult = (demo) => {
-            return {
-                ticks: `
+        } catch (error) {
+            console.error(error);
+        }
+        return demo;
+    };
+    var getAdjustmentResult = (demo) => {
+        return {
+            ticks: `
 Adjusted by ${demo.adjustment.delta} tick${(demo.adjustment.delta == 1) ? '' : 's'}
 Before: ${demo.adjustment.ticks.before}`,
-                time: `
+            time: `
 Adjusted by ${formatTime(demo.adjustment.delta * demo.intervalPerTick())}
 Before: ${formatTime(demo.adjustment.time.before)}`
-            };
         };
-        var getSourceAutoRecordResult = (demo) => {
-            return {
-                ticks: `
+    };
+    var getSourceAutoRecordResult = (demo) => {
+        return {
+            ticks: `
 SAR: ${demo.sar.delta} tick${(demo.sar.delta == 1) ? '' : 's'}`,
-                time: `
+            time: `
 SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`
-            };
+        };
+    }
+
+    // Drawing stuff
+    var inputContext = infoInputsCanvas.getContext('2d');
+    var inputs = [];
+    var inputsIndex = 0;
+    var buttonSize = 50;
+    var buttonPadding = 2;
+    var drawingActive = false;
+    var drawingFps = 60;
+    var prepareInputs = () => {
+        drawingActive = false;
+        inputsIndex = 0;
+
+        let userCmds = [];
+        try {
+            userCmds = demoParser.encodeUserCmdMessages(demo);
+        } catch (error) {
+            console.error(error);
+            return;
         }
 
-        // Drawing stuff
-        var inputContext = infoInputsCanvas.getContext('2d');
-        var inputs = [];
-        var inputsIndex = 0;
-        var buttonSize = 50;
-        var buttonPadding = 2;
-        var drawingActive = false;
-        var drawingFps = 60;
-        var prepareInputs = () => {
-            drawingActive = false;
-            inputsIndex = 0;
+        let map = [];
+        userCmds.forEach((cmd) => {
+            if (cmd.buttons) {
+                if (cmd.buttons & (1 << 0)) map.push({
+                    tick: cmd.source.tick,
+                    type: 'IN_ATTACK'
+                });
+                if (cmd.buttons & (1 << 1)) map.push({
+                    tick: cmd.source.tick,
+                    type: 'IN_JUMP'
+                });
+                if (cmd.buttons & (1 << 2)) map.push({
+                    tick: cmd.source.tick,
+                    type: 'IN_DUCK'
+                });
+                if (cmd.buttons & (1 << 3)) map.push({
+                    tick: cmd.source.tick,
+                    type: 'IN_FORWARD'
+                });
+                if (cmd.buttons & (1 << 4)) map.push({
+                    tick: cmd.source.tick,
+                    type: 'IN_BACK'
+                });
+                if (cmd.buttons & (1 << 5)) map.push({
+                    tick: cmd.source.tick,
+                    type: 'IN_USE'
+                });
+                if (cmd.buttons & (1 << 9)) map.push({
+                    tick: cmd.source.tick,
+                    type: 'IN_MOVELEFT'
+                });
+                if (cmd.buttons & (1 << 10)) map.push({
+                    tick: cmd.source.tick,
+                    type: 'IN_MOVERIGHT'
+                });
+                if (cmd.buttons & (1 << 11)) map.push({
+                    tick: cmd.source.tick,
+                    type: 'IN_ATTACK2'
+                });
+                if (cmd.buttons & (1 << 13)) map.push({
+                    tick: cmd.source.tick,
+                    type: 'IN_RELOAD'
+                });
+                if (cmd.buttons & (1 << 17)) map.push({
+                    tick: cmd.source.tick,
+                    type: 'IN_SPEED'
+                });
+            }
+        });
 
-            let userCmds = [];
-            try {
-                userCmds = demoParser.encodeUserCmdMessages(demo);
-            } catch (error) {
-                console.error(error);
-                return;
+        inputs = [];
+        if (map.length > 0) {
+            let lastTick = map[map.length - 1].tick;
+
+            for (let tick = 0; tick <= lastTick; ++tick) {
+                inputs.push(map.filter(cmd => cmd.tick == tick));
             }
 
-            let map = [];
-            userCmds.forEach((cmd) => {
-                if (cmd.buttons) {
-                    if (cmd.buttons & (1 << 0)) map.push({ tick: cmd.source.tick, type: 'IN_ATTACK' });
-                    if (cmd.buttons & (1 << 1)) map.push({ tick: cmd.source.tick, type: 'IN_JUMP' });
-                    if (cmd.buttons & (1 << 2)) map.push({ tick: cmd.source.tick, type: 'IN_DUCK' });
-                    if (cmd.buttons & (1 << 3)) map.push({ tick: cmd.source.tick, type: 'IN_FORWARD' });
-                    if (cmd.buttons & (1 << 4)) map.push({ tick: cmd.source.tick, type: 'IN_BACK' });
-                    if (cmd.buttons & (1 << 5)) map.push({ tick: cmd.source.tick, type: 'IN_USE' });
-                    if (cmd.buttons & (1 << 9)) map.push({ tick: cmd.source.tick, type: 'IN_MOVELEFT' });
-                    if (cmd.buttons & (1 << 10)) map.push({ tick: cmd.source.tick, type: 'IN_MOVERIGHT' });
-                    if (cmd.buttons & (1 << 11)) map.push({ tick: cmd.source.tick, type: 'IN_ATTACK2' });
-                    if (cmd.buttons & (1 << 13)) map.push({ tick: cmd.source.tick, type: 'IN_RELOAD' });
-                    if (cmd.buttons & (1 << 17)) map.push({ tick: cmd.source.tick, type: 'IN_SPEED' });
+            drawingActive = inputs.length > 0;
+        }
+    };
+    var drawInputs = () => {
+        if (!drawingActive) {
+            return;
+        }
+
+        inputContext.clearRect(0, 0, infoInputsCanvas.width, infoInputsCanvas.height);
+
+        let input = inputs[inputsIndex];
+        if (inputsIndex + 1 >= inputs.length) {
+            inputsIndex = 0;
+        }
+
+        if (input.length > 0) {
+            if (input.find(i => i.type == 'IN_FORWARD') != undefined) drawButton('W', 2, 0, buttonSize);
+            if (input.find(i => i.type == 'IN_USE') != undefined) drawButton('E', 3, 0, buttonSize);
+            if (input.find(i => i.type == 'IN_RELOAD') != undefined) drawButton('R', 4, 0, buttonSize);
+            if (input.find(i => i.type == 'IN_MOVELEFT') != undefined) drawButton('A', 1, 1, buttonSize);
+            if (input.find(i => i.type == 'IN_BACK') != undefined) drawButton('S', 2, 1, buttonSize);
+            if (input.find(i => i.type == 'IN_MOVERIGHT') != undefined) drawButton('D', 3, 1, buttonSize);
+            if (input.find(i => i.type == 'IN_SPEED') != undefined) drawButton('Shift', 0, 1, buttonSize);
+            if (input.find(i => i.type == 'IN_DUCK') != undefined) drawButton('Ctrl', 0, 2, buttonSize);
+            if (input.find(i => i.type == 'IN_JUMP') != undefined) drawButton('Spacebar', 1, 2, buttonSize, buttonSize, 4);
+            if (input.find(i => i.type == 'IN_ATTACK') != undefined) drawButton('LMB', 5, 2, buttonSize);
+            if (input.find(i => i.type == 'IN_ATTACK2') != undefined) drawButton('RMB', 6, 2, buttonSize);
+        }
+
+        // Tick count label
+        inputContext.fillStyle = 'rgba(255, 255, 255, 1)';
+        inputContext.font = '12px Arial';
+        inputContext.textAlign = 'left';
+        inputContext.textBaseline = 'middle';
+        inputContext.fillText(`Tick: ${inputsIndex++}`, 10, 10);
+
+        setTimeout(() => window.requestAnimationFrame(drawInputs), 1000 / drawingFps);
+    };
+    var drawButton = (text, column, row, width, height, widthFactor = 1, heightFactor = 1) => {
+        height = height || width;
+        // Rectangle
+        inputContext.fillStyle = `rgba(0, 0, 0, 0.5)`;
+        let rX = (width * column) + (buttonPadding * column);
+        let rY = (height * row) + (buttonPadding * row);
+        let rWidth = width * widthFactor + (buttonPadding * (widthFactor - 1));
+        let rHeight = height * heightFactor + (buttonPadding * (heightFactor - 1));
+        inputContext.fillRect(rX, rY, rWidth, rHeight);
+        // Label
+        inputContext.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        inputContext.font = '12px Arial';
+        inputContext.textAlign = 'center';
+        inputContext.textBaseline = 'middle';
+        inputContext.fillText(text, rX + (rWidth / 2), rY + (rHeight / 2));
+    };
+    var initButtons = () => {
+        inputs = [];
+        drawingActive = false;
+        inputsIndex = 0;
+        infoInputsCanvas.width = (buttonSize * 7) + (buttonPadding * 7);
+        infoInputsCanvas.height = (buttonSize * 3) + (buttonPadding * 3);
+        drawButton('W', 2, 0, buttonSize);
+        drawButton('E', 3, 0, buttonSize);
+        drawButton('R', 4, 0, buttonSize);
+        drawButton('A', 1, 1, buttonSize);
+        drawButton('S', 2, 1, buttonSize);
+        drawButton('D', 3, 1, buttonSize);
+        drawButton('Shift', 0, 1, buttonSize);
+        drawButton('Ctrl', 0, 2, buttonSize);
+        drawButton('Spacebar', 1, 2, buttonSize, buttonSize, 4);
+        drawButton('LMB', 5, 2, buttonSize);
+        drawButton('RMB', 6, 2, buttonSize);
+    };
+    initButtons();
+
+    // Info Tab
+    var demo = null;
+    var commandsFilter = [];
+    var commandsFilterTimeout = null;
+    var displayInfo = () => {
+        if (demo != null) {
+            let generateRows = (table, rows, setTitleName = true) => {
+                for (let row of rows) {
+                    let entry = document.createElement('tr');
+                    let name = document.createElement('td');
+                    let data = document.createElement('td');
+                    name.innerHTML = row[0];
+                    data.innerHTML = row[1];
+                    if (row.length == 3) {
+                        if (setTitleName) {
+                            name.setAttribute('title', row[2]);
+                        } else {
+                            data.setAttribute('title', row[2]);
+                        }
+                    }
+                    entry.appendChild(name);
+                    entry.appendChild(data);
+                    table.appendChild(entry);
+                }
+            };
+
+            let header = [
+                ['Demo File Stamp', demo.header.demoFileStamp],
+                ['Demo Protocol', demo.header.demoProtocol],
+                ['Network Protocol', demo.header.networkProtocol],
+                ['Server Name', demo.header.serverName],
+                ['Client Name', demo.header.clientName],
+                ['Map Name', demo.header.mapName],
+                ['Game Directory', demo.header.gameDirectory],
+                ['Playback Time', formatTime(demo.header.playbackTime)],
+                ['Playback Ticks', demo.header.playbackTicks],
+                ['Playback Frames', demo.header.playbackFrames],
+                ['Sign On Length', demo.header.signOnLength]
+            ];
+
+            if (demo.adjustment.delta != 0) {
+                let adjustmentResult = getAdjustmentResult(demo);
+                header[7].push(adjustmentResult.time);
+                header[8].push(adjustmentResult.ticks);
+            } else if (demo.sar && demo.sar.delta >= 0) {
+                let sarResult = getSourceAutoRecordResult(demo);
+                header[7].push(sarResult.time);
+                header[8].push(sarResult.ticks);
+            }
+
+            let commands = [];
+            let ipt = demo.intervalPerTick();
+            demo.messages.forEach((msg) => {
+                if (msg.type == 0x04) {
+                    if (commandsFilter.length != 0 && commandsFilter.includes(msg.message.command)) {
+                        return;
+                    }
+                    commands.push([msg.tick, msg.message.command, formatTime(msg.tick * ipt)]);
                 }
             });
 
-            inputs = [];
-            if (map.length > 0) {
-                let lastTick = map[map.length - 1].tick;
-
-                for (let tick = 0; tick <= lastTick; ++tick) {
-                    inputs.push(map.filter(cmd => cmd.tick == tick));
-                }
-
-                drawingActive = inputs.length > 0;
-            }
-        };
-        var drawInputs = () => {
-            if (!drawingActive) {
-                return;
-            }
-
-            inputContext.clearRect(0, 0, infoInputsCanvas.width, infoInputsCanvas.height);
-
-            let input = inputs[inputsIndex];
-            if (inputsIndex + 1 >= inputs.length) {
-                inputsIndex = 0;
-            }
-
-            if (input.length > 0) {
-                if (input.find(i => i.type == 'IN_FORWARD') != undefined) drawButton('W', 2, 0, buttonSize);
-                if (input.find(i => i.type == 'IN_USE') != undefined) drawButton('E', 3, 0, buttonSize);
-                if (input.find(i => i.type == 'IN_RELOAD') != undefined) drawButton('R', 4, 0, buttonSize);
-                if (input.find(i => i.type == 'IN_MOVELEFT') != undefined) drawButton('A', 1, 1, buttonSize);
-                if (input.find(i => i.type == 'IN_BACK') != undefined) drawButton('S', 2, 1, buttonSize);
-                if (input.find(i => i.type == 'IN_MOVERIGHT') != undefined) drawButton('D', 3, 1, buttonSize);
-                if (input.find(i => i.type == 'IN_SPEED') != undefined) drawButton('Shift', 0, 1, buttonSize);
-                if (input.find(i => i.type == 'IN_DUCK') != undefined) drawButton('Ctrl', 0, 2, buttonSize);
-                if (input.find(i => i.type == 'IN_JUMP') != undefined) drawButton('Spacebar', 1, 2, buttonSize, buttonSize, 4);
-                if (input.find(i => i.type == 'IN_ATTACK') != undefined) drawButton('LMB', 5, 2, buttonSize);
-                if (input.find(i => i.type == 'IN_ATTACK2') != undefined) drawButton('RMB', 6, 2, buttonSize);
-            }
-
-            // Tick count label
-            inputContext.fillStyle = 'rgba(255, 255, 255, 1)';
-            inputContext.font = '12px Arial';
-            inputContext.textAlign = 'left';
-            inputContext.textBaseline = 'middle';
-            inputContext.fillText(`Tick: ${inputsIndex++}`, 10, 10);
-
-            setTimeout(() => window.requestAnimationFrame(drawInputs), 1000 / drawingFps);
-        };
-        var drawButton = (text, column, row, width, height, widthFactor = 1, heightFactor = 1) => {
-            height = height || width;
-            // Rectangle
-            inputContext.fillStyle = `rgba(0, 0, 0, 0.5)`;
-            let rX = (width * column) + (buttonPadding * column);
-            let rY = (height * row) + (buttonPadding * row);
-            let rWidth = width * widthFactor + (buttonPadding * (widthFactor - 1));
-            let rHeight = height * heightFactor + (buttonPadding * (heightFactor - 1));
-            inputContext.fillRect(rX, rY, rWidth, rHeight);
-            // Label
-            inputContext.fillStyle = 'rgba(255, 255, 255, 0.9)';
-            inputContext.font = '12px Arial';
-            inputContext.textAlign = 'center';
-            inputContext.textBaseline = 'middle';
-            inputContext.fillText(text, rX + (rWidth / 2), rY + (rHeight / 2));
-        };
-        var initButtons = () => {
-            inputs = [];
-            drawingActive = false;
-            inputsIndex = 0;
-            infoInputsCanvas.width = (buttonSize * 7) + (buttonPadding * 7);
-            infoInputsCanvas.height = (buttonSize * 3) + (buttonPadding * 3);
-            drawButton('W', 2, 0, buttonSize);
-            drawButton('E', 3, 0, buttonSize);
-            drawButton('R', 4, 0, buttonSize);
-            drawButton('A', 1, 1, buttonSize);
-            drawButton('S', 2, 1, buttonSize);
-            drawButton('D', 3, 1, buttonSize);
-            drawButton('Shift', 0, 1, buttonSize);
-            drawButton('Ctrl', 0, 2, buttonSize);
-            drawButton('Spacebar', 1, 2, buttonSize, buttonSize, 4);
-            drawButton('LMB', 5, 2, buttonSize);
-            drawButton('RMB', 6, 2, buttonSize);
-        };
-        initButtons();
-
-        // Info Tab
-        var demo = null;
-        var commandsFilter = [];
-        var commandsFilterTimeout = null;
-        var displayInfo = () => {
-            if (demo != null) {
-                let generateRows = (table, rows, setTitleName = true) => {
-                    for (let row of rows) {
-                        let entry = document.createElement('tr');
-                        let name = document.createElement('td');
-                        let data = document.createElement('td');
-                        name.innerHTML = row[0];
-                        data.innerHTML = row[1];
-                        if (row.length == 3) {
-                            if (setTitleName) {
-                                name.setAttribute('title', row[2]);
-                            } else {
-                                data.setAttribute('title', row[2]);
-                            }
-                        }
-                        entry.appendChild(name);
-                        entry.appendChild(data);
-                        table.appendChild(entry);
-                    }
-                };
-
-                let header = [
-                    ['Demo File Stamp', demo.header.demoFileStamp],
-                    ['Demo Protocol', demo.header.demoProtocol],
-                    ['Network Protocol', demo.header.networkProtocol],
-                    ['Server Name', demo.header.serverName],
-                    ['Client Name', demo.header.clientName],
-                    ['Map Name', demo.header.mapName],
-                    ['Game Directory', demo.header.gameDirectory],
-                    ['Playback Time', formatTime(demo.header.playbackTime)],
-                    ['Playback Ticks', demo.header.playbackTicks],
-                    ['Playback Frames', demo.header.playbackFrames],
-                    ['Sign On Length', demo.header.signOnLength]
-                ];
-
-                if (demo.adjustment.delta != 0) {
-                    let adjustmentResult = getAdjustmentResult(demo);
-                    header[7].push(adjustmentResult.time);
-                    header[8].push(adjustmentResult.ticks);
-                } else if (demo.sar && demo.sar.delta >= 0) {
-                    let sarResult = getSourceAutoRecordResult(demo);
-                    header[7].push(sarResult.time);
-                    header[8].push(sarResult.ticks);
-                }
-
-                let commands = [];
-                let ipt = demo.intervalPerTick();
-                demo.messages.forEach((msg) => {
-                    if (msg.type == 0x04) {
-                        if (commandsFilter.length != 0 && commandsFilter.includes(msg.message.command)) {
-                            return;
-                        }
-                        commands.push([msg.tick, msg.message.command, formatTime(msg.tick * ipt)]);
-                    }
-                });
-
-                infoHeader.innerHTML = demo.fileInfo.name;
-                infoHeaderEntries.innerHTML = '';
-                infoCommandsEntries.innerHTML = '';
-                generateRows(infoHeaderEntries, header, false);
-                generateRows(infoCommandsEntries, commands);
-            } else {
-                infoHeader.innerHTML = 'oof :(';
-                infoHeaderEntries.innerHTML = '-';
-                infoCommandsEntries.innerHTML = '-';
-                initButtons();
-            }
-        };
-        var parseInfoFile = (file) => {
-            demo = null;
-            let fileInfo = {
-                name: file.name
-            };
-
-            let reader = new FileReader();
-            reader.onload = (ev) => {
-                demo = tryParseDemo(ev);
-                displayInfo();
-                prepareInputs();
-                drawInputs();
-            };
-            reader.source = fileInfo;
-            reader.readAsArrayBuffer(file);
+            infoHeader.innerHTML = demo.fileInfo.name;
+            infoHeaderEntries.innerHTML = '';
+            infoCommandsEntries.innerHTML = '';
+            generateRows(infoHeaderEntries, header, false);
+            generateRows(infoCommandsEntries, commands);
+        } else {
+            infoHeader.innerHTML = 'oof :(';
+            infoHeaderEntries.innerHTML = '-';
+            infoCommandsEntries.innerHTML = '-';
+            initButtons();
+        }
+    };
+    var parseInfoFile = (file) => {
+        demo = null;
+        let fileInfo = {
+            name: file.name
         };
 
-        // List Tab
-        var demos = [];
-        var sortByFileName = true;
-        var infoListItem = (index) => {
-            demo = demos[index];
+        let reader = new FileReader();
+        reader.onload = (ev) => {
+            demo = tryParseDemo(ev);
             displayInfo();
-            tabs.select('info');
-            window.scrollTo(0, 0);
+            prepareInputs();
+            drawInputs();
         };
-        var viewListItem = (index) => {
-            addView(demos[index]);
-            tabs.select('view');
-            window.scrollTo(0, 0);
-            displayViewPlot();
-        };
-        var removeListItem = (index) => {
-            demos = demos.filter(demo => demo != demos[index]);
-            displayList();
-        };
-        var displayList = () => {
-            listEntries.innerHTML = '';
+        reader.source = fileInfo;
+        reader.readAsArrayBuffer(file);
+    };
 
-            let curTicks = 0;
-            let curTime = 0;
-            let index = 0;
+    // List Tab
+    var demos = [];
+    var sortByFileName = true;
+    var infoListItem = (index) => {
+        demo = demos[index];
+        displayInfo();
+        tabs.select('info');
+        window.scrollTo(0, 0);
+    };
+    var viewListItem = (index) => {
+        addView(demos[index]);
+        tabs.select('view');
+        window.scrollTo(0, 0);
+        displayViewPlot();
+    };
+    var removeListItem = (index) => {
+        demos = demos.filter(demo => demo != demos[index]);
+        displayList();
+    };
+    var displayList = () => {
+        listEntries.innerHTML = '';
 
-            if (sortByFileName) {
-                demos = demos.sort((a, b) => a.fileInfo.name.localeCompare(b.fileInfo.name, undefined, { numeric: true }));
-            } else {
-                demos = demos.sort((a, b) => (a.fileInfo.index < b.fileInfo.index) ? -1 : 1);
-            }
+        let curTicks = 0;
+        let curTime = 0;
+        let index = 0;
 
-            for (let demo of demos) {
-                curTicks += demo.header.playbackTicks;
-                curTime += demo.header.playbackTime;
+        if (sortByFileName) {
+            demos = demos.sort((a, b) => a.fileInfo.name.localeCompare(b.fileInfo.name, undefined, {
+                numeric: true
+            }));
+        } else {
+            demos = demos.sort((a, b) => (a.fileInfo.index < b.fileInfo.index) ? -1 : 1);
+        }
 
-                let map = document.createElement('td');
-                map.setAttribute('title', demo.fileInfo.name);
-                let client = document.createElement('td');
-                let ticks = document.createElement('td');
-                let time = document.createElement('td');
-                let totalTicks = document.createElement('td');
-                let totalTime = document.createElement('td');
-                let btnOptions = document.createElement('td');
+        for (let demo of demos) {
+            curTicks += demo.header.playbackTicks;
+            curTime += demo.header.playbackTime;
 
-                map.innerHTML = demo.header.mapName;
-                client.innerHTML = demo.header.clientName;
-                ticks.innerHTML = demo.header.playbackTicks;
-                time.innerHTML = formatTime(demo.header.playbackTime);
-                totalTicks.innerHTML = curTicks;
-                totalTime.innerHTML = formatTime(curTime);
-                btnOptions.innerHTML = `
+            let map = document.createElement('td');
+            map.setAttribute('title', demo.fileInfo.name);
+            let client = document.createElement('td');
+            let ticks = document.createElement('td');
+            let time = document.createElement('td');
+            let totalTicks = document.createElement('td');
+            let totalTime = document.createElement('td');
+            let btnOptions = document.createElement('td');
+
+            map.innerHTML = demo.header.mapName;
+            client.innerHTML = demo.header.clientName;
+            ticks.innerHTML = demo.header.playbackTicks;
+            time.innerHTML = formatTime(demo.header.playbackTime);
+            totalTicks.innerHTML = curTicks;
+            totalTime.innerHTML = formatTime(curTime);
+            btnOptions.innerHTML = `
                     <div class="btn-floating waves-effect waves-light green" title="View Info"
                         onclick="infoListItem(${index})">
                         <i class="material-icons">notes</i>
@@ -561,380 +596,394 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`
                         <i class="material-icons">clear</i>
                     </div>`;
 
-                if (demo.adjustment.delta != 0) {
-                    let adjustmentResult = getAdjustmentResult(demo);
-                    time.setAttribute('title', adjustmentResult.time);
-                    ticks.setAttribute('title', adjustmentResult.ticks);
-                }  else if (demo.sar && demo.sar.delta >= 0) {
-                    let sarResult = getSourceAutoRecordResult(demo);
-                    time.setAttribute('title', sarResult.time);
-                    ticks.setAttribute('title', sarResult.ticks);
-                }
-
-                let entry = document.createElement('tr');
-                entry.appendChild(map);
-                entry.appendChild(client);
-                entry.appendChild(ticks);
-                entry.appendChild(time);
-                entry.appendChild(totalTicks);
-                entry.appendChild(totalTime);
-                entry.appendChild(btnOptions);
-
-                listEntries.appendChild(entry);
-                ++index;
-            }
-        };
-        var parseListFiles = (files) => {
-            let count = 0;
-            let index = demos.length;
-            for (let file of files) {
-                let fileInfo = {
-                    index: index++,
-                    name: file.name
-                };
-
-                let reader = new FileReader();
-                reader.onload = (ev) => {
-                    let demo = tryParseDemo(ev);
-                    if (demo != null) {
-                        demos.push(demo);
-                    }
-
-                    if (++count == files.length) {
-                        displayList();
-                    }
-                };
-                reader.source = fileInfo;
-                reader.readAsArrayBuffer(file);
-            }
-        };
-
-        // View Tab
-        var views = [];
-        var splitScreenIndex = 0;
-        var viewLayout = {
-            margin: {
-                l: 0,
-                r: 0,
-                b: 0,
-                t: 33
-            },
-            scene: {
-                aspectmode: 'data'
-            },
-            showlegend: true
-        };
-        var addView = (demo) => {
-            if (demo == null) {
-                return;
+            if (demo.adjustment.delta != 0) {
+                let adjustmentResult = getAdjustmentResult(demo);
+                time.setAttribute('title', adjustmentResult.time);
+                ticks.setAttribute('title', adjustmentResult.ticks);
+            } else if (demo.sar && demo.sar.delta >= 0) {
+                let sarResult = getSourceAutoRecordResult(demo);
+                time.setAttribute('title', sarResult.time);
+                ticks.setAttribute('title', sarResult.ticks);
             }
 
-            let view = {
-                mode: 'lines',
-                line: {
-                    width: 3
-                },
-                type: 'scatter3d',
-                name: demo.fileInfo.name,
-                x: [],
-                y: [],
-                z: [],
-                text: []
+            let entry = document.createElement('tr');
+            entry.appendChild(map);
+            entry.appendChild(client);
+            entry.appendChild(ticks);
+            entry.appendChild(time);
+            entry.appendChild(totalTicks);
+            entry.appendChild(totalTime);
+            entry.appendChild(btnOptions);
+
+            listEntries.appendChild(entry);
+            ++index;
+        }
+    };
+    var parseListFiles = (files) => {
+        let count = 0;
+        let index = demos.length;
+        for (let file of files) {
+            let fileInfo = {
+                index: index++,
+                name: file.name
             };
 
-            if (views.length == 1 && views[0].unused) {
-                views.pop();
-            }
-
-            demo.messages.forEach((msg) => {
-                if (msg.type == 0x02
-                    && msg.message.packetInfo[splitScreenIndex].viewOrigin[0].x != 0
-                    && msg.message.packetInfo[splitScreenIndex].viewOrigin[0].y != 0
-                    && msg.message.packetInfo[splitScreenIndex].viewOrigin[0].z != 0) {
-                    view.x.push(msg.message.packetInfo[splitScreenIndex].viewOrigin[0].x);
-                    view.y.push(msg.message.packetInfo[splitScreenIndex].viewOrigin[0].y);
-                    view.z.push(msg.message.packetInfo[splitScreenIndex].viewOrigin[0].z);
-                    view.text.push(`Tick ${msg.tick}`);
+            let reader = new FileReader();
+            reader.onload = (ev) => {
+                let demo = tryParseDemo(ev);
+                if (demo != null) {
+                    demos.push(demo);
                 }
-            });
 
-            views.push(view);
+                if (++count == files.length) {
+                    displayList();
+                }
+            };
+            reader.source = fileInfo;
+            reader.readAsArrayBuffer(file);
+        }
+    };
+
+    // View Tab
+    var views = [];
+    var splitScreenIndex = 0;
+    var viewLayout = {
+        margin: {
+            l: 0,
+            r: 0,
+            b: 0,
+            t: 33
+        },
+        scene: {
+            aspectmode: 'data'
+        },
+        showlegend: true
+    };
+    var addView = (demo) => {
+        if (demo == null) {
+            return;
+        }
+
+        let view = {
+            mode: 'lines',
+            line: {
+                width: 3
+            },
+            type: 'scatter3d',
+            name: demo.fileInfo.name,
+            x: [],
+            y: [],
+            z: [],
+            text: []
         };
-        var displayViewPlot = () => {
-            Plotly.newPlot('view-plot', views, viewLayout, { responsive: true });
-        };
-        var parseViewFiles = (files) => {
-            let count = 0;
-            let index = 0;
-            for (let file of files) {
-                let fileInfo = {
-                    index: index++,
-                    name: file.name
-                };
 
-                let reader = new FileReader();
-                reader.onload = (ev) => {
-                    addView(tryParseDemo(ev, false));
+        if (views.length == 1 && views[0].unused) {
+            views.pop();
+        }
 
-                    if (++count == files.length) {
-                        displayViewPlot();
-                    }
-                };
-                reader.source = fileInfo;
-                reader.readAsArrayBuffer(file);
+        demo.messages.forEach((msg) => {
+            if (msg.type == 0x02
+                && msg.message.packetInfo[splitScreenIndex].viewOrigin[0].x != 0
+                && msg.message.packetInfo[splitScreenIndex].viewOrigin[0].y != 0
+                && msg.message.packetInfo[splitScreenIndex].viewOrigin[0].z != 0) {
+                view.x.push(msg.message.packetInfo[splitScreenIndex].viewOrigin[0].x);
+                view.y.push(msg.message.packetInfo[splitScreenIndex].viewOrigin[0].y);
+                view.z.push(msg.message.packetInfo[splitScreenIndex].viewOrigin[0].z);
+                view.text.push(`Tick ${msg.tick}`);
             }
-        };
+        });
 
-        // Drag & Drop Support
-        var dropHandler = (ev) => {
-            ev.preventDefault();
+        views.push(view);
+    };
+    var displayViewPlot = () => {
+        Plotly.newPlot('view-plot', views, viewLayout, {
+            responsive: true
+        });
+    };
+    var parseViewFiles = (files) => {
+        let count = 0;
+        let index = 0;
+        for (let file of files) {
+            let fileInfo = {
+                index: index++,
+                name: file.name
+            };
 
-            let files = [];
+            let reader = new FileReader();
+            reader.onload = (ev) => {
+                addView(tryParseDemo(ev, false));
 
-            if (ev.dataTransfer.items) {
-                for (let i = 0; i < ev.dataTransfer.items.length; ++i) {
-                    if (ev.dataTransfer.items[i].kind === 'file') {
-                        files.push(ev.dataTransfer.items[i].getAsFile());
-                    }
+                if (++count == files.length) {
+                    displayViewPlot();
+                }
+            };
+            reader.source = fileInfo;
+            reader.readAsArrayBuffer(file);
+        }
+    };
+
+    // Drag & Drop Support
+    var dropHandler = (ev) => {
+        ev.preventDefault();
+
+        let files = [];
+
+        if (ev.dataTransfer.items) {
+            for (let i = 0; i < ev.dataTransfer.items.length; ++i) {
+                if (ev.dataTransfer.items[i].kind === 'file') {
+                    files.push(ev.dataTransfer.items[i].getAsFile());
                 }
             }
+        }
 
-            if (files.length > 0) {
-                switch (ev.currentTarget.id) {
-                    case 'info':
-                        parseInfoFile(files[0]);
-                        break;
-                    case 'list':
-                        parseListFiles(files);
-                        break;
-                    case 'view':
-                        parseViewFiles(files);
-                        break;
-                }
+        if (files.length > 0) {
+            switch (ev.currentTarget.id) {
+                case 'info':
+                    parseInfoFile(files[0]);
+                    break;
+                case 'list':
+                    parseListFiles(files);
+                    break;
+                case 'view':
+                    parseViewFiles(files);
+                    break;
+            }
+        }
+
+        removeDragData(ev)
+    };
+    var dragOverHandler = (ev) => {
+        ev.preventDefault();
+    };
+    var removeDragData = (ev) => {
+        if (ev.dataTransfer.items) {
+            ev.dataTransfer.items.clear();
+        } else {
+            ev.dataTransfer.clearData();
+        }
+    };
+
+    // Util
+    var formatTime = (time) => {
+        let sec = Math.floor(time);
+        let ms = Math.ceil((time - sec) * 1000000)
+            .toString()
+            .padStart(6, '0')
+            .slice(0, 3);
+
+        if (sec >= 60) {
+            let min = sec / 60;
+            sec = sec % 60;
+            if (min >= 60) {
+                let hrs = min / 60;
+                min = Math.floor(min % 60);
+                return `${Math.floor(hrs)}:${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}.${ms}`;
+            }
+            return `${Math.floor(min)}:${sec.toString().padStart(2, '0')}.${ms}`;
+        }
+        return `${Math.floor(sec)}.${ms}`;
+    };
+
+    // Unused extensions
+    // Rebase from tick 14: [13, 14, 15] -> [0, 0, 1]
+    sdp.SourceDemo.prototype.rebaseFrom = function(tick) {
+        if (this.messages.length == 0) {
+            throw new Error('Cannot adjust ticks without parsed messages.');
+        }
+
+        let synced = false;
+        let last = 0;
+        for (let message of this.messages) {
+            if (message.tick == tick) {
+                synced = true;
             }
 
-            removeDragData(ev)
-        };
-        var dragOverHandler = (ev) => {
-            ev.preventDefault();
-        };
-        var removeDragData = (ev) => {
-            if (ev.dataTransfer.items) {
-                ev.dataTransfer.items.clear();
+            if (!synced) {
+                message.tick = 0;
+            } else if (message.tick < 0) {
+                message.tick = last;
             } else {
-                ev.dataTransfer.clearData();
-            }
-        };
-
-        // Util
-        var formatTime = (time) => {
-            let sec = Math.floor(time);
-            let ms = Math.ceil((time - sec) * 1000000)
-                .toString()
-                .padStart(6, '0')
-                .slice(0, 3);
-
-            if (sec >= 60) {
-                let min = sec / 60;
-                sec = sec % 60;
-                if (min >= 60) {
-                    let hrs = min / 60;
-                    min = Math.floor(min % 60);
-                    return `${Math.floor(hrs)}:${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}.${ms}`;
-                }
-                return `${Math.floor(min)}:${sec.toString().padStart(2, '0')}.${ms}`;
-            }
-            return `${Math.floor(sec)}.${ms}`;
-        };
-
-        // Unused extensions
-        // Rebase from tick 14: [13, 14, 15] -> [0, 0, 1]
-        sdp.SourceDemo.prototype.rebaseFrom = function (tick) {
-            if (this.messages.length == 0) {
-                throw new Error('Cannot adjust ticks without parsed messages.');
+                message.tick -= tick;
             }
 
-            let synced = false;
-            let last = 0;
-            for (let message of this.messages) {
-                if (message.tick == tick) {
-                    synced = true;
-                }
+            last = message.tick;
+        }
+    };
+    // Get potential overlapping ticks between two demos
+    sdp.SourceDemo.prototype.getSyncedTicks = function(demo, viewTolerance = 1, splitScreenIndex = 0) {
+        if (this.messages.length == 0 || demo.messages.length == 0) {
+            throw new Error('Cannot adjust ticks without parsed messages.');
+        }
 
-                if (!synced) {
-                    message.tick = 0;
-                } else if (message.tick < 0) {
-                    message.tick = last;
-                } else {
-                    message.tick -= tick;
-                }
-
-                last = message.tick;
-            }
-        };
-        // Get potential overlapping ticks between two demos
-        sdp.SourceDemo.prototype.getSyncedTicks = function (demo, viewTolerance = 1, splitScreenIndex = 0) {
-            if (this.messages.length == 0 || demo.messages.length == 0) {
-                throw new Error('Cannot adjust ticks without parsed messages.');
-            }
-
-            let syncedTicks = [];
-            for (let message of this.messages) {
-                if (message.type == 0x02) {
-                    let view = message.message.packetInfo[splitScreenIndex].viewOrigin[0];
-                    let result = demo.messages.find(msg => {
-                        if (msg.type != 0x02) {
-                            return false;
-                        }
-                        let match = msg.message.packetInfo[splitScreenIndex].viewOrigin[0];
-                        return Math.abs(match.x - view.x) <= viewTolerance
-                            && Math.abs(match.y - view.y) <= viewTolerance
-                            && Math.abs(match.z - view.z) <= viewTolerance;
+        let syncedTicks = [];
+        for (let message of this.messages) {
+            if (message.type == 0x02) {
+                let view = message.message.packetInfo[splitScreenIndex].viewOrigin[0];
+                let result = demo.messages.find(msg => {
+                    if (msg.type != 0x02) {
+                        return false;
+                    }
+                    let match = msg.message.packetInfo[splitScreenIndex].viewOrigin[0];
+                    return Math.abs(match.x - view.x) <= viewTolerance
+                        && Math.abs(match.y - view.y) <= viewTolerance
+                        && Math.abs(match.z - view.z) <= viewTolerance;
+                });
+                if (result != undefined) {
+                    syncedTicks.push({
+                        source: message.tick,
+                        destination: result.tick,
+                        delta: Math.abs(message.tick - result.tick),
+                        x: message.message.packetInfo[splitScreenIndex].viewOrigin[0].x,
+                        y: message.message.packetInfo[splitScreenIndex].viewOrigin[0].y,
+                        z: message.message.packetInfo[splitScreenIndex].viewOrigin[0].z
                     });
-                    if (result != undefined) {
-                        syncedTicks.push({
-                            source: message.tick,
-                            destination: result.tick,
-                            delta: Math.abs(message.tick - result.tick),
-                            x: message.message.packetInfo[splitScreenIndex].viewOrigin[0].x,
-                            y: message.message.packetInfo[splitScreenIndex].viewOrigin[0].y,
-                            z: message.message.packetInfo[splitScreenIndex].viewOrigin[0].z
-                        });
-                    }
                 }
             }
+        }
 
-            return syncedTicks;
+        return syncedTicks;
+    };
+    // Calculate ticks for SAR runs
+    sdp.SourceDemo.prototype.findSourceAutoRecordTiming = function() {
+        if (this.messages.length == 0) {
+            throw new Error('Cannot adjust ticks without parsed messages.');
+        }
+
+        let SAR = [];
+        for (let message of this.messages) {
+            if (message.type == 0x04) {
+                if (message.message.command == 'sar_timer_start') {
+                    SAR.push({
+                        tick: message.tick,
+                        type: 'start'
+                    })
+                } else if (message.message.command == 'sar_timer_stop') {
+                    SAR.push({
+                        tick: message.tick,
+                        type: 'stop'
+                    })
+                }
+            }
+        }
+
+        let start = SAR.reverse().find(x => x.type == 'start');
+        let end = SAR.find(x => x.type == 'stop');
+
+        return (start != undefined && end != undefined)
+            ? {
+                startTick: start.tick,
+                endTick: end.tick,
+                delta: end.tick - start.tick
+            }
+            : undefined;
+    };
+
+    // Event Listeners
+    document.getElementById('add-info').addEventListener('change', (ev) => {
+        let file = ev.target.files[0];
+        if (file) {
+            parseInfoFile(file);
+        }
+    });
+    document.getElementById('add-info-view').addEventListener('click', (ev) => {
+        if (demo == null) {
+            return;
+        }
+
+        addView(demo);
+        tabs.select('view');
+        window.scrollTo(0, 0);
+        displayViewPlot();
+    });
+    document.getElementById('add-list-item').addEventListener('change', (ev) => {
+        let files = ev.target.files;
+        if (files.length == 0) {
+            return;
+        }
+        parseListFiles(files);
+    });
+    document.getElementById('clear-list').addEventListener('click', () => {
+        demos = [];
+        listEntries.innerHTML = '';
+    });
+    document.getElementById('save-list').addEventListener('click', () => {
+        if (demos.length > 0) {
+            var rows = ['Map,Client,Ticks,Time,Total Ticks,Total Time'];
+            for (let row of listEntries.children) {
+                let items = [];
+                for (let i = 0; i < row.children.length - 2; ++i) {
+                    items.push(row.children[i].innerHTML);
+                }
+                rows.push(items.join(','));
+            }
+
+            var data = new Blob([rows.join('\n')]);
+            var save = document.createElement('a');
+            save.setAttribute('href', window.URL.createObjectURL(data, {
+                type: 'text/csv'
+            }));
+            save.setAttribute('download', 'demo_list.csv');
+            save.click();
+        }
+    });
+    document.getElementById('change-sort-list-method').addEventListener('change', (ev) => {
+        sortByFileName = ev.target.checked;
+        displayList();
+    });
+    document.getElementById('add-view').addEventListener('change', (ev) => {
+        let files = ev.target.files;
+        if (files.length == 0) {
+            return;
+        }
+        parseViewFiles(files);
+    });
+    document.getElementById('clear-view').addEventListener('click', (ev) => {
+        let view = {
+            mode: 'lines',
+            line: {
+                width: 3
+            },
+            type: 'scatter3d',
+            x: [],
+            y: [],
+            z: [],
+            text: [],
+            unused: true
         };
-        // Calculate ticks for SAR runs
-        sdp.SourceDemo.prototype.findSourceAutoRecordTiming = function () {
-            if (this.messages.length == 0) {
-                throw new Error('Cannot adjust ticks without parsed messages.');
-            }
+        views = [];
+        views.push(view);
+        displayViewPlot();
+    });
+    document.getElementById('info-commands-filter').addEventListener('input', (ev) => {
+        if (demo == null) {
+            return;
+        }
 
-            let SAR = [];
-            for (let message of this.messages) {
-                if (message.type == 0x04) {
-                    if (message.message.command == 'sar_timer_start') {
-                        SAR.push({ tick: message.tick, type: 'start' })
-                    } else if (message.message.command == 'sar_timer_stop') {
-                        SAR.push({ tick: message.tick, type: 'stop' })
-                    }
-                }
+        clearTimeout(commandsFilterTimeout);
+        commandsFilterTimeout = setTimeout(() => {
+            commandsFilter = [];
+            if (ev.target.value != "") {
+                commandsFilter = ev.target.value.split('\n');
             }
-
-            let start = SAR.reverse().find(x => x.type == 'start');
-            let end = SAR.find(x => x.type == 'stop');
-
-            return (start != undefined && end != undefined)
-                ? { startTick: start.tick, endTick: end.tick, delta: end.tick - start.tick }
-                : undefined;
-        };
-
-        // Event Listeners
-        document.getElementById('add-info').addEventListener('change', (ev) => {
-            let file = ev.target.files[0];
-            if (file) {
-                parseInfoFile(file);
+            displayInfo();
+        }, 1000);
+    });
+    document.getElementById('inputs').addEventListener('click', (ev) => {
+        if (inputs.length > 0) {
+            if (drawingActive) {
+                drawingActive = false;
+            } else {
+                drawingActive = true;
+                drawInputs();
             }
-        });
-        document.getElementById('add-info-view').addEventListener('click', (ev) => {
-            if (demo == null) {
-                return;
-            }
-
-            addView(demo);
-            tabs.select('view');
-            window.scrollTo(0, 0);
-            displayViewPlot();
-        });
-        document.getElementById('add-list-item').addEventListener('change', (ev) => {
-            let files = ev.target.files;
-            if (files.length == 0) {
-                return;
-            }
-            parseListFiles(files);
-        });
-        document.getElementById('clear-list').addEventListener('click', () => {
-            demos = [];
-            listEntries.innerHTML = '';
-        });
-        document.getElementById('save-list').addEventListener('click', () => {
-            if (demos.length > 0) {
-                var rows = ['Map,Client,Ticks,Time,Total Ticks,Total Time'];
-                for (let row of listEntries.children) {
-                    let items = [];
-                    for (let i = 0; i < row.children.length - 2; ++i) {
-                        items.push(row.children[i].innerHTML);
-                    }
-                    rows.push(items.join(','));
-                }
-
-                var data = new Blob([rows.join('\n')]);
-                var save = document.createElement('a');
-                save.setAttribute('href', window.URL.createObjectURL(data, { type: 'text/csv' }));
-                save.setAttribute('download', 'demo_list.csv');
-                save.click();
-            }
-        });
-        document.getElementById('change-sort-list-method').addEventListener('change', (ev) => {
-            sortByFileName = ev.target.checked;
-            displayList();
-        });
-        document.getElementById('add-view').addEventListener('change', (ev) => {
-            let files = ev.target.files;
-            if (files.length == 0) {
-                return;
-            }
-            parseViewFiles(files);
-        });
-        document.getElementById('clear-view').addEventListener('click', (ev) => {
-            let view = {
-                mode: 'lines',
-                line: {
-                    width: 3
-                },
-                type: 'scatter3d',
-                x: [],
-                y: [],
-                z: [],
-                text: [],
-                unused: true
-            };
-            views = [];
-            views.push(view);
-            displayViewPlot();
-        });
-        document.getElementById('info-commands-filter').addEventListener('input', (ev) => {
-            if (demo == null) {
-                return;
-            }
-
-            clearTimeout(commandsFilterTimeout);
-            commandsFilterTimeout = setTimeout(() => {
-                commandsFilter = [];
-                if (ev.target.value != "") {
-                    commandsFilter = ev.target.value.split('\n');
-                }
-                displayInfo();
-            }, 1000);
-        });
-        document.getElementById('inputs').addEventListener('click', (ev) => {
-            if (inputs.length > 0) {
-                if (drawingActive) {
-                    drawingActive = false;
-                } else {
-                    drawingActive = true;
-                    drawInputs();
-                }
-            }
-        });
-        document.getElementById('inputs').addEventListener('dblclick', (ev) => {
-            if (inputs.length > 0) {
-                inputsIndex = 0;
-            }
-        });
-    </script>
+        }
+    });
+    document.getElementById('inputs').addEventListener('dblclick', (ev) => {
+        if (inputs.length > 0) {
+            inputsIndex = 0;
+        }
+    });
+  </script>
 </body>
 
 </html>
