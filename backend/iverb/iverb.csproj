@@ -12,9 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="Portal2Boards.Net">
-      <HintPath>..\lib\Portal2Boards.Net.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="../lib/Portal2Boards.Net/src/Portal2Boards.Net/Portal2Boards.Net.csproj" />
 	<PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
 
