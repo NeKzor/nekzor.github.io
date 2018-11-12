@@ -13,4 +13,13 @@
     <ProjectReference Include="../lib/SteamCommunity.Net/src/SteamCommunity.Net/SteamCommunity.Net.csproj" />
   </ItemGroup>
 
+  <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+    <Copy SourceFiles="lp_stats.json" DestinationFolder="$(OutDir)" />
+    <Copy SourceFiles="lp_wrs.json" DestinationFolder="$(OutDir)" />
+  </Target>
+  <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
+    <Copy SourceFiles="lp_stats.json" DestinationFolder="$(PublishDir)" />
+    <Copy SourceFiles="lp_wrs.json" DestinationFolder="$(PublishDir)" />
+  </Target>
+
 </Project>
