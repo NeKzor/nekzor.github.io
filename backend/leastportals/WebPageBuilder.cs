@@ -13,6 +13,7 @@ namespace nekzor.github.io
     {
         private List<Map> _wrs;
         private List<Player> _players;
+        private List<Player> _players2;
         private Statistics _stats;
 
         private readonly SteamCommunityClient _client;
@@ -20,6 +21,7 @@ namespace nekzor.github.io
         public WebPageBuilder(string userAgent)
         {
             _players = new List<Player>();
+            _players2 = new List<Player>();
             _stats = new Statistics("lp_stats.json");
 
             _client = new SteamCommunityClient(userAgent, false);
@@ -43,10 +45,17 @@ namespace nekzor.github.io
                 .Where(lb => lb.Name.StartsWith("challenge_portals_mp"))
                 .Where(lb => !excluded.Contains((ulong)lb.Id));
 
+            var official = Portal2.CampaignMaps
+                .Where(x => x.IsOfficial)
+                .Where(x => !excluded.Contains((ulong)x.BestPortalsId));
+
             // Local function
-            async Task GetPlayers(IEnumerable<IStatsLeaderboardEntry> leaderboards)
+            async Task GetPlayers(
+                List<Player> players,
+                IEnumerable<IStatsLeaderboardEntry> leaderboards,
+                IEnumerable<Portal2Map> campaign)
             {
-                var maps = new Dictionary<IStatsLeaderboardEntry, List<CacheItem>>();
+                var maps = new Dictionary<(int id, string displayName), List<CacheItem>>();
                 foreach (var lb in leaderboards)
                 {
                     var entries = new List<CacheItem>();
@@ -78,18 +87,16 @@ namespace nekzor.github.io
                         _stats.AddCheater(cheater.Id);
 
                     Logger.Log(logmsg + lb.Id);
-                    maps.Add(lb, entries);
+                    maps.Add((lb.Id, lb.DisplayName), entries);
                 }
 
                 var current = 1;
                 foreach (var map in maps)
                 {
-                    var lb = map.Key;
-                    var entries = map.Value;
-                    var wr = _wrs.First(x => x.Id == (ulong)lb.Id).WorldRecord;
+                    var wr = _wrs.First(x => x.Id == (ulong)map.Key.id).WorldRecord;
 
                     var ties = 0;
-                    foreach (var entry in entries.Where(entry => entry.Score >= wr))
+                    foreach (var entry in map.Value.Where(entry => entry.Score >= wr))
                     {
                         if (_stats.IsCheater(entry.Id))
                             continue;
@@ -97,24 +104,41 @@ namespace nekzor.github.io
                         if (entry.Score == wr)
                             ties++;
 
-                        var player = _players.FirstOrDefault(p => p.Id == entry.Id);
+                        var player = players.FirstOrDefault(p => p.Id == entry.Id);
                         if (player == null)
-                            _players.Add(player = new Player(entry.Id, excluded));
+                            players.Add(player = new Player(entry.Id, campaign));
 
-                        player.Update(lb.Id, entry.Score);
+                        player.Update(map.Key.id, entry.Score);
                     }
 
-                    _stats.SetRecordCount((ulong)lb.Id, ties);
+                    _stats.SetRecordCount((ulong)map.Key.id, ties);
 
-                    Logger.Log($"[{lb.Id}] {lb.DisplayName} -> {ties} ({current}/{maps.Count})");
+                    Logger.Log($"[{map.Key.id}] {map.Key.displayName} -> {ties} ({current}/{maps.Count})");
                     current++;
                 }
-
-                _players.RemoveAll(p => _stats.IsCheater(p.Id));
             }
 
-            await GetPlayers(sp);
-            await GetPlayers(mp);
+            await GetPlayers(_players, sp, official.Where(x => x.Type == Portal2MapType.SinglePlayer));
+            await GetPlayers(_players2, mp, official.Where(x => x.Type == Portal2MapType.Cooperative));
+
+            Logger.Log($"Merging {_players.Count} sp and {_players2.Count} mp players");
+            foreach (var player in _players)
+            {
+                var player2 = _players2.FirstOrDefault(p => p.Id == player.Id);
+                if (player2 != null) {
+                    player.Merge(player2);
+                    _players2.Remove(player2);
+                }
+            }
+            var players2 = new List<Player>();
+            foreach (var player in _players2)
+            {
+                var player2 = _players.FirstOrDefault(p => p.Id == player.Id);
+                if (player2 == null)
+                    players2.Add(player);
+            }
+            _players.AddRange(players2);
+            Logger.Log($"Merged {_players.Count} players");
         }
         public Task Filter()
         {
@@ -134,12 +158,12 @@ namespace nekzor.github.io
             if (File.Exists(App.CurDir + file)) File.Delete(App.CurDir + file);
             await File.WriteAllTextAsync(App.CurDir + file, JsonConvert.SerializeObject(_players));
             await _stats.Export();
-            Logger.Log($"Exported page: {file}");
+            Logger.Log($"Exported data: {file}");
         }
         public async Task Import(string file)
         {
-            if (!File.Exists(file)) return;
-            _players = JsonConvert.DeserializeObject<List<Player>>(await File.ReadAllTextAsync(file));
+            if (!File.Exists(App.CurDir + file)) return;
+            _players = JsonConvert.DeserializeObject<List<Player>>(await File.ReadAllTextAsync(App.CurDir + file));
             await _stats.Import();
 
             foreach (var player in _players)
@@ -147,6 +171,7 @@ namespace nekzor.github.io
         }
         public async Task Build(string file, int maxRank = 10)
         {
+            Logger.Log("Building...");
             if (File.Exists(App.Destination + file)) File.Delete(App.Destination + file);
 
             var cache = new Dictionary<ulong, IPublicProfile>();
@@ -222,6 +247,7 @@ namespace nekzor.github.io
             var pr = await BuildProfileRows(_players.Where(x => cache.ContainsKey(x.Id)));
 
             await File.WriteAllTextAsync(App.Destination + file, GetPage(sp, mp, ov, rc, pr));
+            Logger.Log($"Exported page: {file}");
         }
 
         private string GetPage(

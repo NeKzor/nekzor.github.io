@@ -20,10 +20,16 @@ namespace nekzor.github.io
 
             var builder = new WebPageBuilder(Version);
 
-            await builder.Initialize();
-            await builder.Filter();
-            await builder.Export("lp_players.json");
-            //await builder.Import("lp_players.json");
+            var data = "lp_players.json";
+            if (System.IO.File.Exists(App.CurDir + data))
+                await builder.Import(data);
+            else
+            {
+                await builder.Initialize();
+                await builder.Filter();
+                await builder.Export(data);
+            }
+
             await builder.Build("lp.html", 20);
         }
     }

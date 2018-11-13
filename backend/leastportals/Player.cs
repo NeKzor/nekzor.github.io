@@ -30,12 +30,10 @@ namespace nekzor.github.io
         {
             Entries = new List<ScoreEntry>();
         }
-        public Player(ulong id, IEnumerable<ulong> excluded) : this()
+        public Player(ulong id, IEnumerable<Portal2Map> campaign) : this()
         {
             Id = id;
-            foreach (var map in Portal2.CampaignMaps
-                .Where(x => x.IsOfficial)
-                .Where(x => !excluded.Contains((ulong)x.BestPortalsId)))
+            foreach (var map in campaign)
             {
                 Entries.Add(new ScoreEntry()
                 {
@@ -48,6 +46,11 @@ namespace nekzor.github.io
         public void Update(int id, int score)
         {
             Entries.First(x => x.Id == (ulong)id).Score = score;
+        }
+        public void Merge(Player player)
+        {
+            Entries.AddRange(player.Entries);
+            player.Entries.Clear();
         }
         public void CalculateTotalScore()
         {
