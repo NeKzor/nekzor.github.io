@@ -5,7 +5,7 @@ namespace nekzor.github.io
 {
     internal class App
     {
-        public static readonly string Version = "nekzor.github.io/seum/1.0";
+        public static readonly string Version = "nekzor.github.io/1.0";
         public static readonly string CurDir = $"{System.IO.Path.GetDirectoryName(typeof(App).Assembly.Location)}";
         public static readonly string Destination = $"{CurDir}/../../";
         public static readonly string Cache = $"{CurDir}/cache/";
