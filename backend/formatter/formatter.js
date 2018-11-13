@@ -1,7 +1,7 @@
 const beautify = require('js-beautify').html,
     fs = require('fs');
 
-var path = '../../';
+var path = process.cwd() + '/';
 
 var files = [
     'stats.html',
