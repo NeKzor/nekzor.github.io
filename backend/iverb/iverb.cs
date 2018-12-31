@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define EOYS
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -41,12 +42,17 @@ namespace nekzor.github.io
             iVerb.Client = new Portal2BoardsClient(Version, true, 15);
             iVerb.Client.Log += Logger.LogPortal2Boards;
             iVerb.ChangelogBuilder = new ChangelogQueryBuilder();
+#if EOYS
+            iVerb.ChangelogBuilder.WithMaxDaysAgo(400);
+#else
             iVerb.ChangelogBuilder.WithMaxDaysAgo(3333);
+#endif
 
             var stats = new Stats();
             await stats.Build();
             await stats.ExportPage("stats.html");
 
+#if !EOYS
             var history = new History();
             await history.Build();
             await history.ExportPage("history.html");
@@ -54,6 +60,7 @@ namespace nekzor.github.io
             var yearly = new Yearly();
             await yearly.Build();
             await yearly.ExportPage("yearly.html");
+#endif
         }
     }
 }

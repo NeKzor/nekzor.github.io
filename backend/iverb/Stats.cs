@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define EOYS
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -11,6 +12,9 @@ namespace nekzor.github.io
 {
     internal class Stats
     {
+#if EOYS
+        public static readonly int SnapshotYear = 2018;
+#endif
         private readonly List<string> _page;
 
         public Stats()
@@ -31,10 +35,12 @@ namespace nekzor.github.io
             Logger.Log("Building Stats...");
             var watch = Stopwatch.StartNew();
             _page.Clear();
+#if !EOYS
             Logger.Log("Single Player");
             await GenerateRecordsAsync(Portal2MapType.SinglePlayer);
             Logger.Log("Cooperative");
             await GenerateRecordsAsync(Portal2MapType.Cooperative);
+#endif
             Logger.Log("Stats");
             await GenerateStatsPageAsync();
             Logger.Log("Community");
@@ -74,6 +80,9 @@ namespace nekzor.github.io
             var changelog = await iVerb.Client.GetChangelogAsync(() => iVerb.ChangelogBuilder.Build());
 
             var records = changelog.Entries
+#if EOYS
+                .Where(e => e.Date.Value.Year == SnapshotYear)
+#endif
                 .Where(e => e.IsWorldRecord)
                 .Where(e => !e.IsBanned);
 
@@ -84,7 +93,10 @@ namespace nekzor.github.io
 
                 var latestwr = entries
                     .OrderByDescending(e => e.Date)
-                    .First(e => !e.IsBanned);
+                    .FirstOrDefault(e => !e.IsBanned);
+
+                if (latestwr == null)
+                    continue;
 
                 if (map.IsOfficial)
                     officialtotal += latestwr.Score.Current ?? 0;
@@ -206,6 +218,9 @@ namespace nekzor.github.io
             var changelog = await iVerb.Client.GetChangelogAsync(() => iVerb.ChangelogBuilder.Build());
 
             var entries = changelog.Entries
+#if EOYS
+                .Where(e => e.Date != null && e.Date.Value.Year == SnapshotYear)
+#endif
                 .Where(e => !e.IsBanned)
                 .Where(e => (e.Rank.Current ?? 0) == 1);
 
@@ -263,15 +278,18 @@ namespace nekzor.github.io
                 var imp = 0;
                 var last = map.Records
                     .OrderBy(r => r.Score.Current)
-                    .First();
+                    .FirstOrDefault();
 
-                foreach (var wr in map.Records
-                    .OrderBy(r => r.Score.Current)
-                    .Skip(1))
+                if (last != null)
                 {
-                    if (last.Score.Current < wr.Score.Current)
-                        imp++;
-                    last = wr;
+                    foreach (var wr in map.Records
+                        .OrderBy(r => r.Score.Current)
+                        .Skip(1))
+                    {
+                        if (last.Score.Current < wr.Score.Current)
+                            imp++;
+                        last = wr;
+                    }
                 }
                 wri.Add((imp, map.Map));
             }
@@ -563,7 +581,11 @@ namespace nekzor.github.io
             var changelog = await iVerb.Client.GetChangelogAsync(() => iVerb.ChangelogBuilder.Build());
 
             var all = new List<RecordHolder>();
-            foreach (var entry in changelog.Entries)
+            foreach (var entry in changelog.Entries
+#if EOYS
+                .Where(e => e.Date.Value.Year == SnapshotYear)
+#endif
+            )
             {
                 var map = Portal2Map.Search(entry.MapId);
                 var rec = new Record()
@@ -602,6 +624,9 @@ namespace nekzor.github.io
             foreach (var map in Portal2.CampaignMaps.Where(m => m.Exists))
             {
                 var recs = changelog.Entries
+#if EOYS
+                .Where(e => e.Date.Value.Year == SnapshotYear)
+#endif
                     .Where(e => e.MapId == map.BestTimeId)
                     .OrderBy(e => e.Date);
 
@@ -738,17 +763,20 @@ namespace nekzor.github.io
             // New Players each Year
             Title("New Players");
             StartTable(4, 4, "Year", "Players", "Total", "Growth");
-            var peeps = all
-                .Where(rh => rh.Records.Any(r => r.Date.Value.Year == 2013));
+            var peeps = all.Where(rh => rh.Records.Any(r => r.Date.Value.Year == 2013)).ToList();
             var totalpeeps = peeps.Count();
             var lastpeeps = 0;
             for (int year = 2013; year < 2019; year++)
             {
-                var players = all
-                    .Where(rh => rh.Records.Any(r => r.Date.Value.Year == year))
+                var peepsYear = all
+                    .Where(rh => rh.Records.Any(r => r.Date.Value.Year == year));
+
+                var players = peepsYear
                     .Where(rh => !peeps.Contains(rh))
                     .Count();
                 totalpeeps += players;
+                if (year != 2013)
+                    peeps.AddRange(peepsYear);
 
                 _page.Add("<tr>");
                 _page.Add($"<td>{year}</td>");
@@ -1083,7 +1111,9 @@ $@"							<th>{item}</th>");
             {
                 var now = DateTime.UtcNow.AddHours(-6); // CST
 
-                var last = Records.First();
+                var last = Records.FirstOrDefault();
+                if (last == null) yield break;
+
                 foreach (ChangelogEntry rec in Records.Skip(1))
                 {
                     if (last.Score.Current == rec.Score.Current) continue;
@@ -1095,7 +1125,9 @@ $@"							<th>{item}</th>");
 
             public IEnumerable<(int Improvement, IChangelogEntry Current, IChangelogEntry Previous, Portal2Map Map)> GetImprovements()
             {
-                var last = Records.First();
+                var last = Records.FirstOrDefault();
+                if (last == null) yield break;
+
                 foreach (ChangelogEntry rec in Records.Skip(1))
                 {
                     // Changelog bug???
