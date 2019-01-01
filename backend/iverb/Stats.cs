@@ -296,7 +296,7 @@ namespace nekzor.github.io
 
             // Most World Records
             Title("Most Records");
-            StartTable(6, 3, "Player", "Total", "2013", "2014", "2015", "2016", "2017", "2018");
+            StartTable(6, 3, "Player", "Total", "2013", "2014", "2015", "2016", "2017", "2018", "2019");
             foreach (var wr in wrh
                 .OrderByDescending(h => h.Records.Count)
                 .ThenBy(r => r.Records.First().Date))
@@ -304,7 +304,7 @@ namespace nekzor.github.io
                 _page.Add("<tr>");
                 _page.Add($"<td><a class=\"link\" href=\"https://board.iverb.me/profile/{wr.Player.Id}\">{wr.Player.Name}</a></td>");
                 _page.Add($"<td title=\"{wr.Records.Count(r => r.Map.IsOfficial)} Official\">{wr.Records.Count}</td>");
-                for (int year = 2013; year < 2019; year++)
+                for (int year = 2013; year < 2020; year++)
                 {
                     var total = wr.Records.Where(r => r.Date.Value.Year == year);
                     var official = total.Where(r => r.Map.IsOfficial);
@@ -336,7 +336,7 @@ namespace nekzor.github.io
             // Activity
             Title("Activity");
             StartTable(6, 3, "Year", "Total", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
-            for (int i = 2013; i < 2019; i++)
+            for (int i = 2013; i < 2020; i++)
             {
                 var year = entries
                     .Where(r => r.Date.Value.Year == i)
@@ -368,7 +368,7 @@ namespace nekzor.github.io
             // Most World Records each Year
             Title("Most Records each Year");
             StartTable(4, 4, "Year", "Player", "Total");
-            for (int year = 2013; year < 2019; year++)
+            for (int year = 2013; year < 2020; year++)
             {
                 var players = wrh
                     .OrderByDescending(rh => rh.Records
@@ -376,6 +376,8 @@ namespace nekzor.github.io
                 var most = players
                     .First().Records
                     .Count(r => r.Date.Value.Year == year);
+                if (most == 0)
+                    continue;
 
                 foreach (var player in players
                     .Where(rh => rh.Records
@@ -445,7 +447,7 @@ namespace nekzor.github.io
             // Total Time of World Records
             Title("Total Time of Records");
             StartTable(4, 4, "Year", "Single Player", "Cooperative");
-            for (int year = 2014; year < 2019; year++)
+            for (int year = 2014; year < 2020; year++)
             {
                 Func<RecordMap, long?> SumScores = (m) =>
                 {
@@ -531,19 +533,7 @@ namespace nekzor.github.io
 
             Title("Longest Comments");
             StartTable(8, 2, "Player", "Length", "Comment");
-            foreach (var others in longest.Take(5))
-            {
-                _page.Add("<tr>");
-                _page.Add($"<td><a class=\"link\" href=\"https://board.iverb.me/profile/{(others.Player as SteamUser).Id}\">{others.Player.Name}</a></td>");
-                _page.Add($"<td>{others.Comment.Length}</td>");
-                _page.Add($"<td>{others.Comment}</td>");
-                _page.Add("</tr>");
-            }
-            EndTable();
-
-            Title("Shortest Comments");
-            StartTable(4, 4, "Player", "Length", "Comment");
-            foreach (var others in shortest.Take(5))
+            foreach (var others in longest.Take(10))
             {
                 _page.Add("<tr>");
                 _page.Add($"<td><a class=\"link\" href=\"https://board.iverb.me/profile/{(others.Player as SteamUser).Id}\">{others.Player.Name}</a></td>");
@@ -644,7 +634,7 @@ namespace nekzor.github.io
 
             // Most Personal Records
             Title("Most Personal Records");
-            StartTable(6, 3, "Player", "Total", "2013", "2014", "2015", "2016", "2017", "2018");
+            StartTable(6, 3, "Player", "Total", "2013", "2014", "2015", "2016", "2017", "2018", "2019");
             var always = new List<RecordHolder>();
             foreach (var player in all
                 .OrderByDescending(h => h.Records.Count)
@@ -657,14 +647,14 @@ namespace nekzor.github.io
                 _page.Add($"<td><a class=\"link\" href=\"https://board.iverb.me/profile/{player.Player.Id}\">{player.Player.Name}</a></td>");
                 _page.Add($"<td title=\"{off} Official\">{recs}</td>");
                 var active = 0;
-                for (int year = 2013; year < 2019; year++)
+                for (int year = 2013; year < 2020; year++)
                 {
                     var total = player.Records.Where(r => r.Date.Value.Year == year);
                     var official = total.Where(r => r.Map.IsOfficial);
                     if (total.Count() > 0) active++;
                     _page.Add($"<td title=\"{official.Count()} Official\">{total.Count()}</td>");
                 }
-                if (active == 2019 - 2013)
+                if (active == 2020 - 2013)
                     always.Add(player);
                 _page.Add("</tr>");
             }
@@ -673,7 +663,7 @@ namespace nekzor.github.io
             // Activity
             Title("Activity");
             StartTable(6, 3, "Year", "Total", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
-            for (int i = 2013; i < 2019; i++)
+            for (int i = 2013; i < 2020; i++)
             {
                 var year = changelog.Entries
                     .Where(e => !e.IsBanned)
@@ -707,7 +697,7 @@ namespace nekzor.github.io
             // Most Records each Year
             Title("Most Records each Year");
             StartTable(4, 4, "Year", "Player", "Total");
-            for (int year = 2013; year < 2019; year++)
+            for (int year = 2013; year < 2020; year++)
             {
                 var players = all
                     .OrderByDescending(rh => rh.Records
@@ -739,7 +729,7 @@ namespace nekzor.github.io
 
             // At Least One Record Every Year
             Title("Active since 2013");
-            StartTable(6, 3, "Player", "Total", "2013", "2014", "2015", "2016", "2017", "2018");
+            StartTable(6, 3, "Player", "Total", "2013", "2014", "2015", "2016", "2017", "2018", "2019");
             foreach (var player in always
                 .OrderByDescending(h => h.Records.Count)
                 .Take(20))
@@ -750,7 +740,7 @@ namespace nekzor.github.io
                 _page.Add("<tr>");
                 _page.Add($"<td><a class=\"link\" href=\"https://board.iverb.me/profile/{player.Player.Id}\">{player.Player.Name}</a></td>");
                 _page.Add($"<td title=\"{off} Official\">{recs}</td>");
-                for (int year = 2013; year < 2019; year++)
+                for (int year = 2013; year < 2020; year++)
                 {
                     var total = player.Records.Where(r => r.Date.Value.Year == year);
                     var official = total.Where(r => r.Map.IsOfficial);
@@ -766,7 +756,7 @@ namespace nekzor.github.io
             var peeps = all.Where(rh => rh.Records.Any(r => r.Date.Value.Year == 2013)).ToList();
             var totalpeeps = peeps.Count();
             var lastpeeps = 0;
-            for (int year = 2013; year < 2019; year++)
+            for (int year = 2013; year < 2020; year++)
             {
                 var peepsYear = all
                     .Where(rh => rh.Records.Any(r => r.Date.Value.Year == year));
@@ -791,7 +781,7 @@ namespace nekzor.github.io
             // Most Second Places
             Title("Most 2nd Places");
             StartTable(4, 4, "Year", "Player", "Total");
-            for (int year = 2013; year < 2019; year++)
+            for (int year = 2013; year < 2020; year++)
             {
                 var players = all
                     .OrderByDescending(rh => rh.Records
@@ -801,6 +791,8 @@ namespace nekzor.github.io
                     .First().Records
                     .Where(r => r.Entry.Rank.Current == 2)
                     .Count(r => r.Date.Value.Year == year);
+                if (most == 0)
+                    continue;
 
                 var once = false;
                 var rank2 = players
@@ -873,18 +865,6 @@ namespace nekzor.github.io
             Title("Longest Comments");
             StartTable(8, 2, "Player", "Length", "Comment");
             foreach (var others in longest.Take(10))
-            {
-                _page.Add("<tr>");
-                _page.Add($"<td><a class=\"link\" href=\"https://board.iverb.me/profile/{(others.Player as SteamUser).Id}\">{others.Player.Name}</a></td>");
-                _page.Add($"<td>{others.Comment.Length}</td>");
-                _page.Add($"<td>{others.Comment}</td>");
-                _page.Add("</tr>");
-            }
-            EndTable();
-
-            Title("Shortest Comments");
-            StartTable(4, 4, "Player", "Length", "Comment");
-            foreach (var others in shortest.Take(10))
             {
                 _page.Add("<tr>");
                 _page.Add($"<td><a class=\"link\" href=\"https://board.iverb.me/profile/{(others.Player as SteamUser).Id}\">{others.Player.Name}</a></td>");

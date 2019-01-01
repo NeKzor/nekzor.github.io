@@ -82,9 +82,9 @@ namespace nekzor.github.io
             var watch = Stopwatch.StartNew();
             _page.Clear();
             Logger.Log("Single Player");
-            await GenerateRecordsAsync(Portal2MapType.SinglePlayer, 2012, 2018);
+            await GenerateRecordsAsync(Portal2MapType.SinglePlayer, 2012, 2019);
             Logger.Log("Cooperative");
-            await GenerateRecordsAsync(Portal2MapType.Cooperative, 2012, 2018);
+            await GenerateRecordsAsync(Portal2MapType.Cooperative, 2012, 2019);
             StartPage();
             EndPage();
             watch.Stop();
