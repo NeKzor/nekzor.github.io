@@ -1122,7 +1122,7 @@ $@"			<div id=""{profile.Id}"" class=""modal blue-grey darken-3"">
 										<th>Map</th>
 										<th>First</th>
                                         <th>Last</th>
-                                        <th>Timepan</th>
+                                        <th>Timespan</th>
 									</tr>
 								</thead>
 								<tbody>
