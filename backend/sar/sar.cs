@@ -176,7 +176,7 @@ namespace nekzor.github.io.sar
             return Task.CompletedTask;
         }
 
-        public Task Build(string file, string title, string shortTitle)
+        public Task Build(string file, string title, string smallTitle)
         {
             if (System.IO.File.Exists(App.Destination + file))
                 System.IO.File.Delete(App.Destination + file);
@@ -206,7 +206,7 @@ $@"<!-- {App.Version} -->
                 </div>
                 <div class=""col s12 hide-on-med-and-up"">
                     <a href=""#"" data-target=""slide-out"" class=""sidenav-trigger""><i class=""material-icons"">menu</i></a>
-                    <a href=""{file}"" class=""brand-logo center"">{title} Cvars</a>
+                    <a href=""{file}"" class=""brand-logo center"">{smallTitle}</a>
                 </div>
             </div>
 		</nav>
@@ -316,7 +316,6 @@ $@"						</tbody>
                 clearTimeout(filterTimeout);
                 filterTimeout = setTimeout(() => {{
                     var filter = [];
-                    console.log(""hi"");
                     if (cbxName.checked) filter.push(""name"");
                     if (cbxDefault.checked) filter.push(""default"");
                     if (cbxFlags.checked) filter.push(""flags"");
@@ -352,27 +351,45 @@ $@"						</tbody>
                 case "sar_workshop":
                 case "sar_workshop_update":
                 case "sar_workshop_list":
+                case "sar_debug_game_events":
+                case "sar_replay_viewmode":
+                case "sar_mimic":
+                case "sar_tas_ss":
+                    return "Portal 2<br>Aperture Tag";
+                case "sar_disable_challenge_stats_hud":
+                    return "Portal 2";
                 case "sar_speedrun_result":
                 case "sar_speedrun_export":
                 case "sar_speedrun_export_pb":
                 case "sar_speedrun_import":
-                case "sar_speedrun_rules":
+                case "sar_speedrun_category":
+                case "sar_speedrun_categories":
                 case "sar_speedrun_autostart":
                 case "sar_speedrun_autostop":
-                case "sar_disable_challenge_stats_hud":
-                case "sar_debug_game_events":
+                case "sar_speedrun_standard":
+                case "sar_speedrun_offset":
+                case "sar_speedrun_start":
+                case "sar_speedrun_stop":
+                case "sar_speedrun_split":
+                case "sar_speedrun_pause":
+                case "sar_speedrun_resume":
+                case "sar_speedrun_reset":
                 case "sar_sr_hud":
                 case "sar_sr_hud_x":
                 case "sar_sr_hud_y":
                 case "sar_sr_hud_font_color":
                 case "sar_sr_hud_font_index":
-                case "sar_togglewait":
-                    return "Portal 2";
+                    return "Portal 2 Games<br>Portal";
                 case "sar_jumpboost":
                 case "sar_aircontrol":
                     return "Portal 2 Engine";
+                case "sar_duckjump":
+                    return "Portal 2 Games";
                 case "sar_hud_portals":
+                 case "sar_togglewait":
                     return "Portal Games";
+                case "sar_delete_alias_cmds":
+                    return "Portal 2 Games<br>Half-Life 2 Engine";
             }
             return "-";
         }

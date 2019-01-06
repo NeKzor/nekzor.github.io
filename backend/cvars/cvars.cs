@@ -23,7 +23,7 @@ namespace nekzor.github.io
             await windows.Import("p2_windows.cvars");
             //await builder.FindRealUnique(windows);
             await builder.MergeUnique(windows);
-            await builder.Build("p2.html", "Portal 2");
+            await builder.Build("p2.html", "Portal 2", "P2");
             Console.WriteLine();
 
             Console.WriteLine("Half-Life 2");
@@ -31,7 +31,7 @@ namespace nekzor.github.io
             await windows.Import("hl2_windows.cvars");
             //await builder.FindRealUnique(windows);
             await builder.MergeUnique(windows);
-            await builder.Build("hl2.html", "Half-Life 2");
+            await builder.Build("hl2.html", "Half-Life 2", "HL2");
             Console.WriteLine();
 
             Console.WriteLine("The Stanley Parable");
@@ -39,7 +39,7 @@ namespace nekzor.github.io
             await windows.Import("tsp_windows.cvars");
             //await builder.FindRealUnique(windows);
             await builder.MergeUnique(windows);
-            await builder.Build("tsp.html", "The Stanley Parable");
+            await builder.Build("tsp.html", "The Stanley Parable", "TSP");
             Console.WriteLine();
 
             Console.WriteLine("The Beginners Guide");
@@ -47,7 +47,7 @@ namespace nekzor.github.io
             await windows.Import("tbg_windows.cvars");
             //await builder.FindRealUnique(windows);
             await builder.MergeUnique(windows);
-            await builder.Build("tbg.html", "The Beginners Guide");
+            await builder.Build("tbg.html", "The Beginners Guide", "TBG");
             Console.WriteLine();
 
             Console.WriteLine("Portal");
@@ -55,7 +55,7 @@ namespace nekzor.github.io
             await windows.Import("p1_windows.cvars");
             //await builder.FindRealUnique(windows);
             await builder.MergeUnique(windows);
-            await builder.Build("p1.html", "Portal");
+            await builder.Build("p1.html", "Portal", "P1");
             Console.WriteLine();
         }
     }
@@ -235,7 +235,7 @@ namespace nekzor.github.io
             return Task.CompletedTask;
         }
 
-        public Task Build(string file, string title)
+        public Task Build(string file, string title, string smallTitle)
         {
             if (System.IO.File.Exists(App.Destination + file))
                 System.IO.File.Delete(App.Destination + file);
@@ -265,7 +265,7 @@ $@"<!-- {App.Version} -->
                 </div>
                 <div class=""col s12 hide-on-med-and-up"">
                     <a href=""#"" data-target=""slide-out"" class=""sidenav-trigger""><i class=""material-icons"">menu</i></a>
-                    <a href=""{file}"" class=""brand-logo center"">{title} Cvars</a>
+                    <a href=""{file}"" class=""brand-logo center"">{smallTitle}</a>
                 </div>
             </div>
 		</nav>
@@ -375,7 +375,6 @@ $@"						</tbody>
                 clearTimeout(filterTimeout);
                 filterTimeout = setTimeout(() => {{
                     var filter = [];
-                    console.log(""hi"");
                     if (cbxName.checked) filter.push(""name"");
                     if (cbxDefault.checked) filter.push(""default"");
                     if (cbxFlags.checked) filter.push(""flags"");
