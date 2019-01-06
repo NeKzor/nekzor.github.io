@@ -317,6 +317,8 @@ namespace nekzor.github.io
             // Unique World Records of Players
             Title("Unique Records");
             StartTable(4, 4, "Player", "Total", "Sp:Coop");
+
+            var profileRows = new List<string>();
             foreach (var wr in wrh.OrderByDescending(h => h.UniqueRecords.Count))
             {
                 var unique = wr.UniqueRecords;
@@ -325,11 +327,15 @@ namespace nekzor.github.io
                 var osp = unique.Count(r => r.Map.Type == Portal2MapType.SinglePlayer && r.Map.IsOfficial);
                 var omp = unique.Count(r => r.Map.Type == Portal2MapType.Cooperative && r.Map.IsOfficial);
 
-                _page.Add("<tr>");
-                _page.Add($"<td><a class=\"link\" href=\"https://board.iverb.me/profile/{wr.Player.Id}\">{wr.Player.Name}</a></td>");
-                _page.Add($"<td title=\"{unique.Count(r => r.Map.IsOfficial)} Official\">{unique.Count}</td>");
-                _page.Add($"<td title=\"{osp}:{omp} Official\">{sp}:{mp}</td>");
-                _page.Add("</tr>");
+                _page.Add($@"<tr class=""white-text modal-trigger"" href=""#{wr.Player.Id}"">
+								<td class=""valign-wrapper"">
+									{wr.Player.Name}
+								</td>
+								<td title=""{unique.Count(r => r.Map.IsOfficial)} Official\"">{unique.Count}</td>
+                                <td title=""{osp}:{omp} Official"">{sp}:{mp}</td>
+							</tr>");
+
+                profileRows.Add(FillProfileRow(wr));
             }
             EndTable();
 
@@ -563,6 +569,8 @@ namespace nekzor.github.io
             _page.Add($"<br><h2 title=\"since 2017-05-11\" align=\"center\">{((double)proof / proofornoproof * 100).ToString("N2")}%</h2>");
 
             EndSection();
+
+            _page.Add($@"<div id=""profiles"">{string.Join("\n", profileRows)}</div>");
         }
         public async Task GenerateCommunityStatsPageAsync()
         {
@@ -963,7 +971,7 @@ $@"<!-- {App.Version} -->
 		<link href=""https://fonts.googleapis.com/icon?family=Material+Icons"" rel=""stylesheet"">
 		<link href=""https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css"" rel=""stylesheet"">
 		<meta name=""viewport"" content=""width=device-width, initial-scale=1.0"" />
-		<style>.link {{ color: white }} .link:hover {{ color: black }}</style>
+		<style>.link {{ color: white }} .link:hover {{ color: aquamarine }} .steam-link {{ color: white }} .steam-link:hover {{ color: black }}</style>
 	</head>
 	<body class=""white-text blue-grey darken-4"">
 		<nav class=""nav-extended blue-grey darken-3"">
@@ -1016,6 +1024,7 @@ $@"		<div id=""about"">
 			$(document).ready(function() {{
 				$('.tabs').tabs();
 				$('.sidenav').sidenav();
+                $('.modal').modal();
 			}});
 		</script>
 	</body>
@@ -1071,6 +1080,59 @@ $@"							<th>{item}</th>");
 				</table>
 			</div>
 		</div>");
+        }
+        private string FillProfileRow(RecordHolder player)
+        {
+            var rows = new List<string>();
+            foreach (var record in player.Records
+                .GroupBy(r => r.Map.Name)
+                .Select(g => g.OrderBy(x => x.Date).First())
+                .OrderBy(r => r.Date))
+            {
+                var last = player.Records
+                    .GroupBy(r => r.Map.Name)
+                    .Select(g => g.OrderBy(x => x.Date).Last())
+                    .First(r => r.Entry.MapId == record.Entry.MapId);
+
+                rows.Add
+                (
+$@"								<tr>
+                                    <th><a class=""steam-link"" href=""https://board.iverb.me/chamber/{record.Map.BestTimeId}"">{record.Map.Alias}</a></th>
+                                    <th>{record.Date?.ToString("yyyy-MM-dd")}</th>
+                                    <th>{last.Date?.ToString("yyyy-MM-dd")}</th>
+                                    <th>{(last.Date - record.Date)?.Days}</th>
+                                </tr>"
+                );
+            }
+
+            var profile = player.Player;
+            return
+$@"			<div id=""{profile.Id}"" class=""modal blue-grey darken-3"">
+				<div class=""modal-content"">
+					<div class=""valign-wrapper"">
+						<img class=""circle responsive-img"" src=""{profile.AvatarUrl.Replace("_full", string.Empty)}"">
+						<a class=""white-text"" href=""https://board.iverb.me/profile/{profile.Id}"">&nbsp;&nbsp;&nbsp;{profile.Name}</a></td>
+					</div>
+					<br>
+					<div class=""row"">
+						<div class=""col s10 push-s1"">
+							<table>
+								<thead>
+									<tr>
+										<th>Map</th>
+										<th>First</th>
+                                        <th>Last</th>
+                                        <th>Timepan</th>
+									</tr>
+								</thead>
+								<tbody>
+{string.Join("\n", rows)}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>";
         }
 
         internal class UserStats
@@ -1134,7 +1196,7 @@ $@"							<th>{item}</th>");
             public List<Record> UniqueRecords
                 => Records
                     .GroupBy(r => r.Map.Name)
-                    .Select(m => m.First())
+                    .Select(m => m.OrderBy(x => x.Date).First())
                     .ToList();
         }
     }
