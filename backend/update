@@ -9,7 +9,6 @@ git add --all
 git commit -m "$(date --iso-8601)"
 git push origin master
 
-rm -rf _backend/leastportals/cache/
 rm -rf _backend/seum/cache/
 
 popd
