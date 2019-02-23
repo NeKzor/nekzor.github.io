@@ -81,7 +81,7 @@ $@"<!-- {App.Version} -->
 		<ul id=""slide-out"" class=""sidenav"">
 			<li><a href=""index.html"">nekzor.github.io</a></li>
 			<li><a href=""{Destination}"">Glitches</a></li>
-            <li><a href=""lp.html"">Least Portals</a></li>
+            <li><a href=""lp"">Least Portals</a></li>
 		</ul>
 		<div id=""database"">
 			<div id=""discoveries"">

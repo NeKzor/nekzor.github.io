@@ -7,7 +7,6 @@ var files = [
     'stats.html',
     'history.html',
     'yearly.html',
-    'lp.html',
     'seum.html',
     'skill.html',
     'glitches.html',

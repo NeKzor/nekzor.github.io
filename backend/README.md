@@ -15,8 +15,6 @@
   - stats.html
   - history.html
   - yearly.html
-- leastportals
-  - lp.html
 - seum
   - seum.html
 - skillpoints
