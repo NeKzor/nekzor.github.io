@@ -81,7 +81,9 @@ namespace nekzor.github.io
 
             var records = changelog.Entries
 #if EOYS
-                .Where(e => e.Date.Value.Year == SnapshotYear)
+                .Where(e => e.Date != null && e.Date.Value.Year == SnapshotYear)
+#else
+                .Where(e => e.Date != null && e.Date.Value.Year > 2012)
 #endif
                 .Where(e => e.IsWorldRecord)
                 .Where(e => !e.IsBanned);
@@ -133,7 +135,7 @@ namespace nekzor.github.io
                         once = true;
                     }
                     _page.Add($"<td class=\"valign-wrapper\"><img class=\"circle responsive-img\" src=\"{(wr.Player as SteamUser).AvatarUrl.Replace("_full", string.Empty)}\">&nbsp;&nbsp;&nbsp;<a class=\"link\" href=\"https://board.iverb.me/profile/{(wr.Player as SteamUser).Id}\">{wr.Player.Name}</a></td>");
-                    _page.Add($"<td title=\"{wr.Date?.DateTimeToString() + " (CST)"}\">{((wr.Date != null) ? wr.Date?.ToString("yyyy-MM-dd") : "Unknown")}</td>");
+                    _page.Add($"<td title=\"{wr.Date?.DateTimeToString() + " (CET)"}\">{((wr.Date != null) ? wr.Date?.ToString("yyyy-MM-dd") : "Unknown")}</td>");
                     _page.Add($"<td title=\"{duration?.ToString() ?? "less than 1"} day{(((duration ?? 1) == 1) ? string.Empty : "s")}\">{duration?.ToString() ?? "<1"}</td>");
                     _page.Add((wr.DemoExists) ? $"<td><a title=\"Download Demo File\" class=\"link\" href=\"{(wr as ChangelogEntry).DemoUrl}\" target=\"_blank\">Download</a></td>" : "<td></td>");
                     _page.Add(((wr as ChangelogEntry).VideoExists) ? $"<td><a title=\"Watch on YouTube\" class=\"link\" href=\"{(wr as ChangelogEntry).VideoUrl}\" target=\"_blank\">Watch</a></td>" : "<td></td>");
@@ -220,6 +222,8 @@ namespace nekzor.github.io
             var entries = changelog.Entries
 #if EOYS
                 .Where(e => e.Date != null && e.Date.Value.Year == SnapshotYear)
+#else
+                .Where(e => e.Date != null && e.Date.Value.Year > 2012)
 #endif
                 .Where(e => !e.IsBanned)
                 .Where(e => (e.Rank.Current ?? 0) == 1);
@@ -414,9 +418,9 @@ namespace nekzor.github.io
                 _page.Add($"<td>{current.Score.Current.AsTimeToString()}</td>");
                 _page.Add($"<td><a class=\"link\" href=\"https://board.iverb.me/profile/{(current.Player as SteamUser).Id}\">{current.Player.Name}</a></td>");
                 _page.Add($"<td>{((duration < 1) ? "<1" : $"{duration}")}</td>");
-                _page.Add($"<td title=\"{current.Date.DateTimeToString() + " (CST)"}\">{(current.Date?.ToString("yyy-MM-dd"))}</td>");
+                _page.Add($"<td title=\"{current.Date.DateTimeToString() + " (CET)"}\">{(current.Date?.ToString("yyy-MM-dd"))}</td>");
                 if (previous != null)
-                    _page.Add($"<td title=\"{previous.Date.DateTimeToString() + " (CST)"}\">{(previous.Date?.ToString("yyy-MM-dd"))}</td>");
+                    _page.Add($"<td title=\"{previous.Date.DateTimeToString() + " (CET)"}\">{(previous.Date?.ToString("yyy-MM-dd"))}</td>");
                 else
                     _page.Add("<td>Ongoing</td>");
                 _page.Add("</tr>");
@@ -438,9 +442,9 @@ namespace nekzor.github.io
                     _page.Add($"<td>{current.Score.Current.AsTimeToString()}</td>");
                     _page.Add($"<td><a class=\"link\" href=\"https://board.iverb.me/profile/{(current.Player as SteamUser).Id}\">{current.Player.Name}</a></td>");
                     _page.Add($"<td>{((duration < 1) ? "<1" : $"{duration}")}</td>");
-                    _page.Add($"<td title=\"{current.Date.DateTimeToString() + " (CST)"}\">{(current.Date?.ToString("yyy-MM-dd"))}</td>");
+                    _page.Add($"<td title=\"{current.Date.DateTimeToString() + " (CET)"}\">{(current.Date?.ToString("yyy-MM-dd"))}</td>");
                     if (previous != null)
-                        _page.Add($"<td title=\"{previous.Date.DateTimeToString() + " (CST)"}\">{(previous.Date?.ToString("yyy-MM-dd"))}</td>");
+                        _page.Add($"<td title=\"{previous.Date.DateTimeToString() + " (CET)"}\">{(previous.Date?.ToString("yyy-MM-dd"))}</td>");
                     else
                         _page.Add("<td>Ongoing</td>");
                     _page.Add("</tr>");
@@ -520,7 +524,7 @@ namespace nekzor.github.io
                 _page.Add($"<td>{current.Score.Current.AsTimeToString()}</td>");
                 _page.Add($"<td><a class=\"link\" href=\"https://board.iverb.me/profile/{(current.Player as SteamUser).Id}\">{current.Player.Name}</a></td>");
                 _page.Add($"<td>{((uint)improvement).AsTimeToString()}</td>");
-                _page.Add($"<td title=\"{current.Date.DateTimeToString() + " (CST)"}\">{(current.Date?.ToString("yyy-MM-dd"))}</td>");
+                _page.Add($"<td title=\"{current.Date.DateTimeToString() + " (CET)"}\">{(current.Date?.ToString("yyy-MM-dd"))}</td>");
                 _page.Add("</tr>");
             }
             EndTable();
@@ -581,7 +585,9 @@ namespace nekzor.github.io
             var all = new List<RecordHolder>();
             foreach (var entry in changelog.Entries
 #if EOYS
-                .Where(e => e.Date.Value.Year == SnapshotYear)
+                .Where(e => e.Date != null && e.Date.Value.Year == SnapshotYear)
+#else
+                .Where(e => e.Date != null && e.Date.Value.Year > 2012)
 #endif
             )
             {

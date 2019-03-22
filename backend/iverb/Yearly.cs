@@ -208,7 +208,7 @@ namespace nekzor.github.io
                             once = true;
                         }
                         _page.Add($"<td class=\"valign-wrapper\"><img class=\"circle responsive-img\" src=\"{(wr.Player as SteamUser).AvatarUrl.Replace("_full", string.Empty)}\">&nbsp;&nbsp;&nbsp;<a class=\"link\" href=\"https://board.iverb.me/profile/{(wr.Player as SteamUser).Id}\">{((wr.Player.Name.Length > 15) ? wr.Player.Name.Substring(0, 12) + "..." : wr.Player.Name)}</a></td>");
-                        _page.Add($"<td title=\"{wr.Date?.DateTimeToString() + " (CST)"}\">{((wr.Date != null) ? wr.Date?.ToString("yyyy-MM-dd") : "Unknown")}</td>");
+                        _page.Add($"<td title=\"{wr.Date?.DateTimeToString() + " (CET)"}\">{((wr.Date != null) ? wr.Date?.ToString("yyyy-MM-dd") : "Unknown")}</td>");
                         _page.Add($"<td title=\"{duration?.ToString() ?? "less than 1"} day{(((duration ?? 1) == 1) ? string.Empty : "s")}\">{duration?.ToString() ?? "<1"}</td>");
                         _page.Add((wr.DemoExists) ? $"<td><a title=\"Download Demo File\" class=\"link\" href=\"{(wr as ChangelogEntry).DemoUrl}\" target=\"_blank\">Download</a></td>" : "<td></td>");
                         _page.Add(((wr as ChangelogEntry).VideoExists) ? $"<td><a title=\"Watch on YouTube\" class=\"link\" href=\"{(wr as ChangelogEntry).VideoUrl}\" target=\"_blank\">Watch</a></td>" : "<td></td>");
