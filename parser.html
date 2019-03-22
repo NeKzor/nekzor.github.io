@@ -226,7 +226,7 @@
         let demo = null;
         try {
             console.log(`Parsing: ${ev.target.source.name}`);
-            demo = demoParser.parseDemo(new Buffer(ev.target.result));
+            demo = demoParser.parseDemo(Buffer.from(ev.target.result));
             demo.fileInfo = ev.target.source;
 
             demo.detectGame(defaultGame)

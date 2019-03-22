@@ -1,6 +1,8 @@
 # .dem
 
 ## Overview
+
+- [Documentation](#documentation)
 - [Demo](#demo)
 - [Message](#message)
   - [Types](#types)
@@ -19,6 +21,15 @@
   - [UserCmdInfo](#usercmdinfo)
   - [SendTable](#sendtable)
   - [ServerClassInfo](#serverclassinfo)
+- [Examples](#examples)
+
+## Documentation
+
+- All names are written in PascalCase for consistency and do not match the original name defined by the engine
+- Names might be slightly altered (`UserCmdInfo` = `CUserCmd`) or made up (`Alignment`)
+- The term `old engine` refers to engines with `DemoProtocol` 2 or 3
+- The term `new engine` refers to engines with `DemoProtocol` 4
+- All strings without a known size are null-terminated
 
 ## Demo
 
@@ -43,7 +54,7 @@
 | --- | --- | --- | --- | --- |
 | Type | [Message Type](#types) | 1 | 8 | - |
 | Tick | int | 4 | 32 | - |
-| Alignment | byte | 1 | 8 | Optional |
+| Alignment | byte | 1 | 8 | New engine only. |
 | Data | [Message Data](#message-data) | - | - | - |
 
 ### Types
@@ -58,7 +69,7 @@
 | [DataTables](#datatables) | 6 | - |
 | [Stop](#dem_stop) | 7 | - |
 | [CustomData](#customdata) | 8 | - |
-| [StringTables](#stringtables) | 9 | 8 in old engines. |
+| [StringTables](#stringtables) | 9 | 8 for old engine. |
 
 ## Message Data
 
@@ -66,13 +77,13 @@
 
 | Name | Type | Size in bytes | Size in bits | Value |
 | --- | --- | --- | --- | --- |
-| PacketInfo | byte[] | 76\*MSSC¹ | 76\*MSSC\*8 | [CmdInfo[MSSC]](#cmdinfo) |
+| PacketInfo | byte[] | 76\*MSSC | 76\*MSSC\*8 | [CmdInfo[MSSC]](#cmdinfo) |
 | InSequence | int | 4 | 32 | - |
 | OutSequence | int | 4 | 32 | - |
 | Size | int | 4 | 32 | - |
 | Data | byte[] | Size | Size*8 | [NET/SVC-Message[]](#netsvc-message) |
 
-¹MSSC (MaxSplitScreenClients) can be greater than 1 for multiplayer games but default is 1.
+**Note:** MSSC (MaxSplitScreenClients) is usually 2 for multiplayer games which support split screen mode (Portal 2, CS:GO etc.). Open up developer console and use `maxplayers` to find out the value for a specific game.
 
 ### SyncTick
 This message does not contain any data.
@@ -95,6 +106,7 @@ This message does not contain any data.
 ### DataTables
 
 | Name | Type | Size in bytes | Size in bits | Value |
+| --- | --- | --- | --- | --- |
 | Size | int | 4 | 32 | - |
 | Data | byte[] | Size | Size*8 | [SendTable[]](#sendtable)<br>[ServerClassInfo[]](#serverclassinfo) |
 
@@ -147,11 +159,11 @@ This message does not contain any data.
 | NetNop | 0 | - |
 | NetDisconnect | 1 | - |
 | NetFile | 2 | - |
-| NetSplitScreenUser | 3 | New engines. |
-| NetTick | 4 | 3 in old engines. |
-| NetStringCmd | 5 | 4 in old engines. |
-| NetSetConVar | 6 | 5 in old engines. |
-| NetSignonState | 7 | 6 in old engines. |
+| NetSplitScreenUser | 3 | New engine. |
+| NetTick | 4 | 3 in old engine. |
+| NetStringCmd | 5 | 4 in old engine. |
+| NetSetConVar | 6 | 5 in old engine. |
+| NetSignonState | 7 | 6 in old engine. |
 | SvcServerInfo | 8 | - |
 | SvcSendTable | 9 | - |
 | SvcClassInfo | 10 | - |
@@ -160,13 +172,13 @@ This message does not contain any data.
 | SvcUpdateStringTable | 13 | - |
 | SvcVoiceInit | 14 | - |
 | SvcVoiceData | 15 | - |
-| SvcPrint | 16 | 7 in old engines. |
+| SvcPrint | 16 | 7 in old engine. |
 | SvcSounds | 17 | - |
 | SvcSetView | 18 | - |
 | SvcFixAngle | 19 | - |
 | SvcCrosshairAngle | 20 | - |
 | SvcBspDecal | 21 | - |
-| SvcSplitScreen | 22 | New engines. |
+| SvcSplitScreen | 22 | New engine. |
 | SvcUserMessage | 23 | - |
 | SvcEntityMessage | 24 | - |
 | SvcGameEvent | 25 | - |
@@ -177,7 +189,7 @@ This message does not contain any data.
 | SvcGameEventList | 30 | - |
 | SvcGetCvarValue | 31 | - |
 | SvcCmdKeyValues | 32 | 34 in CS:GO. |
-| SvcPaintmapData | 33 | New engines. |
+| SvcPaintmapData | 33 | New engine. |
 | SvcEncryptedData | 35 | Seen in CS:GO. |
 | SvcHltvReplay | 36 | Seen in CS:GO. |
 | SvcBroadcastCommand | 38 | Seen in CS:GO. |
@@ -189,7 +201,9 @@ This message does not contain any data.
 | --- | --- | --- | --- | --- |
 | CommandNumber | int | 4 | 32 | Optional |
 | TickCount | int | 4 | 32 | Optional |
-| ViewAngles | float[] | 12 | 96 | Optional |
+| ViewAnglesX | float | 4 | 32 | Optional |
+| ViewAnglesY | float | 4 | 32 | Optional |
+| ViewAnglesZ | float | 4 | 32 | Optional |
 | SideMove | float | 4 | 32 | Optional |
 | ForwardMove | float | 4 | 32 | Optional |
 | UpMove | float | 4 | 32 | Optional |
@@ -200,7 +214,12 @@ This message does not contain any data.
 | MouseDx | short | 2 | 16 | Optional |
 | MouseDy | short | 2 | 16 | Optional |
 
+**Optional:** Only read when the bit before the field is set.
+
+**Note:** WeaponSubtype depends on the field before (WeaponSelect).
+
 ### SendTable
+
 Optional.
 
 | Name | Type | Size in bytes | Size in bits | Value |
@@ -235,3 +254,10 @@ Optional.
 | ClientEntryName | string | - | - | Optional |
 | ClientEntrySize | short | 2 | 16 | Optional |
 | ClientEntryData | byte[] | ClientEntrySize | ClientEntrySize*8 | Optional |
+
+## Examples
+
+| Library | Language |
+| --- | --- |
+| [SourceDemoParser.Net](https://github.com/NeKzor/SourceDemoParser.Net) | C# |
+| [sdp.js](https://github.com/NeKzor/sdp.js) | JavaScript |
