@@ -16,7 +16,7 @@ namespace nekzor.github.io
         internal static async Task Main()
         {
             var builder = new PageBuilder(OperatingSystem.Linux);
-            var windows = new PageBuilder(OperatingSystem.Windows);
+            var windows = new PageBuilder(OperatingSystem.Windows, false);
 
             Console.WriteLine("Portal 2");
             await builder.Import("p2_linux.cvars");
@@ -56,6 +56,10 @@ namespace nekzor.github.io
             //await builder.FindRealUnique(windows);
             await builder.MergeUnique(windows);
             await builder.Build("p1.html", "Portal", "P1");
+
+            Console.WriteLine("INFRA");
+            await windows.Import("infra_windows.cvars");
+            await windows.Build("infra.html", "INFRA", "INF");
             Console.WriteLine();
         }
     }
@@ -119,11 +123,13 @@ namespace nekzor.github.io
     {
         public List<Cvar> Cvars { get; set; }
         public OperatingSystem Os { get; set; }
+        public bool WithSystem { get; set; }
 
-        public PageBuilder(OperatingSystem os)
+        public PageBuilder(OperatingSystem os, bool withSystem = true)
         {
             Cvars = new List<Cvar>();
             Os = os;
+            WithSystem = withSystem;
         }
 
         public Task FindRealUnique(PageBuilder source)
@@ -300,13 +306,15 @@ $@"<!-- {App.Version} -->
 						<span>Flags</span>
 					</label>
 				</div>
+                {(WithSystem ? @"<th>System</th>
                 <div class=""col s12 m12 l1"">
 					<br>
 					<label>
 						<input id=""cbx-system"" type=""checkbox"" checked=""checked"" />
 						<span>System</span>
 					</label>
-				</div>
+				</div>"
+                    : string.Empty)}
 				<div class=""col s12 m12 l1"">
 					<br>
 					<label>
@@ -323,7 +331,7 @@ $@"<!-- {App.Version} -->
 								<th>Name</th>
 								<th>Default</th>
 								<th>Flags</th>
-                                <th>System</th>
+                                {(WithSystem ? "<th>System</th>" : string.Empty)}
 								<th>Help Text</th>
 							</tr>
 						</thead>
@@ -342,7 +350,7 @@ $@"							<tr>
 								<td class=""name"">{cvar.Name}</td>
 								<td class=""default"">{cvar.DefaultValue}</td>
                                 <td class=""flags"" title=""{cvar.FlagsValue}"">{flags}</td>
-                                <td class=""system"">{ResolveSystem(cvar)}</td>
+                                {(WithSystem ? $@"<td class=""system"">{ResolveSystem(cvar)}</td>" : string.Empty)}
 								<td class=""help-text"">{description}</td>
 							</tr>");
                 }
@@ -362,35 +370,35 @@ $@"						</tbody>
 		</script>
 		<script src=""https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js""></script>
 		<script>
-			var cvars = new List('cvars', {{ valueNames: ['name', 'default', 'flags', 'system', 'help-text'] }});
+			var cvars = new List('cvars', {{ valueNames: ['name', 'default', 'flags', {(WithSystem ? "'system', " : string.Empty)}'help-text'] }});
 
-            var cbxName = document.querySelector(""#cbx-name"");
-            var cbxDefault = document.querySelector(""#cbx-default"");
-            var cbxFlags = document.querySelector(""#cbx-flags"");
-            var cbxSystem = document.querySelector(""#cbx-system"");
-            var cbxHelpText = document.querySelector(""#cbx-help-text"");
+            var cbxName = document.querySelector('#cbx-name');
+            var cbxDefault = document.querySelector('#cbx-default');
+            var cbxFlags = document.querySelector('#cbx-flags');
+            {(WithSystem ? "var cbxSystem = document.querySelector('#cbx-system');" : string.Empty)}
+            var cbxHelpText = document.querySelector('#cbx-help-text');
 
             var filterTimeout = null;
             var updateFilter = () => {{
                 clearTimeout(filterTimeout);
                 filterTimeout = setTimeout(() => {{
                     var filter = [];
-                    if (cbxName.checked) filter.push(""name"");
-                    if (cbxDefault.checked) filter.push(""default"");
-                    if (cbxFlags.checked) filter.push(""flags"");
-                    if (cbxSystem.checked) filter.push(""system"");
-                    if (cbxHelpText.checked) filter.push(""help-text"");
+                    if (cbxName.checked) filter.push('name');
+                    if (cbxDefault.checked) filter.push('default');
+                    if (cbxFlags.checked) filter.push('flags');
+                    {(WithSystem ? "if (cbxSystem.checked) filter.push('system');" : string.Empty)}
+                    if (cbxHelpText.checked) filter.push('help-text');
                     cvars.valueNames = filter;
                     cvars.search();
                     cvars.reIndex();
-                    cvars.search(document.getElementById(""search-box"").value);
+                    cvars.search(document.getElementById('search-box').value);
                 }}, 500);
             }};
 
             cbxName.addEventListener('click', () => updateFilter(), null);
             cbxDefault.addEventListener('click', () => updateFilter(), null);
             cbxFlags.addEventListener('click', () => updateFilter(), null);
-            cbxSystem.addEventListener('click', () => updateFilter(), null);
+            {(WithSystem ? "cbxSystem.addEventListener('click', () => updateFilter(), null);" : string.Empty)}
             cbxHelpText.addEventListener('click', () => updateFilter(), null);
 		</script>
 	</body>

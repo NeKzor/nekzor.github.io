@@ -1,22 +1,26 @@
 ### Projects
 
 #### C#
+
 - [NeKzBot](NeKzBot)
 - [Portal2Boards.Net](Portal2Boards.Net)
 - [SteamCommunity.Net](SteamCommunity.Net)
 
 #### C++
+
 - [SourceAutoRecord](SourceAutoRecord)
 - [sugar-glider](sugar-glider)
+- [chaos](chaos)
 
 #### JS
+
 - [sdp.js](https://github.com/NeKzor/sdp.js)
 - [lp](https://github.com/NeKzor/lp)
 
 ### Pages
 
 - [Portal 2 Glitch Database](glitches)
-- [Portal 2 Least Portals](lp)
+- [Portal 2 Least Portals Leaderboard](lp)
 - [Source Engine Demo Parser](parser)
 
 #### board.iverb.me
@@ -34,8 +38,10 @@
 - [Portal 2](cvars/p2)
 - [The Stanley Parable](cvars/tsp)
 - [The Beginners Guide](cvars/tbg)
+- [INFRA](cvars/infra)
 
 #### Others
+
 - [Portal Stories: Mel Least Portals](mel)
 - [SAR Cvars](cvars/sar)
 

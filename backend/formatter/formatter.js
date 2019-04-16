@@ -17,7 +17,8 @@ var files = [
     'cvars/p2.html',
     'cvars/sar.html',
     'cvars/tbg.html',
-    'cvars/tsp.html'
+    'cvars/tsp.html',
+    'cvars/infra.html',
 ];
 
 var format = {
