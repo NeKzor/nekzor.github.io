@@ -1,8 +1,6 @@
 ### static
 - glitches
   - glitches.html
-- sar
-  - cvars/sar.html
 
 ### automated
 - iverb

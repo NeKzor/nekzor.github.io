@@ -22,6 +22,7 @@
 
 - [Portal 2 Glitch Database](glitches)
 - [Portal 2 Least Portals Leaderboard](lp)
+- [Portal Stories: Mel Least Portals](mel)
 - [Source Engine Demo Parser](parser)
 - [Source Engine Cvars Database](cvars)
 
@@ -33,13 +34,7 @@
 - [SEUM](seum)
 - [Yearly](yearly)
 
-#### Others
-
-- [Portal Stories: Mel Least Portals](mel)
-- [SAR Cvars](cvars/sar)
-
 ### Docs & Lists
 
 - [Future of C#](csharp)
 - [Source Engine Demo Format](dem)
-- [board.iverb.me Todo List](https://github.com/NeKzor/Portal2Boards/projects/1)
