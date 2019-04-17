@@ -12,13 +12,7 @@ var files = [
     'glitches.html',
     'mel.html',
     'parser.html',
-    'cvars/hl2.html',
-    'cvars/p1.html',
-    'cvars/p2.html',
     'cvars/sar.html',
-    'cvars/tbg.html',
-    'cvars/tsp.html',
-    'cvars/infra.html',
 ];
 
 var format = {

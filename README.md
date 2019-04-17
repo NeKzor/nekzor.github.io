@@ -16,12 +16,14 @@
 
 - [sdp.js](https://github.com/NeKzor/sdp.js)
 - [lp](https://github.com/NeKzor/lp)
+- [cvars](https://github.com/NeKzor/cvars)
 
 ### Pages
 
 - [Portal 2 Glitch Database](glitches)
 - [Portal 2 Least Portals Leaderboard](lp)
 - [Source Engine Demo Parser](parser)
+- [Source Engine Cvars Database](cvars)
 
 #### board.iverb.me
 
@@ -30,15 +32,6 @@
 - [Skill Points](skill)
 - [SEUM](seum)
 - [Yearly](yearly)
-
-#### Source Engine Cvars
-
-- [Half-Life 2](cvars/hl2)
-- [Portal](cvars/p1)
-- [Portal 2](cvars/p2)
-- [The Stanley Parable](cvars/tsp)
-- [The Beginners Guide](cvars/tbg)
-- [INFRA](cvars/infra)
 
 #### Others
 
