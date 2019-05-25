@@ -12,7 +12,6 @@ var files = [
     'glitches.html',
     'mel.html',
     'parser.html',
-    'cvars/sar.html',
 ];
 
 var format = {
