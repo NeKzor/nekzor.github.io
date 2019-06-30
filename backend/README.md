@@ -1,14 +1,6 @@
 ### static
-- cvars
-  - cvars/hl2.html
-  - cvars/p1.html
-  - cvars/p2.html
-  - cvars/tbg.html
-  - cvars/tsp.html
 - glitches
   - glitches.html
-- sar
-  - cvars/sar.html
 
 ### automated
 - iverb
