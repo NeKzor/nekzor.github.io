@@ -31,7 +31,7 @@ namespace nekzor.github.io
 
             var excluded = new List<ulong>()
             {
-                47817, // Propulsion Catch
+                //47817, // Propulsion Catch
             };
             _campaign = Portal2.CampaignMaps
                 .Where(x => x.IsOfficial)

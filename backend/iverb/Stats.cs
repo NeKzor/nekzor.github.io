@@ -73,7 +73,7 @@ namespace nekzor.github.io
                 ? Portal2.SinglePlayerMaps
                 : Portal2.CooperativeMaps)
                 .Where(m => m.Exists)
-                .Where(m => m.BestTimeId != 47817) // Propulsion Catch
+                //.Where(m => m.BestTimeId != 47817) // Propulsion Catch
                 .OrderBy(m => m.Index)
                 .ToList();
 
