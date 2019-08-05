@@ -282,7 +282,6 @@ namespace nekzor.github.io
                 if (mode == Portal2MapType.SinglePlayer)
                 {
                     _page.Add("<br><br><sup>1</sup> Unofficial challenge mode map.");
-                    //_page.Add("<br><sup>2</sup> Excluding Propulsion Catch.");
                 }
                 _page.Add("</div>");
 

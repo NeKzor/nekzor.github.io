@@ -337,18 +337,13 @@ $@"<!-- {App.Version} -->
 						<thead>
 							<tr>
 								<th>Player</th>
-								<th title=""Excluding Propulsion Catch"">Points<sup>1</sup></th>
+								<th>Points</th>
 							</tr>
 						</thead>
 						<tbody>
 {string.Join("\n", singlePlayerRows)}
 						</tbody>
 					</table>
-				</div>
-			</div>
-			<div class=""row"">
-				<div class=""col s12"" align=""center"">
-					<small><sup>1</sup> Excluding Propulsion Catch.</small>
 				</div>
 			</div>
 		</div>
@@ -383,11 +378,6 @@ $@"<!-- {App.Version} -->
 {string.Join("\n", overallRows)}
 						</tbody>
 					</table>
-				</div>
-			</div>
-            <div class=""row"">
-				<div class=""col s12"" align=""center"">
-					<small><sup>1</sup> Excluding Propulsion Catch.</small>
 				</div>
 			</div>
 		</div>
