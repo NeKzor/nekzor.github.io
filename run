@@ -27,12 +27,10 @@ pushd skillpoints
 ./build
 ./run
 
-mv ./bin/skillpoints.html ../../skillpoints.html
+mv ./bin/skill.html ../../skill.html
 
 popd
 
 popd
 
 node backend/formatter/formatter.js
-
-popd
