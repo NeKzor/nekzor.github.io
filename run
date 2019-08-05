@@ -1,0 +1,38 @@
+#!/bin/bash
+
+pushd backend
+
+pushd iverb
+
+./build
+./run
+
+mv ./bin/history.html ../../history.html
+mv ./bin/stats.html ../../stats.html
+mv ./bin/yearly.html ../../yearly.html
+
+popd
+
+pushd seum
+
+./build
+./run
+
+mv ./bin/seum.html ../../seum.html
+
+popd
+
+pushd skillpoints
+
+./build
+./run
+
+mv ./bin/skillpoints.html ../../skillpoints.html
+
+popd
+
+popd
+
+node backend/formatter/formatter.js
+
+popd
