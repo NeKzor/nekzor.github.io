@@ -260,4 +260,5 @@ Optional.
 | Library | Language |
 | --- | --- |
 | [SourceDemoParser.Net](https://github.com/NeKzor/SourceDemoParser.Net) | C# |
+| [sdp-java](https://github.com/WalkerKnapp/sdp-java) | Java |
 | [sdp.js](https://github.com/NeKzor/sdp.js) | JavaScript |

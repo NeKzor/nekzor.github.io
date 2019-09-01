@@ -1,8 +1,8 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
     window.Buffer = require('buffer').Buffer;
-    window.sdp = require('./sdp.js');
+    window.sdp = require('./sdp');
     
-    },{"./sdp.js":16,"buffer":12}],2:[function(require,module,exports){
+    },{"./sdp":20,"buffer":16}],2:[function(require,module,exports){
     class SourceDemo {
         constructor() {
             this.header = undefined;
@@ -10,14 +10,14 @@
             this.game = undefined;
         }
         detectGame(sourceGame) {
-            this.game = sourceGame.gameList.find(game => game.directory == this.header.gameDirectory);
+            this.game = sourceGame.gameList.find((game) => game.directory === this.header.gameDirectory);
             if (this.game != undefined) {
                 this.game.source = sourceGame;
             }
             return this;
         }
         intervalPerTick() {
-            if (this.header.playbackTicks == 0) {
+            if (this.header.playbackTicks === 0) {
                 if (this.game != undefined) {
                     return 1 / this.game.tickrate;
                 }
@@ -26,7 +26,7 @@
             return this.header.playbackTime / this.header.playbackTicks;
         }
         tickrate() {
-            if (this.header.playbackTime == 0) {
+            if (this.header.playbackTime === 0) {
                 if (this.game != undefined) {
                     return this.game.tickrate;
                 }
@@ -35,14 +35,14 @@
             return this.header.playbackTicks / this.header.playbackTime;
         }
         adjustTicks() {
-            if (this.messages.length == 0) {
+            if (this.messages.length === 0) {
                 throw new Error('Cannot adjust ticks without parsed messages.');
             }
     
             let synced = false;
             let last = 0;
             for (let message of this.messages) {
-                if (message.type == 0x03) {
+                if (message.type === 0x03) {
                     synced = true;
                 }
     
@@ -57,7 +57,7 @@
             return this;
         }
         adjustRange(endTick = 0, startTick = 0) {
-            if (this.messages.length == 0) {
+            if (this.messages.length === 0) {
                 throw new Error('Cannot adjust range without parsed messages.');
             }
     
@@ -79,20 +79,426 @@
         adjust(splitScreenIndex = 0) {
             this.adjustTicks();
             this.adjustRange();
-            return (this.game != undefined)
-                ? this.game.source.adjustByRules(this, splitScreenIndex)
-                : this;
+            return this.game != undefined ? this.game.source.adjustByRules(this, splitScreenIndex) : this;
         }
     }
     
     module.exports = { SourceDemo };
     
     },{}],3:[function(require,module,exports){
-    var SourceGames = [
-        require('./games/portal.js'),
-        require('./games/portal2.js'),
-        require('./games/mel.js'),
-        require('./games/tag.js')
+    const SendPropType = {
+        Int: 0,
+        Float: 1,
+        Vector: 2,
+        VectorXy: 3,
+        String: 4,
+        Array: 5,
+        DataTable: 6,
+        Int64: 7,
+    };
+    
+    const SendPropFlags = {
+        Unsigned: 1 << 0,
+        Coord: 1 << 1,
+        Noscale: 1 << 2,
+        Rounddown: 1 << 3,
+        Roundup: 1 << 4,
+        Normal: 1 << 5,
+        Exclude: 1 << 6,
+        Xyze: 1 << 7,
+        InsideArray: 1 << 8,
+        ProxyAlwaysYes: 1 << 9,
+        IsAVectorElem: 1 << 10,
+        Collapsible: 1 << 11,
+        CoordMp: 1 << 12,
+        CoordMpLowPrecision: 1 << 13,
+        CoordMpIntegral: 1 << 14,
+        CellCoord: 1 << 15,
+        CellCoordLowPrecision: 1 << 16,
+        CellCoordIntegral: 1 << 17,
+        ChangesOften: 1 << 18,
+        VarInt: 1 << 19,
+    };
+    
+    module.exports = {
+        SendPropType,
+        SendPropFlags,
+    };
+    
+    },{}],4:[function(require,module,exports){
+    class NetMessage {
+        static create() {
+            return new this();
+        }
+        encode() {
+            throw new Error(`Encoding for ${this.constructor.name} not implemented!`);
+        }
+    }
+    
+    class NetNop extends NetMessage {
+        encode() {}
+    }
+    class NetDisconnect extends NetMessage {
+        encode(buf) {
+            this.text = buf.readASCIIString();
+        }
+    }
+    class NetFile extends NetMessage {
+        encode(buf) {
+            this.transferId = buf.readUint32();
+            this.fileName = buf.readASCIIString();
+            this.fileRequested = buf.readBoolean();
+        }
+    }
+    class NetSplitScreenUser extends NetMessage {}
+    class NetTick extends NetMessage {
+        encode(buf) {
+            this.tick = buf.readInt32();
+            this.hostFrameTime = buf.readInt16();
+            this.hostFrameTimeStdDeviation = buf.readInt16();
+        }
+    }
+    class NetStringCmd extends NetMessage {
+        encode(buf) {
+            this.command = buf.readASCIIString(256); // MAX_COMMAND_LEN
+        }
+    }
+    class NetSetConVar extends NetMessage {
+        encode(buf) {
+            this.conVars = [];
+            let length = buf.readInt32();
+            while (length-- != 0) {
+                this.conVars.push({
+                    name: buf.readASCIIString(),
+                    value: buf.readASCIIString(),
+                });
+            }
+        }
+    }
+    class NetSignonState extends NetMessage {
+        encode(buf) {
+            this.signonState = buf.readInt8();
+            this.spawnCount = buf.readInt32();
+        }
+    }
+    class SvcServerInfo extends NetMessage {
+        encode(buf, demo) {
+            this.protocol = buf.readInt16();
+            this.serverCount = buf.readInt32();
+            this.isHltv = buf.readBoolean();
+            this.isDedicated = buf.readBoolean();
+            this.clientCrc = buf.readInt32();
+            this.maxClasses = buf.readUint16();
+            this.mapCrc = demo.header.demoProtocol < 18 ? buf.readInt32() : buf.readBits(128);
+            this.playerSlot = buf.readInt8();
+            this.maxClients = buf.readInt8();
+            this.unk = buf.readInt16();
+            this.unk2 = buf.readInt16();
+            this.tickInterval = buf.readFloat32();
+            this.operatingSystem = String.fromCharCode(buf.readInt8());
+            this.gameDir = buf.readASCIIString();
+            this.mapName = buf.readASCIIString();
+            this.mapName = buf.readASCIIString();
+            this.hostName = buf.readASCIIString();
+        }
+    }
+    class SvcSendTable extends NetMessage {}
+    class SvcClassInfo extends NetMessage {}
+    class SvcSetPause extends NetMessage {}
+    class SvcCreateStringTable extends NetMessage {
+        encode(buf) {
+            this.tableName = buf.readASCIIString(); // 256
+            this.maxEntries = buf.readInt16();
+            let toread = Math.log(this.maxEntries, 2) + 1;
+            this.entries = buf.readBits(toread === 1 ? 2 : toread);
+            this.length = buf.readBits(20); // NET_MAX_PALYLOAD_BITS + 3
+            this.userDataFixedSize = buf.readBoolean();
+            this.userDataSize = this.userDataFixedSize ? buf.readBits(12) : 0;
+            this.userDataSizeBits = this.userDataFixedSize ? buf.readBits(4) : 0;
+            this.compressed = buf.readBoolean();
+            this.data = buf.readBits(this.length);
+        }
+    }
+    class SvcUpdateStringTable extends NetMessage {
+        encode(buf) {
+            this.id = buf.readBits(5);
+            this.entriesChanged = buf.readBoolean();
+            this.changedEntries = this.entriesChanged ? buf.readInt16() : 1;
+            this.length = buf.readBits(20, false);
+            this.data = buf.readBits(this.length);
+        }
+    }
+    class SvcVoiceInit extends NetMessage {}
+    class SvcVoiceData extends NetMessage {
+        encode(buf) {
+            this.fromClient = buf.readInt8();
+            this.proximity = buf.readInt8();
+            this.length = buf.readUint16();
+            this.data = buf.readBits(this.length);
+        }
+    }
+    class SvcPrint extends NetMessage {
+        encode(buf) {
+            this.message = buf.readASCIIString();
+        }
+    }
+    class SvcSounds extends NetMessage {}
+    class SvcSetView extends NetMessage {
+        encode(buf) {
+            this.entityIndex = buf.readBits(11);
+        }
+    }
+    class SvcFixAngle extends NetMessage {}
+    class SvcCrosshairAngle extends NetMessage {}
+    class SvcBspDecal extends NetMessage {}
+    class SvcSplitScreen extends NetMessage {}
+    class SvcUserMessage extends NetMessage {}
+    class SvcEntityMessage extends NetMessage {
+        encode(buf) {
+            this.entityIndex = buf.readBits(11); // MAX_EDICT_BITS
+            this.classId = buf.readBits(9); // MAX_SERVER_CLASS_BITS
+            this.length = buf.readBits(11);
+            buf.readBits(this.length);
+        }
+    }
+    class SvcGameEvent extends NetMessage {}
+    class SvcPacketEntities extends NetMessage {
+        encode(buf) {
+            this.maxEntries = buf.readBits(11); // ?
+            this.isDelta = buf.readBoolean();
+            this.deltaFrom = this.isDelta ? buf.readInt32() : 0;
+            //let length = buf.readUint32();
+            this.baseLine = buf.readBoolean();
+            this.updatedEntries = buf.readBits(11); // ?
+            this.length = buf.readBits(20);
+            this.updateBaseline = buf.readBoolean();
+            buf.readBits(this.length);
+        }
+    }
+    class SvcTempEntities extends NetMessage {
+        encode(buf) {
+            this.entries = buf.readBits(8);
+            this.length = buf.readBits(17);
+            this.data = buf.readBits(this.length);
+        }
+    }
+    class SvcPrefetch extends NetMessage {
+        encode(buf) {
+            this.soundIndex = buf.readBits(13);
+        }
+    }
+    class SvcMenu extends NetMessage {
+        encode(buf) {
+            this.menuType = buf.readint16();
+            this.length = buf.readUint32();
+            this.data = buf.readBits(this.length);
+        }
+    }
+    class SvcGameEventList extends NetMessage {
+        encode(buf) {
+            this.events = buf.readBits(9); // ?
+            this.length = buf.readBits(20); // ?
+            //this.data = buf.readBits(this.length);
+        }
+    }
+    class SvcGetCvarValue extends NetMessage {
+        encode(buf) {
+            this.cookie = buf.readInt32();
+            this.cvarName = buf.readASCIIString();
+        }
+    }
+    class SvcCmdKeyValues extends NetMessage {
+        encode(buf) {
+            this.length = buf.readUint32();
+            this.buffer = buf.readArrayBuffer(this.length);
+        }
+    }
+    
+    module.exports = {
+        Portal2Engine: [
+            NetNop,
+            NetDisconnect,
+            NetFile,
+            NetSplitScreenUser,
+            NetTick,
+            NetStringCmd,
+            NetSetConVar,
+            NetSignonState,
+            SvcServerInfo,
+            SvcSendTable,
+            SvcClassInfo,
+            SvcSetPause,
+            SvcCreateStringTable,
+            SvcUpdateStringTable,
+            SvcVoiceInit,
+            SvcVoiceData,
+            SvcPrint,
+            SvcSounds,
+            SvcSetView,
+            SvcFixAngle,
+            SvcCrosshairAngle,
+            SvcBspDecal,
+            SvcSplitScreen,
+            SvcUserMessage,
+            SvcEntityMessage,
+            SvcGameEvent,
+            SvcPacketEntities,
+            SvcTempEntities,
+            SvcPrefetch,
+            SvcMenu,
+            SvcGameEventList,
+            SvcGetCvarValue,
+            SvcCmdKeyValues,
+        ],
+        HalfLife2Engine: [
+            NetNop,
+            NetDisconnect,
+            NetFile,
+            NetTick,
+            NetStringCmd,
+            NetSetConVar,
+            NetSignonState,
+            SvcPrint,
+            SvcServerInfo,
+            SvcSendTable,
+            SvcClassInfo,
+            SvcSetPause,
+            SvcCreateStringTable,
+            SvcUpdateStringTable,
+            SvcVoiceInit,
+            SvcVoiceData,
+            undefined,
+            SvcSounds,
+            SvcSetView,
+            SvcFixAngle,
+            SvcCrosshairAngle,
+            SvcBspDecal,
+            undefined,
+            SvcUserMessage,
+            SvcEntityMessage,
+            SvcGameEvent,
+            SvcPacketEntities,
+            SvcTempEntities,
+            SvcPrefetch,
+            SvcMenu,
+            SvcGameEventList,
+            SvcGetCvarValue,
+            SvcCmdKeyValues,
+        ],
+    };
+    
+    },{}],5:[function(require,module,exports){
+    (function (Buffer){
+    const { BitStream } = require('bit-buffer');
+    
+    const decodeString = (bytes, trim = true) => {
+        if (trim) bytes = bytes.slice(0, bytes.indexOf(0x00));
+        return String.fromCharCode.apply(null, bytes);
+    };
+    
+    class PlayerInfo {
+        static create() {
+            return new PlayerInfo();
+        }
+        encode(data, demo) {
+            let buf = new BitStream(Buffer.from(data));
+    
+            if (demo.header.demoProtocol === 4) {
+                let isCsgo = demo.header.gameDirectory === 'csgo';
+                this.version = isCsgo ? buf.readBits(64) : buf.readInt32();
+                this.xuid = isCsgo ? buf.readBits(64) : buf.readInt32();
+            }
+    
+            // player_info_s
+            this.name = decodeString(buf.readArrayBuffer(32)); // MAX_PLAYER_NAME_LENGTH
+            this.userId = buf.readInt32();
+            this.guid = decodeString(buf.readArrayBuffer(33)); // SIGNED_GUID_LEN + 1
+            this.friendsId = buf.readInt32();
+            this.friendsName = decodeString(buf.readArrayBuffer(32)); // MAX_PLAYER_NAME_LENGTH
+            this.fakePlayer = buf.readBoolean();
+            this.isHltv = buf.readBoolean();
+            this.customFiles = [buf.readInt32(), buf.readInt32(), buf.readInt32(), buf.readInt32()];
+            this.filesDownloaded = buf.readInt32();
+        }
+    }
+    
+    module.exports = { userinfo: PlayerInfo };
+    
+    }).call(this,require("buffer").Buffer)
+    },{"bit-buffer":15,"buffer":16}],6:[function(require,module,exports){
+    (function (Buffer){
+    const { SourceDemoParser } = require('../parser');
+    
+    class BinaryBuffer {
+        constructor(size) {
+            this.buffer = Buffer.alloc(size);
+        }
+        writeInt8(value) {
+            let data = Buffer.alloc(1);
+            data.writeInt8(value, 0);
+            this.buffer = Buffer.concat([this.buffer, data]);
+        }
+        writeInt16(value) {
+            let data = Buffer.alloc(2);
+            data.writeInt16LE(value, 0);
+            this.buffer = Buffer.concat([this.buffer, data]);
+        }
+        writeInt32(value) {
+            let data = Buffer.alloc(4);
+            data.writeInt32LE(value, 0);
+            this.buffer = Buffer.concat([this.buffer, data]);
+        }
+        writeFloat(value) {
+            let data = Buffer.alloc(4);
+            data.writeFloatLE(value, 0);
+            this.buffer = Buffer.concat([this.buffer, data]);
+        }
+        writeString(value) {
+            let data = Buffer.alloc(value.length);
+            data.write(value, 0);
+            this.buffer = Buffer.concat([this.buffer, data]);
+        }
+    }
+    
+    class SourceAutoRecord {
+        static convertToReplay(demos) {
+            const bb = new BinaryBuffer(0);
+    
+            bb.writeString('sar-tas-replay v1.8\n');
+            bb.writeInt32(demos.length);
+    
+            let parser = new SourceDemoParser();
+    
+            for (let demo of demos) {
+                let messages = parser.encodeUserCmdMessages(demo);
+                for (let message of messages) {
+                    bb.writeInt32(message.buttons || 0);
+                    bb.writeFloat(message.forwardMove || 0);
+                    bb.writeInt8(message.impulse || 0);
+                    bb.writeInt16(message.mouseDx || 0);
+                    bb.writeInt16(message.mouseDy || 0);
+                    bb.writeFloat(message.sideMove || 0);
+                    bb.writeFloat(message.upMove || 0);
+                    bb.writeFloat(message.viewAngleX || 0);
+                    bb.writeFloat(message.viewAngleY || 0);
+                    bb.writeFloat(message.viewAngleZ || 0);
+                }
+            }
+    
+            return bb.buffer;
+        }
+    }
+    
+    module.exports = { SourceAutoRecord };
+    
+    }).call(this,require("buffer").Buffer)
+    },{"../parser":19,"buffer":16}],7:[function(require,module,exports){
+    // prettier-ignore
+    const SourceGames = [
+        require('./games/portal'),
+        require('./games/portal2'),
+        require('./games/mel'),
+        require('./games/tag')
     ];
     
     class SourceGame {
@@ -111,36 +517,36 @@
                 let getGameInfo = () => {
                     let map = new Map();
     
-                    let packets = demo.messages.filter(msg => msg.type == 0x02);
-                    let commands = demo.messages.filter(msg => msg.type == 0x04);
+                    let packets = demo.messages.filter((msg) => msg.type === 0x02);
+                    let commands = demo.messages.filter((msg) => msg.type === 0x04);
     
-                    packets.forEach(p => map.set(p.tick, {}));
-                    commands.forEach(p => map.set(p.tick, {}));
+                    packets.forEach((p) => map.set(p.tick, {}));
+                    commands.forEach((p) => map.set(p.tick, {}));
     
                     let oldPosition = { x: 0, y: 0, z: 0 };
                     let oldCommands = [];
     
                     for (let [tick, info] of map) {
-                        if (tick == 0) {
+                        if (tick === 0) {
                             continue;
                         }
     
-                        let packet = packets.find(p => p.tick == tick);
+                        let packet = packets.find((p) => p.tick === tick);
                         if (packet != undefined) {
                             let newPosition = packet.message.packetInfo[splitScreenIndex].viewOrigin[0];
                             if (newPosition != undefined) {
                                 info.position = {
                                     previous: oldPosition,
-                                    current: oldPosition = newPosition
+                                    current: (oldPosition = newPosition),
                                 };
                             }
                         }
     
-                        let newCommands = commands.filter(c => c.tick == tick).map(c => c.message.command);
+                        let newCommands = commands.filter((c) => c.tick === tick).map((c) => c.message.command);
                         if (newCommands.length != 0) {
                             info.commands = {
                                 previous: oldCommands,
-                                current: oldCommands = newCommands
+                                current: (oldCommands = newCommands),
                             };
                         }
                     }
@@ -149,7 +555,7 @@
                 };
     
                 let checkRules = (rules) => {
-                    if (rules.length == 0) {
+                    if (rules.length === 0) {
                         return undefined;
                     }
     
@@ -158,29 +564,30 @@
                     let matches = [];
                     for (let [tick, info] of gameInfo) {
                         for (let rule of rules) {
-                            if (rule.callback(info.position, info.commands) == true) {
+                            if (rule.callback(info.position, info.commands) === true) {
                                 matches.push({ rule: rule, tick: tick });
                             }
                         }
                     }
     
                     if (matches.length > 0) {
-                        if (matches.length == 1) {
+                        if (matches.length === 1) {
                             return matches[0].tick + matches[0].rule.offset;
                         }
     
-                        let matchTick = matches.map(m => m.tick).reduce((a, b) => Math.min(a, b))
-                        matches = matches.filter(m => m.tick == matchTick);
-                        if (matches.length == 1) {
+                        let matchTick = matches.map((m) => m.tick).reduce((a, b) => Math.min(a, b));
+                        matches = matches.filter((m) => m.tick === matchTick);
+                        if (matches.length === 1) {
                             return matches[0].tick + matches[0].rule.offset;
                         }
     
-                        let matchOffset = (matches[0].rule.type == 'start')
-                            ? matches.map(m => m.rule.offset).reduce((a, b) => Math.min(a, b))
-                            : matches.map(m => m.rule.offset).reduce((a, b) => Math.max(a, b));
+                        let matchOffset =
+                            matches[0].rule.type === 'start'
+                                ? matches.map((m) => m.rule.offset).reduce((a, b) => Math.min(a, b))
+                                : matches.map((m) => m.rule.offset).reduce((a, b) => Math.max(a, b));
     
-                        matches = matches.filter(m => m.rule.offset == matchOffset);
-                        if (matches.length == 1) {
+                        matches = matches.filter((m) => m.rule.offset === matchOffset);
+                        if (matches.length === 1) {
                             return matches[0].tick + matches[0].rule.offset;
                         }
     
@@ -191,17 +598,17 @@
                 };
     
                 let getRules = (type) => {
-                    let candidates = demo.game.rules.filter(rule => rule.type == type);
+                    let candidates = demo.game.rules.filter((rule) => rule.type === type);
     
-                    let rules = candidates.filter(rule => {
+                    let rules = candidates.filter((rule) => {
                         if (Array.isArray(rule.map)) {
                             return rule.map.includes(demo.header.mapName);
                         }
-                        return rule.map == demo.header.mapName;
+                        return rule.map === demo.header.mapName;
                     });
     
-                    if (rules.length == 0) {
-                        rules = candidates.filter(rule => rule.map == undefined);
+                    if (rules.length === 0) {
+                        rules = candidates.filter((rule) => rule.map === undefined);
                     }
     
                     return rules;
@@ -227,36 +634,32 @@
     
     module.exports = { SourceGames, SourceGame };
     
-    },{"./games/mel.js":4,"./games/portal.js":5,"./games/portal2.js":6,"./games/tag.js":7}],4:[function(require,module,exports){
-    var PortalStoriesMel = {
+    },{"./games/mel":8,"./games/portal":9,"./games/portal2":10,"./games/tag":11}],8:[function(require,module,exports){
+    const PortalStoriesMel = {
         directory: 'portal_stories',
         tickrate: 60,
         rules: [
             {
-                map: [
-                    'sp_a1_tramride',
-                    'st_a1_tramride'
-                ],
+                map: ['sp_a1_tramride', 'st_a1_tramride'],
                 offset: 0,
                 type: 'start',
                 callback: (pos, _) => {
                     if (pos != undefined) {
-                        let startPos = { x: -4592.00, y: -4475.4052734375, z: 108.683975219727 };
-                        return pos.previous.x == startPos.x
-                            && pos.previous.y == startPos.y
-                            && pos.previous.z == startPos.z
-                            && pos.current.x != startPos.x
-                            && pos.current.y != startPos.y
-                            && pos.current.z != startPos.z;
+                        let startPos = { x: -4592.0, y: -4475.4052734375, z: 108.683975219727 };
+                        return (
+                            pos.previous.x === startPos.x &&
+                            pos.previous.y === startPos.y &&
+                            pos.previous.z === startPos.z &&
+                            pos.current.x != startPos.x &&
+                            pos.current.y != startPos.y &&
+                            pos.current.z != startPos.z
+                        );
                     }
                     return false;
-                }
+                },
             },
             {
-                map: [
-                    'sp_a4_finale',
-                    'st_a4_finale'
-                ],
+                map: ['sp_a4_finale', 'st_a4_finale'],
                 offset: 0,
                 type: 'end',
                 callback: (_, cmds) => {
@@ -265,15 +668,15 @@
                         return cmds.current.includes(outro);
                     }
                     return false;
-                }
-            }
-        ]
+                },
+            },
+        ],
     };
     
     module.exports = PortalStoriesMel;
     
-    },{}],5:[function(require,module,exports){
-    var Portal = {
+    },{}],9:[function(require,module,exports){
+    const Portal = {
         directory: 'portal',
         tickrate: 1 / 0.015,
         rules: [
@@ -284,12 +687,10 @@
                 callback: (pos, _) => {
                     if (pos != undefined) {
                         let startPos = { x: -544, y: -368.75, z: 160 };
-                        return pos.current.x == startPos.x
-                            && pos.current.y == startPos.y
-                            && pos.current.z == startPos.z;
+                        return pos.current.x === startPos.x && pos.current.y === startPos.y && pos.current.z === startPos.z;
                     }
                     return false;
-                }
+                },
             },
             {
                 map: 'escape_02',
@@ -300,15 +701,15 @@
                         return cmds.current.includes('startneurotoxins 99999');
                     }
                     return false;
-                }
-            }
-        ]
+                },
+            },
+        ],
     };
     
     module.exports = Portal;
     
-    },{}],6:[function(require,module,exports){
-    var Portal2 = {
+    },{}],10:[function(require,module,exports){
+    const Portal2 = {
         directory: 'portal2',
         tickrate: 60,
         rules: [
@@ -318,14 +719,16 @@
                 type: 'start',
                 callback: (pos, _) => {
                     if (pos != undefined) {
-                        let startPos = { x: -8709.20, y: 1690.07, z: 28.00 };
+                        let startPos = { x: -8709.2, y: 1690.07, z: 28.0 };
                         let tolerance = { x: 0.02, y: 0.02, z: 0.05 };
-                        return !(Math.abs(pos.current.x - startPos.x) > tolerance.x)
-                            && !(Math.abs(pos.current.y - startPos.y) > tolerance.y)
-                            && !(Math.abs(pos.current.z - startPos.z) > tolerance.z);
+                        return (
+                            !(Math.abs(pos.current.x - startPos.x) > tolerance.x) &&
+                            !(Math.abs(pos.current.y - startPos.y) > tolerance.y) &&
+                            !(Math.abs(pos.current.z - startPos.z) > tolerance.z)
+                        );
                     }
                     return false;
-                }
+                },
             },
             {
                 map: 'e1912',
@@ -334,15 +737,17 @@
                 callback: (pos, _) => {
                     if (pos != undefined) {
                         let startPos = { x: -655.748779296875, y: -918.37353515625, z: -4.96875 };
-                        return pos.previous.x == startPos.x
-                            && pos.previous.y == startPos.y
-                            && pos.previous.z == startPos.z
-                            && pos.current.x != startPos.x
-                            && pos.current.y != startPos.y
-                            && pos.current.z != startPos.z;
+                        return (
+                            pos.previous.x === startPos.x &&
+                            pos.previous.y === startPos.y &&
+                            pos.previous.z === startPos.z &&
+                            pos.current.x != startPos.x &&
+                            pos.current.y != startPos.y &&
+                            pos.current.z != startPos.z
+                        );
                     }
                     return false;
-                }
+                },
             },
             {
                 map: undefined,
@@ -350,11 +755,10 @@
                 type: 'start',
                 callback: (_, cmds) => {
                     if (cmds != undefined) {
-                        return cmds.current.includes('dsp_player 0')
-                            && cmds.current.includes('ss_force_primary_fullscreen 0');
+                        return cmds.current.includes('dsp_player 0') && cmds.current.includes('ss_force_primary_fullscreen 0');
                     }
                     return false;
-                }
+                },
             },
             {
                 map: 'mp_coop_start',
@@ -364,15 +768,13 @@
                     if (pos != undefined) {
                         let startPosBlue = { x: -9896, y: -4400, z: 3048 };
                         let startPosOrange = { x: -11168, y: -4384, z: 3040.03125 };
-                        return (pos.current.x == startPosBlue.x
-                            && pos.current.y == startPosBlue.y
-                            && pos.current.z == startPosBlue.z)
-                            || (pos.current.x == startPosOrange.x
-                                && pos.current.y == startPosOrange.y
-                                && pos.current.z == startPosOrange.z);
+                        return (
+                            (pos.current.x === startPosBlue.x && pos.current.y === startPosBlue.y && pos.current.z === startPosBlue.z) ||
+                            (pos.current.x === startPosOrange.x && pos.current.y === startPosOrange.y && pos.current.z === startPosOrange.z)
+                        );
                     }
                     return false;
-                }
+                },
             },
             {
                 map: 'sp_a4_finale4',
@@ -384,11 +786,10 @@
                         let a = (pos.current.x - endPos.x) ** 2;
                         let b = (pos.current.y - endPos.y) ** 2;
                         let c = 50 ** 2;
-                        return a + b < c
-                            && pos.current.z < endPos.z;
+                        return a + b < c && pos.current.z < endPos.z;
                     }
                     return false;
-                }
+                },
             },
             {
                 map: undefined,
@@ -396,10 +797,10 @@
                 type: 'end',
                 callback: (_, cmds) => {
                     if (cmds != undefined) {
-                        return cmds.current.find(cmd => cmd.startsWith('playvideo_end_level_transition')) != undefined;
+                        return cmds.current.find((cmd) => cmd.startsWith('playvideo_end_level_transition')) != undefined;
                     }
                     return false;
-                }
+                },
             },
             {
                 map: 'mp_coop_paint_longjump_intro',
@@ -411,7 +812,7 @@
                         return cmds.current.includes(outro);
                     }
                     return false;
-                }
+                },
             },
             {
                 map: 'mp_coop_paint_crazy_box',
@@ -423,15 +824,15 @@
                         return cmds.current.includes(outro);
                     }
                     return false;
-                }
-            }
-        ]
+                },
+            },
+        ],
     };
     
     module.exports = Portal2;
     
-    },{}],7:[function(require,module,exports){
-    var ApertureTag = {
+    },{}],11:[function(require,module,exports){
+    const ApertureTag = {
         directory: 'aperturetag',
         tickrate: 60,
         rules: [
@@ -441,16 +842,18 @@
                 type: 'start',
                 callback: (pos, _) => {
                     if (pos != undefined) {
-                        let startPos = { x: -723.00, y: -2481.00, z: 17.00 };
-                        return pos.previous.x == startPos.x
-                            && pos.previous.y == startPos.y
-                            && pos.previous.z == startPos.z
-                            && pos.current.x != startPos.x
-                            && pos.current.y != startPos.y
-                            && pos.current.z != startPos.z;
+                        let startPos = { x: -723.0, y: -2481.0, z: 17.0 };
+                        return (
+                            pos.previous.x === startPos.x &&
+                            pos.previous.y === startPos.y &&
+                            pos.previous.z === startPos.z &&
+                            pos.current.x != startPos.x &&
+                            pos.current.y != startPos.y &&
+                            pos.current.z != startPos.z
+                        );
                     }
                     return false;
-                }
+                },
             },
             {
                 map: 'gg_stage_theend',
@@ -462,7 +865,7 @@
                         return cmds.current.includes(outro);
                     }
                     return false;
-                }
+                },
             },
             {
                 map: undefined,
@@ -470,11 +873,10 @@
                 type: 'start',
                 callback: (_, cmds) => {
                     if (cmds != undefined) {
-                        return cmds.current.includes('dsp_player 0')
-                            && cmds.current.includes('ss_force_primary_fullscreen 0');
+                        return cmds.current.includes('dsp_player 0') && cmds.current.includes('ss_force_primary_fullscreen 0');
                     }
                     return false;
-                }
+                },
             },
             {
                 map: undefined,
@@ -482,17 +884,17 @@
                 type: 'end',
                 callback: (_, cmds) => {
                     if (cmds != undefined) {
-                        return cmds.current.find(cmd => cmd.startsWith('playvideo_end_level_transition')) != undefined;
+                        return cmds.current.find((cmd) => cmd.startsWith('playvideo_end_level_transition')) != undefined;
                     }
                     return false;
-                }
-            }
-        ]
+                },
+            },
+        ],
     };
     
     module.exports = ApertureTag;
     
-    },{}],8:[function(require,module,exports){
+    },{}],12:[function(require,module,exports){
     'use strict'
     
     exports.byteLength = byteLength
@@ -645,7 +1047,7 @@
       return parts.join('')
     }
     
-    },{}],9:[function(require,module,exports){
+    },{}],13:[function(require,module,exports){
     //========================================================================================
     // Globals
     //========================================================================================
@@ -1396,7 +1798,7 @@
     
     exports.Parser = Parser;
     
-    },{"./context":10,"vm":14}],10:[function(require,module,exports){
+    },{"./context":14,"vm":18}],14:[function(require,module,exports){
     //========================================================================================
     // class Context
     //========================================================================================
@@ -1530,7 +1932,7 @@
     
     exports.Context = Context;
     
-    },{}],11:[function(require,module,exports){
+    },{}],15:[function(require,module,exports){
     (function (Buffer){
     (function (root) {
     
@@ -1993,7 +2395,7 @@
     }(this));
     
     }).call(this,require("buffer").Buffer)
-    },{"buffer":12}],12:[function(require,module,exports){
+    },{"buffer":16}],16:[function(require,module,exports){
     /*!
      * The buffer module from node.js, for the browser.
      *
@@ -3772,7 +4174,7 @@
       return obj !== obj // eslint-disable-line no-self-compare
     }
     
-    },{"base64-js":8,"ieee754":13}],13:[function(require,module,exports){
+    },{"base64-js":12,"ieee754":17}],17:[function(require,module,exports){
     exports.read = function (buffer, offset, isLE, mLen, nBytes) {
       var e, m
       var eLen = (nBytes * 8) - mLen - 1
@@ -3858,7 +4260,7 @@
       buffer[offset + i - d] |= s * 128
     }
     
-    },{}],14:[function(require,module,exports){
+    },{}],18:[function(require,module,exports){
     var indexOf = function (xs, item) {
         if (xs.indexOf) return xs.indexOf(item);
         else for (var i = 0; i < xs.length; i++) {
@@ -4009,29 +4411,32 @@
         return copy;
     };
     
-    },{}],15:[function(require,module,exports){
+    },{}],19:[function(require,module,exports){
     (function (Buffer){
-    var { Parser } = require('binary-parser');
-    var { BitStream } = require('bit-buffer');
-    var { SourceDemo } = require('./demo.js');
+    const { Parser } = require('binary-parser');
+    const { BitStream } = require('bit-buffer');
+    const { SourceDemo } = require('./demo');
+    const { SendPropFlags, SendPropType } = require('./extensions/DataTables');
+    const StringTables = require('./extensions/StringTables');
+    const NetMessages = require('./extensions/NetMessages');
     
-    var dataParser = new Parser()
+    const dataParser = new Parser()
         .endianess('little')
         .int32('size')
         .array('data', { type: 'int8', lengthInBytes: 'size' });
     
     // Vector
-    var vectorParser = new Parser()
+    const vectorParser = new Parser()
         .endianess('little')
         .float('x') // vec_t 0-4
         .float('y') // vec_t 5-8
         .float('z'); // vec_t 9-12
     
     // QAngle
-    var qAngleParser = vectorParser;
+    const qAngleParser = vectorParser;
     
     // democmdinfo_t
-    var cmdInfoParser = new Parser()
+    const cmdInfoParser = new Parser()
         .endianess('little')
         .int32('flags')
         .array('viewOrigin', { length: 1, type: vectorParser })
@@ -4042,14 +4447,14 @@
         .array('localViewAngles2', { length: 1, type: qAngleParser });
     
     // 0x1 & 0x02
-    var defaultPacketParser = new Parser()
+    const defaultPacketParser = new Parser()
         .endianess('little')
         .array('packetInfo', { length: 2, type: cmdInfoParser })
         .int32('inSequence')
         .int32('outSequence')
         .array('data', { length: 1, type: dataParser });
     
-    var oldPacketParser = new Parser()
+    const oldPacketParser = new Parser()
         .endianess('little')
         .array('packetInfo', { length: 1, type: cmdInfoParser })
         .int32('inSequence')
@@ -4057,43 +4462,37 @@
         .array('data', { length: 1, type: dataParser });
     
     // 0x03
-    var syncTickParser = new Parser();
+    const syncTickParser = new Parser();
     
     // 0x04
-    var consoleCmdParser = new Parser()
+    const consoleCmdParser = new Parser()
         .endianess('little')
         .int32('size')
         .string('command', { encoding: 'utf8', length: 'size', stripNull: true });
     
     // 0x05
-    var userCmdParser = new Parser()
+    const userCmdParser = new Parser()
         .endianess('little')
         .int32('cmd')
         .array('data', { length: 1, type: dataParser });
     
     // 0x06
-    var dataTableParser = new Parser()
-        .endianess('little')
-        .array('data', { length: 1, type: dataParser });
+    const dataTableParser = new Parser().endianess('little').array('data', { length: 1, type: dataParser });
     
     // 0x07
-    var stopParser = new Parser()
-        .endianess('little')
-        .array('rest', { readUntil: 'eof', type: 'int8' });
+    const stopParser = new Parser().endianess('little').array('rest', { readUntil: 'eof', type: 'int8' });
     
     // 0x08
-    var customDataParser = new Parser()
+    const customDataParser = new Parser()
         .endianess('little')
         .int32('unk')
         .array('data', { length: 1, type: dataParser });
     
     // 0x09 (0x08)
-    var stringTablesParser = new Parser()
-        .endianess('little')
-        .array('data', { length: 1, type: dataParser });
+    const stringTablesParser = new Parser().endianess('little').array('data', { length: 1, type: dataParser });
     
     // Protocol 4
-    var defaultMessageParser = new Parser()
+    const defaultMessageParser = new Parser()
         .endianess('little')
         .bit8('type')
         .int32('tick')
@@ -4109,12 +4508,12 @@
                 0x06: dataTableParser,
                 0x07: stopParser,
                 0x08: customDataParser,
-                0x09: stringTablesParser
-            }
+                0x09: stringTablesParser,
+            },
         });
     
     // Protocol 2 & 3
-    var oldMessageParser = new Parser()
+    const oldMessageParser = new Parser()
         .endianess('little')
         .bit8('type')
         .int32('tick')
@@ -4128,11 +4527,11 @@
                 0x05: userCmdParser,
                 0x06: dataTableParser,
                 0x07: stopParser,
-                0x08: stringTablesParser
-            }
+                0x08: stringTablesParser,
+            },
         });
     
-    var headerParser = new Parser()
+    const headerParser = new Parser()
         .endianess('little')
         .string('demoFileStamp', { encoding: 'utf8', length: 8, stripNull: true })
         .int32('demoProtocol')
@@ -4192,18 +4591,22 @@
             return this;
         }
         parseDemoMessages(demo, buffer) {
-            this.messageParser = new Parser()
-                .endianess('little')
-                .skip(8 + 4 + 4 + 4 * 260 + 4 + 4 + 4 + 4);
+            this.messageParser = new Parser().endianess('little').skip(0x430);
     
             if (this.autoConfigure) {
                 switch (demo.header.demoProtocol) {
                     case 2:
                     case 3:
-                        this.messageParser.array('messages', { readUntil: 'eof', type: oldMessageParser });
+                        this.messageParser.array('messages', {
+                            readUntil: 'eof',
+                            type: oldMessageParser,
+                        });
                         break;
                     case 4:
-                        this.messageParser.array('messages', { readUntil: 'eof', type: defaultMessageParser });
+                        this.messageParser.array('messages', {
+                            readUntil: 'eof',
+                            type: defaultMessageParser,
+                        });
                         break;
                     default:
                         throw new Error(`Invalid demo protocol: ${demo.header.demoProtocol}`);
@@ -4212,11 +4615,9 @@
     
             // Oof
             let rest = 4 - (buffer.length % 4);
-            while (rest--) {
-                buffer = Buffer.concat([buffer], buffer.length + 1);
-            }
+            let alignedBuffer = Buffer.concat([buffer], buffer.length + rest);
     
-            demo.messages = this.messageParser.parse(buffer).messages;
+            demo.messages = this.messageParser.parse(alignedBuffer).messages;
     
             if (this.autoAdjust) {
                 if (this.defaultGame != undefined) {
@@ -4242,8 +4643,12 @@
             let result = [];
             for (let message of demo.messages) {
                 if (message.type == 0x05 && message.message.data[0].size > 0) {
-                    let buf = new BitStream(new Buffer(message.message.data[0].data));
+                    let temp = Buffer.from(message.message.data[0].data);
+                    let buf = new BitStream(temp);
+                    buf._view._view = new Uint8Array(temp);
+    
                     let cmd = { source: message };
+    
                     if (buf.readBoolean()) cmd.commandNumber = buf.readInt32();
                     if (buf.readBoolean()) cmd.tickCount = buf.readInt32();
                     if (buf.readBoolean()) cmd.viewAngleX = buf.readFloat32();
@@ -4265,16 +4670,176 @@
             }
             return result;
         }
+        encodeStringTables(demo, stringTableEncoder = StringTables) {
+            let stringTableFlag = demo.header.demoProtocol === 4 ? 0x09 : 0x08;
+    
+            let frames = [];
+            for (let message of demo.messages) {
+                if (message.type === stringTableFlag && message.message.data[0].size > 0) {
+                    let buf = new BitStream(Buffer.from(message.message.data[0].data));
+    
+                    let tables = buf.readInt8();
+                    while (tables--) {
+                        let name = buf.readASCIIString();
+                        let entries = buf.readInt16();
+                        while (entries--) {
+                            let entry = buf.readASCIIString();
+                            if (buf.readBoolean()) {
+                                let length = buf.readInt16();
+                                let data = buf.readArrayBuffer(length);
+                                let encoder = stringTableEncoder[name];
+                                if (encoder) {
+                                    let stringTable = encoder.create();
+                                    stringTable.encode(data, demo);
+                                    frames.push({
+                                        [name]: stringTable,
+                                    });
+                                }
+                            }
+                        }
+    
+                        if (buf.readBoolean()) {
+                            let entries = buf.readInt16();
+                            while (entries--) {
+                                let entry = buf.readASCIIString();
+                                if (buf.readBoolean()) {
+                                    let length = buf.readInt16();
+                                    let data = buf.readArrayBuffer(length);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return frames;
+        }
+        encodeDataTables(demo) {
+            let infoBitFlags = demo.header.demoProtocol === 2 ? 11 : 16;
+            let isPortal2 = demo.header.gameDirectory === 'portal2';
+    
+            let frames = [];
+            for (let message of demo.messages) {
+                if (message.type === 0x06 && message.message.data[0].size > 0) {
+                    let buf = new BitStream(Buffer.from(message.message.data[0].data));
+    
+                    let frame = {
+                        source: message,
+                        tables: [],
+                        classes: [],
+                    };
+    
+                    while (buf.readBoolean()) {
+                        let needsDecoder = buf.readBoolean();
+                        let netTableName = buf.readASCIIString();
+                        let table = {
+                            needsDecoder,
+                            netTableName,
+                            props: [],
+                        };
+    
+                        let props = buf.readBits(10, false);
+                        while (props--) {
+                            let type = buf.readBits(5, false);
+                            let varName = buf.readASCIIString();
+                            let flags = buf.readBits(infoBitFlags, false);
+                            let prop = {
+                                type,
+                                varName,
+                                flags,
+                                isExcludeProp: function() {
+                                    return (this.flags & SendPropFlags.Exclude) !== 0;
+                                },
+                            };
+    
+                            if (isPortal2) {
+                                prop.unk = buf.readBits(11, false);
+                            }
+    
+                            if (prop.type === SendPropType.DataTable || prop.isExcludeProp()) {
+                                prop.excludeDtName = buf.readASCIIString();
+                            } else if (
+                                prop.type === SendPropType.String ||
+                                prop.type === SendPropType.Int ||
+                                prop.type === SendPropType.Float ||
+                                prop.type === SendPropType.Vector ||
+                                prop.type === SendPropType.VectorXy
+                            ) {
+                                if (isPortal2) {
+                                    prop.unk2 = buf.readBits(71, false);
+                                } else {
+                                    prop.lowValue = buf.readFloat32();
+                                    prop.highValue = buf.readFloat32();
+                                    prop.bits = buf.readBits(7, false);
+                                }
+                            } else if (prop.type === SendPropType.Array) {
+                                prop.elements = buf.readBits(10, false);
+                            } else {
+                                throw new Error('Invalid prop type: ' + prop.type);
+                            }
+    
+                            table.props.push(prop);
+                        }
+    
+                        frame.tables.push(table);
+                    }
+    
+                    let classes = buf.readInt16();
+                    while (classes--) {
+                        frame.classes.push({
+                            classId: buf.readInt16(),
+                            className: buf.readASCIIString(),
+                            dataTableName: buf.readASCIIString(),
+                        });
+                    }
+    
+                    frames.push(frame);
+                }
+            }
+            return frames;
+        }
+        encodePackets(demo, netMessages = undefined) {
+            netMessages = netMessages || (demo.header.demoProtocol === 4 ? NetMessages.Portal2Engine : NetMessages.HalfLife2Engine);
+    
+            let frames = [];
+            for (let message of demo.messages) {
+                if ((message.type === 0x01 || message.type === 0x02) && message.message.data[0].size > 0) {
+                    let packets = [];
+                    let buf = new BitStream(Buffer.from(message.message.data[0].data));
+    
+                    while (buf.bitsLeft > 6) {
+                        let type = buf.readBits(6);
+    
+                        let message = netMessages[type];
+                        if (message) {
+                            message = message.create();
+                            message.encode(buf, demo);
+                            console.log(message);
+                        } else {
+                            throw new Error('Unknown type: ' + type);
+                        }
+    
+                        packets.push({ type, message });
+                    }
+    
+                    frames.push({ source: message, packets });
+                }
+            }
+            return frames;
+        }
     }
     
     module.exports = { SourceDemoParser };
     
     }).call(this,require("buffer").Buffer)
-    },{"./demo.js":2,"binary-parser":9,"bit-buffer":11,"buffer":12}],16:[function(require,module,exports){
-    var { SourceDemo } = require('./demo.js');
-    var { SourceGames, SourceGame } = require('./game.js');
-    var { SourceDemoParser } = require('./parser.js');
-    module.exports = { SourceDemo, SourceGames, SourceGame, SourceDemoParser };
+    },{"./demo":2,"./extensions/DataTables":3,"./extensions/NetMessages":4,"./extensions/StringTables":5,"binary-parser":13,"bit-buffer":15,"buffer":16}],20:[function(require,module,exports){
+    const { SourceDemo } = require('./demo');
+    const { SourceGames, SourceGame } = require('./game');
+    const { SourceDemoParser } = require('./parser');
+    const { SourceAutoRecord } = require('./extensions/sar');
+    const DataTables = require('./extensions/DataTables');
+    const StringTables = require('./extensions/StringTables');
+    const NetMessages = require('./extensions/NetMessages');
+    module.exports = { SourceDemo, SourceGames, SourceGame, SourceDemoParser, SourceAutoRecord, DataTables, StringTables, NetMessages };
     
-    },{"./demo.js":2,"./game.js":3,"./parser.js":15}]},{},[1]);
+    },{"./demo":2,"./extensions/DataTables":3,"./extensions/NetMessages":4,"./extensions/StringTables":5,"./extensions/sar":6,"./game":7,"./parser":19}]},{},[1]);
     
