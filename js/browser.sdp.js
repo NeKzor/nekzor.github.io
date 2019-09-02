@@ -127,14 +127,18 @@
     
     },{}],4:[function(require,module,exports){
     class NetMessage {
-        static create() {
-            return new this();
+        static create(type) {
+            return new this(type);
         }
-        name() {
-            return this.constructor.name;
+        constructor(type) {
+            this.type = type;
+            this.name = this.constructor.name;
         }
         read() {
-            throw new Error(`read for ${this.name()} not implemented!`);
+            throw new Error(`read() for ${this.name} not implemented!`);
+        }
+        write() {
+            throw new Error(`write() for ${this.name} not implemented!`);
         }
     }
     
@@ -213,8 +217,7 @@
             this.playerSlot = buf.readInt8();
             this.maxClients = buf.readInt8();
             if (newEngine) {
-                this.unk1 = buf.readInt16();
-                this.unk2 = buf.readInt16();
+                this.unk = buf.readInt32();
             }
             this.tickInterval = buf.readFloat32();
             this.operatingSystem = String.fromCharCode(buf.readInt8());
@@ -4618,7 +4621,7 @@
         .endianess('little')
         .bit8('type')
         .int32('tick')
-        .bit8('alignment')
+        .bit8('slot')
         .choice('message', {
             tag: 'type',
             choices: {
@@ -4800,37 +4803,63 @@
                 if (message.type === stringTableFlag && message.message.data[0].size > 0) {
                     let buf = new BitStream(Buffer.from(message.message.data[0].data));
     
+                    let frame = {
+                        tables: [],
+                    };
+    
                     let tables = buf.readInt8();
                     while (tables--) {
-                        let name = buf.readASCIIString();
+                        let table = {
+                            entries: [],
+                        };
+    
+                        let tableName = buf.readASCIIString();
                         let entries = buf.readInt16();
+    
                         while (entries--) {
-                            let entry = buf.readASCIIString();
+                            let entry = {
+                                name: buf.readASCIIString(),
+                            };
+    
                             if (buf.readBoolean()) {
                                 let length = buf.readInt16();
                                 let data = buf.readArrayBuffer(length);
-                                let reader = stringTableReader[name];
+                                let reader = stringTableReader[tableName];
                                 if (reader) {
                                     let stringTable = reader.create();
                                     stringTable.read(data, demo);
-                                    frames.push({
-                                        [name]: stringTable,
-                                    });
+                                    data = stringTable;
                                 }
+                                entry.data = data;
                             }
+    
+                            table.entries.push(entry);
                         }
     
                         if (buf.readBoolean()) {
+                            let cclass = {
+                                entries: [],
+                            };
+    
                             let entries = buf.readInt16();
                             while (entries--) {
-                                let entry = buf.readASCIIString();
+                                let entry = {
+                                    name: buf.readASCIIString(),
+                                };
+    
                                 if (buf.readBoolean()) {
                                     let length = buf.readInt16();
-                                    let data = buf.readArrayBuffer(length);
+                                    entry.data = buf.readArrayBuffer(length);
                                 }
+    
+                                table.class = cclass;
                             }
                         }
+    
+                        frame.tables.push(table);
                     }
+    
+                    frames.push(frame);
                 }
             }
             return frames;
@@ -4931,15 +4960,15 @@
     
                     while (buf.bitsLeft > 6) {
                         let type = buf.readBits(6);
-                        
-                        let message = netMessages[type];
-                        if (message) {
-                            message = message.create();
-                            //console.log(message.name());
-                            message.read(buf, demo);
-                            //console.log(message);
+    
+                        const NetMessage = netMessages[type];
+                        if (NetMessage) {
+                            let msg = new NetMessage(type);
+                            //console.log(msg.name);
+                            msg.read(buf, demo);
+                            //console.log(msg);
                         } else {
-                            throw new Error('Unknown type: ' + type);
+                            throw new Error(`Net message type ${type} unknown!`);
                         }
     
                         packets.push({ type, message });

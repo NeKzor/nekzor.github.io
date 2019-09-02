@@ -26,7 +26,7 @@
 ## Documentation
 
 - All names are written in PascalCase for consistency and do not match the original name defined by the engine
-- Names might be slightly altered (`UserCmdInfo` = `CUserCmd`) or made up (`Alignment`)
+- Names might be slightly altered (`UserCmdInfo` = `CUserCmd`) or made up (`Slot`)
 - The term `old engine` refers to engines with `DemoProtocol` 2 or 3
 - The term `new engine` refers to engines with `DemoProtocol` 4
 - All strings without a known size are null-terminated
@@ -54,7 +54,7 @@
 | --- | --- | --- | --- | --- |
 | Type | [Message Type](#types) | 1 | 8 | - |
 | Tick | int | 4 | 32 | - |
-| Alignment | byte | 1 | 8 | New engine only. |
+| Slot | byte | 1 | 8 | New engine only. |
 | Data | [Message Data](#message-data) | - | - | - |
 
 ### Types
