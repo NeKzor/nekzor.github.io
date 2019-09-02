@@ -308,7 +308,7 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`
 
         let userCmds = [];
         try {
-            userCmds = demoParser.encodeUserCmdMessages(demo);
+            userCmds = demoParser.readUserCmdMessages(demo);
         } catch (error) {
             console.error(error);
             return;
