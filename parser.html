@@ -223,7 +223,7 @@
             M.Tabs.init(document.querySelector('.tabs'));
         </script>
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-        <script type="text/javascript" src="js/browser.sdp.js"></script>
+        <script type="text/javascript" src="dist/sdp.js"></script>
         <script type="text/javascript">
             var tabs = M.Tabs.getInstance(document.querySelector('.tabs'));
             var infoHeader = document.querySelector('#info-header');
@@ -235,50 +235,57 @@
             infoHeaderEntries.innerHTML = 'Drag & drop file here.';
             infoCommandsEntries.innerHTML = '-';
 
-            var demoParser = new sdp.SourceDemoParser();
-            var defaultGame = new sdp.SourceGame();
+            var Buffer = require('buffer').Buffer;
+            var { SourceDemoParser, SourceDemo, SourceGame, Speedrun } = require('sdp');
+            var parser = SourceDemoParser.default();
+            var speedrunTimer = Speedrun.SourceTimer.default();
+            var sarTimer = Speedrun.SarTimer.default();
+
+            // Public demos
+            var getDemoNames = async () => {
+                let list = undefined;
+                const download = async () => {
+                    let response = await fetch('https://api.github.com/repos/NeKzor/sdp.js/contents/demos/public');
+                    let json = await response.json();
+                    return json.map((entry) => entry.name);
+                };
+                return list ? list : await download();
+            };
+            var downloadDemo = async (name = 'portal.dem', fullAdjustment = true) => {
+                let response = await fetch('https://raw.githubusercontent.com/NeKzor/sdp.js/master/demos/public/' + name);
+                let result = await response.arrayBuffer();
+                return tryParseDemo({ target: { result, source: { name } } }, fullAdjustment);
+            };
 
             // Demo Parsing & Adjusting
             var tryParseDemo = (ev, fullAdjustment = true) => {
                 let demo = null;
                 try {
-                    console.log(`Parsing: ${ev.target.source.name}`);
-                    demo = demoParser.parseDemo(Buffer.from(ev.target.result));
+                    demo = parser.parse(Buffer.from(ev.target.result));
                     demo.fileInfo = ev.target.source;
 
-                    demo.detectGame(defaultGame).adjustTicks(); // Fix message ticks
+                    // Fix message ticks
+                    demo.detectGame().adjustTicks();
 
                     // Splitscreen index
                     slots = demo.messages.find((msg) => msg.slot === 1) ? 2 : 1;
 
                     if (fullAdjustment) {
-                        demo.adjustment = {
-                            ticks: {},
-                            time: {},
-                            delta: 0,
-                        };
-
-                        demo.adjustRange(); // Fix header
-
-                        demo.adjustment.ticks.before = demo.header.playbackTicks;
-                        demo.adjustment.time.before = demo.header.playbackTime;
+                        // Fix header
+                        demo.adjustRange();
 
                         // Adjust 0-tick demos manually
-                        if (demo.header.playbackTicks === 0) {
-                            let ipt = demo.intervalPerTick();
-                            // A TICK IS A TICK, YOU CAN'T SAY ITS NOTHING
-                            demo.header.playbackTicks = 1;
-                            demo.header.playbackTime = ipt;
+                        if (demo.playbackTicks === 0) {
+                            let ipt = demo.getIntervalPerTick();
+                            demo.playbackTicks = 1;
+                            demo.playbackTime = ipt;
                         } else {
-                            defaultGame.adjustByRules(demo, splitScreenIndex); // Speedrun rules apply here
+                            // Speedrun rules apply here
+                            demo.speedrun = speedrunTimer.time(demo);
 
                             // Check SAR support
-                            demo.sar = demo.findSourceAutoRecordTiming();
+                            demo.sar = sarTimer.time(demo);
                         }
-
-                        demo.adjustment.ticks.after = demo.header.playbackTicks;
-                        demo.adjustment.time.after = demo.header.playbackTime;
-                        demo.adjustment.delta = Math.abs(demo.adjustment.ticks.before - demo.adjustment.ticks.after);
                     }
                 } catch (error) {
                     console.error(error);
@@ -288,11 +295,11 @@
             var getAdjustmentResult = (demo) => {
                 return {
                     ticks: `
-Adjusted by ${demo.adjustment.delta} tick${demo.adjustment.delta === 1 ? '' : 's'}
-Before: ${demo.adjustment.ticks.before}`,
+Adjusted by ${demo.speedrun.delta} tick${demo.speedrun.delta === 1 ? '' : 's'}
+Before: ${demo.speedrun.ticks.before}`,
                     time: `
-Adjusted by ${formatTime(demo.adjustment.delta * demo.intervalPerTick())}
-Before: ${formatTime(demo.adjustment.time.before)}`,
+Adjusted by ${formatTime(demo.speedrun.delta * demo.getIntervalPerTick())}
+Before: ${formatTime(demo.speedrun.time.before)}`,
                 };
             };
             var getSourceAutoRecordResult = (demo) => {
@@ -300,7 +307,7 @@ Before: ${formatTime(demo.adjustment.time.before)}`,
                     ticks: `
 SAR: ${demo.sar.delta} tick${demo.sar.delta === 1 ? '' : 's'}`,
                     time: `
-SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`,
+SAR: ${formatTime(demo.sar.delta * demo.getIntervalPerTick())}`,
                 };
             };
 
@@ -318,7 +325,8 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`,
 
                 let userCmds = [];
                 try {
-                    userCmds = demoParser.readUserCmdMessages(demo);
+                    demo.readUserCmds();
+                    userCmds = demo.findMessages('UserCmd');
                 } catch (error) {
                     console.error(error);
                     return;
@@ -327,19 +335,19 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`,
                 inputs = [];
                 for (let slot = 0; slot < slots; ++slot) {
                     let map = [];
-                    userCmds.forEach((cmd) => {
-                        if (cmd.source.slot === slot && cmd.buttons) {
-                            if (cmd.buttons & (1 << 0)) map.push({ tick: cmd.source.tick, type: 'IN_ATTACK' });
-                            if (cmd.buttons & (1 << 1)) map.push({ tick: cmd.source.tick, type: 'IN_JUMP' });
-                            if (cmd.buttons & (1 << 2)) map.push({ tick: cmd.source.tick, type: 'IN_DUCK' });
-                            if (cmd.buttons & (1 << 3)) map.push({ tick: cmd.source.tick, type: 'IN_FORWARD' });
-                            if (cmd.buttons & (1 << 4)) map.push({ tick: cmd.source.tick, type: 'IN_BACK' });
-                            if (cmd.buttons & (1 << 5)) map.push({ tick: cmd.source.tick, type: 'IN_USE' });
-                            if (cmd.buttons & (1 << 9)) map.push({ tick: cmd.source.tick, type: 'IN_MOVELEFT' });
-                            if (cmd.buttons & (1 << 10)) map.push({ tick: cmd.source.tick, type: 'IN_MOVERIGHT' });
-                            if (cmd.buttons & (1 << 11)) map.push({ tick: cmd.source.tick, type: 'IN_ATTACK2' });
-                            if (cmd.buttons & (1 << 13)) map.push({ tick: cmd.source.tick, type: 'IN_RELOAD' });
-                            if (cmd.buttons & (1 << 17)) map.push({ tick: cmd.source.tick, type: 'IN_SPEED' });
+                    userCmds.forEach((msg) => {
+                        if (msg.slot === slot && msg.userCmd.buttons) {
+                            if (msg.userCmd.buttons & (1 << 0)) map.push({ tick: msg.tick, type: 'IN_ATTACK' });
+                            if (msg.userCmd.buttons & (1 << 1)) map.push({ tick: msg.tick, type: 'IN_JUMP' });
+                            if (msg.userCmd.buttons & (1 << 2)) map.push({ tick: msg.tick, type: 'IN_DUCK' });
+                            if (msg.userCmd.buttons & (1 << 3)) map.push({ tick: msg.tick, type: 'IN_FORWARD' });
+                            if (msg.userCmd.buttons & (1 << 4)) map.push({ tick: msg.tick, type: 'IN_BACK' });
+                            if (msg.userCmd.buttons & (1 << 5)) map.push({ tick: msg.tick, type: 'IN_USE' });
+                            if (msg.userCmd.buttons & (1 << 9)) map.push({ tick: msg.tick, type: 'IN_MOVELEFT' });
+                            if (msg.userCmd.buttons & (1 << 10)) map.push({ tick: msg.tick, type: 'IN_MOVERIGHT' });
+                            if (msg.userCmd.buttons & (1 << 11)) map.push({ tick: msg.tick, type: 'IN_ATTACK2' });
+                            if (msg.userCmd.buttons & (1 << 13)) map.push({ tick: msg.tick, type: 'IN_RELOAD' });
+                            if (msg.userCmd.buttons & (1 << 17)) map.push({ tick: msg.tick, type: 'IN_SPEED' });
                         }
                     });
 
@@ -396,7 +404,7 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`,
                     }
 
                     let input = slotInputs[inputsIndex];
-                    if (input.length > 0) {
+                    if (input && input.length > 0) {
                         let offset = 8 * slot;
 
                         if (input.find((i) => i.type === 'IN_FORWARD') !== undefined) drawButton('W', 2 + offset, 0, buttonSize);
@@ -500,20 +508,20 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`,
                     };
 
                     let header = [
-                        ['Demo File Stamp', demo.header.demoFileStamp],
-                        ['Demo Protocol', demo.header.demoProtocol],
-                        ['Network Protocol', demo.header.networkProtocol],
-                        ['Server Name', demo.header.serverName],
-                        ['Client Name', demo.header.clientName],
-                        ['Map Name', demo.header.mapName],
-                        ['Game Directory', demo.header.gameDirectory],
-                        ['Playback Time', formatTime(demo.header.playbackTime)],
-                        ['Playback Ticks', demo.header.playbackTicks],
-                        ['Playback Frames', demo.header.playbackFrames],
-                        ['Sign On Length', demo.header.signOnLength],
+                        ['Demo File Stamp', demo.demoFileStamp],
+                        ['Demo Protocol', demo.demoProtocol],
+                        ['Network Protocol', demo.networkProtocol],
+                        ['Server Name', demo.serverName],
+                        ['Client Name', demo.clientName],
+                        ['Map Name', demo.mapName],
+                        ['Game Directory', demo.gameDirectory],
+                        ['Playback Time', formatTime(demo.playbackTime)],
+                        ['Playback Ticks', demo.playbackTicks],
+                        ['Playback Frames', demo.playbackFrames],
+                        ['Sign On Length', demo.signOnLength],
                     ];
 
-                    if (demo.adjustment.delta !== 0) {
+                    if (demo.speedrun && demo.speedrun.delta !== 0) {
                         let adjustmentResult = getAdjustmentResult(demo);
                         header[7].push(adjustmentResult.time);
                         header[8].push(adjustmentResult.ticks);
@@ -524,13 +532,13 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`,
                     }
 
                     let commands = [];
-                    let ipt = demo.intervalPerTick();
+                    let ipt = demo.getIntervalPerTick();
                     demo.messages.forEach((msg) => {
-                        if (msg.type === 0x04) {
-                            if (commandsFilter.length !== 0 && commandsFilter.includes(msg.message.command)) {
+                        if (msg.isType('ConsoleCmd')) {
+                            if (commandsFilter.length !== 0 && commandsFilter.includes(msg.command)) {
                                 return;
                             }
-                            commands.push([msg.tick, msg.message.command, formatTime(msg.tick * ipt)]);
+                            commands.push([msg.tick, msg.command, formatTime(msg.tick * ipt)]);
                         }
                     });
 
@@ -596,8 +604,8 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`,
                 }
 
                 for (let demo of demos) {
-                    curTicks += demo.header.playbackTicks;
-                    curTime += demo.header.playbackTime;
+                    curTicks += demo.playbackTicks;
+                    curTime += demo.playbackTime;
 
                     let map = document.createElement('td');
                     map.setAttribute('title', demo.fileInfo.name);
@@ -608,10 +616,10 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`,
                     let totalTime = document.createElement('td');
                     let btnOptions = document.createElement('td');
 
-                    map.innerHTML = demo.header.mapName;
-                    client.innerHTML = demo.header.clientName;
-                    ticks.innerHTML = demo.header.playbackTicks;
-                    time.innerHTML = formatTime(demo.header.playbackTime);
+                    map.innerHTML = demo.mapName;
+                    client.innerHTML = demo.clientName;
+                    ticks.innerHTML = demo.playbackTicks;
+                    time.innerHTML = formatTime(demo.playbackTime);
                     totalTicks.innerHTML = curTicks;
                     totalTime.innerHTML = formatTime(curTime);
                     btnOptions.innerHTML = `
@@ -630,7 +638,7 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`,
                         <i class="material-icons">clear</i>
                     </div>`;
 
-                    if (demo.adjustment.delta !== 0) {
+                    if (demo.speedrun && demo.speedrun.delta !== 0) {
                         let adjustmentResult = getAdjustmentResult(demo);
                         time.setAttribute('title', adjustmentResult.time);
                         ticks.setAttribute('title', adjustmentResult.ticks);
@@ -654,28 +662,32 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`,
                 }
             };
             var parseListFiles = (files) => {
-                let count = 0;
-                let index = demos.length;
-                for (let file of files) {
-                    let fileInfo = {
-                        index: index++,
-                        name: file.name,
-                    };
+                return new Promise((resolve) => {
+                    let count = 0;
+                    let index = demos.length;
 
-                    let reader = new FileReader();
-                    reader.onload = (ev) => {
-                        let demo = tryParseDemo(ev);
-                        if (demo !== null) {
-                            demos.push(demo);
-                        }
+                    for (let file of files) {
+                        let fileInfo = {
+                            index: index++,
+                            name: file.name,
+                        };
 
-                        if (++count === files.length) {
-                            displayList();
-                        }
-                    };
-                    reader.source = fileInfo;
-                    reader.readAsArrayBuffer(file);
-                }
+                        let reader = new FileReader();
+                        reader.onload = (ev) => {
+                            let demo = tryParseDemo(ev);
+                            if (demo !== null) {
+                                demos.push(demo);
+                            }
+
+                            if (++count === files.length) {
+                                displayList();
+                            }
+                        };
+                        reader.source = fileInfo;
+                        reader.readAsArrayBuffer(file);
+                    }
+                    resolve();
+                });
             };
 
             // View Tab
@@ -720,38 +732,32 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`,
                     if (mouseView) {
                         let userCmds = [];
                         try {
-                            userCmds = demoParser
-                                .readUserCmdMessages(demo)
-                                .filter((cmd) => cmd.source.slot === undefined || cmd.source.slot === slot);
+                            demo.readUserCmds();
+                            userCmds = demo.findMessages('UserCmd').filter((msg) => msg.slot === undefined || msg.slot === slot);
                         } catch (error) {
                             console.error(error);
                             return;
                         }
 
                         const mInput = (tick, x, y, z) => ({ tick, x, y, z });
-                        let last = mInput(0, 0, 0, 0);
+                        let lastInput = mInput(0, 0, 0, 0);
                         userCmds
-                            .filter((x) => x.mouseDx || x.mouseDy)
-                            .map((x) => mInput(x.tickCount, x.mouseDx, x.mouseDy, 0))
-                            .forEach((x) => {
-                                view.x.push(last.x + x.x);
-                                view.z.push(last.y + x.y);
-                                view.y.push(x.tick);
-                                last = x;
-                                view.text.push(`Tick ${last.tick} (${last.x}|${last.y})`);
+                            .filter(({ userCmd }) => userCmd.mouseDx || userCmd.mouseDy)
+                            .map(({ userCmd }) => mInput(userCmd.tickCount, userCmd.mouseDx, userCmd.mouseDy, 0))
+                            .forEach((input) => {
+                                view.x.push(lastInput.x + input.x);
+                                view.z.push(lastInput.y + input.y);
+                                view.y.push(input.tick);
+                                lastInput = input;
+                                view.text.push(`Tick ${lastInput.tick} (${lastInput.x}|${lastInput.y})`);
                             });
                     } else {
-                        demo.messages.forEach((msg) => {
-                            if (
-                                msg.type === 0x02 &&
-                                msg.message.packetInfo[slot].viewOrigin[0].x !== 0 &&
-                                msg.message.packetInfo[slot].viewOrigin[0].y !== 0 &&
-                                msg.message.packetInfo[slot].viewOrigin[0].z !== 0
-                            ) {
-                                view.x.push(msg.message.packetInfo[slot].viewOrigin[0].x);
-                                view.y.push(msg.message.packetInfo[slot].viewOrigin[0].y);
-                                view.z.push(msg.message.packetInfo[slot].viewOrigin[0].z);
-                                view.text.push(`Tick ${msg.tick}`);
+                        demo.findMessages('Packet').forEach(({ tick, cmdInfo }) => {
+                            if (cmdInfo[slot].viewOrigin.x !== 0 && cmdInfo[slot].viewOrigin.y !== 0 && cmdInfo[slot].viewOrigin.z !== 0) {
+                                view.x.push(cmdInfo[slot].viewOrigin.x);
+                                view.y.push(cmdInfo[slot].viewOrigin.y);
+                                view.z.push(cmdInfo[slot].viewOrigin.z);
+                                view.text.push(`Tick ${tick}`);
                             }
                         });
                     }
@@ -845,92 +851,6 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`,
                 return `${Math.floor(sec)}.${ms}`;
             };
 
-            // Unused extensions
-            // Rebase from tick 14: [13, 14, 15] -> [0, 0, 1]
-            sdp.SourceDemo.prototype.rebaseFrom = function(tick) {
-                if (this.messages.length === 0) {
-                    throw new Error('Cannot adjust ticks without parsed messages.');
-                }
-
-                let synced = false;
-                let last = 0;
-                for (let message of this.messages) {
-                    if (message.tick === tick) {
-                        synced = true;
-                    }
-
-                    if (!synced) {
-                        message.tick = 0;
-                    } else if (message.tick < 0) {
-                        message.tick = last;
-                    } else {
-                        message.tick -= tick;
-                    }
-
-                    last = message.tick;
-                }
-            };
-            // Get potential overlapping ticks between two demos
-            sdp.SourceDemo.prototype.getSyncedTicks = function(demo, viewTolerance = 1, splitScreenIndex = 0) {
-                if (this.messages.length === 0 || demo.messages.length === 0) {
-                    throw new Error('Cannot adjust ticks without parsed messages.');
-                }
-
-                let syncedTicks = [];
-                for (let message of this.messages) {
-                    if (message.type === 0x02) {
-                        let view = message.message.packetInfo[splitScreenIndex].viewOrigin[0];
-                        let result = demo.messages.find((msg) => {
-                            if (msg.type !== 0x02) {
-                                return false;
-                            }
-                            let match = msg.message.packetInfo[splitScreenIndex].viewOrigin[0];
-                            return (
-                                Math.abs(match.x - view.x) <= viewTolerance &&
-                                Math.abs(match.y - view.y) <= viewTolerance &&
-                                Math.abs(match.z - view.z) <= viewTolerance
-                            );
-                        });
-                        if (result !== undefined) {
-                            syncedTicks.push({
-                                source: message.tick,
-                                destination: result.tick,
-                                delta: Math.abs(message.tick - result.tick),
-                                x: message.message.packetInfo[splitScreenIndex].viewOrigin[0].x,
-                                y: message.message.packetInfo[splitScreenIndex].viewOrigin[0].y,
-                                z: message.message.packetInfo[splitScreenIndex].viewOrigin[0].z,
-                            });
-                        }
-                    }
-                }
-
-                return syncedTicks;
-            };
-            // Calculate ticks for SAR runs
-            sdp.SourceDemo.prototype.findSourceAutoRecordTiming = function() {
-                if (this.messages.length === 0) {
-                    throw new Error('Cannot adjust ticks without parsed messages.');
-                }
-
-                let SAR = [];
-                for (let message of this.messages) {
-                    if (message.type === 0x04) {
-                        if (message.message.command === 'sar_timer_start') {
-                            SAR.push({ tick: message.tick, type: 'start' });
-                        } else if (message.message.command === 'sar_timer_stop') {
-                            SAR.push({ tick: message.tick, type: 'stop' });
-                        }
-                    }
-                }
-
-                let start = SAR.reverse().find((x) => x.type === 'start');
-                let end = SAR.find((x) => x.type === 'stop');
-
-                return start !== undefined && end !== undefined
-                    ? { startTick: start.tick, endTick: end.tick, delta: end.tick - start.tick }
-                    : undefined;
-            };
-
             // Event Listeners
             document.getElementById('add-info').addEventListener('change', (ev) => {
                 let file = ev.target.files[0];
@@ -948,12 +868,12 @@ SAR: ${formatTime(demo.sar.delta * demo.intervalPerTick())}`,
                 window.scrollTo(0, 0);
                 displayViewPlot();
             });
-            document.getElementById('add-list-item').addEventListener('change', (ev) => {
+            document.getElementById('add-list-item').addEventListener('change', async (ev) => {
                 let files = ev.target.files;
                 if (files.length === 0) {
                     return;
                 }
-                parseListFiles(files);
+                await parseListFiles(files);
             });
             document.getElementById('clear-list').addEventListener('click', () => {
                 demos = [];

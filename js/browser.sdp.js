@@ -1,1037 +1,4 @@
-(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-    window.Buffer = require('buffer').Buffer;
-    window.sdp = require('./sdp');
-    
-    },{"./sdp":20,"buffer":16}],2:[function(require,module,exports){
-    class SourceDemo {
-        constructor() {
-            this.header = undefined;
-            this.messages = undefined;
-            this.game = undefined;
-        }
-        detectGame(sourceGame) {
-            this.game = sourceGame.gameList.find((game) => game.directory === this.header.gameDirectory);
-            if (this.game != undefined) {
-                this.game.source = sourceGame;
-            }
-            return this;
-        }
-        intervalPerTick() {
-            if (this.header.playbackTicks === 0) {
-                if (this.game != undefined) {
-                    return 1 / this.game.tickrate;
-                }
-                throw new Error('Cannot find ipt of null tick demo.');
-            }
-            return this.header.playbackTime / this.header.playbackTicks;
-        }
-        tickrate() {
-            if (this.header.playbackTime === 0) {
-                if (this.game != undefined) {
-                    return this.game.tickrate;
-                }
-                throw new Error('Cannot find tickrate of null tick demo.');
-            }
-            return this.header.playbackTicks / this.header.playbackTime;
-        }
-        adjustTicks() {
-            if (this.messages.length === 0) {
-                throw new Error('Cannot adjust ticks without parsed messages.');
-            }
-    
-            let synced = false;
-            let last = 0;
-            for (let message of this.messages) {
-                if (message.type === 0x03) {
-                    synced = true;
-                }
-    
-                if (!synced) {
-                    message.tick = 0;
-                } else if (message.tick < 0) {
-                    message.tick = last;
-                }
-                last = message.tick;
-            }
-    
-            return this;
-        }
-        adjustRange(endTick = 0, startTick = 0) {
-            if (this.messages.length === 0) {
-                throw new Error('Cannot adjust range without parsed messages.');
-            }
-    
-            if (endTick < 1) {
-                endTick = this.messages[this.messages.length - 1].tick;
-            }
-    
-            let delta = endTick - startTick;
-            if (delta < 0) {
-                throw new Error('Start tick is greater than end tick.');
-            }
-    
-            let ipt = this.intervalPerTick();
-            this.header.playbackTicks = delta;
-            this.header.playbackTime = ipt * delta;
-    
-            return this;
-        }
-        adjust(splitScreenIndex = 0) {
-            this.adjustTicks();
-            this.adjustRange();
-            return this.game != undefined ? this.game.source.adjustByRules(this, splitScreenIndex) : this;
-        }
-    }
-    
-    module.exports = { SourceDemo };
-    
-    },{}],3:[function(require,module,exports){
-    const SendPropType = {
-        Int: 0,
-        Float: 1,
-        Vector: 2,
-        VectorXy: 3,
-        String: 4,
-        Array: 5,
-        DataTable: 6,
-        Int64: 7,
-    };
-    
-    const SendPropFlags = {
-        Unsigned: 1 << 0,
-        Coord: 1 << 1,
-        Noscale: 1 << 2,
-        Rounddown: 1 << 3,
-        Roundup: 1 << 4,
-        Normal: 1 << 5,
-        Exclude: 1 << 6,
-        Xyze: 1 << 7,
-        InsideArray: 1 << 8,
-        ProxyAlwaysYes: 1 << 9,
-        IsAVectorElem: 1 << 10,
-        Collapsible: 1 << 11,
-        CoordMp: 1 << 12,
-        CoordMpLowPrecision: 1 << 13,
-        CoordMpIntegral: 1 << 14,
-        CellCoord: 1 << 15,
-        CellCoordLowPrecision: 1 << 16,
-        CellCoordIntegral: 1 << 17,
-        ChangesOften: 1 << 18,
-        VarInt: 1 << 19,
-    };
-    
-    module.exports = {
-        SendPropType,
-        SendPropFlags,
-    };
-    
-    },{}],4:[function(require,module,exports){
-    class NetMessage {
-        constructor(type) {
-            Object.defineProperty(this, '_type', {
-                enumerable: false,
-                value: type,
-            });
-        }
-        get type() {
-            return this._type;
-        }
-        get name() {
-            return this.constructor.name;
-        }
-        read() {
-            throw new Error(`read() for ${this.name} not implemented!`);
-        }
-        write() {
-            throw new Error(`write() for ${this.name} not implemented!`);
-        }
-    }
-    
-    class NetNop extends NetMessage {
-        read() {}
-    }
-    class NetDisconnect extends NetMessage {
-        read(buf) {
-            this.text = buf.readASCIIString();
-        }
-    }
-    class NetFile extends NetMessage {
-        read(buf) {
-            this.transferId = buf.readUint32();
-            this.fileName = buf.readASCIIString();
-            this.fileRequested = buf.readBoolean();
-        }
-    }
-    class NetSplitScreenUser extends NetMessage {
-        read(buf) {
-            this.unk = buf.readBoolean();
-        }
-    }
-    class NetTick extends NetMessage {
-        read(buf) {
-            const NET_TICK_SCALEUP = 100000;
-            this.tick = buf.readInt32();
-            this.hostFrameTime = buf.readInt16() / NET_TICK_SCALEUP;
-            this.hostFrameTimeStdDeviation = buf.readInt16() / NET_TICK_SCALEUP;
-        }
-    }
-    class NetStringCmd extends NetMessage {
-        read(buf) {
-            this.command = buf.readASCIIString();
-        }
-    }
-    class NetSetConVar extends NetMessage {
-        read(buf) {
-            this.conVars = [];
-            let length = buf.readInt8();
-            while (length--) {
-                this.conVars.push({
-                    name: buf.readASCIIString(),
-                    value: buf.readASCIIString(),
-                });
-            }
-        }
-    }
-    class NetSignonState extends NetMessage {
-        read(buf, demo) {
-            this.signonState = buf.readInt8();
-            this.spawnCount = buf.readInt32();
-            if (demo.header.demoProtocol === 4) {
-                this.unk1 = buf.readInt32();
-                this.unk2 = buf.readInt32();
-                if (this.unk2 > 0) {
-                    this.unk2Buffer = buf.readArrayBuffer(this.unk2);
-                }
-                this.unk3 = buf.readInt32();
-                if (this.unk3 > 0) {
-                    this.unk3Buffer = buf.readArrayBuffer(this.unk3);
-                }
-            }
-        }
-    }
-    class SvcServerInfo extends NetMessage {
-        read(buf, demo) {
-            this.protocol = buf.readInt16();
-            this.serverCount = buf.readInt32();
-            this.isHltv = buf.readBoolean();
-            this.isDedicated = buf.readBoolean();
-            this.clientCrc = buf.readInt32();
-            this.maxClasses = buf.readUint16();
-            this.mapCrc = buf.readInt32();
-            this.playerSlot = buf.readInt8();
-            this.maxClients = buf.readInt8();
-            if (demo.header.demoProtocol === 4) {
-                this.unk = buf.readInt32();
-            } else if (demo.header.networkProtocol === 24) {
-                this.unk = buf.readBits(96);
-            }
-            this.tickInterval = buf.readFloat32();
-            this.operatingSystem = String.fromCharCode(buf.readInt8());
-            this.gameDir = buf.readASCIIString();
-            this.mapName = buf.readASCIIString();
-            this.mapName = buf.readASCIIString();
-            this.hostName = buf.readASCIIString();
-        }
-    }
-    class SvcSendTable extends NetMessage {
-        read(buf) {
-            this.needsDecoder = buf.readBoolean();
-            this.length = buf.readInt16();
-            this.data = buf.readBits(this.data);
-        }
-    }
-    class SvcClassInfo extends NetMessage {
-        read(buf) {
-            this.length = buf.readInt16();
-            this.createOnClient = buf.readBoolean();
-            if (!this.createOnClient) {
-                this.serverClasses = [];
-                while (this.length-- > 0) {
-                    this.serverClasses.push({
-                        classId: buf.readBits(Math.log2(this.length, 2) + 1),
-                        className: buf.readASCIIString(),
-                        dataTableName: buf.readASCIIString(),
-                    });
-                }
-            }
-        }
-    }
-    class SvcSetPause extends NetMessage {
-        read(buf) {
-            this.paused = buf.readBoolean();
-        }
-    }
-    class SvcCreateStringTable extends NetMessage {
-        read(buf, demo) {
-            this.tableName = buf.readASCIIString();
-            this.maxEntries = buf.readInt16();
-            this.entries = buf.readBits(Math.log2(this.maxEntries) + 1);
-            this.length = buf.readBits(20);
-            this.userDataFixedSize = buf.readBoolean();
-            this.userDataSize = this.userDataFixedSize ? buf.readBits(12) : 0;
-            this.userDataSizeBits = this.userDataFixedSize ? buf.readBits(4) : 0;
-            this.unk = buf.readBits(demo.header.demoProtocol === 4 ? 2 : 1);
-            this.data = buf.readBits(this.length);
-        }
-    }
-    class SvcUpdateStringTable extends NetMessage {
-        read(buf) {
-            this.id = buf.readBits(5);
-            this.entriesChanged = buf.readBoolean();
-            this.changedEntries = this.entriesChanged ? buf.readInt16() : 1;
-            this.length = buf.readBits(20, false);
-            this.data = buf.readBits(this.length);
-        }
-    }
-    class SvcVoiceInit extends NetMessage {
-        read(buf) {
-            this.voiceCodec = buf.readASCIIString();
-            this.quality = buf.readInt8();
-            if (this.quality === 255) this.unk = buf.readFloat32();
-        }
-    }
-    class SvcVoiceData extends NetMessage {
-        read(buf) {
-            this.fromClient = buf.readInt8();
-            this.proximity = buf.readInt8();
-            this.length = buf.readUint16();
-            this.data = buf.readBits(this.length);
-        }
-    }
-    class SvcPrint extends NetMessage {
-        read(buf) {
-            this.message = buf.readASCIIString();
-        }
-    }
-    class SvcSounds extends NetMessage {
-        read(buf) {
-            this.reliableSound = buf.readBoolean();
-            this.sounds = this.reliableSound ? 1 : buf.readBits(8);
-            this.length = this.reliableSound ? buf.readBits(8) : buf.readBits(16);
-            this.data = buf.readBits(this.length);
-        }
-    }
-    class SvcSetView extends NetMessage {
-        read(buf) {
-            this.entityIndex = buf.readBits(11);
-        }
-    }
-    class SvcFixAngle extends NetMessage {
-        read(buf) {
-            this.relative = buf.readBoolean();
-            this.angle = [buf.readInt16(), buf.readInt16(), buf.readInt16()];
-        }
-    }
-    class SvcCrosshairAngle extends NetMessage {
-        read(buf) {
-            this.angle = [buf.readInt16(), buf.readInt16(), buf.readInt16()];
-        }
-    }
-    class SvcBspDecal extends NetMessage {
-        read(buf) {
-            const readBitVec3Coord = (buf) => {
-                const readBitCoord = (buf) => {
-                    const COORD_INTEGER_BITS = 14;
-                    const COORD_FRACTIONAL_BITS = 5;
-                    const COORD_DENOMINATOR = 1 << COORD_FRACTIONAL_BITS;
-                    const COORD_RESOLUTION = 1.0 / COORD_DENOMINATOR;
-    
-                    let value = 0.0;
-                    let intval = buf.readBits(1);
-                    let fractval = buf.readBits(1);
-                    if (intval || fractval) {
-                        let signbit = buf.readBits(1);
-                        if (intval) {
-                            intval = buf.readBits(COORD_INTEGER_BITS) + 1;
-                        }
-                        if (fractval) {
-                            fractval = buf.readBits(COORD_FRACTIONAL_BITS);
-                        }
-                        value = intval + fractval * COORD_RESOLUTION;
-                        if (signbit) value = -value;
-                    }
-                    return value;
-                };
-    
-                let [x, y, z] = [buf.readBoolean(), buf.readBoolean(), buf.readBoolean()];
-                return [x ? readBitCoord(buf) : 0, y ? readBitCoord(buf) : 0, z ? readBitCoord(buf) : 0];
-            };
-    
-            this.position = readBitVec3Coord(buf);
-            this.decalTextureIndex = buf.readBits(9);
-            this.hasEntities = buf.readBoolean();
-            this.entityIndex = this.hasEntities ? buf.readBits(11) : 0;
-            this.modelIndex = this.hasEntities ? buf.readBits(11) : 0;
-            this.lowPriority = buf.readBoolean();
-        }
-    }
-    class SvcSplitScreen extends NetMessage {
-        read(buf) {
-            this.unk = buf.readBits(1);
-            this.length = buf.readBits(11);
-            this.data = buf.readBits(this.length);
-        }
-    }
-    class SvcUserMessage extends NetMessage {
-        read(buf, demo) {
-            this.umType = buf.readBits(8);
-            this.length = buf.readBits(demo.header.demoProtocol === 4 ? 12 : 11);
-            this.data = buf.readBits(this.length);
-        }
-    }
-    class SvcEntityMessage extends NetMessage {
-        read(buf) {
-            this.entityIndex = buf.readBits(11);
-            this.classId = buf.readBits(9);
-            this.length = buf.readBits(11);
-            buf.readBits(this.length);
-        }
-    }
-    class SvcGameEvent extends NetMessage {
-        read(buf) {
-            this.length = buf.readBits(11);
-            this.data = buf.readBits(this.length);
-        }
-    }
-    class SvcPacketEntities extends NetMessage {
-        read(buf) {
-            this.maxEntries = buf.readBits(11);
-            this.isDelta = buf.readBoolean();
-            this.deltaFrom = this.isDelta ? buf.readInt32() : 0;
-            this.baseLine = buf.readBoolean();
-            this.updatedEntries = buf.readBits(11);
-            this.length = buf.readBits(20);
-            this.updateBaseline = buf.readBoolean();
-            this.data = buf.readBits(this.length);
-        }
-    }
-    class SvcTempEntities extends NetMessage {
-        read(buf) {
-            this.entries = buf.readBits(8);
-            this.length = buf.readBits(17);
-            this.data = buf.readBits(this.length);
-        }
-    }
-    class SvcPrefetch extends NetMessage {
-        read(buf) {
-            this.soundIndex = buf.readBits(13);
-        }
-    }
-    class SvcMenu extends NetMessage {
-        read(buf) {
-            this.menuType = buf.readint16();
-            this.length = buf.readUint32();
-            this.data = buf.readBits(this.length);
-        }
-    }
-    class SvcGameEventList extends NetMessage {
-        read(buf) {
-            this.events = buf.readBits(9);
-            this.length = buf.readBits(20);
-            this.data = buf.readBits(this.length);
-        }
-    }
-    class SvcGetCvarValue extends NetMessage {
-        read(buf) {
-            this.cookie = buf.readInt32();
-            this.cvarName = buf.readASCIIString();
-        }
-    }
-    class SvcCmdKeyValues extends NetMessage {
-        read(buf) {
-            this.length = buf.readUint32();
-            this.buffer = buf.readArrayBuffer(this.length);
-        }
-    }
-    class SvcPaintMapData extends NetMessage {
-        read(buf) {
-            this.length = buf.readInt32();
-            this.data = buf.readBits(this.length);
-        }
-    }
-    
-    module.exports = {
-        Portal2Engine: [
-            NetNop, // 0
-            NetDisconnect, // 1
-            NetFile, // 2
-            NetSplitScreenUser, // 3
-            NetTick, // 4
-            NetStringCmd, // 5
-            NetSetConVar, // 6
-            NetSignonState, // 7
-            SvcServerInfo, // 8
-            SvcSendTable, // 9
-            SvcClassInfo, // 10
-            SvcSetPause, // 11
-            SvcCreateStringTable, // 12
-            SvcUpdateStringTable, // 13
-            SvcVoiceInit, // 14
-            SvcVoiceData, // 15
-            SvcPrint, // 16
-            SvcSounds, // 17
-            SvcSetView, // 18
-            SvcFixAngle, // 19
-            SvcCrosshairAngle, // 20
-            SvcBspDecal, // 21
-            SvcSplitScreen, // 22
-            SvcUserMessage, // 23
-            SvcEntityMessage, // 24
-            SvcGameEvent, // 25
-            SvcPacketEntities, // 26
-            SvcTempEntities, // 27
-            SvcPrefetch, // 28
-            SvcMenu, // 29
-            SvcGameEventList, // 30
-            SvcGetCvarValue, // 31
-            SvcCmdKeyValues, // 32
-            SvcPaintMapData, // 33
-        ],
-        HalfLife2Engine: [
-            NetNop,
-            NetDisconnect,
-            NetFile,
-            NetTick,
-            NetStringCmd,
-            NetSetConVar,
-            NetSignonState,
-            SvcPrint,
-            SvcServerInfo,
-            SvcSendTable,
-            SvcClassInfo,
-            SvcSetPause,
-            SvcCreateStringTable,
-            SvcUpdateStringTable,
-            SvcVoiceInit,
-            SvcVoiceData,
-            undefined,
-            SvcSounds,
-            SvcSetView,
-            SvcFixAngle,
-            SvcCrosshairAngle,
-            SvcBspDecal,
-            undefined,
-            SvcUserMessage,
-            SvcEntityMessage,
-            SvcGameEvent,
-            SvcPacketEntities,
-            SvcTempEntities,
-            SvcPrefetch,
-            SvcMenu,
-            SvcGameEventList,
-            SvcGetCvarValue,
-            SvcCmdKeyValues,
-        ],
-    };
-    
-    },{}],5:[function(require,module,exports){
-    (function (Buffer){
-    const { BitStream } = require('bit-buffer');
-    
-    const decodeString = (bytes, trim = true) => {
-        if (trim) bytes = bytes.slice(0, bytes.indexOf(0x00));
-        return String.fromCharCode.apply(null, bytes);
-    };
-    
-    class PlayerInfo {
-        static create() {
-            return new PlayerInfo();
-        }
-        read(data, demo) {
-            let buf = new BitStream(Buffer.from(data));
-    
-            if (demo.header.demoProtocol === 4) {
-                let isCsgo = demo.header.gameDirectory === 'csgo';
-                this.version = isCsgo ? buf.readBits(64) : buf.readInt32();
-                this.xuid = isCsgo ? buf.readBits(64) : buf.readInt32();
-            }
-    
-            // player_info_s
-            this.name = decodeString(buf.readArrayBuffer(32)); // MAX_PLAYER_NAME_LENGTH
-            this.userId = buf.readInt32();
-            this.guid = decodeString(buf.readArrayBuffer(33)); // SIGNED_GUID_LEN + 1
-            this.friendsId = buf.readInt32();
-            this.friendsName = decodeString(buf.readArrayBuffer(32)); // MAX_PLAYER_NAME_LENGTH
-            this.fakePlayer = buf.readBoolean();
-            this.isHltv = buf.readBoolean();
-            this.customFiles = [buf.readInt32(), buf.readInt32(), buf.readInt32(), buf.readInt32()];
-            this.filesDownloaded = buf.readInt32();
-        }
-    }
-    
-    module.exports = { userinfo: PlayerInfo };
-    
-    }).call(this,require("buffer").Buffer)
-    },{"bit-buffer":15,"buffer":16}],6:[function(require,module,exports){
-    (function (Buffer){
-    const { SourceDemoParser } = require('../parser');
-    
-    class BinaryBuffer {
-        constructor(size) {
-            this.buffer = Buffer.alloc(size);
-        }
-        writeInt8(value) {
-            let data = Buffer.alloc(1);
-            data.writeInt8(value, 0);
-            this.buffer = Buffer.concat([this.buffer, data]);
-        }
-        writeInt16(value) {
-            let data = Buffer.alloc(2);
-            data.writeInt16LE(value, 0);
-            this.buffer = Buffer.concat([this.buffer, data]);
-        }
-        writeInt32(value) {
-            let data = Buffer.alloc(4);
-            data.writeInt32LE(value, 0);
-            this.buffer = Buffer.concat([this.buffer, data]);
-        }
-        writeFloat(value) {
-            let data = Buffer.alloc(4);
-            data.writeFloatLE(value, 0);
-            this.buffer = Buffer.concat([this.buffer, data]);
-        }
-        writeString(value) {
-            let data = Buffer.alloc(value.length);
-            data.write(value, 0);
-            this.buffer = Buffer.concat([this.buffer, data]);
-        }
-    }
-    
-    class SourceAutoRecord {
-        static convertToReplay(demos) {
-            const bb = new BinaryBuffer(0);
-    
-            bb.writeString('sar-tas-replay v1.8\n');
-            bb.writeInt32(demos.length);
-    
-            let parser = new SourceDemoParser();
-    
-            for (let demo of demos) {
-                let messages = parser.readUserCmdMessages(demo);
-                for (let message of messages) {
-                    bb.writeInt32(message.buttons || 0);
-                    bb.writeFloat(message.forwardMove || 0);
-                    bb.writeInt8(message.impulse || 0);
-                    bb.writeInt16(message.mouseDx || 0);
-                    bb.writeInt16(message.mouseDy || 0);
-                    bb.writeFloat(message.sideMove || 0);
-                    bb.writeFloat(message.upMove || 0);
-                    bb.writeFloat(message.viewAngleX || 0);
-                    bb.writeFloat(message.viewAngleY || 0);
-                    bb.writeFloat(message.viewAngleZ || 0);
-                }
-            }
-    
-            return bb.buffer;
-        }
-    }
-    
-    module.exports = { SourceAutoRecord };
-    
-    }).call(this,require("buffer").Buffer)
-    },{"../parser":19,"buffer":16}],7:[function(require,module,exports){
-    // prettier-ignore
-    const SourceGames = [
-        require('./games/portal'),
-        require('./games/portal2'),
-        require('./games/mel'),
-        require('./games/tag')
-    ];
-    
-    class SourceGame {
-        constructor() {
-            this.gameList = SourceGames;
-        }
-        static default() {
-            return new SourceGame();
-        }
-        withGameList(gameList) {
-            this.gameList = gameList;
-            return this;
-        }
-        adjustByRules(demo, splitScreenIndex = 0) {
-            if (demo.game != undefined) {
-                let getGameInfo = () => {
-                    let map = new Map();
-    
-                    let packets = demo.messages.filter((msg) => msg.type === 0x02);
-                    let commands = demo.messages.filter((msg) => msg.type === 0x04);
-    
-                    packets.forEach((p) => map.set(p.tick, {}));
-                    commands.forEach((p) => map.set(p.tick, {}));
-    
-                    let oldPosition = { x: 0, y: 0, z: 0 };
-                    let oldCommands = [];
-    
-                    for (let [tick, info] of map) {
-                        if (tick === 0) {
-                            continue;
-                        }
-    
-                        let packet = packets.find((p) => p.tick === tick);
-                        if (packet != undefined) {
-                            let newPosition = packet.message.packetInfo[splitScreenIndex].viewOrigin[0];
-                            if (newPosition != undefined) {
-                                info.position = {
-                                    previous: oldPosition,
-                                    current: (oldPosition = newPosition),
-                                };
-                            }
-                        }
-    
-                        let newCommands = commands.filter((c) => c.tick === tick).map((c) => c.message.command);
-                        if (newCommands.length != 0) {
-                            info.commands = {
-                                previous: oldCommands,
-                                current: (oldCommands = newCommands),
-                            };
-                        }
-                    }
-    
-                    return map;
-                };
-    
-                let checkRules = (rules) => {
-                    if (rules.length === 0) {
-                        return undefined;
-                    }
-    
-                    let gameInfo = getGameInfo();
-    
-                    let matches = [];
-                    for (let [tick, info] of gameInfo) {
-                        for (let rule of rules) {
-                            if (rule.callback(info.position, info.commands) === true) {
-                                matches.push({ rule: rule, tick: tick });
-                            }
-                        }
-                    }
-    
-                    if (matches.length > 0) {
-                        if (matches.length === 1) {
-                            return matches[0].tick + matches[0].rule.offset;
-                        }
-    
-                        let matchTick = matches.map((m) => m.tick).reduce((a, b) => Math.min(a, b));
-                        matches = matches.filter((m) => m.tick === matchTick);
-                        if (matches.length === 1) {
-                            return matches[0].tick + matches[0].rule.offset;
-                        }
-    
-                        let matchOffset =
-                            matches[0].rule.type === 'start'
-                                ? matches.map((m) => m.rule.offset).reduce((a, b) => Math.min(a, b))
-                                : matches.map((m) => m.rule.offset).reduce((a, b) => Math.max(a, b));
-    
-                        matches = matches.filter((m) => m.rule.offset === matchOffset);
-                        if (matches.length === 1) {
-                            return matches[0].tick + matches[0].rule.offset;
-                        }
-    
-                        throw new Error(`Multiple adjustment matches: ${JSON.stringify(matches)}`);
-                    }
-    
-                    return undefined;
-                };
-    
-                let getRules = (type) => {
-                    let candidates = demo.game.rules.filter((rule) => rule.type === type);
-    
-                    let rules = candidates.filter((rule) => {
-                        if (Array.isArray(rule.map)) {
-                            return rule.map.includes(demo.header.mapName);
-                        }
-                        return rule.map === demo.header.mapName;
-                    });
-    
-                    if (rules.length === 0) {
-                        rules = candidates.filter((rule) => rule.map === undefined);
-                    }
-    
-                    return rules;
-                };
-    
-                let startTick = checkRules(getRules('start'));
-                let endTick = checkRules(getRules('end'));
-    
-                if (startTick != undefined && endTick != undefined) {
-                    return demo.adjustRange(endTick, startTick);
-                }
-                if (startTick != undefined) {
-                    return demo.adjustRange(0, startTick);
-                }
-                if (endTick != undefined) {
-                    return demo.adjustRange(endTick, 0);
-                }
-            }
-    
-            return demo;
-        }
-    }
-    
-    module.exports = { SourceGames, SourceGame };
-    
-    },{"./games/mel":8,"./games/portal":9,"./games/portal2":10,"./games/tag":11}],8:[function(require,module,exports){
-    const PortalStoriesMel = {
-        directory: 'portal_stories',
-        tickrate: 60,
-        rules: [
-            {
-                map: ['sp_a1_tramride', 'st_a1_tramride'],
-                offset: 0,
-                type: 'start',
-                callback: (pos, _) => {
-                    if (pos != undefined) {
-                        let startPos = { x: -4592.0, y: -4475.4052734375, z: 108.683975219727 };
-                        return (
-                            pos.previous.x === startPos.x &&
-                            pos.previous.y === startPos.y &&
-                            pos.previous.z === startPos.z &&
-                            pos.current.x != startPos.x &&
-                            pos.current.y != startPos.y &&
-                            pos.current.z != startPos.z
-                        );
-                    }
-                    return false;
-                },
-            },
-            {
-                map: ['sp_a4_finale', 'st_a4_finale'],
-                offset: 0,
-                type: 'end',
-                callback: (_, cmds) => {
-                    if (cmds != undefined) {
-                        let outro = 'playvideo_exitcommand_nointerrupt aegis_interior.bik end_movie movie_aegis_interior';
-                        return cmds.current.includes(outro);
-                    }
-                    return false;
-                },
-            },
-        ],
-    };
-    
-    module.exports = PortalStoriesMel;
-    
-    },{}],9:[function(require,module,exports){
-    const Portal = {
-        directory: 'portal',
-        tickrate: 1 / 0.015,
-        rules: [
-            {
-                map: 'testchmb_a_00',
-                offset: 1,
-                type: 'start',
-                callback: (pos, _) => {
-                    if (pos != undefined) {
-                        let startPos = { x: -544, y: -368.75, z: 160 };
-                        return pos.current.x === startPos.x && pos.current.y === startPos.y && pos.current.z === startPos.z;
-                    }
-                    return false;
-                },
-            },
-            {
-                map: 'escape_02',
-                offset: 1,
-                type: 'end',
-                callback: (_, cmds) => {
-                    if (cmds != undefined) {
-                        return cmds.current.includes('startneurotoxins 99999');
-                    }
-                    return false;
-                },
-            },
-        ],
-    };
-    
-    module.exports = Portal;
-    
-    },{}],10:[function(require,module,exports){
-    const Portal2 = {
-        directory: 'portal2',
-        tickrate: 60,
-        rules: [
-            {
-                map: 'sp_a1_intro1',
-                offset: 1,
-                type: 'start',
-                callback: (pos, _) => {
-                    if (pos != undefined) {
-                        let startPos = { x: -8709.2, y: 1690.07, z: 28.0 };
-                        let tolerance = { x: 0.02, y: 0.02, z: 0.05 };
-                        return (
-                            !(Math.abs(pos.current.x - startPos.x) > tolerance.x) &&
-                            !(Math.abs(pos.current.y - startPos.y) > tolerance.y) &&
-                            !(Math.abs(pos.current.z - startPos.z) > tolerance.z)
-                        );
-                    }
-                    return false;
-                },
-            },
-            {
-                map: 'e1912',
-                offset: -2,
-                type: 'start',
-                callback: (pos, _) => {
-                    if (pos != undefined) {
-                        let startPos = { x: -655.748779296875, y: -918.37353515625, z: -4.96875 };
-                        return (
-                            pos.previous.x === startPos.x &&
-                            pos.previous.y === startPos.y &&
-                            pos.previous.z === startPos.z &&
-                            pos.current.x != startPos.x &&
-                            pos.current.y != startPos.y &&
-                            pos.current.z != startPos.z
-                        );
-                    }
-                    return false;
-                },
-            },
-            {
-                map: undefined,
-                offset: 0,
-                type: 'start',
-                callback: (_, cmds) => {
-                    if (cmds != undefined) {
-                        return cmds.current.includes('dsp_player 0') && cmds.current.includes('ss_force_primary_fullscreen 0');
-                    }
-                    return false;
-                },
-            },
-            {
-                map: 'mp_coop_start',
-                offset: 0,
-                type: 'start',
-                callback: (pos, _) => {
-                    if (pos != undefined) {
-                        let startPosBlue = { x: -9896, y: -4400, z: 3048 };
-                        let startPosOrange = { x: -11168, y: -4384, z: 3040.03125 };
-                        return (
-                            (pos.current.x === startPosBlue.x && pos.current.y === startPosBlue.y && pos.current.z === startPosBlue.z) ||
-                            (pos.current.x === startPosOrange.x && pos.current.y === startPosOrange.y && pos.current.z === startPosOrange.z)
-                        );
-                    }
-                    return false;
-                },
-            },
-            {
-                map: 'sp_a4_finale4',
-                offset: -852,
-                type: 'end',
-                callback: (pos, _) => {
-                    if (pos != undefined) {
-                        let endPos = { x: 54.1, y: 159.2, z: -201.4 };
-                        let a = (pos.current.x - endPos.x) ** 2;
-                        let b = (pos.current.y - endPos.y) ** 2;
-                        let c = 50 ** 2;
-                        return a + b < c && pos.current.z < endPos.z;
-                    }
-                    return false;
-                },
-            },
-            {
-                map: undefined,
-                offset: 0,
-                type: 'end',
-                callback: (_, cmds) => {
-                    if (cmds != undefined) {
-                        return cmds.current.find((cmd) => cmd.startsWith('playvideo_end_level_transition')) != undefined;
-                    }
-                    return false;
-                },
-            },
-            {
-                map: 'mp_coop_paint_longjump_intro',
-                offset: 0,
-                type: 'end',
-                callback: (_, cmds) => {
-                    if (cmds != undefined) {
-                        let outro = 'playvideo_exitcommand_nointerrupt coop_outro end_movie vault-movie_outro';
-                        return cmds.current.includes(outro);
-                    }
-                    return false;
-                },
-            },
-            {
-                map: 'mp_coop_paint_crazy_box',
-                offset: 0,
-                type: 'end',
-                callback: (_, cmds) => {
-                    if (cmds != undefined) {
-                        let outro = 'playvideo_exitcommand_nointerrupt dlc1_endmovie end_movie movie_outro';
-                        return cmds.current.includes(outro);
-                    }
-                    return false;
-                },
-            },
-        ],
-    };
-    
-    module.exports = Portal2;
-    
-    },{}],11:[function(require,module,exports){
-    const ApertureTag = {
-        directory: 'aperturetag',
-        tickrate: 60,
-        rules: [
-            {
-                map: 'gg_intro_wakeup',
-                offset: 0,
-                type: 'start',
-                callback: (pos, _) => {
-                    if (pos != undefined) {
-                        let startPos = { x: -723.0, y: -2481.0, z: 17.0 };
-                        return (
-                            pos.previous.x === startPos.x &&
-                            pos.previous.y === startPos.y &&
-                            pos.previous.z === startPos.z &&
-                            pos.current.x != startPos.x &&
-                            pos.current.y != startPos.y &&
-                            pos.current.z != startPos.z
-                        );
-                    }
-                    return false;
-                },
-            },
-            {
-                map: 'gg_stage_theend',
-                offset: 0,
-                type: 'end',
-                callback: (_, cmds) => {
-                    if (cmds != undefined) {
-                        let outro = 'playvideo_exitcommand_nointerrupt at_credits end_movie credits_video';
-                        return cmds.current.includes(outro);
-                    }
-                    return false;
-                },
-            },
-            {
-                map: undefined,
-                offset: 0,
-                type: 'start',
-                callback: (_, cmds) => {
-                    if (cmds != undefined) {
-                        return cmds.current.includes('dsp_player 0') && cmds.current.includes('ss_force_primary_fullscreen 0');
-                    }
-                    return false;
-                },
-            },
-            {
-                map: undefined,
-                offset: 0,
-                type: 'end',
-                callback: (_, cmds) => {
-                    if (cmds != undefined) {
-                        return cmds.current.find((cmd) => cmd.startsWith('playvideo_end_level_transition')) != undefined;
-                    }
-                    return false;
-                },
-            },
-        ],
-    };
-    
-    module.exports = ApertureTag;
-    
-    },{}],12:[function(require,module,exports){
+require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
     'use strict'
     
     exports.byteLength = byteLength
@@ -1184,892 +151,7 @@
       return parts.join('')
     }
     
-    },{}],13:[function(require,module,exports){
-    //========================================================================================
-    // Globals
-    //========================================================================================
-    var vm = require("vm");
-    
-    var Context = require("./context").Context;
-    
-    var PRIMITIVE_TYPES = {
-      UInt8: 1,
-      UInt16LE: 2,
-      UInt16BE: 2,
-      UInt32LE: 4,
-      UInt32BE: 4,
-      Int8: 1,
-      Int16LE: 2,
-      Int16BE: 2,
-      Int32LE: 4,
-      Int32BE: 4,
-      FloatLE: 4,
-      FloatBE: 4,
-      DoubleLE: 8,
-      DoubleBE: 8
-    };
-    
-    var SPECIAL_TYPES = {
-      String: null,
-      Buffer: null,
-      Array: null,
-      Skip: null,
-      Choice: null,
-      Nest: null,
-      Bit: null
-    };
-    
-    var aliasRegistry = {};
-    var FUNCTION_PREFIX = "___parser_";
-    
-    var BIT_RANGE = [];
-    (function() {
-      var i;
-      for (i = 1; i <= 32; i++) {
-        BIT_RANGE.push(i);
-      }
-    })();
-    
-    // Converts Parser's method names to internal type names
-    var NAME_MAP = {};
-    Object.keys(PRIMITIVE_TYPES)
-      .concat(Object.keys(SPECIAL_TYPES))
-      .forEach(function(type) {
-        NAME_MAP[type.toLowerCase()] = type;
-      });
-    
-    //========================================================================================
-    // class Parser
-    //========================================================================================
-    
-    //----------------------------------------------------------------------------------------
-    // constructor
-    //----------------------------------------------------------------------------------------
-    
-    var Parser = function() {
-      this.varName = "";
-      this.type = "";
-      this.options = {};
-      this.next = null;
-      this.head = null;
-      this.compiled = null;
-      this.endian = "be";
-      this.constructorFn = null;
-      this.alias = null;
-    };
-    
-    //----------------------------------------------------------------------------------------
-    // public methods
-    //----------------------------------------------------------------------------------------
-    
-    Parser.start = function() {
-      return new Parser();
-    };
-    
-    Object.keys(PRIMITIVE_TYPES).forEach(function(type) {
-      Parser.prototype[type.toLowerCase()] = function(varName, options) {
-        return this.setNextParser(type.toLowerCase(), varName, options);
-      };
-    
-      var typeWithoutEndian = type.replace(/BE|LE/, "").toLowerCase();
-      if (!(typeWithoutEndian in Parser.prototype)) {
-        Parser.prototype[typeWithoutEndian] = function(varName, options) {
-          return this[typeWithoutEndian + this.endian](varName, options);
-        };
-      }
-    });
-    
-    BIT_RANGE.forEach(function(i) {
-      Parser.prototype["bit" + i.toString()] = function(varName, options) {
-        if (!options) {
-          options = {};
-        }
-        options.length = i;
-        return this.setNextParser("bit", varName, options);
-      };
-    });
-    
-    Parser.prototype.namely = function(alias) {
-      aliasRegistry[alias] = this;
-      this.alias = alias;
-      return this;
-    };
-    
-    Parser.prototype.skip = function(length, options) {
-      if (options && options.assert) {
-        throw new Error("assert option on skip is not allowed.");
-      }
-    
-      return this.setNextParser("skip", "", { length: length });
-    };
-    
-    Parser.prototype.string = function(varName, options) {
-      if (!options.zeroTerminated && !options.length && !options.greedy) {
-        throw new Error(
-          "Neither length, zeroTerminated, nor greedy is defined for string."
-        );
-      }
-      if ((options.zeroTerminated || options.length) && options.greedy) {
-        throw new Error(
-          "greedy is mutually exclusive with length and zeroTerminated for string."
-        );
-      }
-      if (options.stripNull && !(options.length || options.greedy)) {
-        throw new Error(
-          "Length or greedy must be defined if stripNull is defined."
-        );
-      }
-      options.encoding = options.encoding || "utf8";
-    
-      return this.setNextParser("string", varName, options);
-    };
-    
-    Parser.prototype.buffer = function(varName, options) {
-      if (!options.length && !options.readUntil) {
-        throw new Error("Length nor readUntil is defined in buffer parser");
-      }
-    
-      return this.setNextParser("buffer", varName, options);
-    };
-    
-    Parser.prototype.array = function(varName, options) {
-      if (!options.readUntil && !options.length && !options.lengthInBytes) {
-        throw new Error("Length option of array is not defined.");
-      }
-      if (!options.type) {
-        throw new Error("Type option of array is not defined.");
-      }
-      if (
-        typeof options.type === "string" &&
-        !aliasRegistry[options.type] &&
-        Object.keys(PRIMITIVE_TYPES).indexOf(NAME_MAP[options.type]) < 0
-      ) {
-        throw new Error(
-          'Specified primitive type "' + options.type + '" is not supported.'
-        );
-      }
-    
-      return this.setNextParser("array", varName, options);
-    };
-    
-    Parser.prototype.choice = function(varName, options) {
-      if (arguments.length == 1 && typeof varName === "object") {
-        options = varName;
-        varName = null;
-      }
-    
-      if (!options.tag) {
-        throw new Error("Tag option of array is not defined.");
-      }
-      if (!options.choices) {
-        throw new Error("Choices option of array is not defined.");
-      }
-    
-      Object.keys(options.choices).forEach(function(key) {
-        if (isNaN(parseInt(key, 10))) {
-          throw new Error("Key of choices must be a number.");
-        }
-        if (!options.choices[key]) {
-          throw new Error(
-            "Choice Case " + key + " of " + varName + " is not valid."
-          );
-        }
-    
-        if (
-          typeof options.choices[key] === "string" &&
-          !aliasRegistry[options.choices[key]] &&
-          Object.keys(PRIMITIVE_TYPES).indexOf(NAME_MAP[options.choices[key]]) < 0
-        ) {
-          throw new Error(
-            'Specified primitive type "' +
-              options.choices[key] +
-              '" is not supported.'
-          );
-        }
-      }, this);
-    
-      return this.setNextParser("choice", varName, options);
-    };
-    
-    Parser.prototype.nest = function(varName, options) {
-      if (arguments.length == 1 && typeof varName === "object") {
-        options = varName;
-        varName = null;
-      }
-    
-      if (!options.type) {
-        throw new Error("Type option of nest is not defined.");
-      }
-      if (!(options.type instanceof Parser) && !aliasRegistry[options.type]) {
-        throw new Error("Type option of nest must be a Parser object.");
-      }
-      if (!(options.type instanceof Parser) && !varName) {
-        throw new Error(
-          "options.type must be a object if variable name is omitted."
-        );
-      }
-    
-      return this.setNextParser("nest", varName, options);
-    };
-    
-    Parser.prototype.endianess = function(endianess) {
-      switch (endianess.toLowerCase()) {
-        case "little":
-          this.endian = "le";
-          break;
-        case "big":
-          this.endian = "be";
-          break;
-        default:
-          throw new Error("Invalid endianess: " + endianess);
-      }
-    
-      return this;
-    };
-    
-    Parser.prototype.create = function(constructorFn) {
-      if (!(constructorFn instanceof Function)) {
-        throw new Error("Constructor must be a Function object.");
-      }
-    
-      this.constructorFn = constructorFn;
-    
-      return this;
-    };
-    
-    Parser.prototype.getCode = function() {
-      var ctx = new Context();
-    
-      ctx.pushCode("if (!Buffer.isBuffer(buffer)) {");
-      ctx.generateError('"argument buffer is not a Buffer object"');
-      ctx.pushCode("}");
-    
-      if (!this.alias) {
-        this.addRawCode(ctx);
-      } else {
-        this.addAliasedCode(ctx);
-      }
-    
-      if (this.alias) {
-        ctx.pushCode("return {0}(0).result;", FUNCTION_PREFIX + this.alias);
-      } else {
-        ctx.pushCode("return vars;");
-      }
-    
-      return ctx.code;
-    };
-    
-    Parser.prototype.addRawCode = function(ctx) {
-      ctx.pushCode("var offset = 0;");
-    
-      if (this.constructorFn) {
-        ctx.pushCode("var vars = new constructorFn();");
-      } else {
-        ctx.pushCode("var vars = {};");
-      }
-    
-      this.generate(ctx);
-    
-      this.resolveReferences(ctx);
-    
-      ctx.pushCode("return vars;");
-    };
-    
-    Parser.prototype.addAliasedCode = function(ctx) {
-      ctx.pushCode("function {0}(offset) {", FUNCTION_PREFIX + this.alias);
-    
-      if (this.constructorFn) {
-        ctx.pushCode("var vars = new constructorFn();");
-      } else {
-        ctx.pushCode("var vars = {};");
-      }
-    
-      this.generate(ctx);
-    
-      ctx.markResolved(this.alias);
-      this.resolveReferences(ctx);
-    
-      ctx.pushCode("return { offset: offset, result: vars };");
-      ctx.pushCode("}");
-    
-      return ctx;
-    };
-    
-    Parser.prototype.resolveReferences = function(ctx) {
-      var references = ctx.getUnresolvedReferences();
-      ctx.markRequested(references);
-      references.forEach(function(alias) {
-        var parser = aliasRegistry[alias];
-        parser.addAliasedCode(ctx);
-      });
-    };
-    
-    Parser.prototype.compile = function() {
-      var src = "(function(buffer, constructorFn) { " + this.getCode() + " })";
-      this.compiled = vm.runInThisContext(src);
-    };
-    
-    Parser.prototype.sizeOf = function() {
-      var size = NaN;
-    
-      if (Object.keys(PRIMITIVE_TYPES).indexOf(this.type) >= 0) {
-        size = PRIMITIVE_TYPES[this.type];
-    
-        // if this is a fixed length string
-      } else if (
-        this.type === "String" &&
-        typeof this.options.length === "number"
-      ) {
-        size = this.options.length;
-    
-        // if this is a fixed length buffer
-      } else if (
-        this.type === "Buffer" &&
-        typeof this.options.length === "number"
-      ) {
-        size = this.options.length;
-    
-        // if this is a fixed length array
-      } else if (this.type === "Array" && typeof this.options.length === "number") {
-        var elementSize = NaN;
-        if (typeof this.options.type === "string") {
-          elementSize = PRIMITIVE_TYPES[NAME_MAP[this.options.type]];
-        } else if (this.options.type instanceof Parser) {
-          elementSize = this.options.type.sizeOf();
-        }
-        size = this.options.length * elementSize;
-    
-        // if this a skip
-      } else if (this.type === "Skip") {
-        size = this.options.length;
-    
-        // if this is a nested parser
-      } else if (this.type === "Nest") {
-        size = this.options.type.sizeOf();
-      } else if (!this.type) {
-        size = 0;
-      }
-    
-      if (this.next) {
-        size += this.next.sizeOf();
-      }
-    
-      return size;
-    };
-    
-    // Follow the parser chain till the root and start parsing from there
-    Parser.prototype.parse = function(buffer) {
-      if (!this.compiled) {
-        this.compile();
-      }
-    
-      return this.compiled(buffer, this.constructorFn);
-    };
-    
-    //----------------------------------------------------------------------------------------
-    // private methods
-    //----------------------------------------------------------------------------------------
-    
-    Parser.prototype.setNextParser = function(type, varName, options) {
-      var parser = new Parser();
-    
-      parser.type = NAME_MAP[type];
-      parser.varName = varName;
-      parser.options = options || parser.options;
-      parser.endian = this.endian;
-    
-      if (this.head) {
-        this.head.next = parser;
-      } else {
-        this.next = parser;
-      }
-      this.head = parser;
-    
-      return this;
-    };
-    
-    // Call code generator for this parser
-    Parser.prototype.generate = function(ctx) {
-      if (this.type) {
-        this["generate" + this.type](ctx);
-        this.generateAssert(ctx);
-      }
-    
-      var varName = ctx.generateVariable(this.varName);
-      if (this.options.formatter) {
-        this.generateFormatter(ctx, varName, this.options.formatter);
-      }
-    
-      return this.generateNext(ctx);
-    };
-    
-    Parser.prototype.generateAssert = function(ctx) {
-      if (!this.options.assert) {
-        return;
-      }
-    
-      var varName = ctx.generateVariable(this.varName);
-    
-      switch (typeof this.options.assert) {
-        case "function":
-          ctx.pushCode(
-            "if (!({0}).call(vars, {1})) {",
-            this.options.assert,
-            varName
-          );
-          break;
-        case "number":
-          ctx.pushCode("if ({0} !== {1}) {", this.options.assert, varName);
-          break;
-        case "string":
-          ctx.pushCode('if ("{0}" !== {1}) {', this.options.assert, varName);
-          break;
-        default:
-          throw new Error(
-            "Assert option supports only strings, numbers and assert functions."
-          );
-      }
-      ctx.generateError('"Assert error: {0} is " + {0}', varName);
-      ctx.pushCode("}");
-    };
-    
-    // Recursively call code generators and append results
-    Parser.prototype.generateNext = function(ctx) {
-      if (this.next) {
-        ctx = this.next.generate(ctx);
-      }
-    
-      return ctx;
-    };
-    
-    Object.keys(PRIMITIVE_TYPES).forEach(function(type) {
-      Parser.prototype["generate" + type] = function(ctx) {
-        ctx.pushCode(
-          "{0} = buffer.read{1}(offset);",
-          ctx.generateVariable(this.varName),
-          type
-        );
-        ctx.pushCode("offset += {0};", PRIMITIVE_TYPES[type]);
-      };
-    });
-    
-    Parser.prototype.generateBit = function(ctx) {
-      // TODO find better method to handle nested bit fields
-      var parser = JSON.parse(JSON.stringify(this));
-      parser.varName = ctx.generateVariable(parser.varName);
-      ctx.bitFields.push(parser);
-    
-      if (
-        !this.next ||
-        (this.next && ["Bit", "Nest"].indexOf(this.next.type) < 0)
-      ) {
-        var sum = 0;
-        ctx.bitFields.forEach(function(parser) {
-          sum += parser.options.length;
-        });
-    
-        var val = ctx.generateTmpVariable();
-    
-        if (sum <= 8) {
-          ctx.pushCode("var {0} = buffer.readUInt8(offset);", val);
-          sum = 8;
-        } else if (sum <= 16) {
-          ctx.pushCode("var {0} = buffer.readUInt16BE(offset);", val);
-          sum = 16;
-        } else if (sum <= 24) {
-          var val1 = ctx.generateTmpVariable();
-          var val2 = ctx.generateTmpVariable();
-          ctx.pushCode("var {0} = buffer.readUInt16BE(offset);", val1);
-          ctx.pushCode("var {0} = buffer.readUInt8(offset + 2);", val2);
-          ctx.pushCode("var {2} = ({0} << 8) | {1};", val1, val2, val);
-          sum = 24;
-        } else if (sum <= 32) {
-          ctx.pushCode("var {0} = buffer.readUInt32BE(offset);", val);
-          sum = 32;
-        } else {
-          throw new Error(
-            "Currently, bit field sequence longer than 4-bytes is not supported."
-          );
-        }
-        ctx.pushCode("offset += {0};", sum / 8);
-    
-        var bitOffset = 0;
-        var isBigEndian = this.endian === "be";
-        ctx.bitFields.forEach(function(parser) {
-          ctx.pushCode(
-            "{0} = {1} >> {2} & {3};",
-            parser.varName,
-            val,
-            isBigEndian ? sum - bitOffset - parser.options.length : bitOffset,
-            (1 << parser.options.length) - 1
-          );
-          bitOffset += parser.options.length;
-        });
-    
-        ctx.bitFields = [];
-      }
-    };
-    
-    Parser.prototype.generateSkip = function(ctx) {
-      var length = ctx.generateOption(this.options.length);
-      ctx.pushCode("offset += {0};", length);
-    };
-    
-    Parser.prototype.generateString = function(ctx) {
-      var name = ctx.generateVariable(this.varName);
-      var start = ctx.generateTmpVariable();
-    
-      if (this.options.length && this.options.zeroTerminated) {
-        ctx.pushCode("var {0} = offset;", start);
-        ctx.pushCode(
-          "while(buffer.readUInt8(offset++) !== 0 && offset - {0}  < {1});",
-          start,
-          this.options.length
-        );
-        ctx.pushCode(
-          "{0} = buffer.toString('{1}', {2}, offset - {2} < {3} ? offset - 1 : offset);",
-          name,
-          this.options.encoding,
-          start,
-          this.options.length
-        );
-      } else if (this.options.length) {
-        ctx.pushCode(
-          "{0} = buffer.toString('{1}', offset, offset + {2});",
-          name,
-          this.options.encoding,
-          ctx.generateOption(this.options.length)
-        );
-        ctx.pushCode("offset += {0};", ctx.generateOption(this.options.length));
-      } else if (this.options.zeroTerminated) {
-        ctx.pushCode("var {0} = offset;", start);
-        ctx.pushCode("while(buffer.readUInt8(offset++) !== 0);");
-        ctx.pushCode(
-          "{0} = buffer.toString('{1}', {2}, offset - 1);",
-          name,
-          this.options.encoding,
-          start
-        );
-      } else if (this.options.greedy) {
-        ctx.pushCode("var {0} = offset;", start);
-        ctx.pushCode("while(buffer.length > offset++);");
-        ctx.pushCode(
-          "{0} = buffer.toString('{1}', {2}, offset);",
-          name,
-          this.options.encoding,
-          start
-        );
-      }
-      if (this.options.stripNull) {
-        ctx.pushCode("{0} = {0}.replace(/\\x00+$/g, '')", name);
-      }
-    };
-    
-    Parser.prototype.generateBuffer = function(ctx) {
-      if (this.options.readUntil === "eof") {
-        ctx.pushCode(
-          "{0} = buffer.slice(offset);",
-          ctx.generateVariable(this.varName)
-        );
-      } else {
-        ctx.pushCode(
-          "{0} = buffer.slice(offset, offset + {1});",
-          ctx.generateVariable(this.varName),
-          ctx.generateOption(this.options.length)
-        );
-        ctx.pushCode("offset += {0};", ctx.generateOption(this.options.length));
-      }
-    
-      if (this.options.clone) {
-        ctx.pushCode("{0} = Buffer.from({0});", ctx.generateVariable(this.varName));
-      }
-    };
-    
-    Parser.prototype.generateArray = function(ctx) {
-      var length = ctx.generateOption(this.options.length);
-      var lengthInBytes = ctx.generateOption(this.options.lengthInBytes);
-      var type = this.options.type;
-      var counter = ctx.generateTmpVariable();
-      var lhs = ctx.generateVariable(this.varName);
-      var item = ctx.generateTmpVariable();
-      var key = this.options.key;
-      var isHash = typeof key === "string";
-    
-      if (isHash) {
-        ctx.pushCode("{0} = {};", lhs);
-      } else {
-        ctx.pushCode("{0} = [];", lhs);
-      }
-      if (typeof this.options.readUntil === "function") {
-        ctx.pushCode("do {");
-      } else if (this.options.readUntil === "eof") {
-        ctx.pushCode("for (var {0} = 0; offset < buffer.length; {0}++) {", counter);
-      } else if (lengthInBytes !== undefined) {
-        ctx.pushCode(
-          "for (var {0} = offset; offset - {0} < {1}; ) {",
-          counter,
-          lengthInBytes
-        );
-      } else {
-        ctx.pushCode("for (var {0} = 0; {0} < {1}; {0}++) {", counter, length);
-      }
-    
-      if (typeof type === "string") {
-        if (!aliasRegistry[type]) {
-          ctx.pushCode("var {0} = buffer.read{1}(offset);", item, NAME_MAP[type]);
-          ctx.pushCode("offset += {0};", PRIMITIVE_TYPES[NAME_MAP[type]]);
-        } else {
-          var tempVar = ctx.generateTmpVariable();
-          ctx.pushCode("var {0} = {1}(offset);", tempVar, FUNCTION_PREFIX + type);
-          ctx.pushCode("var {0} = {1}.result; offset = {1}.offset;", item, tempVar);
-          if (type !== this.alias) ctx.addReference(type);
-        }
-      } else if (type instanceof Parser) {
-        ctx.pushCode("var {0} = {};", item);
-    
-        ctx.pushScope(item);
-        type.generate(ctx);
-        ctx.popScope();
-      }
-    
-      if (isHash) {
-        ctx.pushCode("{0}[{2}.{1}] = {2};", lhs, key, item);
-      } else {
-        ctx.pushCode("{0}.push({1});", lhs, item);
-      }
-    
-      ctx.pushCode("}");
-    
-      if (typeof this.options.readUntil === "function") {
-        ctx.pushCode(
-          " while (!({0}).call(this, {1}, buffer.slice(offset)));",
-          this.options.readUntil,
-          item
-        );
-      }
-    };
-    
-    Parser.prototype.generateChoiceCase = function(ctx, varName, type) {
-      if (typeof type === "string") {
-        if (!aliasRegistry[type]) {
-          ctx.pushCode(
-            "{0} = buffer.read{1}(offset);",
-            ctx.generateVariable(this.varName),
-            NAME_MAP[type]
-          );
-          ctx.pushCode("offset += {0};", PRIMITIVE_TYPES[NAME_MAP[type]]);
-        } else {
-          var tempVar = ctx.generateTmpVariable();
-          ctx.pushCode("var {0} = {1}(offset);", tempVar, FUNCTION_PREFIX + type);
-          ctx.pushCode(
-            "{0} = {1}.result; offset = {1}.offset;",
-            ctx.generateVariable(this.varName),
-            tempVar
-          );
-          if (type !== this.alias) ctx.addReference(type);
-        }
-      } else if (type instanceof Parser) {
-        ctx.pushPath(varName);
-        type.generate(ctx);
-        ctx.popPath(varName);
-      }
-    };
-    
-    Parser.prototype.generateChoice = function(ctx) {
-      var tag = ctx.generateOption(this.options.tag);
-      if (this.varName) {
-        ctx.pushCode("{0} = {};", ctx.generateVariable(this.varName));
-      }
-      ctx.pushCode("switch({0}) {", tag);
-      Object.keys(this.options.choices).forEach(function(tag) {
-        var type = this.options.choices[tag];
-    
-        ctx.pushCode("case {0}:", tag);
-        this.generateChoiceCase(ctx, this.varName, type);
-        ctx.pushCode("break;");
-      }, this);
-      ctx.pushCode("default:");
-      if (this.options.defaultChoice) {
-        this.generateChoiceCase(ctx, this.varName, this.options.defaultChoice);
-      } else {
-        ctx.generateError('"Met undefined tag value " + {0} + " at choice"', tag);
-      }
-      ctx.pushCode("}");
-    };
-    
-    Parser.prototype.generateNest = function(ctx) {
-      var nestVar = ctx.generateVariable(this.varName);
-    
-      if (this.options.type instanceof Parser) {
-        if (this.varName) {
-          ctx.pushCode("{0} = {};", nestVar);
-        }
-        ctx.pushPath(this.varName);
-        this.options.type.generate(ctx);
-        ctx.popPath(this.varName);
-      } else if (aliasRegistry[this.options.type]) {
-        var tempVar = ctx.generateTmpVariable();
-        ctx.pushCode(
-          "var {0} = {1}(offset);",
-          tempVar,
-          FUNCTION_PREFIX + this.options.type
-        );
-        ctx.pushCode("{0} = {1}.result; offset = {1}.offset;", nestVar, tempVar);
-        if (this.options.type !== this.alias) ctx.addReference(this.options.type);
-      }
-    };
-    
-    Parser.prototype.generateFormatter = function(ctx, varName, formatter) {
-      if (typeof formatter === "function") {
-        ctx.pushCode("{0} = ({1}).call(this, {0});", varName, formatter);
-      }
-    };
-    
-    Parser.prototype.isInteger = function() {
-      return !!this.type.match(/U?Int[8|16|32][BE|LE]?|Bit\d+/);
-    };
-    
-    //========================================================================================
-    // Exports
-    //========================================================================================
-    
-    exports.Parser = Parser;
-    
-    },{"./context":14,"vm":18}],14:[function(require,module,exports){
-    //========================================================================================
-    // class Context
-    //========================================================================================
-    
-    //----------------------------------------------------------------------------------------
-    // constructor
-    //----------------------------------------------------------------------------------------
-    
-    var Context = function() {
-      this.code = "";
-      this.scopes = [["vars"]];
-      this.isAsync = false;
-      this.bitFields = [];
-      this.tmpVariableCount = 0;
-      this.references = {};
-    };
-    
-    //----------------------------------------------------------------------------------------
-    // public methods
-    //----------------------------------------------------------------------------------------
-    
-    Context.prototype.generateVariable = function(name) {
-      var arr = [];
-    
-      Array.prototype.push.apply(arr, this.scopes[this.scopes.length - 1]);
-      if (name) {
-        arr.push(name);
-      }
-    
-      return arr.join(".");
-    };
-    
-    Context.prototype.generateOption = function(val) {
-      switch (typeof val) {
-        case "number":
-          return val.toString();
-        case "string":
-          return this.generateVariable(val);
-        case "function":
-          return "(" + val + ").call(" + this.generateVariable() + ", vars)";
-      }
-    };
-    
-    Context.prototype.generateError = function() {
-      var args = Array.prototype.slice.call(arguments);
-      var err = Context.interpolate.apply(this, args);
-    
-      if (this.isAsync) {
-        this.pushCode(
-          "return process.nextTick(function() { callback(new Error(" +
-            err +
-            "), vars); });"
-        );
-      } else {
-        this.pushCode("throw new Error(" + err + ");");
-      }
-    };
-    
-    Context.prototype.generateTmpVariable = function() {
-      return "$tmp" + this.tmpVariableCount++;
-    };
-    
-    Context.prototype.pushCode = function() {
-      var args = Array.prototype.slice.call(arguments);
-    
-      this.code += Context.interpolate.apply(this, args) + "\n";
-    };
-    
-    Context.prototype.pushPath = function(name) {
-      if (name) {
-        this.scopes[this.scopes.length - 1].push(name);
-      }
-    };
-    
-    Context.prototype.popPath = function(name) {
-      if (name) {
-        this.scopes[this.scopes.length - 1].pop();
-      }
-    };
-    
-    Context.prototype.pushScope = function(name) {
-      this.scopes.push([name]);
-    };
-    
-    Context.prototype.popScope = function() {
-      this.scopes.pop();
-    };
-    
-    Context.prototype.addReference = function(alias) {
-      if (this.references[alias]) return;
-      this.references[alias] = { resolved: false, requested: false };
-    };
-    
-    Context.prototype.markResolved = function(alias) {
-      this.references[alias].resolved = true;
-    };
-    
-    Context.prototype.markRequested = function(aliasList) {
-      aliasList.forEach(
-        function(alias) {
-          this.references[alias].requested = true;
-        }.bind(this)
-      );
-    };
-    
-    Context.prototype.getUnresolvedReferences = function() {
-      var references = this.references;
-      return Object.keys(this.references).filter(function(alias) {
-        return !references[alias].resolved && !references[alias].requested;
-      });
-    };
-    
-    //----------------------------------------------------------------------------------------
-    // private methods
-    //----------------------------------------------------------------------------------------
-    
-    Context.interpolate = function(s) {
-      var re = /{\d+}/g;
-      var matches = s.match(re);
-      var params = Array.prototype.slice.call(arguments, 1);
-    
-      if (matches) {
-        matches.forEach(function(match) {
-          var index = parseInt(match.substr(1, match.length - 2), 10);
-          s = s.replace(match, params[index].toString());
-        });
-      }
-    
-      return s;
-    };
-    
-    exports.Context = Context;
-    
-    },{}],15:[function(require,module,exports){
+    },{}],2:[function(require,module,exports){
     (function (Buffer){
     (function (root) {
     
@@ -2532,7 +614,1962 @@
     }(this));
     
     }).call(this,require("buffer").Buffer)
-    },{"buffer":16}],16:[function(require,module,exports){
+    },{"buffer":"buffer"}],3:[function(require,module,exports){
+    exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+      var e, m
+      var eLen = (nBytes * 8) - mLen - 1
+      var eMax = (1 << eLen) - 1
+      var eBias = eMax >> 1
+      var nBits = -7
+      var i = isLE ? (nBytes - 1) : 0
+      var d = isLE ? -1 : 1
+      var s = buffer[offset + i]
+    
+      i += d
+    
+      e = s & ((1 << (-nBits)) - 1)
+      s >>= (-nBits)
+      nBits += eLen
+      for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+    
+      m = e & ((1 << (-nBits)) - 1)
+      e >>= (-nBits)
+      nBits += mLen
+      for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+    
+      if (e === 0) {
+        e = 1 - eBias
+      } else if (e === eMax) {
+        return m ? NaN : ((s ? -1 : 1) * Infinity)
+      } else {
+        m = m + Math.pow(2, mLen)
+        e = e - eBias
+      }
+      return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+    }
+    
+    exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+      var e, m, c
+      var eLen = (nBytes * 8) - mLen - 1
+      var eMax = (1 << eLen) - 1
+      var eBias = eMax >> 1
+      var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+      var i = isLE ? 0 : (nBytes - 1)
+      var d = isLE ? 1 : -1
+      var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+    
+      value = Math.abs(value)
+    
+      if (isNaN(value) || value === Infinity) {
+        m = isNaN(value) ? 1 : 0
+        e = eMax
+      } else {
+        e = Math.floor(Math.log(value) / Math.LN2)
+        if (value * (c = Math.pow(2, -e)) < 1) {
+          e--
+          c *= 2
+        }
+        if (e + eBias >= 1) {
+          value += rt / c
+        } else {
+          value += rt * Math.pow(2, 1 - eBias)
+        }
+        if (value * c >= 2) {
+          e++
+          c /= 2
+        }
+    
+        if (e + eBias >= eMax) {
+          m = 0
+          e = eMax
+        } else if (e + eBias >= 1) {
+          m = ((value * c) - 1) * Math.pow(2, mLen)
+          e = e + eBias
+        } else {
+          m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+          e = 0
+        }
+      }
+    
+      for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+    
+      e = (e << mLen) | m
+      eLen += mLen
+      for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+    
+      buffer[offset + i - d] |= s * 128
+    }
+    
+    },{}],4:[function(require,module,exports){
+    const { BitStream } = require('bit-buffer');
+    const { QAngle } = require('./types/QAngle');
+    const { Vector } = require('./types/Vector');
+    
+    class SourceDemoBuffer extends BitStream {
+        readVector() {
+            return new Vector(this.readFloat32(), this.readFloat32(), this.readFloat32());
+        }
+        readQAngle() {
+            return new QAngle(this.readFloat32(), this.readFloat32(), this.readFloat32());
+        }
+        readCoord() {
+            const COORD_INTEGER_BITS = 14;
+            const COORD_FRACTIONAL_BITS = 5;
+            const COORD_DENOMINATOR = 1 << COORD_FRACTIONAL_BITS;
+            const COORD_RESOLUTION = 1.0 / COORD_DENOMINATOR;
+    
+            let value = 0.0;
+            let intval = this.readBits(1);
+            let fractval = this.readBits(1);
+            if (intval || fractval) {
+                let signbit = this.readBits(1);
+                if (intval) {
+                    intval = this.readBits(COORD_INTEGER_BITS) + 1;
+                }
+                if (fractval) {
+                    fractval = this.readBits(COORD_FRACTIONAL_BITS);
+                }
+                value = intval + fractval * COORD_RESOLUTION;
+                if (signbit) value = -value;
+            }
+    
+            return value;
+        }
+        readVectorCoord() {
+            let [x, y, z] = [this.readBoolean(), this.readBoolean(), this.readBoolean()];
+            return new Vector(x ? this.readCoord() : 0, y ? this.readCoord() : 0, z ? this.readCoord() : 0);
+        }
+        readField(bits, fallbackValue = 0) {
+            return this.readBoolean() ? this.readBits(bits) : fallbackValue;
+        }
+        readFieldThen(bits, fallbackValue, callback) {
+            return this.readBoolean() ? callback(this.readBits(bits)) : fallbackValue;
+        }
+        readBitStream(bitLength) {
+            var slice = new SourceDemoBuffer(this._view);
+            slice._startIndex = this._index;
+            slice._index = this._index;
+            slice.length = bitLength;
+            this._index += bitLength;
+            return slice;
+        }
+        writeArrayBuffer(buffer, byteLength) {
+            this.writeBitStream(new SourceDemoBuffer(buffer), byteLength * 8);
+        }
+    }
+    
+    module.exports = {
+        SourceDemoBuffer,
+    };
+    
+    },{"./types/QAngle":19,"./types/Vector":23,"bit-buffer":2}],5:[function(require,module,exports){
+    const DemoMessages = require('./messages');
+    const { SendTable, ServerClassInfo } = require('./types/DataTables');
+    const NetMessages = require('./types/NetMessages');
+    const { StringTable } = require('./types/StringTables');
+    const { UserCmd } = require('./types/UserCmd');
+    const SourceGames = require('./speedrun/games');
+    
+    class SourceDemo {
+        static default() {
+            return new this();
+        }
+        isNewEngine() {
+            return this.demoProtocol === 4;
+        }
+        findMessage(type) {
+            return this.messages.find((msg) => (typeof type === 'function' ? type(msg) : msg.isType(type)));
+        }
+        findMessages(type) {
+            return this.messages.filter((msg) => (typeof type === 'function' ? type(msg) : msg.isType(type)));
+        }
+        findPacket(type) {
+            return this.findMessages('Packet')
+                .map((msg) => msg.packets)
+                .reduce((acc, val) => acc.concat(val), [])
+                .find((packet) => (typeof type === 'function' ? type(packet) : packet.isType(type)));
+        }
+        findPackets(type) {
+            return this.findMessages('Packet')
+                .map((msg) => msg.packets)
+                .reduce((acc, val) => acc.concat(val), [])
+                .filter((packet) => (typeof type === 'function' ? type(packet) : packet.isType(type)));
+        }
+        readHeader(buf) {
+            this.demoFileStamp = buf.readASCIIString(8);
+            if (this.demoFileStamp !== 'HL2DEMO') {
+                throw new Error(`Invalid demo file stamp: ${this.demoFileStamp}`);
+            }
+            this.demoProtocol = buf.readInt32();
+            this.networkProtocol = buf.readInt32();
+            this.serverName = buf.readASCIIString(260);
+            this.clientName = buf.readASCIIString(260);
+            this.mapName = buf.readASCIIString(260);
+            this.gameDirectory = buf.readASCIIString(260);
+            this.playbackTime = buf.readFloat32();
+            this.playbackTicks = buf.readInt32();
+            this.playbackFrames = buf.readInt32();
+            this.signOnLength = buf.readInt32();
+            this.messages = [];
+    
+            this.readHea;
+    
+            return this;
+        }
+        readMessages(buf) {
+            let readSlot = this.isNewEngine();
+            let demoMessages = readSlot ? DemoMessages.NewEngine : DemoMessages.OldEngine;
+    
+            while (buf.bitsLeft > 8) {
+                let type = buf.readInt8();
+                let messageType = demoMessages[type];
+                if (messageType) {
+                    let message = messageType.default(type).setTick(buf.readInt32());
+    
+                    if (readSlot) {
+                        message.setSlot(buf.readInt8());
+                    }
+    
+                    this.messages.push(message.read(buf, this));
+                } else {
+                    throw new Error(`Unknown demo message type: ${type}`);
+                }
+            }
+    
+            return this;
+        }
+        readUserCmds() {
+            for (let message of this.messages) {
+                if (message.isType('UserCmd')) {
+                    let cmd = new UserCmd();
+                    cmd.read(message.data);
+                    message.userCmd = cmd;
+                }
+            }
+    
+            return this;
+        }
+        readStringTables() {
+            for (let message of this.messages) {
+                if (message.isType('StringTable')) {
+                    let stringTables = [];
+    
+                    let tables = message.data.readInt8();
+                    while (tables--) {
+                        let table = new StringTable();
+                        table.read(message.data, this);
+                        stringTables.push(table);
+                    }
+    
+                    message.stringTables = stringTables;
+                }
+            }
+    
+            return this;
+        }
+        readDataTables() {
+            for (let message of this.messages) {
+                if (message.isType('DataTable')) {
+                    let dataTable = {
+                        tables: [],
+                        serverClasses: [],
+                    };
+    
+                    while (message.data.readBoolean()) {
+                        let dt = new SendTable();
+                        dt.read(message.data, this);
+                        dataTable.tables.push(dt);
+                    }
+    
+                    let classes = message.data.readInt16();
+                    while (classes--) {
+                        let sc = new ServerClassInfo();
+                        sc.read(message.data, this);
+                        dataTable.serverClasses.push(sc);
+                    }
+    
+                    message.dataTable = dataTable;
+                }
+            }
+    
+            return this;
+        }
+        readPackets(netMessages = undefined) {
+            netMessages = netMessages || (this.demoProtocol === 4 ? NetMessages.Portal2Engine : NetMessages.HalfLife2Engine);
+    
+            for (let message of this.messages) {
+                if (message.isType('Packet')) {
+                    let packets = [];
+                    while (message.data.bitsLeft > 6) {
+                        let type = message.data.readBits(6);
+    
+                        const NetMessage = netMessages[type];
+                        if (NetMessage) {
+                            let packet = new NetMessage(type);
+                            packet.read(message.data, this);
+                            packets.push(packet);
+                        } else {
+                            throw new Error(`Net message type ${type} unknown!`);
+                        }
+                    }
+    
+                    message.packets = packets;
+                }
+            }
+    
+            return this;
+        }
+        detectGame(sourceGames = SourceGames) {
+            this.game = sourceGames.find((game) => game.directory === this.gameDirectory);
+            return this;
+        }
+        getIntervalPerTick() {
+            if (this.playbackTicks === 0) {
+                if (this.game !== undefined) {
+                    return 1 / this.game.tickrate;
+                }
+                throw new Error('Cannot find ipt of null tick demo.');
+            }
+            return this.playbackTime / this.playbackTicks;
+        }
+        getTickrate() {
+            if (this.playbackTime === 0) {
+                if (this.game !== undefined) {
+                    return this.game.tickrate;
+                }
+                throw new Error('Cannot find tickrate of null tick demo.');
+            }
+            return this.playbackTicks / this.playbackTime;
+        }
+        adjustTicks() {
+            if (this.messages.length === 0) {
+                throw new Error('Cannot adjust ticks without parsed messages.');
+            }
+    
+            let synced = false;
+            let last = 0;
+            for (let message of this.messages) {
+                if (message.isType('SyncTick')) {
+                    synced = true;
+                }
+    
+                if (!synced) {
+                    message.tick = 0;
+                } else if (message.tick < 0) {
+                    message.tick = last;
+                }
+                last = message.tick;
+            }
+    
+            return this;
+        }
+        adjustRange(endTick = 0, startTick = 0) {
+            if (this.messages.length === 0) {
+                throw new Error('Cannot adjust range without parsed messages.');
+            }
+    
+            if (endTick < 1) {
+                endTick = this.messages[this.messages.length - 1].tick;
+            }
+    
+            let delta = endTick - startTick;
+            if (delta < 0) {
+                throw new Error('Start tick is greater than end tick.');
+            }
+    
+            let ipt = this.getIntervalPerTick();
+            this.playbackTicks = delta;
+            this.playbackTime = ipt * delta;
+    
+            return this;
+        }
+        rebaseFrom(tick) {
+            if (this.messages.length === 0) {
+                throw new Error('Cannot adjust ticks without parsed messages.');
+            }
+    
+            let synced = false;
+            let last = 0;
+            for (let message of this.messages) {
+                if (message.tick === tick) {
+                    synced = true;
+                }
+    
+                if (!synced) {
+                    message.tick = 0;
+                } else if (message.tick < 0) {
+                    message.tick = last;
+                } else {
+                    message.tick -= tick;
+                }
+    
+                last = message.tick;
+            }
+    
+            return this;
+        }
+        getSyncedTicks(viewTolerance = 1, splitScreenIndex = 0) {
+            if (this.messages.length === 0 || demo.messages.length === 0) {
+                throw new Error('Cannot adjust ticks without parsed messages.');
+            }
+    
+            let syncedTicks = [];
+            for (let message of this.messages) {
+                if (message.isType('Packet')) {
+                    let view = message.cmdInfo[splitScreenIndex].viewOrigin;
+                    let result = demo.messages.find((msg) => {
+                        if (!msg.isType('Packet')) {
+                            return false;
+                        }
+                        let match = msg.cmdInfo[splitScreenIndex].viewOrigin;
+                        return (
+                            Math.abs(match.x - view.x) <= viewTolerance &&
+                            Math.abs(match.y - view.y) <= viewTolerance &&
+                            Math.abs(match.z - view.z) <= viewTolerance
+                        );
+                    });
+                    if (result !== undefined) {
+                        syncedTicks.push({
+                            source: message.tick,
+                            destination: result.tick,
+                            delta: Math.abs(message.tick - result.tick),
+                            x: message.cmdInfo[splitScreenIndex].viewOrigin.x,
+                            y: message.cmdInfo[splitScreenIndex].viewOrigin.y,
+                            z: message.cmdInfo[splitScreenIndex].viewOrigin.z,
+                        });
+                    }
+                }
+            }
+    
+            return syncedTicks;
+        }
+    }
+    
+    module.exports = {
+        SourceDemo,
+    };
+    
+    },{"./messages":6,"./speedrun/games":12,"./types/DataTables":16,"./types/NetMessages":18,"./types/StringTables":21,"./types/UserCmd":22}],6:[function(require,module,exports){
+    const { CmdInfo } = require('./types/CmdInfo');
+    
+    class Message {
+        constructor(type) {
+            Object.defineProperty(this, '_type', {
+                enumerable: false,
+                value: type,
+            });
+        }
+        static default(type) {
+            return new this(type);
+        }
+        getType() {
+            return this._type;
+        }
+        getName() {
+            return this.constructor.name;
+        }
+        isType(name) {
+            return this.constructor.name === name;
+        }
+        getTick() {
+            return this.tick;
+        }
+        getSlot() {
+            return this.slot;
+        }
+        setTick(tick) {
+            this.tick = tick;
+            return this;
+        }
+        setSlot(slot) {
+            this.slot = slot;
+            return this;
+        }
+        read() {
+            throw new Error(`read() for ${this.constructor.name} not implemented!`);
+        }
+    }
+    
+    class Packet extends Message {
+        findPacket(type) {
+            return this.packets.find((packet) => (typeof type === 'function' ? type(packet) : packet.isType(type)));
+        }
+        findPackets(type) {
+            return this.packets.filter((packet) => (typeof type === 'function' ? type(packet) : packet.isType(type)));
+        }
+        read(buf, demo) {
+            let mssc = demo.demoProtocol === 4 ? 2 : 1;
+    
+            this.cmdInfo = [];
+            while (mssc--) {
+                let cmd = new CmdInfo();
+                cmd.read(buf);
+                this.cmdInfo.push(cmd);
+            }
+    
+            this.inSequence = buf.readInt32();
+            this.outSequence = buf.readInt32();
+            this.data = buf.readBitStream(buf.readInt32() * 8);
+            return this;
+        }
+    }
+    class SyncTick extends Message {
+        read() {
+            return this;
+        }
+    }
+    class ConsoleCmd extends Message {
+        read(buf) {
+            this.command = buf.readASCIIString(buf.readInt32());
+            return this;
+        }
+    }
+    class UserCmd extends Message {
+        read(buf) {
+            this.cmd = buf.readInt32();
+            this.data = buf.readBitStream(buf.readInt32() * 8);
+            return this;
+        }
+    }
+    class DataTable extends Message {
+        read(buf) {
+            this.data = buf.readBitStream(buf.readInt32() * 8);
+            return this;
+        }
+    }
+    class Stop extends Message {
+        read(buf) {
+            this.restData = buf.readBitStream(buf.bitsLeft);
+            return this;
+        }
+    }
+    class CustomData extends Message {
+        read(buf) {
+            this.unk = buf.readInt32();
+            this.data = buf.readBitStream(buf.readInt32() * 8);
+            return this;
+        }
+    }
+    class StringTable extends Message {
+        read(buf) {
+            this.data = buf.readBitStream(buf.readInt32() * 8);
+            return this;
+        }
+    }
+    
+    module.exports = {
+        NewEngine: [
+            undefined,
+            Packet, // 1
+            Packet, // 2
+            SyncTick, // 3
+            ConsoleCmd, // 4
+            UserCmd, // 5
+            DataTable, // 6
+            Stop, // 7
+            CustomData, // 8
+            StringTable, // 9
+        ],
+        OldEngine: [
+            undefined,
+            Packet, // 1
+            Packet, // 2
+            SyncTick, // 3
+            ConsoleCmd, // 4
+            UserCmd, // 5
+            DataTable, // 6
+            Stop, // 7
+            StringTable, // 8
+        ],
+    };
+    
+    },{"./types/CmdInfo":15}],7:[function(require,module,exports){
+    (function (Buffer){
+    const { SourceDemoBuffer } = require('./buffer');
+    const { SourceDemo } = require('./demo');
+    
+    const DefaultParsingOptions = {
+        header: true,
+        messages: true,
+        stringTables: false,
+        dataTables: false,
+        packets: false,
+        userCmds: false,
+    };
+    
+    class SourceDemoParser {
+        constructor(options = DefaultParsingOptions) {
+            this.options = options;
+        }
+        static default() {
+            return new this(DefaultParsingOptions);
+        }
+        with(option) {
+            this.options[option] = true;
+            return this;
+        }
+        without(option) {
+            this.options[option] = false;
+            return this;
+        }
+        parse(buffer, options = undefined) {
+            options = {
+                ...this.options,
+                ...options,
+            };
+    
+            let buf = new SourceDemoBuffer(Buffer.concat([buffer], buffer.length + 4 - (buffer.length % 4)));
+            let demo = SourceDemo.default();
+    
+            if (options.header) demo.readHeader(buf);
+            if (options.messages) demo.readMessages(buf);
+    
+            if (demo.messages.length > 0) {
+                if (options.stringTables) demo.readStringTables();
+                if (options.dataTables) demo.readDataTables();
+                if (options.packets) demo.readPackets();
+                if (options.userCmds) demo.readUserCmds();
+            }
+    
+            return demo;
+        }
+    }
+    
+    module.exports = { SourceDemoParser };
+    
+    }).call(this,require("buffer").Buffer)
+    },{"./buffer":4,"./demo":5,"buffer":"buffer"}],8:[function(require,module,exports){
+    const ApertureTag = {
+        directory: 'aperturetag',
+        tickrate: 60,
+        rules: [
+            {
+                map: 'gg_intro_wakeup',
+                offset: 0,
+                type: 'start',
+                match: ({ pos }) => {
+                    if (pos != undefined) {
+                        let startPos = { x: -723.0, y: -2481.0, z: 17.0 };
+                        return (
+                            pos.previous.x === startPos.x &&
+                            pos.previous.y === startPos.y &&
+                            pos.previous.z === startPos.z &&
+                            pos.current.x != startPos.x &&
+                            pos.current.y != startPos.y &&
+                            pos.current.z != startPos.z
+                        );
+                    }
+                    return false;
+                },
+            },
+            {
+                map: 'gg_stage_theend',
+                offset: 0,
+                type: 'end',
+                match: ({ cmds }) => {
+                    if (cmds != undefined) {
+                        let outro = 'playvideo_exitcommand_nointerrupt at_credits end_movie credits_video';
+                        return cmds.current.includes(outro);
+                    }
+                    return false;
+                },
+            },
+            {
+                map: undefined,
+                offset: 0,
+                type: 'start',
+                match: ({ cmds }) => {
+                    if (cmds != undefined) {
+                        return cmds.current.includes('dsp_player 0') && cmds.current.includes('ss_force_primary_fullscreen 0');
+                    }
+                    return false;
+                },
+            },
+            {
+                map: undefined,
+                offset: 0,
+                type: 'end',
+                match: ({ cmds }) => {
+                    if (cmds != undefined) {
+                        return cmds.current.find((cmd) => cmd.startsWith('playvideo_end_level_transition')) != undefined;
+                    }
+                    return false;
+                },
+            },
+        ],
+    };
+    
+    module.exports = ApertureTag;
+    
+    },{}],9:[function(require,module,exports){
+    const Portal = {
+        directory: 'portal',
+        tickrate: 1 / 0.015,
+        rules: [
+            {
+                map: 'testchmb_a_00',
+                offset: 1,
+                type: 'start',
+                match: ({ pos }) => {
+                    if (pos != undefined) {
+                        let startPos = { x: -544, y: -368.75, z: 160 };
+                        return pos.current.x === startPos.x && pos.current.y === startPos.y && pos.current.z === startPos.z;
+                    }
+                    return false;
+                },
+            },
+            {
+                map: 'escape_02',
+                offset: 1,
+                type: 'end',
+                match: ({ cmds }) => {
+                    if (cmds != undefined) {
+                        return cmds.current.includes('startneurotoxins 99999');
+                    }
+                    return false;
+                },
+            },
+        ],
+    };
+    
+    module.exports = Portal;
+    
+    },{}],10:[function(require,module,exports){
+    const Portal2 = {
+        directory: 'portal2',
+        tickrate: 60,
+        rules: [
+            {
+                map: 'sp_a1_intro1',
+                offset: 1,
+                type: 'start',
+                match: ({ pos }) => {
+                    if (pos != undefined) {
+                        let startPos = { x: -8709.2, y: 1690.07, z: 28.0 };
+                        let tolerance = { x: 0.02, y: 0.02, z: 0.05 };
+                        return (
+                            !(Math.abs(pos.current.x - startPos.x) > tolerance.x) &&
+                            !(Math.abs(pos.current.y - startPos.y) > tolerance.y) &&
+                            !(Math.abs(pos.current.z - startPos.z) > tolerance.z)
+                        );
+                    }
+                    return false;
+                },
+            },
+            {
+                map: 'e1912',
+                offset: -2,
+                type: 'start',
+                match: ({ pos }) => {
+                    if (pos != undefined) {
+                        let startPos = { x: -655.748779296875, y: -918.37353515625, z: -4.96875 };
+                        return (
+                            pos.previous.x === startPos.x &&
+                            pos.previous.y === startPos.y &&
+                            pos.previous.z === startPos.z &&
+                            pos.current.x != startPos.x &&
+                            pos.current.y != startPos.y &&
+                            pos.current.z != startPos.z
+                        );
+                    }
+                    return false;
+                },
+            },
+            {
+                map: undefined,
+                offset: 0,
+                type: 'start',
+                match: ({ cmds }) => {
+                    if (cmds != undefined) {
+                        return cmds.current.includes('dsp_player 0') && cmds.current.includes('ss_force_primary_fullscreen 0');
+                    }
+                    return false;
+                },
+            },
+            {
+                map: 'mp_coop_start',
+                offset: 0,
+                type: 'start',
+                match: ({ pos }) => {
+                    if (pos != undefined) {
+                        let startPosBlue = { x: -9896, y: -4400, z: 3048 };
+                        let startPosOrange = { x: -11168, y: -4384, z: 3040.03125 };
+                        return (
+                            (pos.current.x === startPosBlue.x && pos.current.y === startPosBlue.y && pos.current.z === startPosBlue.z) ||
+                            (pos.current.x === startPosOrange.x && pos.current.y === startPosOrange.y && pos.current.z === startPosOrange.z)
+                        );
+                    }
+                    return false;
+                },
+            },
+            {
+                map: 'sp_a4_finale4',
+                offset: -852,
+                type: 'end',
+                match: ({ pos }) => {
+                    if (pos != undefined) {
+                        let endPos = { x: 54.1, y: 159.2, z: -201.4 };
+                        let a = (pos.current.x - endPos.x) ** 2;
+                        let b = (pos.current.y - endPos.y) ** 2;
+                        let c = 50 ** 2;
+                        return a + b < c && pos.current.z < endPos.z;
+                    }
+                    return false;
+                },
+            },
+            {
+                map: undefined,
+                offset: 0,
+                type: 'end',
+                match: ({ cmds }) => {
+                    if (cmds != undefined) {
+                        return cmds.current.find((cmd) => cmd.startsWith('playvideo_end_level_transition')) != undefined;
+                    }
+                    return false;
+                },
+            },
+            {
+                map: 'mp_coop_paint_longjump_intro',
+                offset: 0,
+                type: 'end',
+                match: ({ cmds }) => {
+                    if (cmds != undefined) {
+                        let outro = 'playvideo_exitcommand_nointerrupt coop_outro end_movie vault-movie_outro';
+                        return cmds.current.includes(outro);
+                    }
+                    return false;
+                },
+            },
+            {
+                map: 'mp_coop_paint_crazy_box',
+                offset: 0,
+                type: 'end',
+                match: ({ cmds }) => {
+                    if (cmds != undefined) {
+                        let outro = 'playvideo_exitcommand_nointerrupt dlc1_endmovie end_movie movie_outro';
+                        return cmds.current.includes(outro);
+                    }
+                    return false;
+                },
+            },
+        ],
+    };
+    
+    module.exports = Portal2;
+    
+    },{}],11:[function(require,module,exports){
+    const PortalStoriesMel = {
+        directory: 'portal_stories',
+        tickrate: 60,
+        rules: [
+            {
+                map: ['sp_a1_tramride', 'st_a1_tramride'],
+                offset: 0,
+                type: 'start',
+                match: ({ pos }) => {
+                    if (pos != undefined) {
+                        let startPos = { x: -4592.0, y: -4475.4052734375, z: 108.683975219727 };
+                        return (
+                            pos.previous.x === startPos.x &&
+                            pos.previous.y === startPos.y &&
+                            pos.previous.z === startPos.z &&
+                            pos.current.x != startPos.x &&
+                            pos.current.y != startPos.y &&
+                            pos.current.z != startPos.z
+                        );
+                    }
+                    return false;
+                },
+            },
+            {
+                map: ['sp_a4_finale', 'st_a4_finale'],
+                offset: 0,
+                type: 'end',
+                match: ({ cmds }) => {
+                    if (cmds != undefined) {
+                        let outro = 'playvideo_exitcommand_nointerrupt aegis_interior.bik end_movie movie_aegis_interior';
+                        return cmds.current.includes(outro);
+                    }
+                    return false;
+                },
+            },
+        ],
+    };
+    
+    module.exports = PortalStoriesMel;
+    
+    },{}],12:[function(require,module,exports){
+    // prettier-ignore
+    module.exports = [
+        require('./Portal'),
+        require('./Portal2'),
+        require('./PortalStoriesMel'),
+        require('./ApertureTag')
+    ];
+    
+    },{"./ApertureTag":8,"./Portal":9,"./Portal2":10,"./PortalStoriesMel":11}],13:[function(require,module,exports){
+    (function (Buffer){
+    const ReplayHeader = 'sar-tas-replay v1.8\n';
+    
+    class SarTimer {
+        static default() {
+            return new SarTimer();
+        }
+        time(demo) {
+            if (demo.messages.length === 0) {
+                throw new Error('Cannot adjust ticks without parsed messages.');
+            }
+    
+            let timings = [];
+            for (let message of demo.messages) {
+                if (message.isType('ConsoleCmd')) {
+                    if (message.command === 'sar_timer_start') {
+                        timings.push({ tick: message.tick, type: 'start' });
+                    } else if (message.command === 'sar_timer_stop') {
+                        timings.push({ tick: message.tick, type: 'stop' });
+                    }
+                }
+            }
+    
+            let start = timings.reverse().find((x) => x.type === 'start');
+            let end = timings.find((x) => x.type === 'stop');
+    
+            return start !== undefined && end !== undefined
+                ? { startTick: start.tick, endTick: end.tick, delta: end.tick - start.tick }
+                : undefined;
+        }
+    }
+    
+    class SarReplay extends Buffer {
+        constructor(size) {
+            this.buffer = this.alloc(size);
+        }
+        static default() {
+            return new SarReplay(0);
+        }
+        convert(demos) {
+            this.writeString(ReplayHeader);
+            this.writeInt32(demos.length);
+    
+            for (let demo of demos) {
+                for (let message of demo.messages) {
+                    if (message.isType('UserCmd') && message.userCmd) {
+                        this.writeInt32(message.userCmd.buttons || 0);
+                        this.writeFloat(message.userCmd.forwardMove || 0);
+                        this.writeInt8(message.userCmd.impulse || 0);
+                        this.writeInt16(message.userCmd.mouseDx || 0);
+                        this.writeInt16(message.userCmd.mouseDy || 0);
+                        this.writeFloat(message.userCmd.sideMove || 0);
+                        this.writeFloat(message.userCmd.upMove || 0);
+                        this.writeFloat(message.userCmd.viewAngleX || 0);
+                        this.writeFloat(message.userCmd.viewAngleY || 0);
+                        this.writeFloat(message.userCmd.viewAngleZ || 0);
+                    }
+                }
+            }
+    
+            return this.buffer;
+        }
+        writeInt8(value) {
+            let data = this.alloc(1);
+            data.writeInt8(value, 0);
+            this.buffer = this.concat([this.buffer, data]);
+        }
+        writeInt16(value) {
+            let data = this.alloc(2);
+            data.writeInt16LE(value, 0);
+            this.buffer = this.concat([this.buffer, data]);
+        }
+        writeInt32(value) {
+            let data = this.alloc(4);
+            data.writeInt32LE(value, 0);
+            this.buffer = this.concat([this.buffer, data]);
+        }
+        writeFloat(value) {
+            let data = this.alloc(4);
+            data.writeFloatLE(value, 0);
+            this.buffer = this.concat([this.buffer, data]);
+        }
+        writeString(value) {
+            let data = this.alloc(value.length);
+            data.write(value, 0);
+            this.buffer = this.concat([this.buffer, data]);
+        }
+    }
+    
+    module.exports = { SarTimer, SarReplay };
+    
+    }).call(this,require("buffer").Buffer)
+    },{"buffer":"buffer"}],14:[function(require,module,exports){
+    const { Vector } = require('../types/Vector');
+    
+    class TimingResult {
+        constructor({ playbackTicks, playbackTime }) {
+            this.delta = 0;
+            this.ticks = {
+                before: playbackTicks,
+                after: undefined,
+            };
+            this.time = {
+                before: playbackTime,
+                after: undefined,
+            };
+        }
+        complete({ playbackTicks, playbackTime }) {
+            this.ticks.after = playbackTicks;
+            this.time.after = playbackTime;
+            this.delta = Math.abs(this.ticks.before - this.ticks.after);
+            return this;
+        }
+    }
+    
+    class SourceTimer {
+        constructor(splitScreenIndex) {
+            this.splitScreenIndex = splitScreenIndex;
+        }
+        static default() {
+            return new SourceTimer(0);
+        }
+        time(demo) {
+            if (demo.game === undefined) {
+                throw new Error('Cannot check time speedrun detecting the game first.');
+            }
+    
+            let result = new TimingResult(demo);
+    
+            let startTick = this.checkRules(demo, 'start');
+            let endTick = this.checkRules(demo, 'end');
+    
+            if (startTick != undefined && endTick != undefined) {
+                demo.adjustRange(endTick, startTick);
+            } else if (startTick != undefined) {
+                demo.adjustRange(0, startTick);
+            } else if (endTick != undefined) {
+                demo.adjustRange(endTick, 0);
+            }
+    
+            return result.complete(demo);
+        }
+        checkRules(demo, type) {
+            let candidates = demo.game.rules.filter((rule) => rule.type === type);
+    
+            // Find all rules that match the map name. Otherwise fall back to generic
+            // rules which are used to detect coop spawn and loading screens
+    
+            let rules = candidates.filter((rule) => {
+                if (Array.isArray(rule.map)) {
+                    return rule.map.includes(demo.mapName);
+                }
+                return rule.map === demo.mapName;
+            });
+    
+            if (rules.length === 0) {
+                rules = candidates.filter((rule) => rule.map === undefined);
+            }
+    
+            if (rules.length === 0) {
+                return undefined;
+            }
+    
+            // Generate data map which contains:
+            //      - Position of current and previous tick
+            //      - Commands of current and previous tick
+    
+            let gameInfo = new Map();
+            let oldPosition = new Vector(0, 0, 0);
+            let oldCommands = [];
+    
+            demo.findMessages('Packet').forEach(({ tick, cmdInfo }) => {
+                if (tick !== 0 && !gameInfo.get(tick)) {
+                    gameInfo.set(tick, {
+                        position: {
+                            previous: oldPosition,
+                            current: (oldPosition = cmdInfo[this.splitScreenIndex].viewOrigin),
+                        },
+                    });
+                }
+            });
+    
+            demo.findMessages('ConsoleCmd').forEach(({ tick, command }) => {
+                // Ignore button inputs since they aren't really useful
+                if (tick === 0 || command.startsWith('+') || command.startsWith('-')) {
+                    return;
+                }
+    
+                let newCommands = [command];
+    
+                let value = gameInfo.get(tick);
+                if (!value) {
+                    gameInfo.set(tick, {
+                        commands: {
+                            previous: oldCommands,
+                            current: (oldCommands = newCommands),
+                        },
+                    });
+                } else {
+                    gameInfo.set(tick, {
+                        ...value,
+                        commands: {
+                            previous: value.previous ? value.previous.concat(oldCommands) : oldCommands,
+                            current: (oldCommands = value.current ? value.current.concat(newCommands) : newCommands),
+                        },
+                    });
+                }
+            });
+    
+            // Game simulation: Call and pass generated data for every rule every tick
+            // Rules will decide whether they should be matched as a start or end event
+    
+            let matches = [];
+            for (let [tick, info] of gameInfo) {
+                for (let rule of rules) {
+                    if (rule.match({ pos: info.position, cmds: info.commands }) === true) {
+                        matches.push({ rule: rule, tick: tick });
+                    }
+                }
+            }
+    
+            if (matches.length > 0) {
+                if (matches.length === 1) {
+                    return matches[0].tick + matches[0].rule.offset;
+                }
+    
+                // Match rules until we have a single match:
+                //      1.) Favour rules that match the earliest tick
+                //      2.) Favour rules that match the
+                //              a.) lowest offset if it is a start event
+                //              b.) or highest offset if it is an end event
+                //      3.) Throw exception and fail because there might be timing issue
+    
+                let matchTick = matches.map((m) => m.tick).reduce((a, b) => Math.min(a, b));
+                matches = matches.filter((m) => m.tick === matchTick);
+                if (matches.length === 1) {
+                    return matches[0].tick + matches[0].rule.offset;
+                }
+    
+                let matchOffset =
+                    matches[0].rule.type === 'start'
+                        ? matches.map((m) => m.rule.offset).reduce((a, b) => Math.min(a, b))
+                        : matches.map((m) => m.rule.offset).reduce((a, b) => Math.max(a, b));
+    
+                matches = matches.filter((m) => m.rule.offset === matchOffset);
+                if (matches.length === 1) {
+                    return matches[0].tick + matches[0].rule.offset;
+                }
+    
+                throw new Error(`Multiple adjustment matches: ${JSON.stringify(matches)}`);
+            }
+    
+            return undefined;
+        }
+    }
+    
+    module.exports = { SourceTimer, TimingResult };
+    
+    },{"../types/Vector":23}],15:[function(require,module,exports){
+    class CmdInfo {
+        read(buf) {
+            const readVec3 = () => {
+                return {
+                    x: buf.readFloat32(),
+                    y: buf.readFloat32(),
+                    z: buf.readFloat32(),
+                };
+            };
+    
+            this.flags = buf.readInt32();
+            this.viewOrigin = readVec3();
+            this.viewAngles = readVec3();
+            this.localViewAngles = readVec3();
+            this.viewOrigin2 = readVec3();
+            this.viewAngles2 = readVec3();
+            this.localViewAngles2 = readVec3();
+    
+            return this;
+        }
+    }
+    
+    module.exports = {
+        CmdInfo,
+    };
+    
+    },{}],16:[function(require,module,exports){
+    const SendPropType = {
+        Int: 0,
+        Float: 1,
+        Vector: 2,
+        VectorXy: 3,
+        String: 4,
+        Array: 5,
+        SendTable: 6,
+        Int64: 7,
+    };
+    
+    const SendPropFlags = {
+        Unsigned: 1 << 0,
+        Coord: 1 << 1,
+        Noscale: 1 << 2,
+        Rounddown: 1 << 3,
+        Roundup: 1 << 4,
+        Normal: 1 << 5,
+        Exclude: 1 << 6,
+        Xyze: 1 << 7,
+        InsideArray: 1 << 8,
+        ProxyAlwaysYes: 1 << 9,
+        IsAVectorElem: 1 << 10,
+        Collapsible: 1 << 11,
+        CoordMp: 1 << 12,
+        CoordMpLowPrecision: 1 << 13,
+        CoordMpIntegral: 1 << 14,
+        CellCoord: 1 << 15,
+        CellCoordLowPrecision: 1 << 16,
+        CellCoordIntegral: 1 << 17,
+        ChangesOften: 1 << 18,
+        VarInt: 1 << 19,
+    };
+    
+    class SendTable {
+        read(buf, demo) {
+            this.needsDecoder = buf.readBoolean();
+            this.netTableName = buf.readASCIIString();
+            this.props = [];
+    
+            let props = buf.readBits(10, false);
+            while (props--) {
+                let prop = new SendProp();
+                prop.read(buf, demo);
+                this.props.push(prop);
+            }
+        }
+    }
+    
+    class SendProp {
+        read(buf, demo) {
+            let isPortal2 = demo.gameDirectory === 'portal2';
+    
+            this.type = buf.readBits(5, false);
+            this.varName = buf.readASCIIString();
+            this.flags = buf.readBits(demo.demoProtocol === 2 ? 11 : 16, false);
+    
+            if (isPortal2) {
+                this.unk = buf.readBits(11, false);
+            }
+    
+            if (this.type === SendPropType.SendTable || (this.flags & SendPropFlags.Exclude) !== 0) {
+                this.excludeDtName = buf.readASCIIString();
+            } else if (
+                this.type === SendPropType.String ||
+                this.type === SendPropType.Int ||
+                this.type === SendPropType.Float ||
+                this.type === SendPropType.Vector ||
+                this.type === SendPropType.VectorXy
+            ) {
+                this.lowValue = buf.readFloat32();
+                this.highValue = buf.readFloat32();
+                this.numBits = buf.readBits(7, false);
+            } else if (this.type === SendPropType.Array) {
+                this.elements = buf.readBits(10, false);
+            } else {
+                throw new Error('Invalid prop type: ' + this.type);
+            }
+        }
+    }
+    
+    class ServerClassInfo {
+        read(buf) {
+            this.classId = buf.readInt16();
+            this.className = buf.readASCIIString();
+            this.dataTableName = buf.readASCIIString();
+        }
+    }
+    
+    module.exports = {
+        SendPropType,
+        SendPropFlags,
+        SendTable,
+        SendProp,
+        ServerClassInfo,
+    };
+    
+    },{}],17:[function(require,module,exports){
+    class GameEvent {
+        constructor(descriptor) {
+            this.descriptor = descriptor;
+            this.dataKeys = {};
+        }
+        get(keyName) {
+            return this.dataKeys[keyName];
+        }
+        set(keyName, defaultValue) {
+            return (this.dataKeys[keyName] = defaultValue);
+        }
+    }
+    
+    class GameEventManager {
+        constructor(gameEvents) {
+            this.gameEvents = gameEvents;
+        }
+        unserializeEvent(buf) {
+            let eventId = buf.readBits(9);
+    
+            let descriptor = this.gameEvents.find((descriptor) => descriptor.eventId === eventId);
+            if (!descriptor) {
+                throw new Error(`Unknown event id ${eventId}!`);
+            }
+    
+            let event = new GameEvent(descriptor);
+    
+            for (let [keyName, type] of Object.entries(descriptor.keys)) {
+                switch (type) {
+                    case 0:
+                        break;
+                    case 1:
+                        event.set(keyName, buf.readASCIIString());
+                        break;
+                    case 2:
+                        event.set(keyName, buf.readFloat32());
+                        break;
+                    case 3:
+                        event.set(keyName, buf.readInt32());
+                        break;
+                    case 4:
+                        event.set(keyName, buf.readInt16());
+                        break;
+                    case 5:
+                        event.set(keyName, buf.readInt8());
+                        break;
+                    case 6:
+                        event.set(keyName, buf.readBoolean());
+                        break;
+                    default:
+                        throw new Error(`Unknown type ${type} for key ${keyName}!`);
+                }
+            }
+    
+            return event;
+        }
+    }
+    
+    module.exports = {
+        GameEventManager,
+    };
+    
+    },{}],18:[function(require,module,exports){
+    const { SoundInfo } = require('./SoundInfo');
+    const { GameEventManager } = require('./GameEventManager');
+    
+    class NetMessage {
+        constructor(type) {
+            Object.defineProperty(this, '_type', {
+                enumerable: false,
+                value: type,
+            });
+        }
+        getType() {
+            return this._type;
+        }
+        getName() {
+            return this.constructor.name;
+        }
+        isType(name) {
+            return this.constructor.name === name;
+        }
+        read() {
+            throw new Error(`read() for ${this.constructor.name} not implemented!`);
+        }
+    }
+    
+    class NetNop extends NetMessage {
+        read() {}
+    }
+    class NetDisconnect extends NetMessage {
+        read(buf) {
+            this.text = buf.readASCIIString();
+        }
+    }
+    class NetFile extends NetMessage {
+        read(buf) {
+            this.transferId = buf.readInt32();
+            this.fileName = buf.readASCIIString();
+            this.fileRequested = buf.readBoolean();
+        }
+    }
+    class NetSplitScreenUser extends NetMessage {
+        read(buf) {
+            this.unk = buf.readBoolean();
+        }
+    }
+    class NetTick extends NetMessage {
+        read(buf) {
+            const NET_TICK_SCALEUP = 100000;
+            this.tick = buf.readInt32();
+            this.hostFrameTime = buf.readInt16() / NET_TICK_SCALEUP;
+            this.hostFrameTimeStdDeviation = buf.readInt16() / NET_TICK_SCALEUP;
+        }
+    }
+    class NetStringCmd extends NetMessage {
+        read(buf) {
+            this.command = buf.readASCIIString();
+        }
+    }
+    class NetSetConVar extends NetMessage {
+        read(buf) {
+            this.convars = [];
+            let length = buf.readInt8();
+            while (length--) {
+                this.convars.push({
+                    name: buf.readASCIIString(),
+                    value: buf.readASCIIString(),
+                });
+            }
+        }
+    }
+    class NetSignonState extends NetMessage {
+        read(buf, demo) {
+            this.signonState = buf.readInt8();
+            this.spawnCount = buf.readInt32();
+            if (demo.isNewEngine()) {
+                this.numServerPlayers = buf.readInt32();
+                let length = buf.readInt32();
+                if (length > 0) {
+                    this.playersNetworkids = buf.readArrayBuffer(length);
+                }
+                length = buf.readInt32();
+                if (length > 0) {
+                    this.mapName = buf.readASCIIString(length);
+                }
+            }
+        }
+    }
+    class SvcServerInfo extends NetMessage {
+        read(buf, demo) {
+            this.protocol = buf.readInt16();
+            this.serverCount = buf.readInt32();
+            this.isHltv = buf.readBoolean();
+            this.isDedicated = buf.readBoolean();
+            this.clientCrc = buf.readInt32();
+            this.maxClasses = buf.readInt16();
+            this.mapCrc = buf.readInt32();
+            this.playerSlot = buf.readInt8();
+            this.maxClients = buf.readInt8();
+            if (demo.isNewEngine()) {
+                this.unk = buf.readInt32();
+            } else if (demo.networkProtocol === 24) {
+                this.unk = buf.readBits(96);
+            }
+            this.tickInterval = buf.readFloat32();
+            this.cOs = String.fromCharCode(buf.readInt8());
+            this.gameDir = buf.readASCIIString();
+            this.mapName = buf.readASCIIString();
+            this.mapName = buf.readASCIIString();
+            this.hostName = buf.readASCIIString();
+        }
+    }
+    class SvcSendTable extends NetMessage {
+        read(buf) {
+            this.needsDecoder = buf.readBoolean();
+            let length = buf.readInt16();
+            this.props = buf.readBits(length);
+        }
+    }
+    class SvcClassInfo extends NetMessage {
+        read(buf) {
+            let length = buf.readInt16();
+            this.createOnClient = buf.readBoolean();
+            if (!this.createOnClient) {
+                this.serverClasses = [];
+                while (length--) {
+                    this.serverClasses.push({
+                        classId: buf.readBits(Math.log2(length) + 1),
+                        className: buf.readASCIIString(),
+                        dataTableName: buf.readASCIIString(),
+                    });
+                }
+            }
+        }
+    }
+    class SvcSetPause extends NetMessage {
+        read(buf) {
+            this.paused = buf.readBoolean();
+        }
+    }
+    class SvcCreateStringTable extends NetMessage {
+        read(buf, demo) {
+            this.name = buf.readASCIIString();
+            this.maxEntries = buf.readInt16();
+            this.numEntries = buf.readBits(Math.log2(this.maxEntries) + 1);
+            let length = buf.readBits(20);
+            this.userDataFixedSize = buf.readBoolean();
+            this.userDataSize = this.userDataFixedSize ? buf.readBits(12) : 0;
+            this.userDataSizeBits = this.userDataFixedSize ? buf.readBits(4) : 0;
+            this.flags = buf.readBits(demo.isNewEngine() ? 2 : 1);
+            this.stringData = buf.readBits(length);
+        }
+    }
+    class SvcUpdateStringTable extends NetMessage {
+        read(buf) {
+            this.tableId = buf.readBits(5);
+            this.numChangedEntries = buf.readBoolean() ? buf.readInt16() : 1;
+            let length = buf.readBits(20);
+            this.stringData = buf.readBits(length);
+        }
+    }
+    class SvcVoiceInit extends NetMessage {
+        read(buf) {
+            this.codec = buf.readASCIIString();
+            this.quality = buf.readInt8();
+            if (this.quality === 255) this.unk = buf.readFloat32();
+        }
+    }
+    class SvcVoiceData extends NetMessage {
+        read(buf) {
+            this.client = buf.readInt8();
+            this.proximity = buf.readInt8();
+            let length = buf.readInt16();
+            this.voiceData = buf.readBits(length);
+        }
+    }
+    class SvcPrint extends NetMessage {
+        read(buf) {
+            this.message = buf.readASCIIString();
+        }
+    }
+    class SvcSounds extends NetMessage {
+        read(buf, demo) {
+            this.reliableSound = buf.readBoolean();
+            let sounds = this.reliableSound ? 1 : buf.readBits(8);
+            let length = this.reliableSound ? buf.readBits(8) : buf.readBits(16);
+            let data = buf.readBitStream(length);
+    
+            if (demo.demoProtcol === 3) {
+                this.sounds = [];
+                while (sounds--) {
+                    let sound = new SoundInfo();
+                    sound.read(data, demo);
+                    this.sounds.push(sound);
+                }
+            }
+        }
+    }
+    class SvcSetView extends NetMessage {
+        read(buf) {
+            this.entityIndex = buf.readBits(11);
+        }
+    }
+    class SvcFixAngle extends NetMessage {
+        read(buf) {
+            this.relative = buf.readBoolean();
+            this.angle = [buf.readInt16(), buf.readInt16(), buf.readInt16()];
+        }
+    }
+    class SvcCrosshairAngle extends NetMessage {
+        read(buf) {
+            this.angle = [buf.readInt16(), buf.readInt16(), buf.readInt16()];
+        }
+    }
+    class SvcBspDecal extends NetMessage {
+        read(buf) {
+            this.pos = buf.readVectorCoord(buf);
+            this.decalTextureIndex = buf.readBits(9);
+            let flag = buf.readBoolean();
+            this.entityIndex = flag ? buf.readBits(11) : 0;
+            this.modelIndex = flag ? buf.readBits(11) : 0;
+            this.lowPriority = buf.readBoolean();
+        }
+    }
+    class SvcSplitScreen extends NetMessage {
+        read(buf) {
+            this.unk = buf.readBits(1);
+            let length = buf.readBits(11);
+            this.data = buf.readBits(length);
+        }
+    }
+    class SvcUserMessage extends NetMessage {
+        read(buf, demo) {
+            this.msgType = buf.readInt8();
+            let length = buf.readBits(demo.isNewEngine() ? 12 : 11);
+            this.msgData = buf.readBits(length);
+        }
+    }
+    class SvcEntityMessage extends NetMessage {
+        read(buf) {
+            this.entityIndex = buf.readBits(11);
+            this.classId = buf.readBits(9);
+            let length = buf.readBits(11);
+            buf.readBits(length);
+        }
+    }
+    class SvcGameEvent extends NetMessage {
+        read(buf, demo) {
+            let length = buf.readBits(11);
+            let data = buf.readBitStream(length);
+    
+            if (demo.gameEventManager) {
+                this.event = demo.gameEventManager.unserializeEvent(data);
+            } else {
+                this.data = data;
+            }
+        }
+    }
+    class SvcPacketEntities extends NetMessage {
+        read(buf) {
+            this.maxEntries = buf.readBits(11);
+            this.isDelta = buf.readBoolean();
+            this.deltaFrom = this.isDelta ? buf.readInt32() : 0;
+            this.baseLine = buf.readBoolean();
+            this.updatedEntries = buf.readBits(11);
+            let length = buf.readBits(20);
+            this.updateBaseline = buf.readBoolean();
+            this.data = buf.readBits(length);
+        }
+    }
+    class SvcTempEntities extends NetMessage {
+        read(buf) {
+            this.numEntries = buf.readInt8();
+            let length = buf.readBits(17);
+            this.data = buf.readBitStream(length);
+        }
+    }
+    class SvcPrefetch extends NetMessage {
+        read(buf) {
+            this.soundIndex = buf.readBits(13);
+        }
+    }
+    class SvcMenu extends NetMessage {
+        read(buf) {
+            this.menuType = buf.readInt16();
+            let length = buf.readInt32();
+            this.data = buf.readBits(length);
+        }
+    }
+    class SvcGameEventList extends NetMessage {
+        read(buf, demo) {
+            class GameEventDescriptor {
+                read(buf) {
+                    this.eventId = buf.readBits(9);
+                    this.name = buf.readASCIIString();
+                    this.keys = {};
+    
+                    let type = buf.readBits(3);
+                    while (type !== 0) {
+                        this.keys[buf.readASCIIString()] = type;
+                        type = buf.readBits(3);
+                    }
+                }
+            }
+    
+            let events = buf.readBits(9);
+            let length = buf.readBits(20);
+            let data = buf.readBitStream(length);
+    
+            let gameEvents = [];
+            while (events--) {
+                let descriptor = new GameEventDescriptor();
+                descriptor.read(data);
+                gameEvents.push(descriptor);
+            }
+    
+            demo.gameEventManager = new GameEventManager(gameEvents);
+        }
+    }
+    class SvcGetCvarValue extends NetMessage {
+        read(buf) {
+            this.cookie = buf.readInt32();
+            this.cvarName = buf.readASCIIString();
+        }
+    }
+    class SvcCmdKeyValues extends NetMessage {
+        read(buf) {
+            let length = buf.readInt32();
+            this.buffer = buf.readArrayBuffer(length);
+        }
+    }
+    class SvcPaintMapData extends NetMessage {
+        read(buf) {
+            let length = buf.readInt32();
+            this.data = buf.readBitStream(length);
+        }
+    }
+    
+    module.exports = {
+        Portal2Engine: [
+            NetNop, // 0
+            NetDisconnect, // 1
+            NetFile, // 2
+            NetSplitScreenUser, // 3
+            NetTick, // 4
+            NetStringCmd, // 5
+            NetSetConVar, // 6
+            NetSignonState, // 7
+            SvcServerInfo, // 8
+            SvcSendTable, // 9
+            SvcClassInfo, // 10
+            SvcSetPause, // 11
+            SvcCreateStringTable, // 12
+            SvcUpdateStringTable, // 13
+            SvcVoiceInit, // 14
+            SvcVoiceData, // 15
+            SvcPrint, // 16
+            SvcSounds, // 17
+            SvcSetView, // 18
+            SvcFixAngle, // 19
+            SvcCrosshairAngle, // 20
+            SvcBspDecal, // 21
+            SvcSplitScreen, // 22
+            SvcUserMessage, // 23
+            SvcEntityMessage, // 24
+            SvcGameEvent, // 25
+            SvcPacketEntities, // 26
+            SvcTempEntities, // 27
+            SvcPrefetch, // 28
+            SvcMenu, // 29
+            SvcGameEventList, // 30
+            SvcGetCvarValue, // 31
+            SvcCmdKeyValues, // 32
+            SvcPaintMapData, // 33
+        ],
+        HalfLife2Engine: [
+            NetNop, // 0
+            NetDisconnect, // 1
+            NetFile, // 2
+            NetTick, // 3
+            NetStringCmd, // 4
+            NetSetConVar, // 5
+            NetSignonState, // 6
+            SvcPrint, // 7
+            SvcServerInfo, // 8
+            SvcSendTable, // 9
+            SvcClassInfo, // 10
+            SvcSetPause, // 11
+            SvcCreateStringTable, // 12
+            SvcUpdateStringTable, // 13
+            SvcVoiceInit, // 14
+            SvcVoiceData, // 15
+            undefined,
+            SvcSounds, // 17
+            SvcSetView, // 18
+            SvcFixAngle, // 19
+            SvcCrosshairAngle, // 20
+            SvcBspDecal, // 21
+            undefined,
+            SvcUserMessage, // 23
+            SvcEntityMessage, // 24
+            SvcGameEvent, // 25
+            SvcPacketEntities, // 26
+            SvcTempEntities, // 27
+            SvcPrefetch, // 28
+            SvcMenu, // 29
+            SvcGameEventList, // 30
+            SvcGetCvarValue, // 31
+            SvcCmdKeyValues, // 32
+        ],
+    };
+    
+    },{"./GameEventManager":17,"./SoundInfo":20}],19:[function(require,module,exports){
+    class QAngle {
+        constructor(pitch, yaw, roll) {
+            this.pitch = pitch;
+            this.yaw = yaw;
+            this.roll = roll;
+        }
+    }
+    
+    module.exports = { QAngle };
+    
+    },{}],20:[function(require,module,exports){
+    const SoundFlags = {
+        NoFlags: 0,
+        ChangeVol: 1 << 0,
+        ChangePitch: 1 << 1,
+        Stop: 1 << 2,
+        Spawning: 1 << 3,
+        Delay: 1 << 4,
+        StopLooping: 1 << 5,
+        Speaker: 1 << 6,
+        ShouldPause: 1 << 7,
+        IgnorePhonemes: 1 << 8,
+        IgnoreName: 1 << 9,
+    };
+    
+    class SoundInfo {
+        read(buf) {
+            this.entityIndex = buf.readBoolean() ? (buf.readBoolean() ? buf.readBits(5) : buf.readBits(11)) : 0;
+            this.soundNum = buf.readBoolean() ? buf.readBits(13) : 0;
+            this.flags = buf.readBoolean() ? buf.readBits(9) : 0;
+            this.channel = buf.readBoolean() ? buf.readBits(3) : 0;
+            this.isAmbient = buf.readBoolean();
+            this.isSentence = buf.readBoolean();
+    
+            if (this.flags !== SoundFlags.Stop) {
+                if (buf.readBoolean()) {
+                    this.sequenceNumber = 0;
+                } else if (buf.readBoolean()) {
+                    this.sequenceNumber = 1;
+                } else {
+                    this.sequenceNumber = buf.readBits(10);
+                }
+    
+                this.volume = buf.readBoolean() ? buf.readBits(7) / 127 : 0;
+                this.soundLevel = buf.readBoolean() ? buf.readBits(9) : 0;
+                this.pitch = buf.readBoolean() ? buf.readBits(8) : 0;
+    
+                if (buf.readBoolean()) {
+                    this.delay = buf.readBits(13) / 1000;
+                    if (this.delay < 0) {
+                        this.delay *= 10;
+                    }
+                    this.delay -= 0.1;
+                } else {
+                    this.delay = 0;
+                }
+    
+                this.origin = {
+                    x: buf.readBoolean() ? buf.readBits(12) * 8 : 0,
+                    y: buf.readBoolean() ? buf.readBits(12) * 8 : 0,
+                    z: buf.readBoolean() ? buf.readBits(12) * 8 : 0,
+                };
+    
+                this.speakerEntity = buf.readBoolean() ? buf.readBits(12) : 0;
+            }
+        }
+    }
+    
+    module.exports = {
+        SoundFlags,
+        SoundInfo,
+    };
+    
+    },{}],21:[function(require,module,exports){
+    class StringTable {
+        read(buf, demo) {
+            this.name = buf.readASCIIString();
+            this.entries = [];
+            this.classes = [];
+    
+            const EntryType = StringTableEntryTypes[this.name];
+    
+            let entries = buf.readInt16();
+            while (entries--) {
+                let entryName = buf.readASCIIString();
+                let entry = new StringTableEntry(entryName);
+    
+                if (buf.readBoolean()) {
+                    entry.read(buf, EntryType, demo);
+                }
+    
+                this.entries.push(entry);
+            }
+    
+            if (buf.readBoolean()) {
+                let entries = buf.readInt16();
+                while (entries--) {
+                    let entryName = buf.readASCIIString();
+                    let entry = new StringTableClass(entryName);
+    
+                    if (buf.readBoolean()) {
+                        entry.read(buf, demo);
+                    }
+    
+                    this.classes.push(entry);
+                }
+            }
+        }
+    }
+    
+    class StringTableEntry {
+        constructor(name) {
+            this.name = name;
+        }
+        read(buf, type, demo) {
+            let length = buf.readInt16();
+            if (type) {
+                this.data = new type();
+                this.data.read(buf.readBitStream(length * 8), demo);
+            } else {
+                this.data = buf.readArrayBuffer(length);
+            }
+        }
+    }
+    
+    class StringTableClass {
+        constructor(name) {
+            this.name = name;
+        }
+        read(buf) {
+            let length = buf.readInt16();
+            this.data = buf.readASCIIString(length);
+        }
+    }
+    
+    // player_info_s
+    class PlayerInfo {
+        read(buf, demo) {
+            if (demo.isNewEngine()) {
+                this.version = buf.readInt32();
+                this.xuid = buf.readInt32();
+            }
+            this.name = buf.readASCIIString(32);
+            this.userId = buf.readInt32();
+            this.guid = buf.readASCIIString(32);
+            this.friendsId = buf.readInt32();
+            this.friendsName = buf.readASCIIString(32);
+            this.fakePlayer = buf.readBoolean();
+            this.isHltv = buf.readBoolean();
+            this.customFiles = [buf.readInt32(), buf.readInt32(), buf.readInt32(), buf.readInt32()];
+            this.filesDownloaded = buf.readInt32();
+        }
+    }
+    
+    const StringTableEntryTypes = { userinfo: PlayerInfo };
+    
+    module.exports = { StringTable, StringTableEntry, StringTableClass, StringTableEntryTypes };
+    
+    },{}],22:[function(require,module,exports){
+    class UserCmd {
+        read(buf) {
+            if (buf.readBoolean()) this.commandNumber = buf.readInt32();
+            if (buf.readBoolean()) this.tickCount = buf.readInt32();
+            if (buf.readBoolean()) this.viewAngleX = buf.readFloat32();
+            if (buf.readBoolean()) this.viewAngleY = buf.readFloat32();
+            if (buf.readBoolean()) this.viewAngleZ = buf.readFloat32();
+            if (buf.readBoolean()) this.forwardMove = buf.readFloat32();
+            if (buf.readBoolean()) this.sideMove = buf.readFloat32();
+            if (buf.readBoolean()) this.upMove = buf.readFloat32();
+            if (buf.readBoolean()) this.buttons = buf.readInt32();
+            if (buf.readBoolean()) this.impulse = buf.readInt8();
+            if (buf.readBoolean()) {
+                this.weaponSelect = buf.readBits(11);
+                if (buf.readBoolean()) this.weaponSubtype = buf.readBits(6);
+            }
+            if (buf.readBoolean()) this.mouseDx = buf.readInt16();
+            if (buf.readBoolean()) this.mouseDy = buf.readInt16();
+        }
+    }
+    
+    module.exports = {
+        UserCmd,
+    };
+    
+    },{}],23:[function(require,module,exports){
+    class Vector {
+        constructor(x, y, z) {
+            this.x = x;
+            this.y = y;
+            this.y = z;
+        }
+        length() {
+            return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+        }
+        length2D() {
+            return Math.sqrt(this.x * this.x + this.y * this.y);
+        }
+    }
+    
+    module.exports = {
+        Vector,
+    };
+    
+    },{}],"buffer":[function(require,module,exports){
     /*!
      * The buffer module from node.js, for the browser.
      *
@@ -4311,699 +4348,38 @@
       return obj !== obj // eslint-disable-line no-self-compare
     }
     
-    },{"base64-js":12,"ieee754":17}],17:[function(require,module,exports){
-    exports.read = function (buffer, offset, isLE, mLen, nBytes) {
-      var e, m
-      var eLen = (nBytes * 8) - mLen - 1
-      var eMax = (1 << eLen) - 1
-      var eBias = eMax >> 1
-      var nBits = -7
-      var i = isLE ? (nBytes - 1) : 0
-      var d = isLE ? -1 : 1
-      var s = buffer[offset + i]
-    
-      i += d
-    
-      e = s & ((1 << (-nBits)) - 1)
-      s >>= (-nBits)
-      nBits += eLen
-      for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
-    
-      m = e & ((1 << (-nBits)) - 1)
-      e >>= (-nBits)
-      nBits += mLen
-      for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
-    
-      if (e === 0) {
-        e = 1 - eBias
-      } else if (e === eMax) {
-        return m ? NaN : ((s ? -1 : 1) * Infinity)
-      } else {
-        m = m + Math.pow(2, mLen)
-        e = e - eBias
-      }
-      return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
-    }
-    
-    exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
-      var e, m, c
-      var eLen = (nBytes * 8) - mLen - 1
-      var eMax = (1 << eLen) - 1
-      var eBias = eMax >> 1
-      var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
-      var i = isLE ? 0 : (nBytes - 1)
-      var d = isLE ? 1 : -1
-      var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
-    
-      value = Math.abs(value)
-    
-      if (isNaN(value) || value === Infinity) {
-        m = isNaN(value) ? 1 : 0
-        e = eMax
-      } else {
-        e = Math.floor(Math.log(value) / Math.LN2)
-        if (value * (c = Math.pow(2, -e)) < 1) {
-          e--
-          c *= 2
-        }
-        if (e + eBias >= 1) {
-          value += rt / c
-        } else {
-          value += rt * Math.pow(2, 1 - eBias)
-        }
-        if (value * c >= 2) {
-          e++
-          c /= 2
-        }
-    
-        if (e + eBias >= eMax) {
-          m = 0
-          e = eMax
-        } else if (e + eBias >= 1) {
-          m = ((value * c) - 1) * Math.pow(2, mLen)
-          e = e + eBias
-        } else {
-          m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
-          e = 0
-        }
-      }
-    
-      for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
-    
-      e = (e << mLen) | m
-      eLen += mLen
-      for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
-    
-      buffer[offset + i - d] |= s * 128
-    }
-    
-    },{}],18:[function(require,module,exports){
-    var indexOf = function (xs, item) {
-        if (xs.indexOf) return xs.indexOf(item);
-        else for (var i = 0; i < xs.length; i++) {
-            if (xs[i] === item) return i;
-        }
-        return -1;
-    };
-    var Object_keys = function (obj) {
-        if (Object.keys) return Object.keys(obj)
-        else {
-            var res = [];
-            for (var key in obj) res.push(key)
-            return res;
-        }
-    };
-    
-    var forEach = function (xs, fn) {
-        if (xs.forEach) return xs.forEach(fn)
-        else for (var i = 0; i < xs.length; i++) {
-            fn(xs[i], i, xs);
-        }
-    };
-    
-    var defineProp = (function() {
-        try {
-            Object.defineProperty({}, '_', {});
-            return function(obj, name, value) {
-                Object.defineProperty(obj, name, {
-                    writable: true,
-                    enumerable: false,
-                    configurable: true,
-                    value: value
-                })
-            };
-        } catch(e) {
-            return function(obj, name, value) {
-                obj[name] = value;
-            };
-        }
-    }());
-    
-    var globals = ['Array', 'Boolean', 'Date', 'Error', 'EvalError', 'Function',
-    'Infinity', 'JSON', 'Math', 'NaN', 'Number', 'Object', 'RangeError',
-    'ReferenceError', 'RegExp', 'String', 'SyntaxError', 'TypeError', 'URIError',
-    'decodeURI', 'decodeURIComponent', 'encodeURI', 'encodeURIComponent', 'escape',
-    'eval', 'isFinite', 'isNaN', 'parseFloat', 'parseInt', 'undefined', 'unescape'];
-    
-    function Context() {}
-    Context.prototype = {};
-    
-    var Script = exports.Script = function NodeScript (code) {
-        if (!(this instanceof Script)) return new Script(code);
-        this.code = code;
-    };
-    
-    Script.prototype.runInContext = function (context) {
-        if (!(context instanceof Context)) {
-            throw new TypeError("needs a 'context' argument.");
-        }
-        
-        var iframe = document.createElement('iframe');
-        if (!iframe.style) iframe.style = {};
-        iframe.style.display = 'none';
-        
-        document.body.appendChild(iframe);
-        
-        var win = iframe.contentWindow;
-        var wEval = win.eval, wExecScript = win.execScript;
-    
-        if (!wEval && wExecScript) {
-            // win.eval() magically appears when this is called in IE:
-            wExecScript.call(win, 'null');
-            wEval = win.eval;
-        }
-        
-        forEach(Object_keys(context), function (key) {
-            win[key] = context[key];
-        });
-        forEach(globals, function (key) {
-            if (context[key]) {
-                win[key] = context[key];
-            }
-        });
-        
-        var winKeys = Object_keys(win);
-    
-        var res = wEval.call(win, this.code);
-        
-        forEach(Object_keys(win), function (key) {
-            // Avoid copying circular objects like `top` and `window` by only
-            // updating existing context properties or new properties in the `win`
-            // that was only introduced after the eval.
-            if (key in context || indexOf(winKeys, key) === -1) {
-                context[key] = win[key];
-            }
-        });
-    
-        forEach(globals, function (key) {
-            if (!(key in context)) {
-                defineProp(context, key, win[key]);
-            }
-        });
-        
-        document.body.removeChild(iframe);
-        
-        return res;
-    };
-    
-    Script.prototype.runInThisContext = function () {
-        return eval(this.code); // maybe...
-    };
-    
-    Script.prototype.runInNewContext = function (context) {
-        var ctx = Script.createContext(context);
-        var res = this.runInContext(ctx);
-    
-        if (context) {
-            forEach(Object_keys(ctx), function (key) {
-                context[key] = ctx[key];
-            });
-        }
-    
-        return res;
-    };
-    
-    forEach(Object_keys(Script.prototype), function (name) {
-        exports[name] = Script[name] = function (code) {
-            var s = Script(code);
-            return s[name].apply(s, [].slice.call(arguments, 1));
-        };
-    });
-    
-    exports.isContext = function (context) {
-        return context instanceof Context;
-    };
-    
-    exports.createScript = function (code) {
-        return exports.Script(code);
-    };
-    
-    exports.createContext = Script.createContext = function (context) {
-        var copy = new Context();
-        if(typeof context === 'object') {
-            forEach(Object_keys(context), function (key) {
-                copy[key] = context[key];
-            });
-        }
-        return copy;
-    };
-    
-    },{}],19:[function(require,module,exports){
-    (function (Buffer){
-    const { Parser } = require('binary-parser');
-    const { BitStream } = require('bit-buffer');
+    },{"base64-js":1,"ieee754":3}],"sdp":[function(require,module,exports){
     const { SourceDemo } = require('./demo');
-    const { SendPropFlags, SendPropType } = require('./extensions/DataTables');
-    const StringTables = require('./extensions/StringTables');
-    const NetMessages = require('./extensions/NetMessages');
-    
-    const dataParser = new Parser()
-        .endianess('little')
-        .int32('size')
-        .array('data', { type: 'int8', lengthInBytes: 'size' });
-    
-    // Vector
-    const vectorParser = new Parser()
-        .endianess('little')
-        .float('x') // vec_t 0-4
-        .float('y') // vec_t 5-8
-        .float('z'); // vec_t 9-12
-    
-    // QAngle
-    const qAngleParser = vectorParser;
-    
-    // democmdinfo_t
-    const cmdInfoParser = new Parser()
-        .endianess('little')
-        .int32('flags')
-        .array('viewOrigin', { length: 1, type: vectorParser })
-        .array('viewAngles', { length: 1, type: qAngleParser })
-        .array('localViewAngles', { length: 1, type: qAngleParser })
-        .array('viewOrigin2', { length: 1, type: vectorParser })
-        .array('viewAngles2', { length: 1, type: qAngleParser })
-        .array('localViewAngles2', { length: 1, type: qAngleParser });
-    
-    // 0x1 & 0x02
-    const defaultPacketParser = new Parser()
-        .endianess('little')
-        .array('packetInfo', { length: 2, type: cmdInfoParser })
-        .int32('inSequence')
-        .int32('outSequence')
-        .array('data', { length: 1, type: dataParser });
-    
-    const oldPacketParser = new Parser()
-        .endianess('little')
-        .array('packetInfo', { length: 1, type: cmdInfoParser })
-        .int32('inSequence')
-        .int32('outSequence')
-        .array('data', { length: 1, type: dataParser });
-    
-    // 0x03
-    const syncTickParser = new Parser();
-    
-    // 0x04
-    const consoleCmdParser = new Parser()
-        .endianess('little')
-        .int32('size')
-        .string('command', { encoding: 'utf8', length: 'size', stripNull: true });
-    
-    // 0x05
-    const userCmdParser = new Parser()
-        .endianess('little')
-        .int32('cmd')
-        .array('data', { length: 1, type: dataParser });
-    
-    // 0x06
-    const dataTableParser = new Parser().endianess('little').array('data', { length: 1, type: dataParser });
-    
-    // 0x07
-    const stopParser = new Parser().endianess('little').array('rest', { readUntil: 'eof', type: 'int8' });
-    
-    // 0x08
-    const customDataParser = new Parser()
-        .endianess('little')
-        .int32('unk')
-        .array('data', { length: 1, type: dataParser });
-    
-    // 0x09 (0x08)
-    const stringTablesParser = new Parser().endianess('little').array('data', { length: 1, type: dataParser });
-    
-    // Protocol 4
-    const defaultMessageParser = new Parser()
-        .endianess('little')
-        .bit8('type')
-        .int32('tick')
-        .bit8('slot')
-        .choice('message', {
-            tag: 'type',
-            choices: {
-                0x01: defaultPacketParser,
-                0x02: defaultPacketParser,
-                0x03: syncTickParser,
-                0x04: consoleCmdParser,
-                0x05: userCmdParser,
-                0x06: dataTableParser,
-                0x07: stopParser,
-                0x08: customDataParser,
-                0x09: stringTablesParser,
-            },
-        });
-    
-    // Protocol 2 & 3
-    const oldMessageParser = new Parser()
-        .endianess('little')
-        .bit8('type')
-        .int32('tick')
-        .choice('message', {
-            tag: 'type',
-            choices: {
-                0x01: oldPacketParser,
-                0x02: oldPacketParser,
-                0x03: syncTickParser,
-                0x04: consoleCmdParser,
-                0x05: userCmdParser,
-                0x06: dataTableParser,
-                0x07: stopParser,
-                0x08: stringTablesParser,
-            },
-        });
-    
-    const headerParser = new Parser()
-        .endianess('little')
-        .string('demoFileStamp', { encoding: 'utf8', length: 8, stripNull: true })
-        .int32('demoProtocol')
-        .int32('networkProtocol')
-        .string('serverName', { encoding: 'utf8', length: 260, stripNull: true })
-        .string('clientName', { encoding: 'utf8', length: 260, stripNull: true })
-        .string('mapName', { encoding: 'utf8', length: 260, stripNull: true })
-        .string('gameDirectory', { encoding: 'utf8', length: 260, stripNull: true })
-        .float('playbackTime')
-        .int32('playbackTicks')
-        .int32('playbackFrames')
-        .int32('signOnLength');
-    
-    class SourceDemoParser {
-        constructor() {
-            this.headerOnly = false;
-            this.headerParser = headerParser;
-            this.messageParser = undefined;
-            this.autoConfigure = true;
-            this.autoAdjust = false;
-            this.defaultGame = undefined;
-        }
-        static default() {
-            return new SourceDemoParser();
-        }
-        withHeaderOnly(headerOnly) {
-            this.headerOnly = headerOnly;
-            return this;
-        }
-        withHeaderParser(headerParser) {
-            this.headerParser = headerParser;
-            return this;
-        }
-        withMessageParser(messageParser) {
-            this.messageParser = messageParser;
-            return this;
-        }
-        withAutoConfiguration(autoConfigure) {
-            this.autoConfigure = autoConfigure;
-            return this;
-        }
-        withAutoAdjustment(autoAdjust) {
-            this.autoAdjust = autoAdjust;
-            return this;
-        }
-        withDefaultGame(defaultGame) {
-            this.defaultGame = defaultGame;
-            return this;
-        }
-        parseDemoHeader(demo, buffer) {
-            demo.header = this.headerParser.parse(buffer);
-    
-            if (demo.header.demoFileStamp != 'HL2DEMO') {
-                throw new Error(`Invalid demo file stamp: ${demo.header.demoFileStamp}`);
-            }
-    
-            return this;
-        }
-        parseDemoMessages(demo, buffer) {
-            this.messageParser = new Parser().endianess('little').skip(0x430);
-    
-            if (this.autoConfigure) {
-                switch (demo.header.demoProtocol) {
-                    case 2:
-                    case 3:
-                        this.messageParser.array('messages', {
-                            readUntil: 'eof',
-                            type: oldMessageParser,
-                        });
-                        break;
-                    case 4:
-                        this.messageParser.array('messages', {
-                            readUntil: 'eof',
-                            type: defaultMessageParser,
-                        });
-                        break;
-                    default:
-                        throw new Error(`Invalid demo protocol: ${demo.header.demoProtocol}`);
-                }
-            }
-    
-            // Oof
-            let rest = 4 - (buffer.length % 4);
-            let alignedBuffer = Buffer.concat([buffer], buffer.length + rest);
-    
-            demo.messages = this.messageParser.parse(alignedBuffer).messages;
-    
-            if (this.autoAdjust) {
-                if (this.defaultGame != undefined) {
-                    demo.detectGame(this.defaultGame);
-                }
-                demo.adjust();
-            }
-    
-            return this;
-        }
-        parseDemo(buffer) {
-            let demo = new SourceDemo();
-    
-            this.parseDemoHeader(demo, buffer);
-    
-            if (!this.headerOnly) {
-                this.parseDemoMessages(demo, buffer);
-            }
-    
-            return demo;
-        }
-        readUserCmdMessages(demo) {
-            let result = [];
-            for (let message of demo.messages) {
-                if (message.type == 0x05 && message.message.data[0].size > 0) {
-                    let temp = Buffer.from(message.message.data[0].data);
-                    let buf = new BitStream(temp);
-                    buf._view._view = new Uint8Array(temp);
-    
-                    let cmd = { source: message };
-    
-                    if (buf.readBoolean()) cmd.commandNumber = buf.readInt32();
-                    if (buf.readBoolean()) cmd.tickCount = buf.readInt32();
-                    if (buf.readBoolean()) cmd.viewAngleX = buf.readFloat32();
-                    if (buf.readBoolean()) cmd.viewAngleY = buf.readFloat32();
-                    if (buf.readBoolean()) cmd.viewAngleZ = buf.readFloat32();
-                    if (buf.readBoolean()) cmd.forwardMove = buf.readFloat32();
-                    if (buf.readBoolean()) cmd.sideMove = buf.readFloat32();
-                    if (buf.readBoolean()) cmd.upMove = buf.readFloat32();
-                    if (buf.readBoolean()) cmd.buttons = buf.readInt32();
-                    if (buf.readBoolean()) cmd.impulse = buf.readInt8();
-                    if (buf.readBoolean()) {
-                        cmd.weaponSelect = buf.readBits(11);
-                        if (buf.readBoolean()) cmd.weaponSubtype = buf.readBits(6);
-                    }
-                    if (buf.readBoolean()) cmd.mouseDx = buf.readInt16();
-                    if (buf.readBoolean()) cmd.mouseDy = buf.readInt16();
-                    result.push(cmd);
-                }
-            }
-            return result;
-        }
-        readStringTables(demo, stringTableReader = StringTables) {
-            let stringTableFlag = demo.header.demoProtocol === 4 ? 0x09 : 0x08;
-    
-            let frames = [];
-            for (let message of demo.messages) {
-                if (message.type === stringTableFlag && message.message.data[0].size > 0) {
-                    let buf = new BitStream(Buffer.from(message.message.data[0].data));
-    
-                    let frame = {
-                        tables: [],
-                    };
-    
-                    let tables = buf.readInt8();
-                    while (tables--) {
-                        let table = {
-                            entries: [],
-                        };
-    
-                        let tableName = buf.readASCIIString();
-                        let entries = buf.readInt16();
-    
-                        while (entries--) {
-                            let entry = {
-                                name: buf.readASCIIString(),
-                            };
-    
-                            if (buf.readBoolean()) {
-                                let length = buf.readInt16();
-                                let data = buf.readArrayBuffer(length);
-                                let reader = stringTableReader[tableName];
-                                if (reader) {
-                                    let stringTable = reader.create();
-                                    stringTable.read(data, demo);
-                                    data = stringTable;
-                                }
-                                entry.data = data;
-                            }
-    
-                            table.entries.push(entry);
-                        }
-    
-                        if (buf.readBoolean()) {
-                            let cclass = {
-                                entries: [],
-                            };
-    
-                            let entries = buf.readInt16();
-                            while (entries--) {
-                                let entry = {
-                                    name: buf.readASCIIString(),
-                                };
-    
-                                if (buf.readBoolean()) {
-                                    let length = buf.readInt16();
-                                    entry.data = buf.readArrayBuffer(length);
-                                }
-    
-                                table.class = cclass;
-                            }
-                        }
-    
-                        frame.tables.push(table);
-                    }
-    
-                    frames.push(frame);
-                }
-            }
-            return frames;
-        }
-        readDataTables(demo) {
-            let infoBitFlags = demo.header.demoProtocol === 2 ? 11 : 16;
-            let isPortal2 = demo.header.gameDirectory === 'portal2';
-    
-            let frames = [];
-            for (let message of demo.messages) {
-                if (message.type === 0x06 && message.message.data[0].size > 0) {
-                    let buf = new BitStream(Buffer.from(message.message.data[0].data));
-    
-                    let frame = {
-                        source: message,
-                        tables: [],
-                        classes: [],
-                    };
-    
-                    while (buf.readBoolean()) {
-                        let needsDecoder = buf.readBoolean();
-                        let netTableName = buf.readASCIIString();
-                        let table = {
-                            needsDecoder,
-                            netTableName,
-                            props: [],
-                        };
-    
-                        let props = buf.readBits(10, false);
-                        while (props--) {
-                            let type = buf.readBits(5, false);
-                            let varName = buf.readASCIIString();
-                            let flags = buf.readBits(infoBitFlags, false);
-                            let prop = {
-                                type,
-                                varName,
-                                flags,
-                                isExcludeProp: function() {
-                                    return (this.flags & SendPropFlags.Exclude) !== 0;
-                                },
-                            };
-    
-                            if (isPortal2) {
-                                prop.unk = buf.readBits(11, false);
-                            }
-    
-                            if (prop.type === SendPropType.DataTable || prop.isExcludeProp()) {
-                                prop.excludeDtName = buf.readASCIIString();
-                            } else if (
-                                prop.type === SendPropType.String ||
-                                prop.type === SendPropType.Int ||
-                                prop.type === SendPropType.Float ||
-                                prop.type === SendPropType.Vector ||
-                                prop.type === SendPropType.VectorXy
-                            ) {
-                                if (isPortal2) {
-                                    prop.unk2 = buf.readBits(71, false);
-                                } else {
-                                    prop.lowValue = buf.readFloat32();
-                                    prop.highValue = buf.readFloat32();
-                                    prop.bits = buf.readBits(7, false);
-                                }
-                            } else if (prop.type === SendPropType.Array) {
-                                prop.elements = buf.readBits(10, false);
-                            } else {
-                                throw new Error('Invalid prop type: ' + prop.type);
-                            }
-    
-                            table.props.push(prop);
-                        }
-    
-                        frame.tables.push(table);
-                    }
-    
-                    let classes = buf.readInt16();
-                    while (classes--) {
-                        frame.classes.push({
-                            classId: buf.readInt16(),
-                            className: buf.readASCIIString(),
-                            dataTableName: buf.readASCIIString(),
-                        });
-                    }
-    
-                    frames.push(frame);
-                }
-            }
-            return frames;
-        }
-        readPackets(demo, netMessages = undefined) {
-            netMessages = netMessages || (demo.header.demoProtocol === 4 ? NetMessages.Portal2Engine : NetMessages.HalfLife2Engine);
-    
-            let frames = [];
-            for (let message of demo.messages) {
-                if ((message.type === 0x01 || message.type === 0x02) && message.message.data[0].size > 0) {
-                    //console.log('-------- DEMO MESSAGE TICK ' + message.tick + ' --------');
-                    let packets = [];
-                    let buf = new BitStream(Buffer.from(message.message.data[0].data));
-    
-                    while (buf.bitsLeft > 6) {
-                        let type = buf.readBits(6);
-    
-                        const NetMessage = netMessages[type];
-                        if (NetMessage) {
-                            let message = new NetMessage(type);
-                            //console.log(message.name);
-                            message.read(buf, demo);
-                            //console.log(message);
-                            packets.push(message);
-                        } else {
-                            throw new Error(`Net message type ${type} unknown!`);
-                        }
-                    }
-    
-                    frames.push({ source: message, packets });
-                }
-            }
-            return frames;
-        }
-    }
-    
-    module.exports = { SourceDemoParser };
-    
-    }).call(this,require("buffer").Buffer)
-    },{"./demo":2,"./extensions/DataTables":3,"./extensions/NetMessages":4,"./extensions/StringTables":5,"binary-parser":13,"bit-buffer":15,"buffer":16}],20:[function(require,module,exports){
-    const { SourceDemo } = require('./demo');
-    const { SourceGames, SourceGame } = require('./game');
+    const DemoMessages = require('./messages');
     const { SourceDemoParser } = require('./parser');
-    const { SourceAutoRecord } = require('./extensions/sar');
-    const DataTables = require('./extensions/DataTables');
-    const StringTables = require('./extensions/StringTables');
-    const NetMessages = require('./extensions/NetMessages');
-    module.exports = { SourceDemo, SourceGames, SourceGame, SourceDemoParser, SourceAutoRecord, DataTables, StringTables, NetMessages };
+    const DataTables = require('./types/DataTables');
+    const { GameEventManager } = require('./types/GameEventManager');
+    const NetMessages = require('./types/NetMessages');
+    const SoundInfo = require('./types/SoundInfo');
+    const StringTables = require('./types/StringTables');
+    const { UserCmd } = require('./types/UserCmd');
+    const SourceGames = require('./speedrun/games');
+    const { SarTimer, SarReplay } = require('./speedrun/sar');
+    const { SourceTimer, TimingResult } = require('./speedrun/timer');
     
-    },{"./demo":2,"./extensions/DataTables":3,"./extensions/NetMessages":4,"./extensions/StringTables":5,"./extensions/sar":6,"./game":7,"./parser":19}]},{},[1]);
+    module.exports = {
+        SourceDemo,
+        SourceDemoParser,
+        DemoMessages,
+        DataTables,
+        StringTables,
+        NetMessages,
+        UserCmd,
+        GameEventManager,
+        SoundInfo,
+        Speedrun: {
+            SourceTimer,
+            SourceGames,
+            TimingResult,
+            SarTimer,
+            SarReplay,
+        },
+    };
+    
+    },{"./demo":5,"./messages":6,"./parser":7,"./speedrun/games":12,"./speedrun/sar":13,"./speedrun/timer":14,"./types/DataTables":16,"./types/GameEventManager":17,"./types/NetMessages":18,"./types/SoundInfo":20,"./types/StringTables":21,"./types/UserCmd":22}]},{},[]);
     
