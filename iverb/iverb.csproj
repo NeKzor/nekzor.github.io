@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <Authors>NeKz</Authors>
+    <Description>ok²</Description>
+    <Copyright>Copyright © NeKz 2017-2018</Copyright>
+    <Configurations>Debug</Configurations>
+    <LangVersion>7.1</LangVersion>
+    <RuntimeFrameworkVersion>2.0.0</RuntimeFrameworkVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../lib/Portal2Boards.Net/src/Portal2Boards.Net/Portal2Boards.Net.csproj" />
+	<PackageReference Include="System.ValueTuple" Version="4.4.0" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,14 @@
+#!/bin/bash
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games:/home/pi/n/bin"
+
+pushd /home/pi/nekzor.github.io/
+
+node backend/formatter/formatter.js
+
+git add --all
+git commit -m "$(date --iso-8601)"
+git push origin master
+
+rm -rf _backend/seum/cache/
+
+popd
