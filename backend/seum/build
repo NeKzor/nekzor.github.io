@@ -1,8 +1,0 @@
-#!/bin/bash
-dotnet restore
-dotnet build -c Release
-
-if [ "$1" = "ARM" ]; then
-    dotnet publish -c Release -r linux-arm
-fi
-
