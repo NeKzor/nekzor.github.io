@@ -1,12 +1,7 @@
 ﻿//#define EOYS
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Portal2Boards;
-using Portal2Boards.API;
-using Portal2Boards.Extensions;
 
 namespace nekzor.github.io
 {

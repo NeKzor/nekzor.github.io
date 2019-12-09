@@ -13,7 +13,7 @@ namespace nekzor.github.io
     internal class Stats
     {
 #if EOYS
-        public static readonly int SnapshotYear = 2018;
+        public static readonly int SnapshotYear = 2019;
 #endif
         private readonly List<string> _page;
 

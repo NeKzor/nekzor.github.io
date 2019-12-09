@@ -1,0 +1,5 @@
+mkdir lib
+pushd lib
+git clone https://github.com/NeKzor/Portal2Boards.Net
+git clone https://github.com/NeKzor/SteamCommunity.Net
+popd
