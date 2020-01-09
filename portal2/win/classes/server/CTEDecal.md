@@ -1,0 +1,18 @@
+# CTEDecal
+Class server-side.
+
+|Prop|Type|Offset|
+|---|:-:|:-:|
+|baseclass|[DT_BaseTempEntity](#DT_BaseTempEntity)|0 \| 0x0|
+|m_vecOrigin|vector|12 \| 0xc|
+|m_vecStart|vector|24 \| 0x18|
+|m_nEntity|int|36 \| 0x24|
+|m_nHitbox|int|40 \| 0x28|
+|m_nIndex|int|44 \| 0x2c|
+
+## Recv
+
+### DT_BaseTempEntity
+
+|Prop|Type|Offset|
+|---|:-:|:-:|
