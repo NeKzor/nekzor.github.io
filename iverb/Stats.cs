@@ -12,9 +12,8 @@ namespace nekzor.github.io
 {
     internal class Stats
     {
-#if EOYS
-        public static readonly int SnapshotYear = 2019;
-#endif
+        public static readonly int SnapshotYear = App.CurrentYear - 1;
+
         private readonly List<string> _page;
 
         public Stats()
@@ -299,7 +298,7 @@ namespace nekzor.github.io
 
             // Most World Records
             Title("Most Records");
-            StartTable(6, 3, "Player", "Total", "2013", "2014", "2015", "2016", "2017", "2018", "2019");
+            StartTable(6, 3, YearList(2013, App.CurrentYear, "Player", "Total"));
             foreach (var wr in wrh
                 .OrderByDescending(h => h.Records.Count)
                 .ThenBy(r => r.Records.First().Date))
@@ -307,7 +306,7 @@ namespace nekzor.github.io
                 _page.Add("<tr>");
                 _page.Add($"<td><a class=\"link\" href=\"https://board.iverb.me/profile/{wr.Player.Id}\">{wr.Player.Name}</a></td>");
                 _page.Add($"<td title=\"{wr.Records.Count(r => r.Map.IsOfficial)} Official\">{wr.Records.Count}</td>");
-                for (int year = 2013; year < 2020; year++)
+                for (int year = 2013; year <= App.CurrentYear; year++)
                 {
                     var total = wr.Records.Where(r => r.Date.Value.Year == year);
                     var official = total.Where(r => r.Map.IsOfficial);
@@ -345,7 +344,7 @@ namespace nekzor.github.io
             // Activity
             Title("Activity");
             StartTable(6, 3, "Year", "Total", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
-            for (int i = 2013; i < 2020; i++)
+            for (int i = 2013; i <= App.CurrentYear; i++)
             {
                 var year = entries
                     .Where(r => r.Date.Value.Year == i)
@@ -377,7 +376,7 @@ namespace nekzor.github.io
             // Most World Records each Year
             Title("Most Records each Year");
             StartTable(4, 4, "Year", "Player", "Total");
-            for (int year = 2013; year < 2020; year++)
+            for (int year = 2013; year <= App.CurrentYear; year++)
             {
                 var players = wrh
                     .OrderByDescending(rh => rh.Records
@@ -456,7 +455,7 @@ namespace nekzor.github.io
             // Total Time of World Records
             Title("Total Time of Records");
             StartTable(4, 4, "Year", "Single Player", "Cooperative");
-            for (int year = 2014; year < 2020; year++)
+            for (int year = 2014; year <= App.CurrentYear; year++)
             {
                 Func<RecordMap, long?> SumScores = (m) =>
                 {
@@ -647,7 +646,7 @@ namespace nekzor.github.io
 
             // Most Personal Records
             Title("Most Personal Records");
-            StartTable(6, 3, "Player", "Total", "2013", "2014", "2015", "2016", "2017", "2018", "2019");
+            StartTable(6, 3, YearList(2013, App.CurrentYear, "Player", "Total"));
             var always = new List<RecordHolder>();
             foreach (var player in all
                 .OrderByDescending(h => h.Records.Count)
@@ -660,14 +659,14 @@ namespace nekzor.github.io
                 _page.Add($"<td><a class=\"link\" href=\"https://board.iverb.me/profile/{player.Player.Id}\">{player.Player.Name}</a></td>");
                 _page.Add($"<td title=\"{off} Official\">{recs}</td>");
                 var active = 0;
-                for (int year = 2013; year < 2020; year++)
+                for (int year = 2013; year <= App.CurrentYear; year++)
                 {
                     var total = player.Records.Where(r => r.Date.Value.Year == year);
                     var official = total.Where(r => r.Map.IsOfficial);
                     if (total.Count() > 0) active++;
                     _page.Add($"<td title=\"{official.Count()} Official\">{total.Count()}</td>");
                 }
-                if (active == 2020 - 2013)
+                if (active == App.CurrentYear - 2013)
                     always.Add(player);
                 _page.Add("</tr>");
             }
@@ -676,7 +675,7 @@ namespace nekzor.github.io
             // Activity
             Title("Activity");
             StartTable(6, 3, "Year", "Total", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
-            for (int i = 2013; i < 2020; i++)
+            for (int i = 2013; i <= App.CurrentYear; i++)
             {
                 var year = changelog.Entries
                     .Where(e => !e.IsBanned)
@@ -710,7 +709,7 @@ namespace nekzor.github.io
             // Most Records each Year
             Title("Most Records each Year");
             StartTable(4, 4, "Year", "Player", "Total");
-            for (int year = 2013; year < 2020; year++)
+            for (int year = 2013; year <= App.CurrentYear; year++)
             {
                 var players = all
                     .OrderByDescending(rh => rh.Records
@@ -742,7 +741,7 @@ namespace nekzor.github.io
 
             // At Least One Record Every Year
             Title("Active since 2013");
-            StartTable(6, 3, "Player", "Total", "2013", "2014", "2015", "2016", "2017", "2018", "2019");
+            StartTable(6, 3,YearList(2013, App.CurrentYear, "Player", "Total"));
             foreach (var player in always
                 .OrderByDescending(h => h.Records.Count)
                 .Take(20))
@@ -753,7 +752,7 @@ namespace nekzor.github.io
                 _page.Add("<tr>");
                 _page.Add($"<td><a class=\"link\" href=\"https://board.iverb.me/profile/{player.Player.Id}\">{player.Player.Name}</a></td>");
                 _page.Add($"<td title=\"{off} Official\">{recs}</td>");
-                for (int year = 2013; year < 2020; year++)
+                for (int year = 2013; year <= App.CurrentYear; year++)
                 {
                     var total = player.Records.Where(r => r.Date.Value.Year == year);
                     var official = total.Where(r => r.Map.IsOfficial);
@@ -769,7 +768,7 @@ namespace nekzor.github.io
             var peeps = all.Where(rh => rh.Records.Any(r => r.Date.Value.Year == 2013)).ToList();
             var totalpeeps = peeps.Count();
             var lastpeeps = 0;
-            for (int year = 2013; year < 2020; year++)
+            for (int year = 2013; year <= App.CurrentYear; year++)
             {
                 var peepsYear = all
                     .Where(rh => rh.Records.Any(r => r.Date.Value.Year == year));
@@ -794,7 +793,7 @@ namespace nekzor.github.io
             // Most Second Places
             Title("Most 2nd Places");
             StartTable(4, 4, "Year", "Player", "Total");
-            for (int year = 2013; year < 2020; year++)
+            for (int year = 2013; year <= App.CurrentYear; year++)
             {
                 var players = all
                     .OrderByDescending(rh => rh.Records
@@ -1050,6 +1049,13 @@ $@"                 <li class=""tab""><a href=""#{id}"">{title}</a></li>");
         {
             if (br) _page.Add("<br><br><br>");
             _page.Add($"<div class=\"row\"><h3 align=\"center\">{text}</h3></div>");
+        }
+        string[] YearList(int start, int end, params string[] beginning)
+        {
+            var list = new List<string>();
+            list.AddRange(beginning);
+            for (var year = start; year <= end; ++year) list.Add(year.ToString());
+            return list.ToArray();
         }
         private void StartTable(int colLength, int pushLength, params string[] items)
         {
