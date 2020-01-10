@@ -128,220 +128,220 @@ Dumped from map files.
 
 |Target Name or ID|Name|
 |---|:-:|
-|ach_nice_catch|ACH.NICE_CATCH||
+|ach_nice_catch|ACH.NICE_CATCH|
 
 ## mp_coop_start
 
 |Target Name or ID|Name|
 |---|:-:|
-|ach_hi_five|ACH.HI_FIVE_YOUR_PARTNER||
+|ach_hi_five|ACH.HI_FIVE_YOUR_PARTNER|
 
 ## mp_coop_tbeam_end
 
 |Target Name or ID|Name|
 |---|:-:|
-|achievement_cube|ACH.PARTY_OF_THREE||
+|achievement_cube|ACH.PARTY_OF_THREE|
 
 ## sp_a1_intro1
 
 |Target Name or ID|Name|
 |---|:-:|
-|SURVIVE_CONTAINER_RIDE_AWARD|AV_HAT1||
-|SURVIVE_CONTAINER_RIDE|ACH.SURVIVE_CONTAINER_RIDE||
+|SURVIVE_CONTAINER_RIDE_AWARD|AV_HAT1|
+|SURVIVE_CONTAINER_RIDE|ACH.SURVIVE_CONTAINER_RIDE|
 
 ## sp_a1_wakeup
 
 |Target Name or ID|Name|
 |---|:-:|
-|achievement_wakeup_glados|ACH.WAKE_UP||
+|achievement_wakeup_glados|ACH.WAKE_UP|
 
 ## sp_a2_bridge_intro
 
 |Target Name or ID|Name|
 |---|:-:|
-|BRIDGE|ACH.BRIDGE||
+|BRIDGE|ACH.BRIDGE|
 
 ## sp_a2_bts1
 
 |Target Name or ID|Name|
 |---|:-:|
-|BREAK_OUT|ACH.BREAK_OUT||
-|pre_solved_chamber-REENTER_TEST_CHAMBERS|ACH.REENTER_TEST_CHAMBERS||
+|BREAK_OUT|ACH.BREAK_OUT|
+|pre_solved_chamber-REENTER_TEST_CHAMBERS|ACH.REENTER_TEST_CHAMBERS|
 
 ## sp_a2_bts4
 
 |Target Name or ID|Name|
 |---|:-:|
-|achievement_redemption_line|ACH.SAVE_REDEMPTION_TURRET||
-|turret_scanner_achievement|ACH.NOT_THE_DROID||
+|achievement_redemption_line|ACH.SAVE_REDEMPTION_TURRET|
+|turret_scanner_achievement|ACH.NOT_THE_DROID|
 
 ## sp_a2_core
 
 |Target Name or ID|Name|
 |---|:-:|
-|STALEMATE_ASSOCIATE|ACH.STALEMATE_ASSOCIATE||
+|STALEMATE_ASSOCIATE|ACH.STALEMATE_ASSOCIATE|
 
 ## sp_a2_laser_intro
 
 |Target Name or ID|Name|
 |---|:-:|
-|LASER|ACH.LASER||
+|LASER|ACH.LASER|
 
 ## sp_a2_pit_flings
 
 |Target Name or ID|Name|
 |---|:-:|
-|SAVE_CUBE|ACH.SAVE_CUBE||
+|SAVE_CUBE|ACH.SAVE_CUBE|
 
 ## sp_a2_ricochet
 
 |Target Name or ID|Name|
 |---|:-:|
-|speed_run_achievement_award|AV_SHIRT3||
-|speed_run_achievement|ACH.SPEED_RUN_LEVEL||
+|speed_run_achievement_award|AV_SHIRT3|
+|speed_run_achievement|ACH.SPEED_RUN_LEVEL|
 
 ## sp_a2_trust_fling
 
 |Target Name or ID|Name|
 |---|:-:|
-|radio_achievement|ACH.CLEAN_UP||
+|radio_achievement|ACH.CLEAN_UP|
 
 ## sp_a3_03
 
 |Target Name or ID|Name|
 |---|:-:|
-|dummy_chamber_button_achievement|ACH.A3_DOORS[1]||
-|dummy_chamber_button2_achievement|ACH.A3_DOORS[2]||
-|dummy_chamber_button3_achievement|ACH.A3_DOORS[3]||
+|dummy_chamber_button_achievement|ACH.A3_DOORS[1]|
+|dummy_chamber_button2_achievement|ACH.A3_DOORS[2]|
+|dummy_chamber_button3_achievement|ACH.A3_DOORS[3]|
 
 ## sp_a3_bomb_flings
 
 |Target Name or ID|Name|
 |---|:-:|
-|achievement_blue_gel_entity|ACH.BLUE_GEL||
+|achievement_blue_gel_entity|ACH.BLUE_GEL|
 
 ## sp_a3_crazy_box
 
 |Target Name or ID|Name|
 |---|:-:|
-|achievement_crazy_box_entity|ACH.CATCH_CRAZY_BOX||
+|achievement_crazy_box_entity|ACH.CATCH_CRAZY_BOX|
 
 ## sp_a3_end
 
 |Target Name or ID|Name|
 |---|:-:|
-|achievement_all_gels_entity|ACH.ALL_GELS||
+|achievement_all_gels_entity|ACH.ALL_GELS|
 
 ## sp_a3_portal_intro
 
 |Target Name or ID|Name|
 |---|:-:|
-|achievement_white_gel_entity|ACH.WHITE_GEL||
+|achievement_white_gel_entity|ACH.WHITE_GEL|
 
 ## sp_a3_speed_flings
 
 |Target Name or ID|Name|
 |---|:-:|
-|achievement_orange_gel_entity|ACH.ORANGE_GEL||
+|achievement_orange_gel_entity|ACH.ORANGE_GEL|
 
 ## sp_a3_speed_ramp
 
 |Target Name or ID|Name|
 |---|:-:|
-|portrait_achievement|ACH.PORTRAIT||
+|portrait_achievement|ACH.PORTRAIT|
 
 ## sp_a3_transition01
 
 |Target Name or ID|Name|
 |---|:-:|
-|boat_achievement|ACH.NO_BOAT||
-|potatos_achievement|ACH.ADDICTED_TO_SPUDS||
-|dummy_chamber_button3_achievement|ACH.A3_DOORS[6]||
-|dummy_chamber_button2_achievement|ACH.A3_DOORS[5]||
-|dummy_chamber_button_achievement|ACH.A3_DOORS[4]||
+|boat_achievement|ACH.NO_BOAT|
+|potatos_achievement|ACH.ADDICTED_TO_SPUDS|
+|dummy_chamber_button3_achievement|ACH.A3_DOORS[6]|
+|dummy_chamber_button2_achievement|ACH.A3_DOORS[5]|
+|dummy_chamber_button_achievement|ACH.A3_DOORS[4]|
 
 ## sp_a4_finale1
 
 |Target Name or ID|Name|
 |---|:-:|
-|achievement_crusher|ACH.WHEATLEY_TRIES_TO||
-|achievement_box_liberator|ACH.MBOX_LIBERATE||
-|achievement_box_destroy|ACH.MBOX_DESTROY||
-|achievement_box_savior|ACH.MBOX_SAVIOR||
-|achievement_come_back_jump_in_pit|ACH.COMPLIANT||
+|achievement_crusher|ACH.WHEATLEY_TRIES_TO|
+|achievement_box_liberator|ACH.MBOX_LIBERATE|
+|achievement_box_destroy|ACH.MBOX_DESTROY|
+|achievement_box_savior|ACH.MBOX_SAVIOR|
+|achievement_come_back_jump_in_pit|ACH.COMPLIANT|
 
 ## sp_a4_finale4
 
 |Target Name or ID|Name|
 |---|:-:|
-|moon_relay_award|AV_PROP1||
-|moon_relay|ACH.SHOOT_THE_MOON||
+|moon_relay_award|AV_PROP1|
+|moon_relay|ACH.SHOOT_THE_MOON|
 
 ## sp_a4_intro
 
 |Target Name or ID|Name|
 |---|:-:|
-|logic_achievement_trivial_test|ACH.TRIVIAL_TEST||
-|achievement_defiant|ACH.DEFIANT||
+|logic_achievement_trivial_test|ACH.TRIVIAL_TEST|
+|achievement_defiant|ACH.DEFIANT|
 
 ## sp_a4_jump_polarity
 
 |Target Name or ID|Name|
 |---|:-:|
-|logic_achievement_monitor_break|ACH.BREAK_MONITORS[11]||
+|logic_achievement_monitor_break|ACH.BREAK_MONITORS[11]|
 
 ## sp_a4_laser_catapult
 
 |Target Name or ID|Name|
 |---|:-:|
-|logic_achievement_monitor_break|ACH.BREAK_MONITORS[8]||
+|logic_achievement_monitor_break|ACH.BREAK_MONITORS[8]|
 
 ## sp_a4_laser_platform
 
 |Target Name or ID|Name|
 |---|:-:|
-|logic_achievement_monitor_break|ACH.BREAK_MONITORS[9]||
+|logic_achievement_monitor_break|ACH.BREAK_MONITORS[9]|
 
 ## sp_a4_speed_tb_catch
 
 |Target Name or ID|Name|
 |---|:-:|
-|logic_achievement_tractor_beam|ACH.TRACTOR_BEAM||
-|logic_achievement_monitor_break|ACH.BREAK_MONITORS[10]||
+|logic_achievement_tractor_beam|ACH.TRACTOR_BEAM|
+|logic_achievement_monitor_break|ACH.BREAK_MONITORS[10]|
 
 ## sp_a4_stop_the_box
 
 |Target Name or ID|Name|
 |---|:-:|
-|logic_achievement_monitor_break|ACH.BREAK_MONITORS[7]||
+|logic_achievement_monitor_break|ACH.BREAK_MONITORS[7]|
 
 ## sp_a4_tb_catch
 
 |Target Name or ID|Name|
 |---|:-:|
-|logic_achievement_monitor_break2|ACH.BREAK_MONITORS[6]||
-|logic_achievement_monitor_break|ACH.BREAK_MONITORS[5]||
+|logic_achievement_monitor_break2|ACH.BREAK_MONITORS[6]|
+|logic_achievement_monitor_break|ACH.BREAK_MONITORS[5]|
 
 ## sp_a4_tb_intro
 
 |Target Name or ID|Name|
 |---|:-:|
-|logic_achievement_monitor_break|ACH.BREAK_MONITORS[1]||
+|logic_achievement_monitor_break|ACH.BREAK_MONITORS[1]|
 
 ## sp_a4_tb_polarity
 
 |Target Name or ID|Name|
 |---|:-:|
-|logic_achievement_monitor_break|ACH.BREAK_MONITORS[4]||
+|logic_achievement_monitor_break|ACH.BREAK_MONITORS[4]|
 
 ## sp_a4_tb_trust_drop
 
 |Target Name or ID|Name|
 |---|:-:|
-|logic_achievement_monitor_break|ACH.BREAK_MONITORS[2]||
+|logic_achievement_monitor_break|ACH.BREAK_MONITORS[2]|
 
 ## sp_a4_tb_wall_button
 
 |Target Name or ID|Name|
 |---|:-:|
-|logic_achievement_monitor_break|ACH.BREAK_MONITORS[3]||
+|logic_achievement_monitor_break|ACH.BREAK_MONITORS[3]|
