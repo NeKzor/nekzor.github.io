@@ -647,7 +647,6 @@ namespace nekzor.github.io
             // Most Personal Records
             Title("Most Personal Records");
             StartTable(6, 3, YearList(2013, App.CurrentYear, "Player", "Total"));
-            var always = new List<RecordHolder>();
             foreach (var player in all
                 .OrderByDescending(h => h.Records.Count)
                 .Take(100))
@@ -666,8 +665,6 @@ namespace nekzor.github.io
                     if (total.Count() > 0) active++;
                     _page.Add($"<td title=\"{official.Count()} Official\">{total.Count()}</td>");
                 }
-                if (active == App.CurrentYear - 2013)
-                    always.Add(player);
                 _page.Add("</tr>");
             }
             EndTable();
@@ -739,25 +736,22 @@ namespace nekzor.github.io
             }
             EndTable();
 
-            // At Least One Record Every Year
-            Title("Active since 2013");
-            StartTable(6, 3,YearList(2013, App.CurrentYear, "Player", "Total"));
-            foreach (var player in always
-                .OrderByDescending(h => h.Records.Count)
+            // Longest Active Players
+            Title("Longest Active Players");
+            StartTable(6, 3, "Player", "First Record", "Last Record", "Duration");
+            foreach (var player in all
+                .OrderByDescending(h => h.ActiveSpan)
                 .Take(20))
             {
-                var recs = player.Records.Count;
-                var off = player.Records.Count(r => r.Map.IsOfficial);
+                var sorted = player.Records.OrderBy(x => x.Date);
+                var first = sorted.First().Date;
+                var last = sorted.Last().Date;
 
                 _page.Add("<tr>");
                 _page.Add($"<td><a class=\"link\" href=\"https://board.iverb.me/profile/{player.Player.Id}\">{player.Player.Name}</a></td>");
-                _page.Add($"<td title=\"{off} Official\">{recs}</td>");
-                for (int year = 2013; year <= App.CurrentYear; year++)
-                {
-                    var total = player.Records.Where(r => r.Date.Value.Year == year);
-                    var official = total.Where(r => r.Map.IsOfficial);
-                    _page.Add($"<td title=\"{official.Count()} Official\">{total.Count()}</td>");
-                }
+                _page.Add($"<td title=\"{first.DateTimeToString() + " (CET)"}\">{(first?.ToString("yyy-MM-dd"))}</td>");
+                _page.Add($"<td title=\"{last.DateTimeToString() + " (CET)"}\">{(last?.ToString("yyy-MM-dd"))}</td>");
+                _page.Add($"<td>{(int)player.ActiveSpan} days</td>");
                 _page.Add("</tr>");
             }
             EndTable();
@@ -1209,6 +1203,15 @@ $@"			<div id=""{profile.Id}"" class=""modal blue-grey darken-3"">
                     .GroupBy(r => r.Map.Name)
                     .Select(m => m.OrderBy(x => x.Date).First())
                     .ToList();
+
+            public double ActiveSpan
+            {
+                get
+                {
+                    var sorted = Records.OrderBy(x => x.Date);
+                    return (sorted.First().Date.Value - sorted.Last().Date.Value).TotalDays;
+                }
+            }
         }
     }
 }
