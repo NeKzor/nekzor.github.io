@@ -719,24 +719,24 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             const COORD_RESOLUTION = 1.0 / COORD_DENOMINATOR;
     
             let value = 0.0;
-            let intval = this.readBits(1);
-            let fractval = this.readBits(1);
-            if (intval || fractval) {
-                let signbit = this.readBits(1);
-                if (intval) {
-                    intval = this.readBits(COORD_INTEGER_BITS) + 1;
+            let integer = this.readBits(1);
+            let fraction = this.readBits(1);
+            if (integer || fraction) {
+                const sign = this.readBits(1);
+                if (integer) {
+                    integer = this.readBits(COORD_INTEGER_BITS) + 1;
                 }
-                if (fractval) {
-                    fractval = this.readBits(COORD_FRACTIONAL_BITS);
+                if (fraction) {
+                    fraction = this.readBits(COORD_FRACTIONAL_BITS);
                 }
-                value = intval + fractval * COORD_RESOLUTION;
-                if (signbit) value = -value;
+                value = integer + fraction * COORD_RESOLUTION;
+                if (sign) value = -value;
             }
     
             return value;
         }
         readVectorCoord() {
-            let [x, y, z] = [this.readBoolean(), this.readBoolean(), this.readBoolean()];
+            const [x, y, z] = [this.readBoolean(), this.readBoolean(), this.readBoolean()];
             return new Vector(x ? this.readCoord() : 0, y ? this.readCoord() : 0, z ? this.readCoord() : 0);
         }
         readField(bits, fallbackValue = 0) {
@@ -746,7 +746,7 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             return this.readBoolean() ? callback(this.readBits(bits)) : fallbackValue;
         }
         readBitStream(bitLength) {
-            var slice = new SourceDemoBuffer(this._view);
+            const slice = new SourceDemoBuffer(this._view);
             slice._startIndex = this._index;
             slice._index = this._index;
             slice.length = bitLength;
@@ -763,9 +763,9 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
     };
     
     },{"./types/QAngle":19,"./types/Vector":23,"bit-buffer":2}],5:[function(require,module,exports){
-    const DemoMessages = require('./messages');
+    const { Packet, SyncTick, DataTable, Message, ...DemoMessages } = require('./messages');
     const { SendTable, ServerClassInfo } = require('./types/DataTables');
-    const NetMessages = require('./types/NetMessages');
+    const { NetMessage, ...NetMessages } = require('./types/NetMessages');
     const { StringTable } = require('./types/StringTables');
     const { UserCmd } = require('./types/UserCmd');
     const SourceGames = require('./speedrun/games');
@@ -778,22 +778,41 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             return this.demoProtocol === 4;
         }
         findMessage(type) {
-            return this.messages.find((msg) => (typeof type === 'function' ? type(msg) : msg.isType(type)));
+            const byType = type.prototype instanceof Message ? (msg) => msg instanceof type : (msg) => type(msg);
+            return this.messages.find(byType);
         }
         findMessages(type) {
-            return this.messages.filter((msg) => (typeof type === 'function' ? type(msg) : msg.isType(type)));
+            const byType = type.prototype instanceof Message ? (msg) => msg instanceof type : (msg) => type(msg);
+            return this.messages.filter(byType);
         }
         findPacket(type) {
-            return this.findMessages('Packet')
-                .map((msg) => msg.packets)
-                .reduce((acc, val) => acc.concat(val), [])
-                .find((packet) => (typeof type === 'function' ? type(packet) : packet.isType(type)));
+            const byType =
+                type.prototype instanceof NetMessage ? (packet) => packet instanceof type : (packet) => type(packet);
+    
+            for (const msg of this.messages) {
+                if (msg instanceof Packet) {
+                    const packet = msg.packets.find(byType);
+                    if (packet) {
+                        return packet;
+                    }
+                }
+            }
         }
         findPackets(type) {
-            return this.findMessages('Packet')
-                .map((msg) => msg.packets)
-                .reduce((acc, val) => acc.concat(val), [])
-                .filter((packet) => (typeof type === 'function' ? type(packet) : packet.isType(type)));
+            const isType =
+                type.prototype instanceof NetMessage ? (packet) => packet instanceof type : (packet) => type(packet);
+    
+            const packets = [];
+            for (const msg of this.messages) {
+                if (msg instanceof Packet) {
+                    for (const packet of msg.packets) {
+                        if (isType(packet)) {
+                            packets.push(packet);
+                        }
+                    }
+                }
+            }
+            return packets;
         }
         readHeader(buf) {
             this.demoFileStamp = buf.readASCIIString(8);
@@ -811,20 +830,17 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             this.playbackFrames = buf.readInt32();
             this.signOnLength = buf.readInt32();
             this.messages = [];
-    
-            this.readHea;
-    
             return this;
         }
         readMessages(buf) {
-            let readSlot = this.isNewEngine();
-            let demoMessages = readSlot ? DemoMessages.NewEngine : DemoMessages.OldEngine;
+            const readSlot = this.isNewEngine();
+            const demoMessages = readSlot ? DemoMessages.NewEngine : DemoMessages.OldEngine;
     
             while (buf.bitsLeft > 8) {
-                let type = buf.readInt8();
-                let messageType = demoMessages[type];
+                const type = buf.readInt8();
+                const messageType = demoMessages[type];
                 if (messageType) {
-                    let message = messageType.default(type).setTick(buf.readInt32());
+                    const message = messageType.default(type).setTick(buf.readInt32());
     
                     if (readSlot) {
                         message.setSlot(buf.readInt8());
@@ -839,9 +855,9 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             return this;
         }
         readUserCmds() {
-            for (let message of this.messages) {
-                if (message.isType('UserCmd')) {
-                    let cmd = new UserCmd();
+            for (const message of this.messages) {
+                if (message instanceof DemoMessages.UserCmd) {
+                    const cmd = new UserCmd();
                     cmd.read(message.data);
                     message.userCmd = cmd;
                 }
@@ -850,13 +866,13 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             return this;
         }
         readStringTables() {
-            for (let message of this.messages) {
-                if (message.isType('StringTable')) {
-                    let stringTables = [];
+            for (const message of this.messages) {
+                if (message instanceof DemoMessages.StringTable) {
+                    const stringTables = [];
     
                     let tables = message.data.readInt8();
                     while (tables--) {
-                        let table = new StringTable();
+                        const table = new StringTable();
                         table.read(message.data, this);
                         stringTables.push(table);
                     }
@@ -868,22 +884,22 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             return this;
         }
         readDataTables() {
-            for (let message of this.messages) {
-                if (message.isType('DataTable')) {
-                    let dataTable = {
+            for (const message of this.messages) {
+                if (message instanceof DataTable) {
+                    const dataTable = {
                         tables: [],
                         serverClasses: [],
                     };
     
                     while (message.data.readBoolean()) {
-                        let dt = new SendTable();
+                        const dt = new SendTable();
                         dt.read(message.data, this);
                         dataTable.tables.push(dt);
                     }
     
                     let classes = message.data.readInt16();
                     while (classes--) {
-                        let sc = new ServerClassInfo();
+                        const sc = new ServerClassInfo();
                         sc.read(message.data, this);
                         dataTable.serverClasses.push(sc);
                     }
@@ -895,17 +911,17 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             return this;
         }
         readPackets(netMessages = undefined) {
-            netMessages = netMessages || (this.demoProtocol === 4 ? NetMessages.Portal2Engine : NetMessages.HalfLife2Engine);
+            netMessages = netMessages || (this.isNewEngine() ? NetMessages.Portal2Engine : NetMessages.HalfLife2Engine);
     
-            for (let message of this.messages) {
-                if (message.isType('Packet')) {
-                    let packets = [];
+            for (const message of this.messages) {
+                if (message instanceof Packet) {
+                    const packets = [];
                     while (message.data.bitsLeft > 6) {
-                        let type = message.data.readBits(6);
+                        const type = message.data.readBits(6);
     
                         const NetMessage = netMessages[type];
                         if (NetMessage) {
-                            let packet = new NetMessage(type);
+                            const packet = new NetMessage(type);
                             packet.read(message.data, this);
                             packets.push(packet);
                         } else {
@@ -948,8 +964,8 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
     
             let synced = false;
             let last = 0;
-            for (let message of this.messages) {
-                if (message.isType('SyncTick')) {
+            for (const message of this.messages) {
+                if (message instanceof SyncTick) {
                     synced = true;
                 }
     
@@ -969,15 +985,16 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             }
     
             if (endTick < 1) {
-                endTick = this.messages[this.messages.length - 1].tick;
+                const packets = this.findMessages(Packet);
+                endTick = packets[packets.length - 1].tick;
             }
     
-            let delta = endTick - startTick;
+            const delta = endTick - startTick;
             if (delta < 0) {
                 throw new Error('Start tick is greater than end tick.');
             }
     
-            let ipt = this.getIntervalPerTick();
+            const ipt = this.getIntervalPerTick();
             this.playbackTicks = delta;
             this.playbackTime = ipt * delta;
     
@@ -990,7 +1007,7 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
     
             let synced = false;
             let last = 0;
-            for (let message of this.messages) {
+            for (const message of this.messages) {
                 if (message.tick === tick) {
                     synced = true;
                 }
@@ -1013,15 +1030,15 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 throw new Error('Cannot adjust ticks without parsed messages.');
             }
     
-            let syncedTicks = [];
-            for (let message of this.messages) {
-                if (message.isType('Packet')) {
-                    let view = message.cmdInfo[splitScreenIndex].viewOrigin;
-                    let result = demo.messages.find((msg) => {
-                        if (!msg.isType('Packet')) {
+            const syncedTicks = [];
+            for (const message of this.messages) {
+                if (message instanceof Packet) {
+                    const view = message.cmdInfo[splitScreenIndex].viewOrigin;
+                    const result = demo.messages.find((msg) => {
+                        if (!(msg instanceof Packet)) {
                             return false;
                         }
-                        let match = msg.cmdInfo[splitScreenIndex].viewOrigin;
+                        const match = msg.cmdInfo[splitScreenIndex].viewOrigin;
                         return (
                             Math.abs(match.x - view.x) <= viewTolerance &&
                             Math.abs(match.y - view.y) <= viewTolerance &&
@@ -1068,9 +1085,6 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
         getName() {
             return this.constructor.name;
         }
-        isType(name) {
-            return this.constructor.name === name;
-        }
         getTick() {
             return this.tick;
         }
@@ -1091,18 +1105,29 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
     }
     
     class Packet extends Message {
+        constructor(type) {
+            super(type);
+        }
         findPacket(type) {
-            return this.packets.find((packet) => (typeof type === 'function' ? type(packet) : packet.isType(type)));
+            const byType = type.prototype instanceof NetMessage
+                ? (packet) => packet instanceof type
+                : (packet) => type(packet);
+    
+            return this.packets.find(byType);
         }
         findPackets(type) {
-            return this.packets.filter((packet) => (typeof type === 'function' ? type(packet) : packet.isType(type)));
+            const byType = type.prototype instanceof NetMessage
+                ? (packet) => packet instanceof type
+                : (packet) => type(packet);
+    
+            return this.packets.filter(byType);
         }
         read(buf, demo) {
             let mssc = demo.demoProtocol === 4 ? 2 : 1;
     
             this.cmdInfo = [];
             while (mssc--) {
-                let cmd = new CmdInfo();
+                const cmd = new CmdInfo();
                 cmd.read(buf);
                 this.cmdInfo.push(cmd);
             }
@@ -1112,7 +1137,13 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             this.data = buf.readBitStream(buf.readInt32() * 8);
             return this;
         }
+        *[Symbol.iterator]() {
+            for (const packet of this.packets) {
+                yield packet;
+            }
+        }
     }
+    class SignOn extends Packet {}
     class SyncTick extends Message {
         read() {
             return this;
@@ -1160,7 +1191,7 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
     module.exports = {
         NewEngine: [
             undefined,
-            Packet, // 1
+            SignOn, // 1
             Packet, // 2
             SyncTick, // 3
             ConsoleCmd, // 4
@@ -1172,7 +1203,7 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
         ],
         OldEngine: [
             undefined,
-            Packet, // 1
+            SignOn, // 1
             Packet, // 2
             SyncTick, // 3
             ConsoleCmd, // 4
@@ -1181,6 +1212,16 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             Stop, // 7
             StringTable, // 8
         ],
+        Message,
+        SignOn,
+        Packet,
+        SyncTick,
+        ConsoleCmd,
+        UserCmd,
+        DataTable,
+        Stop,
+        CustomData,
+        StringTable,
     };
     
     },{"./types/CmdInfo":15}],7:[function(require,module,exports){
@@ -1204,31 +1245,25 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
         static default() {
             return new this(DefaultParsingOptions);
         }
-        with(option) {
-            this.options[option] = true;
-            return this;
-        }
-        without(option) {
-            this.options[option] = false;
-            return this;
-        }
-        parse(buffer, options = undefined) {
-            options = {
+        setOptions(options) {
+            this.options = {
                 ...this.options,
                 ...options,
             };
+            return this;
+        }
+        parse(buffer) {
+            const buf = new SourceDemoBuffer(Buffer.concat([buffer], buffer.length + 4 - (buffer.length % 4)));
+            const demo = SourceDemo.default();
     
-            let buf = new SourceDemoBuffer(Buffer.concat([buffer], buffer.length + 4 - (buffer.length % 4)));
-            let demo = SourceDemo.default();
-    
-            if (options.header) demo.readHeader(buf);
-            if (options.messages) demo.readMessages(buf);
+            if (this.options.header) demo.readHeader(buf);
+            if (this.options.messages) demo.readMessages(buf);
     
             if (demo.messages.length > 0) {
-                if (options.stringTables) demo.readStringTables();
-                if (options.dataTables) demo.readDataTables();
-                if (options.packets) demo.readPackets();
-                if (options.userCmds) demo.readUserCmds();
+                if (this.options.stringTables) demo.readStringTables();
+                if (this.options.dataTables) demo.readDataTables();
+                if (this.options.packets) demo.readPackets();
+                if (this.options.userCmds) demo.readUserCmds();
             }
     
             return demo;
@@ -1248,15 +1283,15 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 offset: 0,
                 type: 'start',
                 match: ({ pos }) => {
-                    if (pos != undefined) {
-                        let startPos = { x: -723.0, y: -2481.0, z: 17.0 };
+                    if (pos !== undefined) {
+                        const startPos = { x: -723.0, y: -2481.0, z: 17.0 };
                         return (
                             pos.previous.x === startPos.x &&
                             pos.previous.y === startPos.y &&
                             pos.previous.z === startPos.z &&
-                            pos.current.x != startPos.x &&
-                            pos.current.y != startPos.y &&
-                            pos.current.z != startPos.z
+                            pos.current.x !== startPos.x &&
+                            pos.current.y !== startPos.y &&
+                            pos.current.z !== startPos.z
                         );
                     }
                     return false;
@@ -1267,8 +1302,8 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 offset: 0,
                 type: 'end',
                 match: ({ cmds }) => {
-                    if (cmds != undefined) {
-                        let outro = 'playvideo_exitcommand_nointerrupt at_credits end_movie credits_video';
+                    if (cmds !== undefined) {
+                        const outro = 'playvideo_exitcommand_nointerrupt at_credits end_movie credits_video';
                         return cmds.current.includes(outro);
                     }
                     return false;
@@ -1279,8 +1314,10 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 offset: 0,
                 type: 'start',
                 match: ({ cmds }) => {
-                    if (cmds != undefined) {
-                        return cmds.current.includes('dsp_player 0') && cmds.current.includes('ss_force_primary_fullscreen 0');
+                    if (cmds !== undefined) {
+                        return (
+                            cmds.current.includes('dsp_player 0') && cmds.current.includes('ss_force_primary_fullscreen 0')
+                        );
                     }
                     return false;
                 },
@@ -1290,8 +1327,8 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 offset: 0,
                 type: 'end',
                 match: ({ cmds }) => {
-                    if (cmds != undefined) {
-                        return cmds.current.find((cmd) => cmd.startsWith('playvideo_end_level_transition')) != undefined;
+                    if (cmds !== undefined) {
+                        return cmds.current.find((cmd) => cmd.startsWith('playvideo_end_level_transition')) !== undefined;
                     }
                     return false;
                 },
@@ -1311,8 +1348,8 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 offset: 1,
                 type: 'start',
                 match: ({ pos }) => {
-                    if (pos != undefined) {
-                        let startPos = { x: -544, y: -368.75, z: 160 };
+                    if (pos !== undefined) {
+                        const startPos = { x: -544, y: -368.75, z: 160 };
                         return pos.current.x === startPos.x && pos.current.y === startPos.y && pos.current.z === startPos.z;
                     }
                     return false;
@@ -1323,7 +1360,7 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 offset: 1,
                 type: 'end',
                 match: ({ cmds }) => {
-                    if (cmds != undefined) {
+                    if (cmds !== undefined) {
                         return cmds.current.includes('startneurotoxins 99999');
                     }
                     return false;
@@ -1344,9 +1381,9 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 offset: 1,
                 type: 'start',
                 match: ({ pos }) => {
-                    if (pos != undefined) {
-                        let startPos = { x: -8709.2, y: 1690.07, z: 28.0 };
-                        let tolerance = { x: 0.02, y: 0.02, z: 0.05 };
+                    if (pos !== undefined) {
+                        const startPos = { x: -8709.2, y: 1690.07, z: 28.0 };
+                        const tolerance = { x: 0.02, y: 0.02, z: 0.05 };
                         return (
                             !(Math.abs(pos.current.x - startPos.x) > tolerance.x) &&
                             !(Math.abs(pos.current.y - startPos.y) > tolerance.y) &&
@@ -1361,15 +1398,15 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 offset: -2,
                 type: 'start',
                 match: ({ pos }) => {
-                    if (pos != undefined) {
-                        let startPos = { x: -655.748779296875, y: -918.37353515625, z: -4.96875 };
+                    if (pos !== undefined) {
+                        const startPos = { x: -655.748779296875, y: -918.37353515625, z: -4.96875 };
                         return (
                             pos.previous.x === startPos.x &&
                             pos.previous.y === startPos.y &&
                             pos.previous.z === startPos.z &&
-                            pos.current.x != startPos.x &&
-                            pos.current.y != startPos.y &&
-                            pos.current.z != startPos.z
+                            pos.current.x !== startPos.x &&
+                            pos.current.y !== startPos.y &&
+                            pos.current.z !== startPos.z
                         );
                     }
                     return false;
@@ -1380,8 +1417,10 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 offset: 0,
                 type: 'start',
                 match: ({ cmds }) => {
-                    if (cmds != undefined) {
-                        return cmds.current.includes('dsp_player 0') && cmds.current.includes('ss_force_primary_fullscreen 0');
+                    if (cmds !== undefined) {
+                        return (
+                            cmds.current.includes('dsp_player 0') && cmds.current.includes('ss_force_primary_fullscreen 0')
+                        );
                     }
                     return false;
                 },
@@ -1391,12 +1430,16 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 offset: 0,
                 type: 'start',
                 match: ({ pos }) => {
-                    if (pos != undefined) {
-                        let startPosBlue = { x: -9896, y: -4400, z: 3048 };
-                        let startPosOrange = { x: -11168, y: -4384, z: 3040.03125 };
+                    if (pos !== undefined) {
+                        const startPosBlue = { x: -9896, y: -4400, z: 3048 };
+                        const startPosOrange = { x: -11168, y: -4384, z: 3040.03125 };
                         return (
-                            (pos.current.x === startPosBlue.x && pos.current.y === startPosBlue.y && pos.current.z === startPosBlue.z) ||
-                            (pos.current.x === startPosOrange.x && pos.current.y === startPosOrange.y && pos.current.z === startPosOrange.z)
+                            (pos.current.x === startPosBlue.x &&
+                                pos.current.y === startPosBlue.y &&
+                                pos.current.z === startPosBlue.z) ||
+                            (pos.current.x === startPosOrange.x &&
+                                pos.current.y === startPosOrange.y &&
+                                pos.current.z === startPosOrange.z)
                         );
                     }
                     return false;
@@ -1407,11 +1450,11 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 offset: -852,
                 type: 'end',
                 match: ({ pos }) => {
-                    if (pos != undefined) {
-                        let endPos = { x: 54.1, y: 159.2, z: -201.4 };
-                        let a = (pos.current.x - endPos.x) ** 2;
-                        let b = (pos.current.y - endPos.y) ** 2;
-                        let c = 50 ** 2;
+                    if (pos !== undefined) {
+                        const endPos = { x: 54.1, y: 159.2, z: -201.4 };
+                        const a = (pos.current.x - endPos.x) ** 2;
+                        const b = (pos.current.y - endPos.y) ** 2;
+                        const c = 50 ** 2;
                         return a + b < c && pos.current.z < endPos.z;
                     }
                     return false;
@@ -1422,8 +1465,8 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 offset: 0,
                 type: 'end',
                 match: ({ cmds }) => {
-                    if (cmds != undefined) {
-                        return cmds.current.find((cmd) => cmd.startsWith('playvideo_end_level_transition')) != undefined;
+                    if (cmds !== undefined) {
+                        return cmds.current.find((cmd) => cmd.startsWith('playvideo_end_level_transition')) !== undefined;
                     }
                     return false;
                 },
@@ -1433,8 +1476,8 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 offset: 0,
                 type: 'end',
                 match: ({ cmds }) => {
-                    if (cmds != undefined) {
-                        let outro = 'playvideo_exitcommand_nointerrupt coop_outro end_movie vault-movie_outro';
+                    if (cmds !== undefined) {
+                        const outro = 'playvideo_exitcommand_nointerrupt coop_outro end_movie vault-movie_outro';
                         return cmds.current.includes(outro);
                     }
                     return false;
@@ -1445,8 +1488,8 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 offset: 0,
                 type: 'end',
                 match: ({ cmds }) => {
-                    if (cmds != undefined) {
-                        let outro = 'playvideo_exitcommand_nointerrupt dlc1_endmovie end_movie movie_outro';
+                    if (cmds !== undefined) {
+                        const outro = 'playvideo_exitcommand_nointerrupt dlc1_endmovie end_movie movie_outro';
                         return cmds.current.includes(outro);
                     }
                     return false;
@@ -1467,15 +1510,15 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 offset: 0,
                 type: 'start',
                 match: ({ pos }) => {
-                    if (pos != undefined) {
-                        let startPos = { x: -4592.0, y: -4475.4052734375, z: 108.683975219727 };
+                    if (pos !== undefined) {
+                        const startPos = { x: -4592.0, y: -4475.4052734375, z: 108.683975219727 };
                         return (
                             pos.previous.x === startPos.x &&
                             pos.previous.y === startPos.y &&
                             pos.previous.z === startPos.z &&
-                            pos.current.x != startPos.x &&
-                            pos.current.y != startPos.y &&
-                            pos.current.z != startPos.z
+                            pos.current.x !== startPos.x &&
+                            pos.current.y !== startPos.y &&
+                            pos.current.z !== startPos.z
                         );
                     }
                     return false;
@@ -1486,8 +1529,8 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 offset: 0,
                 type: 'end',
                 match: ({ cmds }) => {
-                    if (cmds != undefined) {
-                        let outro = 'playvideo_exitcommand_nointerrupt aegis_interior.bik end_movie movie_aegis_interior';
+                    if (cmds !== undefined) {
+                        const outro = 'playvideo_exitcommand_nointerrupt aegis_interior.bik end_movie movie_aegis_interior';
                         return cmds.current.includes(outro);
                     }
                     return false;
@@ -1509,6 +1552,8 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
     
     },{"./ApertureTag":8,"./Portal":9,"./Portal2":10,"./PortalStoriesMel":11}],13:[function(require,module,exports){
     (function (Buffer){
+    const { ConsoleCmd, UserCmd } = require('../messages');
+    
     const ReplayHeader = 'sar-tas-replay v1.8\n';
     
     class SarTimer {
@@ -1520,9 +1565,9 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 throw new Error('Cannot adjust ticks without parsed messages.');
             }
     
-            let timings = [];
-            for (let message of demo.messages) {
-                if (message.isType('ConsoleCmd')) {
+            const timings = [];
+            for (const message of demo.messages) {
+                if (message instanceof ConsoleCmd) {
                     if (message.command === 'sar_timer_start') {
                         timings.push({ tick: message.tick, type: 'start' });
                     } else if (message.command === 'sar_timer_stop') {
@@ -1531,8 +1576,8 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 }
             }
     
-            let start = timings.reverse().find((x) => x.type === 'start');
-            let end = timings.find((x) => x.type === 'stop');
+            const start = timings.reverse().find((x) => x.type === 'start');
+            const end = timings.find((x) => x.type === 'stop');
     
             return start !== undefined && end !== undefined
                 ? { startTick: start.tick, endTick: end.tick, delta: end.tick - start.tick }
@@ -1551,9 +1596,9 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             this.writeString(ReplayHeader);
             this.writeInt32(demos.length);
     
-            for (let demo of demos) {
-                for (let message of demo.messages) {
-                    if (message.isType('UserCmd') && message.userCmd) {
+            for (const demo of demos) {
+                for (const message of demo.messages) {
+                    if (message instanceof UserCmd && message.userCmd) {
                         this.writeInt32(message.userCmd.buttons || 0);
                         this.writeFloat(message.userCmd.forwardMove || 0);
                         this.writeInt8(message.userCmd.impulse || 0);
@@ -1571,27 +1616,27 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             return this.buffer;
         }
         writeInt8(value) {
-            let data = this.alloc(1);
+            const data = this.alloc(1);
             data.writeInt8(value, 0);
             this.buffer = this.concat([this.buffer, data]);
         }
         writeInt16(value) {
-            let data = this.alloc(2);
+            const data = this.alloc(2);
             data.writeInt16LE(value, 0);
             this.buffer = this.concat([this.buffer, data]);
         }
         writeInt32(value) {
-            let data = this.alloc(4);
+            const data = this.alloc(4);
             data.writeInt32LE(value, 0);
             this.buffer = this.concat([this.buffer, data]);
         }
         writeFloat(value) {
-            let data = this.alloc(4);
+            const data = this.alloc(4);
             data.writeFloatLE(value, 0);
             this.buffer = this.concat([this.buffer, data]);
         }
         writeString(value) {
-            let data = this.alloc(value.length);
+            const data = this.alloc(value.length);
             data.write(value, 0);
             this.buffer = this.concat([this.buffer, data]);
         }
@@ -1600,8 +1645,9 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
     module.exports = { SarTimer, SarReplay };
     
     }).call(this,require("buffer").Buffer)
-    },{"buffer":"buffer"}],14:[function(require,module,exports){
+    },{"../messages":6,"buffer":"buffer"}],14:[function(require,module,exports){
     const { Vector } = require('../types/Vector');
+    const { Packet, ConsoleCmd } = require('../messages');
     
     class TimingResult {
         constructor({ playbackTicks, playbackTime }) {
@@ -1635,23 +1681,23 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 throw new Error('Cannot check time speedrun detecting the game first.');
             }
     
-            let result = new TimingResult(demo);
+            const result = new TimingResult(demo);
     
-            let startTick = this.checkRules(demo, 'start');
-            let endTick = this.checkRules(demo, 'end');
+            const startTick = this.checkRules(demo, 'start');
+            const endTick = this.checkRules(demo, 'end');
     
-            if (startTick != undefined && endTick != undefined) {
+            if (startTick !== undefined && endTick !== undefined) {
                 demo.adjustRange(endTick, startTick);
-            } else if (startTick != undefined) {
+            } else if (startTick !== undefined) {
                 demo.adjustRange(0, startTick);
-            } else if (endTick != undefined) {
+            } else if (endTick !== undefined) {
                 demo.adjustRange(endTick, 0);
             }
     
             return result.complete(demo);
         }
         checkRules(demo, type) {
-            let candidates = demo.game.rules.filter((rule) => rule.type === type);
+            const candidates = demo.game.rules.filter((rule) => rule.type === type);
     
             // Find all rules that match the map name. Otherwise fall back to generic
             // rules which are used to detect coop spawn and loading screens
@@ -1675,11 +1721,11 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             //      - Position of current and previous tick
             //      - Commands of current and previous tick
     
-            let gameInfo = new Map();
+            const gameInfo = new Map();
             let oldPosition = new Vector(0, 0, 0);
             let oldCommands = [];
     
-            demo.findMessages('Packet').forEach(({ tick, cmdInfo }) => {
+            demo.findMessages(Packet).forEach(({ tick, cmdInfo }) => {
                 if (tick !== 0 && !gameInfo.get(tick)) {
                     gameInfo.set(tick, {
                         position: {
@@ -1690,28 +1736,29 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 }
             });
     
-            demo.findMessages('ConsoleCmd').forEach(({ tick, command }) => {
+            demo.findMessages(ConsoleCmd).forEach(({ tick, command }) => {
                 // Ignore button inputs since they aren't really useful
                 if (tick === 0 || command.startsWith('+') || command.startsWith('-')) {
                     return;
                 }
     
-                let newCommands = [command];
+                const newCommands = [command];
+                const value = gameInfo.get(tick);
     
-                let value = gameInfo.get(tick);
-                if (!value) {
+                if (value) {
+                    const { previous, current } = value.commands || {};
                     gameInfo.set(tick, {
+                        ...value,
                         commands: {
-                            previous: oldCommands,
-                            current: (oldCommands = newCommands),
+                            previous: previous ? previous.concat(oldCommands) : oldCommands,
+                            current: (oldCommands = current ? current.concat(newCommands) : newCommands),
                         },
                     });
                 } else {
                     gameInfo.set(tick, {
-                        ...value,
                         commands: {
-                            previous: value.previous ? value.previous.concat(oldCommands) : oldCommands,
-                            current: (oldCommands = value.current ? value.current.concat(newCommands) : newCommands),
+                            previous: oldCommands,
+                            current: (oldCommands = newCommands),
                         },
                     });
                 }
@@ -1721,8 +1768,8 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             // Rules will decide whether they should be matched as a start or end event
     
             let matches = [];
-            for (let [tick, info] of gameInfo) {
-                for (let rule of rules) {
+            for (const [tick, info] of gameInfo) {
+                for (const rule of rules) {
                     if (rule.match({ pos: info.position, cmds: info.commands }) === true) {
                         matches.push({ rule: rule, tick: tick });
                     }
@@ -1741,13 +1788,13 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 //              b.) or highest offset if it is an end event
                 //      3.) Throw exception and fail because there might be timing issue
     
-                let matchTick = matches.map((m) => m.tick).reduce((a, b) => Math.min(a, b));
+                const matchTick = matches.map((m) => m.tick).reduce((a, b) => Math.min(a, b));
                 matches = matches.filter((m) => m.tick === matchTick);
                 if (matches.length === 1) {
                     return matches[0].tick + matches[0].rule.offset;
                 }
     
-                let matchOffset =
+                const matchOffset =
                     matches[0].rule.type === 'start'
                         ? matches.map((m) => m.rule.offset).reduce((a, b) => Math.min(a, b))
                         : matches.map((m) => m.rule.offset).reduce((a, b) => Math.max(a, b));
@@ -1766,24 +1813,16 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
     
     module.exports = { SourceTimer, TimingResult };
     
-    },{"../types/Vector":23}],15:[function(require,module,exports){
+    },{"../messages":6,"../types/Vector":23}],15:[function(require,module,exports){
     class CmdInfo {
         read(buf) {
-            const readVec3 = () => {
-                return {
-                    x: buf.readFloat32(),
-                    y: buf.readFloat32(),
-                    z: buf.readFloat32(),
-                };
-            };
-    
             this.flags = buf.readInt32();
-            this.viewOrigin = readVec3();
-            this.viewAngles = readVec3();
-            this.localViewAngles = readVec3();
-            this.viewOrigin2 = readVec3();
-            this.viewAngles2 = readVec3();
-            this.localViewAngles2 = readVec3();
+            this.viewOrigin = buf.readVector();
+            this.viewAngles = buf.readQAngle();
+            this.localViewAngles = buf.readQAngle();
+            this.viewOrigin2 = buf.readVector();
+            this.viewAngles2 = buf.readQAngle();
+            this.localViewAngles2 = buf.readQAngle();
     
             return this;
         }
@@ -1836,7 +1875,7 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
     
             let props = buf.readBits(10, false);
             while (props--) {
-                let prop = new SendProp();
+                const prop = new SendProp();
                 prop.read(buf, demo);
                 this.props.push(prop);
             }
@@ -1845,7 +1884,7 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
     
     class SendProp {
         read(buf, demo) {
-            let isPortal2 = demo.gameDirectory === 'portal2';
+            const isPortal2 = demo.gameDirectory === 'portal2';
     
             this.type = buf.readBits(5, false);
             this.varName = buf.readASCIIString();
@@ -1909,17 +1948,17 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
         constructor(gameEvents) {
             this.gameEvents = gameEvents;
         }
-        unserializeEvent(buf) {
-            let eventId = buf.readBits(9);
+        deserializeEvent(buf) {
+            const eventId = buf.readBits(9);
     
-            let descriptor = this.gameEvents.find((descriptor) => descriptor.eventId === eventId);
+            const descriptor = this.gameEvents.find((descriptor) => descriptor.eventId === eventId);
             if (!descriptor) {
                 throw new Error(`Unknown event id ${eventId}!`);
             }
     
-            let event = new GameEvent(descriptor);
+            const event = new GameEvent(descriptor);
     
-            for (let [keyName, type] of Object.entries(descriptor.keys)) {
+            for (const [keyName, type] of Object.entries(descriptor.keys)) {
                 switch (type) {
                     case 0:
                         break;
@@ -1970,9 +2009,6 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
         }
         getName() {
             return this.constructor.name;
-        }
-        isType(name) {
-            return this.constructor.name === name;
         }
         read() {
             throw new Error(`read() for ${this.constructor.name} not implemented!`);
@@ -2032,7 +2068,7 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
                 this.numServerPlayers = buf.readInt32();
                 let length = buf.readInt32();
                 if (length > 0) {
-                    this.playersNetworkids = buf.readArrayBuffer(length);
+                    this.playersNetworkIds = buf.readArrayBuffer(length);
                 }
                 length = buf.readInt32();
                 if (length > 0) {
@@ -2061,14 +2097,14 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             this.cOs = String.fromCharCode(buf.readInt8());
             this.gameDir = buf.readASCIIString();
             this.mapName = buf.readASCIIString();
-            this.mapName = buf.readASCIIString();
+            this.skyName = buf.readASCIIString();
             this.hostName = buf.readASCIIString();
         }
     }
     class SvcSendTable extends NetMessage {
         read(buf) {
             this.needsDecoder = buf.readBoolean();
-            let length = buf.readInt16();
+            const length = buf.readInt16();
             this.props = buf.readBits(length);
         }
     }
@@ -2098,7 +2134,7 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             this.name = buf.readASCIIString();
             this.maxEntries = buf.readInt16();
             this.numEntries = buf.readBits(Math.log2(this.maxEntries) + 1);
-            let length = buf.readBits(20);
+            const length = buf.readBits(20);
             this.userDataFixedSize = buf.readBoolean();
             this.userDataSize = this.userDataFixedSize ? buf.readBits(12) : 0;
             this.userDataSizeBits = this.userDataFixedSize ? buf.readBits(4) : 0;
@@ -2110,7 +2146,7 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
         read(buf) {
             this.tableId = buf.readBits(5);
             this.numChangedEntries = buf.readBoolean() ? buf.readInt16() : 1;
-            let length = buf.readBits(20);
+            const length = buf.readBits(20);
             this.stringData = buf.readBits(length);
         }
     }
@@ -2125,7 +2161,7 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
         read(buf) {
             this.client = buf.readInt8();
             this.proximity = buf.readInt8();
-            let length = buf.readInt16();
+            const length = buf.readInt16();
             this.voiceData = buf.readBits(length);
         }
     }
@@ -2138,13 +2174,13 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
         read(buf, demo) {
             this.reliableSound = buf.readBoolean();
             let sounds = this.reliableSound ? 1 : buf.readBits(8);
-            let length = this.reliableSound ? buf.readBits(8) : buf.readBits(16);
-            let data = buf.readBitStream(length);
+            const length = this.reliableSound ? buf.readBits(8) : buf.readBits(16);
+            const data = buf.readBitStream(length);
     
             if (demo.demoProtcol === 3) {
                 this.sounds = [];
                 while (sounds--) {
-                    let sound = new SoundInfo();
+                    const sound = new SoundInfo();
                     sound.read(data, demo);
                     this.sounds.push(sound);
                 }
@@ -2171,23 +2207,24 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
         read(buf) {
             this.pos = buf.readVectorCoord(buf);
             this.decalTextureIndex = buf.readBits(9);
-            let flag = buf.readBoolean();
-            this.entityIndex = flag ? buf.readBits(11) : 0;
-            this.modelIndex = flag ? buf.readBits(11) : 0;
+            if (buf.readBoolean()) {
+                this.entityIndex = buf.readBits(11);
+                this.modelIndex = buf.readBits(11);
+            }
             this.lowPriority = buf.readBoolean();
         }
     }
     class SvcSplitScreen extends NetMessage {
         read(buf) {
             this.unk = buf.readBits(1);
-            let length = buf.readBits(11);
+            const length = buf.readBits(11);
             this.data = buf.readBits(length);
         }
     }
     class SvcUserMessage extends NetMessage {
         read(buf, demo) {
             this.msgType = buf.readInt8();
-            let length = buf.readBits(demo.isNewEngine() ? 12 : 11);
+            const length = buf.readBits(demo.isNewEngine() ? 12 : 11);
             this.msgData = buf.readBits(length);
         }
     }
@@ -2195,17 +2232,17 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
         read(buf) {
             this.entityIndex = buf.readBits(11);
             this.classId = buf.readBits(9);
-            let length = buf.readBits(11);
+            const length = buf.readBits(11);
             buf.readBits(length);
         }
     }
     class SvcGameEvent extends NetMessage {
         read(buf, demo) {
-            let length = buf.readBits(11);
-            let data = buf.readBitStream(length);
+            const length = buf.readBits(11);
+            const data = buf.readBitStream(length);
     
             if (demo.gameEventManager) {
-                this.event = demo.gameEventManager.unserializeEvent(data);
+                this.event = demo.gameEventManager.deserializeEvent(data);
             } else {
                 this.data = data;
             }
@@ -2218,7 +2255,7 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             this.deltaFrom = this.isDelta ? buf.readInt32() : 0;
             this.baseLine = buf.readBoolean();
             this.updatedEntries = buf.readBits(11);
-            let length = buf.readBits(20);
+            const length = buf.readBits(20);
             this.updateBaseline = buf.readBoolean();
             this.data = buf.readBits(length);
         }
@@ -2226,7 +2263,7 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
     class SvcTempEntities extends NetMessage {
         read(buf) {
             this.numEntries = buf.readInt8();
-            let length = buf.readBits(17);
+            const length = buf.readBits(17);
             this.data = buf.readBitStream(length);
         }
     }
@@ -2238,7 +2275,7 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
     class SvcMenu extends NetMessage {
         read(buf) {
             this.menuType = buf.readInt16();
-            let length = buf.readInt32();
+            const length = buf.readInt32();
             this.data = buf.readBits(length);
         }
     }
@@ -2259,12 +2296,12 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             }
     
             let events = buf.readBits(9);
-            let length = buf.readBits(20);
-            let data = buf.readBitStream(length);
+            const length = buf.readBits(20);
+            const data = buf.readBitStream(length);
     
-            let gameEvents = [];
+            const gameEvents = [];
             while (events--) {
-                let descriptor = new GameEventDescriptor();
+                const descriptor = new GameEventDescriptor();
                 descriptor.read(data);
                 gameEvents.push(descriptor);
             }
@@ -2280,13 +2317,13 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
     }
     class SvcCmdKeyValues extends NetMessage {
         read(buf) {
-            let length = buf.readInt32();
+            const length = buf.readInt32();
             this.buffer = buf.readArrayBuffer(length);
         }
     }
     class SvcPaintMapData extends NetMessage {
         read(buf) {
-            let length = buf.readInt32();
+            const length = buf.readInt32();
             this.data = buf.readBitStream(length);
         }
     }
@@ -2363,6 +2400,41 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             SvcGetCvarValue, // 31
             SvcCmdKeyValues, // 32
         ],
+        NetMessage,
+        NetNop,
+        NetDisconnect,
+        NetFile,
+        NetSplitScreenUser,
+        NetTick,
+        NetStringCmd,
+        NetSetConVar,
+        NetSignonState,
+        SvcServerInfo,
+        SvcSendTable,
+        SvcClassInfo,
+        SvcSetPause,
+        SvcCreateStringTable,
+        SvcUpdateStringTable,
+        SvcVoiceInit,
+        SvcVoiceData,
+        SvcPrint,
+        SvcSounds,
+        SvcSetView,
+        SvcFixAngle,
+        SvcCrosshairAngle,
+        SvcBspDecal,
+        SvcSplitScreen,
+        SvcUserMessage,
+        SvcEntityMessage,
+        SvcGameEvent,
+        SvcPacketEntities,
+        SvcTempEntities,
+        SvcPrefetch,
+        SvcMenu,
+        SvcGameEventList,
+        SvcGetCvarValue,
+        SvcCmdKeyValues,
+        SvcPaintMapData,
     };
     
     },{"./GameEventManager":17,"./SoundInfo":20}],19:[function(require,module,exports){
@@ -2371,6 +2443,11 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             this.pitch = pitch;
             this.yaw = yaw;
             this.roll = roll;
+        }
+        *[Symbol.iterator]() {
+            yield this.pitch;
+            yield this.yaw;
+            yield this.roll;
         }
     }
     
@@ -2450,8 +2527,8 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
     
             let entries = buf.readInt16();
             while (entries--) {
-                let entryName = buf.readASCIIString();
-                let entry = new StringTableEntry(entryName);
+                const entryName = buf.readASCIIString();
+                const entry = new StringTableEntry(entryName);
     
                 if (buf.readBoolean()) {
                     entry.read(buf, EntryType, demo);
@@ -2463,8 +2540,8 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             if (buf.readBoolean()) {
                 let entries = buf.readInt16();
                 while (entries--) {
-                    let entryName = buf.readASCIIString();
-                    let entry = new StringTableClass(entryName);
+                    const entryName = buf.readASCIIString();
+                    const entry = new StringTableClass(entryName);
     
                     if (buf.readBoolean()) {
                         entry.read(buf, demo);
@@ -2481,7 +2558,7 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             this.name = name;
         }
         read(buf, type, demo) {
-            let length = buf.readInt16();
+            const length = buf.readInt16();
             if (type) {
                 this.data = new type();
                 this.data.read(buf.readBitStream(length * 8), demo);
@@ -2496,7 +2573,7 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
             this.name = name;
         }
         read(buf) {
-            let length = buf.readInt16();
+            const length = buf.readInt16();
             this.data = buf.readASCIIString(length);
         }
     }
@@ -2555,13 +2632,18 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
         constructor(x, y, z) {
             this.x = x;
             this.y = y;
-            this.y = z;
+            this.z = z;
         }
         length() {
             return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
         }
         length2D() {
             return Math.sqrt(this.x * this.x + this.y * this.y);
+        }
+        *[Symbol.iterator]() {
+            yield this.x;
+            yield this.y;
+            yield this.z;
         }
     }
     

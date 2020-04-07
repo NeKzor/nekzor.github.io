@@ -235,7 +235,8 @@
         SourceDemoParser,
         SourceDemo,
         SourceGame,
-        Speedrun
+        Speedrun,
+        DemoMessages,
     } = require('sdp');
     var parser = SourceDemoParser.default();
     var speedrunTimer = Speedrun.SourceTimer.default();
@@ -333,7 +334,7 @@ SAR: ${formatTime(demo.sar.delta * demo.getIntervalPerTick())}`,
         let userCmds = [];
         try {
             demo.readUserCmds();
-            userCmds = demo.findMessages('UserCmd');
+            userCmds = demo.findMessages(DemoMessages.UserCmd);
         } catch (error) {
             console.error(error);
             return;
@@ -574,7 +575,7 @@ SAR: ${formatTime(demo.sar.delta * demo.getIntervalPerTick())}`,
             let commands = [];
             let ipt = demo.getIntervalPerTick();
             demo.messages.forEach((msg) => {
-                if (msg.isType('ConsoleCmd')) {
+                if (msg instanceof DemoMessages.ConsoleCmd) {
                     if (commandsFilter.length !== 0 && commandsFilter.includes(msg.command)) {
                         return;
                     }
@@ -617,6 +618,8 @@ SAR: ${formatTime(demo.sar.delta * demo.getIntervalPerTick())}`,
     var infoListItem = (index) => {
         demo = demos[index];
         displayInfo();
+        prepareInputs();
+        drawInputs();
         tabs.select('info');
         window.scrollTo(0, 0);
     };
@@ -775,7 +778,7 @@ SAR: ${formatTime(demo.sar.delta * demo.getIntervalPerTick())}`,
                 let userCmds = [];
                 try {
                     demo.readUserCmds();
-                    userCmds = demo.findMessages('UserCmd').filter((msg) => msg.slot === undefined || msg.slot === slot);
+                    userCmds = demo.findMessages(DemoMessages.UserCmd).filter((msg) => msg.slot === undefined || msg.slot === slot);
                 } catch (error) {
                     console.error(error);
                     return;
@@ -803,7 +806,7 @@ SAR: ${formatTime(demo.sar.delta * demo.getIntervalPerTick())}`,
                         view.text.push(`Tick ${lastInput.tick} (${lastInput.x}|${lastInput.y})`);
                     });
             } else {
-                demo.findMessages('Packet').forEach(({
+                demo.findMessages(DemoMessages.Packet).forEach(({
                     tick,
                     cmdInfo
                 }) => {
