@@ -943,7 +943,7 @@ SAR: ${formatTime(demo.sar.delta * demo.getIntervalPerTick())}`,
             var rows = ['Map,Client,Ticks,Time,Total Ticks,Total Time'];
             for (let row of listEntries.children) {
                 let items = [];
-                for (let i = 0; i < row.children.length - 2; ++i) {
+                for (let i = 0; i < row.children.length - 1; ++i) {
                     items.push(row.children[i].innerHTML);
                 }
                 rows.push(items.join(','));
