@@ -1,4 +1,5 @@
 # CBeam
+
 Class client-side.
 
 |Prop|Type|Offset|
@@ -15,8 +16,8 @@ Class client-side.
 |m_nHaloIndex|int|2712 \| 0xa98|
 |m_nBeamType|int|2716 \| 0xa9c|
 |m_nBeamFlags|int|2720 \| 0xaa0|
-|m_hAttachEntity|[m_hAttachEntity](#m_hAttachEntity)|2724 \| 0xaa4|
-|m_nAttachIndex|[m_nAttachIndex](#m_nAttachIndex)|2764 \| 0xacc|
+|m_hAttachEntity|[m_hAttachEntity](#m_hattachentity)|2724 \| 0xaa4|
+|m_nAttachIndex|[m_nAttachIndex](#m_nattachindex)|2764 \| 0xacc|
 |m_fWidth|float|2804 \| 0xaf4|
 |m_fEndWidth|float|2808 \| 0xaf8|
 |m_fFadeLength|float|2812 \| 0xafc|

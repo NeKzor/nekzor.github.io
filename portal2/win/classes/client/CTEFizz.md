@@ -1,9 +1,10 @@
 # CTEFizz
+
 Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseTempEntity](#DT_BaseTempEntity)|0 \| 0x0|
+|baseclass|[DT_BaseTempEntity](#dt_basetempentity)|0 \| 0x0|
 |m_nEntity|int|16 \| 0x10|
 |m_nModelIndex|int|20 \| 0x14|
 |m_nDensity|int|24 \| 0x18|
@@ -13,5 +14,4 @@ Class client-side.
 
 ### DT_BaseTempEntity
 
-|Prop|Type|Offset|
-|---|:-:|:-:|
+Prop data not available.

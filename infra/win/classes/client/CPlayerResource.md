@@ -1,15 +1,16 @@
 # CPlayerResource
+
 Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|m_iPing|[m_iPing](#m_iPing)|2828 \| 0xb0c|
-|m_iScore|[m_iScore](#m_iScore)|2964 \| 0xb94|
-|m_iDeaths|[m_iDeaths](#m_iDeaths)|3100 \| 0xc1c|
-|m_bConnected|[m_bConnected](#m_bConnected)|3236 \| 0xca4|
-|m_iTeam|[m_iTeam](#m_iTeam)|3272 \| 0xcc8|
-|m_bAlive|[m_bAlive](#m_bAlive)|3408 \| 0xd50|
-|m_iHealth|[m_iHealth](#m_iHealth)|3444 \| 0xd74|
+|m_iPing|[m_iPing](#m_iping)|2828 \| 0xb0c|
+|m_iScore|[m_iScore](#m_iscore)|2964 \| 0xb94|
+|m_iDeaths|[m_iDeaths](#m_ideaths)|3100 \| 0xc1c|
+|m_bConnected|[m_bConnected](#m_bconnected)|3236 \| 0xca4|
+|m_iTeam|[m_iTeam](#m_iteam)|3272 \| 0xcc8|
+|m_bAlive|[m_bAlive](#m_balive)|3408 \| 0xd50|
+|m_iHealth|[m_iHealth](#m_ihealth)|3444 \| 0xd74|
 
 ## Recv
 

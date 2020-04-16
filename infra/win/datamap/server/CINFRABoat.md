@@ -1,4 +1,5 @@
 # CINFRABoat
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
@@ -81,7 +82,7 @@ Datamap server-side.
 |m_iObjectCapsCache|integer|4 \| 0x4||
 |m_pfnMoveDone|function|8 \| 0x8||
 |m_pfnThink|function|12 \| 0xc||
-|m_Network|[CServerNetworkProperty](#CServerNetworkProperty)|16 \| 0x10||
+|m_Network|[CServerNetworkProperty](#cservernetworkproperty)|16 \| 0x10||
 |m_iClassname|string|96 \| 0x60|classname|
 |m_flPrevAnimTime|time|100 \| 0x64||
 |m_flAnimTime|time|104 \| 0x68||
@@ -111,7 +112,7 @@ Datamap server-side.
 |m_hMoveParent|ehandle|220 \| 0xdc||
 |m_hMoveChild|ehandle|224 \| 0xe0||
 |m_hMovePeer|ehandle|228 \| 0xe4||
-|m_Collision|[CCollisionProperty](#CCollisionProperty)|232 \| 0xe8||
+|m_Collision|[CCollisionProperty](#ccollisionproperty)|232 \| 0xe8||
 |m_hOwnerEntity|ehandle|324 \| 0x144||
 |m_CollisionGroup|integer|328 \| 0x148|CollisionGroup|
 |m_pPhysicsObject|custom|332 \| 0x14c||
@@ -275,9 +276,9 @@ Datamap server-side.
 |m_bAwake|boolean|1812 \| 0x714||
 |m_bAllowPortalFunnel|boolean|1813 \| 0x715|allowfunnel|
 |m_hPlayer|ehandle|1820 \| 0x71c||
-|m_vehicleView|[CINFRABoatVehicleView](#CINFRABoatVehicleView)|1824 \| 0x720||
-|m_ServerVehicle|[CINFRABoatServerVehicle](#CINFRABoatServerVehicle)|1852 \| 0x73c||
-|m_savedVehicleView|[CINFRABoatVehicleView](#CINFRABoatVehicleView)|2268 \| 0x8dc||
+|m_vehicleView|[CINFRABoatVehicleView](#cinfraboatvehicleview)|1824 \| 0x720||
+|m_ServerVehicle|[CINFRABoatServerVehicle](#cinfraboatservervehicle)|1852 \| 0x73c||
+|m_savedVehicleView|[CINFRABoatVehicleView](#cinfraboatvehicleview)|2268 \| 0x8dc||
 |engineSoundIdleTime|time|2300 \| 0x8fc||
 |engineSoundDuckTime|time|2304 \| 0x900||
 |lastImpactDamageTime|time|2308 \| 0x904||
@@ -370,3 +371,13 @@ Datamap server-side.
 |flYawMax|float|16 \| 0x10|
 |flPitchMin|float|20 \| 0x14|
 |flPitchMax|float|24 \| 0x18|
+
+### vehiclesounds_t
+
+|Prop|Type|Offset|External|
+|---|:-:|:-:|--:|
+|pGears|custom|4 \| 0x4|
+|crashSounds|custom|24 \| 0x18|
+|iszSound|string|44 \| 0x2c|
+|iszStateSounds|string|80 \| 0x50|
+|minStateTime|float|160 \| 0xa0|

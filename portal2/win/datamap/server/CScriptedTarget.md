@@ -1,4 +1,5 @@
 # CScriptedTarget
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
@@ -92,7 +93,7 @@ Datamap server-side.
 |m_iObjectCapsCache|integer|4 \| 0x4||
 |m_pfnMoveDone|function|8 \| 0x8||
 |m_pfnThink|function|12 \| 0xc||
-|m_Network|[CServerNetworkProperty](#CServerNetworkProperty)|16 \| 0x10||
+|m_Network|[CServerNetworkProperty](#cservernetworkproperty)|16 \| 0x10||
 |m_iClassname|string|96 \| 0x60|classname|
 |m_flPrevAnimTime|time|100 \| 0x64||
 |m_flAnimTime|time|104 \| 0x68||
@@ -122,7 +123,7 @@ Datamap server-side.
 |m_hMoveParent|ehandle|220 \| 0xdc||
 |m_hMoveChild|ehandle|224 \| 0xe0||
 |m_hMovePeer|ehandle|228 \| 0xe4||
-|m_Collision|[CCollisionProperty](#CCollisionProperty)|232 \| 0xe8||
+|m_Collision|[CCollisionProperty](#ccollisionproperty)|232 \| 0xe8||
 |m_hOwnerEntity|ehandle|324 \| 0x144||
 |m_CollisionGroup|integer|328 \| 0x148|CollisionGroup|
 |m_pPhysicsObject|custom|332 \| 0x14c||
@@ -251,7 +252,7 @@ Datamap server-side.
 |m_hMyWeapons|ehandle|1948 \| 0x79c||
 |m_hActiveWeapon|ehandle|2140 \| 0x85c||
 |m_IdealSchedule|integer|2204 \| 0x89c||
-|m_ScheduleState|[AIScheduleState_t](#AIScheduleState_t)|2208 \| 0x8a0||
+|m_ScheduleState|[AIScheduleState_t](#aischedulestate_t)|2208 \| 0x8a0||
 |m_failSchedule|integer|2236 \| 0x8bc||
 |m_bUsingStandardThinkTime|boolean|2241 \| 0x8c1||
 |m_flLastRealThinkTime|time|2244 \| 0x8c4||
@@ -277,18 +278,18 @@ Datamap server-side.
 |m_IdealWeaponActivity|custom|2488 \| 0x9b8||
 |m_iDeathPose|integer|2492 \| 0x9bc||
 |m_iDeathFrame|integer|2496 \| 0x9c0||
-|m_pSenses|[CAI_Senses](#CAI_Senses)|2500 \| 0x9c4||
-|m_pLockedBestSound|[CSound](#CSound)|2504 \| 0x9c8||
+|m_pSenses|[CAI_Senses](#cai_senses)|2500 \| 0x9c4||
+|m_pLockedBestSound|[CSound](#csound)|2504 \| 0x9c8||
 |m_hEnemy|ehandle|2508 \| 0x9cc||
 |m_flTimeEnemyAcquired|time|2512 \| 0x9d0||
 |m_hTargetEnt|ehandle|2516 \| 0x9d4||
-|m_GiveUpOnDeadEnemyTimer|[CRandStopwatch](#CRandStopwatch)|2520 \| 0x9d8||
-|m_FailChooseEnemyTimer|[CSimpleSimTimer](#CSimpleSimTimer)|2536 \| 0x9e8||
+|m_GiveUpOnDeadEnemyTimer|[CRandStopwatch](#crandstopwatch)|2520 \| 0x9d8||
+|m_FailChooseEnemyTimer|[CSimpleSimTimer](#csimplesimtimer)|2536 \| 0x9e8||
 |m_EnemiesSerialNumber|integer|2540 \| 0x9ec||
 |m_flAcceptableTimeSeenEnemy|time|2544 \| 0x9f0||
-|m_UpdateEnemyPosTimer|[CSimpleSimTimer](#CSimpleSimTimer)|2548 \| 0x9f4||
+|m_UpdateEnemyPosTimer|[CSimpleSimTimer](#csimplesimtimer)|2548 \| 0x9f4||
 |m_vecCommandGoal|vector|2552 \| 0x9f8||
-|m_CommandMoveMonitor|[CAI_MoveMonitor](#CAI_MoveMonitor)|2564 \| 0xa04||
+|m_CommandMoveMonitor|[CAI_MoveMonitor](#cai_movemonitor)|2564 \| 0xa04||
 |m_hForcedInteractionPartner|ehandle|2580 \| 0xa14||
 |m_vecForcedWorldPosition|pos-vector|2584 \| 0xa18||
 |m_flForcedInteractionTimeout|time|2596 \| 0xa24||
@@ -303,14 +304,14 @@ Datamap server-side.
 |m_flMoveWaitFinished|time|2648 \| 0xa58||
 |m_hOpeningDoor|ehandle|2652 \| 0xa5c||
 |m_UnreachableEnts|custom|2656 \| 0xa60||
-|m_pNavigator|[CAI_Navigator](#CAI_Navigator)|2676 \| 0xa74||
-|m_pLocalNavigator|[CAI_LocalNavigator](#CAI_LocalNavigator)|2680 \| 0xa78||
-|m_pPathfinder|[CAI_Pathfinder](#CAI_Pathfinder)|2684 \| 0xa7c||
-|m_pMoveProbe|[CAI_MoveProbe](#CAI_MoveProbe)|2688 \| 0xa80||
-|m_pMotor|[CAI_Motor](#CAI_Motor)|2692 \| 0xa84||
+|m_pNavigator|[CAI_Navigator](#cai_navigator)|2676 \| 0xa74||
+|m_pLocalNavigator|[CAI_LocalNavigator](#cai_localnavigator)|2680 \| 0xa78||
+|m_pPathfinder|[CAI_Pathfinder](#cai_pathfinder)|2684 \| 0xa7c||
+|m_pMoveProbe|[CAI_MoveProbe](#cai_moveprobe)|2688 \| 0xa80||
+|m_pMotor|[CAI_Motor](#cai_motor)|2692 \| 0xa84||
 |m_hGoalEnt|ehandle|2696 \| 0xa88||
 |m_flTimeLastMovement|time|2700 \| 0xa8c||
-|m_CheckOnGroundTimer|[CSimpleSimTimer](#CSimpleSimTimer)|2704 \| 0xa90||
+|m_CheckOnGroundTimer|[CSimpleSimTimer](#csimplesimtimer)|2704 \| 0xa90||
 |m_vDefaultEyeOffset|vector|2708 \| 0xa94||
 |m_flNextEyeLookTime|time|2720 \| 0xaa0||
 |m_flEyeIntegRate|float|2724 \| 0xaa4||
@@ -338,17 +339,17 @@ Datamap server-side.
 |m_flNextWeaponSearchTime|time|2836 \| 0xb14||
 |m_iszPendingWeapon|string|2840 \| 0xb18||
 |m_bIgnoreUnseenEnemies|boolean|2844 \| 0xb1c|ignoreunseenenemies|
-|m_ShotRegulator|[CAI_ShotRegulator](#CAI_ShotRegulator)|2848 \| 0xb20||
+|m_ShotRegulator|[CAI_ShotRegulator](#cai_shotregulator)|2848 \| 0xb20||
 |m_iDesiredWeaponState|integer|2880 \| 0xb40||
 |m_SquadName|string|2888 \| 0xb48|squadname|
 |m_iMySquadSlot|integer|2892 \| 0xb4c||
 |m_strHintGroup|string|2896 \| 0xb50|hintgroup|
 |m_bHintGroupNavLimiting|boolean|2900 \| 0xb54|hintlimiting|
-|m_pTacticalServices|[CAI_TacticalServices](#CAI_TacticalServices)|2904 \| 0xb58||
+|m_pTacticalServices|[CAI_TacticalServices](#cai_tacticalservices)|2904 \| 0xb58||
 |m_flWaitFinished|time|2908 \| 0xb5c||
 |m_flNextFlinchTime|time|2912 \| 0xb60||
 |m_flNextDodgeTime|time|2916 \| 0xb64||
-|m_MoveAndShootOverlay|[CAI_MoveAndShootOverlay](#CAI_MoveAndShootOverlay)|2920 \| 0xb68||
+|m_MoveAndShootOverlay|[CAI_MoveAndShootOverlay](#cai_moveandshootoverlay)|2920 \| 0xb68||
 |m_vecLastPosition|pos-vector|2940 \| 0xb7c||
 |m_vSavePosition|pos-vector|2952 \| 0xb88||
 |m_vInterruptSavePosition|pos-vector|2964 \| 0xb94||
@@ -517,7 +518,7 @@ Datamap server-side.
 |m_navType|integer|12 \| 0xc|
 |m_fNavComplete|boolean|16 \| 0x10|
 |m_bLastNavFailed|boolean|17 \| 0x11|
-|m_pPath|[CAI_Path](#CAI_Path)|36 \| 0x24|
+|m_pPath|[CAI_Path](#cai_path)|36 \| 0x24|
 |m_bValidateActivitySpeed|boolean|56 \| 0x38|
 |m_bCalledStartMove|boolean|57 \| 0x39|
 |m_bNotOnNetwork|boolean|58 \| 0x3a|
@@ -600,3 +601,27 @@ Datamap server-side.
 |m_bNoShootWhileMove|boolean|9 \| 0x9|
 |m_initialDelay|float|12 \| 0xc|
 |m_flSuspendUntilTime|time|16 \| 0x10|
+
+### CAI_Path
+
+|Prop|Type|Offset|External|
+|---|:-:|:-:|--:|
+|m_goalTolerance|float|4 \| 0x4|
+|m_activity|custom|8 \| 0x8|
+|m_sequence|integer|12 \| 0xc|
+|m_target|ehandle|16 \| 0x10|
+|m_vecTargetOffset|vector|20 \| 0x14|
+|m_waypointTolerance|float|32 \| 0x20|
+|m_arrivalActivity|custom|36 \| 0x24|
+|m_arrivalSequence|integer|40 \| 0x28|
+|m_bGoalPosSet|boolean|48 \| 0x30|
+|m_goalPos|pos-vector|52 \| 0x34|
+|m_bGoalTypeSet|boolean|64 \| 0x40|
+|m_goalType|integer|68 \| 0x44|
+|m_goalFlags|integer|72 \| 0x48|
+|m_routeStartTime|time|76 \| 0x4c|
+|m_goalDirection|vector|80 \| 0x50|
+|m_goalDirectionTarget|ehandle|92 \| 0x5c|
+|m_goalSpeed|float|96 \| 0x60|
+|m_goalSpeedTarget|ehandle|100 \| 0x64|
+|m_goalStoppingDistance|float|104 \| 0x68|

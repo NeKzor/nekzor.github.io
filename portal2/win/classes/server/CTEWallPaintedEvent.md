@@ -1,4 +1,5 @@
 # CTEWallPaintedEvent
+
 Class server-side.
 
 |Prop|Type|Offset|

@@ -1,9 +1,10 @@
 # CEnvAmbientLight
+
 Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_SpatialEntity](#DT_SpatialEntity)|0 \| 0x0|
+|baseclass|[DT_SpatialEntity](#dt_spatialentity)|0 \| 0x0|
 |m_vecColor|vector|912 \| 0x390|
 
 ## Recv

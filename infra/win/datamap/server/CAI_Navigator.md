@@ -1,4 +1,5 @@
 # CAI_Navigator
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
@@ -6,7 +7,7 @@ Datamap server-side.
 |m_navType|integer|12 \| 0xc||
 |m_fNavComplete|boolean|16 \| 0x10||
 |m_bLastNavFailed|boolean|17 \| 0x11||
-|m_pPath|[CAI_Path](#CAI_Path)|36 \| 0x24||
+|m_pPath|[CAI_Path](#cai_path)|36 \| 0x24||
 |m_bValidateActivitySpeed|boolean|56 \| 0x38||
 |m_bCalledStartMove|boolean|57 \| 0x39||
 |m_bNotOnNetwork|boolean|58 \| 0x3a||

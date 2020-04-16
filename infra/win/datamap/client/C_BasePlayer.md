@@ -1,4 +1,5 @@
 # C_BasePlayer
+
 Datamap client-side.
 
 |Prop|Type|Offset|External|
@@ -38,7 +39,7 @@ Datamap client-side.
 |m_nWaterLevel|character|854 \| 0x356||
 |m_nWaterLevel|character|854 \| 0x356||
 |m_lifeState|character|855 \| 0x357||
-|m_Collision|[CCollisionProperty](#CCollisionProperty)|1040 \| 0x410||
+|m_Collision|[CCollisionProperty](#ccollisionproperty)|1040 \| 0x410||
 |m_bEverHadPredictionErrorsForThisCommand|boolean|2604 \| 0xa2c||
 |m_nPrevSequence|integer|2720 \| 0xaa0||
 |m_flCycle|float|2724 \| 0xaa4||
@@ -54,8 +55,8 @@ Datamap client-side.
 |m_iAmmo|integer|4628 \| 0x1214||
 |m_hMyWeapons|ehandle|4756 \| 0x1294||
 |m_hActiveWeapon|ehandle|4948 \| 0x1354||
-|m_Local|[CPlayerLocalData](#CPlayerLocalData)|5104 \| 0x13f0||
-|pl|[CPlayerState](#CPlayerState)|5576 \| 0x15c8||
+|m_Local|[CPlayerLocalData](#cplayerlocaldata)|5104 \| 0x13f0||
+|pl|[CPlayerState](#cplayerstate)|5576 \| 0x15c8||
 |m_iFOV|float|5596 \| 0x15dc||
 |m_iFOVStart|float|5600 \| 0x15e0||
 |m_afButtonLast|integer|5608 \| 0x15e8||

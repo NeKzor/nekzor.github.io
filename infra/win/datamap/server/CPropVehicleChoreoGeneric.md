@@ -1,4 +1,5 @@
 # CPropVehicleChoreoGeneric
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
@@ -99,7 +100,7 @@ Datamap server-side.
 |m_iObjectCapsCache|integer|4 \| 0x4||
 |m_pfnMoveDone|function|8 \| 0x8||
 |m_pfnThink|function|12 \| 0xc||
-|m_Network|[CServerNetworkProperty](#CServerNetworkProperty)|16 \| 0x10||
+|m_Network|[CServerNetworkProperty](#cservernetworkproperty)|16 \| 0x10||
 |m_iClassname|string|96 \| 0x60|classname|
 |m_flPrevAnimTime|time|100 \| 0x64||
 |m_flAnimTime|time|104 \| 0x68||
@@ -129,7 +130,7 @@ Datamap server-side.
 |m_hMoveParent|ehandle|220 \| 0xdc||
 |m_hMoveChild|ehandle|224 \| 0xe0||
 |m_hMovePeer|ehandle|228 \| 0xe4||
-|m_Collision|[CCollisionProperty](#CCollisionProperty)|232 \| 0xe8||
+|m_Collision|[CCollisionProperty](#ccollisionproperty)|232 \| 0xe8||
 |m_hOwnerEntity|ehandle|324 \| 0x144||
 |m_CollisionGroup|integer|328 \| 0x148|CollisionGroup|
 |m_pPhysicsObject|custom|332 \| 0x14c||
@@ -288,12 +289,12 @@ Datamap server-side.
 |m_bStartDisabled|boolean|1634 \| 0x662|StartDisabled|
 |m_bAnimateEveryFrame|boolean|1635 \| 0x663|AnimateEveryFrame|
 |m_bUseHitboxesForRenderBox|boolean|1636 \| 0x664||
-|m_BoneFollowerManager|[CBoneFollowerManager](#CBoneFollowerManager)|1640 \| 0x668||
+|m_BoneFollowerManager|[CBoneFollowerManager](#cbonefollowermanager)|1640 \| 0x668||
 |m_hPlayer|ehandle|1668 \| 0x684||
 |m_vehicleView|[vehicleview_t](#vehicleview_t)|1672 \| 0x688||
 |m_savedVehicleView|[vehicleview_t](#vehicleview_t)|1716 \| 0x6b4||
 |m_bForcePlayerEyePoint|boolean|1760 \| 0x6e0|useplayereyes|
-|m_ServerVehicle|[CChoreoGenericServerVehicle](#CChoreoGenericServerVehicle)|1764 \| 0x6e4||
+|m_ServerVehicle|[CChoreoGenericServerVehicle](#cchoreogenericservervehicle)|1764 \| 0x6e4||
 |m_bLocked|boolean|2184 \| 0x888|vehiclelocked|
 |m_bEnterAnimOn|boolean|2185 \| 0x889||
 |m_bExitAnimOn|boolean|2186 \| 0x88a||
@@ -394,3 +395,13 @@ Datamap server-side.
 |m_soundStateStartTime|time|408 \| 0x198|
 |m_lastSpeed|float|412 \| 0x19c|
 |m_bPlayerCanShoot|boolean|416 \| 0x1a0|
+
+### vehiclesounds_t
+
+|Prop|Type|Offset|External|
+|---|:-:|:-:|--:|
+|pGears|custom|4 \| 0x4|
+|crashSounds|custom|24 \| 0x18|
+|iszSound|string|44 \| 0x2c|
+|iszStateSounds|string|80 \| 0x50|
+|minStateTime|float|160 \| 0xa0|

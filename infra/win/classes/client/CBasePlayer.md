@@ -1,16 +1,17 @@
 # CBasePlayer
+
 Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseCombatCharacter](#DT_BaseCombatCharacter)|0 \| 0x0|
-|localdata|[DT_LocalPlayerExclusive](#DT_LocalPlayerExclusive)|0 \| 0x0|
+|baseclass|[DT_BaseCombatCharacter](#dt_basecombatcharacter)|0 \| 0x0|
+|localdata|[DT_LocalPlayerExclusive](#dt_localplayerexclusive)|0 \| 0x0|
 |m_hViewModel|array|0 \| 0x0|
 |m_iHealth|int|244 \| 0xf4|
 |m_fFlags|int|248 \| 0xf8|
 |m_hGroundEntity|int|324 \| 0x144|
 |m_lifeState|int|855 \| 0x357|
-|pl|[DT_PlayerState](#DT_PlayerState)|5576 \| 0x15c8|
+|pl|[DT_PlayerState](#dt_playerstate)|5576 \| 0x15c8|
 |m_iFOV|float|5596 \| 0x15dc|
 |m_iFOVStart|float|5600 \| 0x15e0|
 |m_ladderSurfaceProps|int|5628 \| 0x15fc|
@@ -42,8 +43,8 @@ Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseFlex](#DT_BaseFlex)|0 \| 0x0|
-|bcc_localdata|[DT_BCCLocalPlayerExclusive](#DT_BCCLocalPlayerExclusive)|0 \| 0x0|
+|baseclass|[DT_BaseFlex](#dt_baseflex)|0 \| 0x0|
+|bcc_localdata|[DT_BCCLocalPlayerExclusive](#dt_bcclocalplayerexclusive)|0 \| 0x0|
 |m_hActiveWeapon|int|4948 \| 0x1354|
 
 ### DT_LocalPlayerExclusive
@@ -60,8 +61,8 @@ Class client-side.
 |m_vecBaseVelocity|vector|276 \| 0x114|
 |m_flFriction|float|312 \| 0x138|
 |m_nWaterLevel|int|854 \| 0x356|
-|m_iAmmo|[m_iAmmo](#m_iAmmo)|4628 \| 0x1214|
-|m_Local|[DT_Local](#DT_Local)|5104 \| 0x13f0|
+|m_iAmmo|[m_iAmmo](#m_iammo)|4628 \| 0x1214|
+|m_Local|[DT_Local](#dt_local)|5104 \| 0x13f0|
 |m_hTonemapController|int|5572 \| 0x15c4|
 |m_hLastWeapon|int|5900 \| 0x170c|
 |m_fOnTarget|int|5924 \| 0x1724|
@@ -85,9 +86,9 @@ Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseAnimatingOverlay](#DT_BaseAnimatingOverlay)|0 \| 0x0|
+|baseclass|[DT_BaseAnimatingOverlay](#dt_baseanimatingoverlay)|0 \| 0x0|
 |m_viewtarget|vector|3616 \| 0xe20|
-|m_flexWeight|[m_flexWeight](#m_flexWeight)|3672 \| 0xe58|
+|m_flexWeight|[m_flexWeight](#m_flexweight)|3672 \| 0xe58|
 |m_blinktoggle|int|4100 \| 0x1004|
 |m_vecLean|vector|4512 \| 0x11a0|
 |m_vecShift|vector|4568 \| 0x11d8|
@@ -97,7 +98,7 @@ Class client-side.
 |Prop|Type|Offset|
 |---|:-:|:-:|
 |m_flNextAttack|float|4624 \| 0x1210|
-|m_hMyWeapons|[m_hMyWeapons](#m_hMyWeapons)|4756 \| 0x1294|
+|m_hMyWeapons|[m_hMyWeapons](#m_hmyweapons)|4756 \| 0x1294|
 
 ### m_iAmmo
 
@@ -140,8 +141,8 @@ Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|m_chAreaBits|[m_chAreaBits](#m_chAreaBits)|4 \| 0x4|
-|m_chAreaPortalBits|[m_chAreaPortalBits](#m_chAreaPortalBits)|36 \| 0x24|
+|m_chAreaBits|[m_chAreaBits](#m_chareabits)|4 \| 0x4|
+|m_chAreaPortalBits|[m_chAreaPortalBits](#m_chareaportalbits)|36 \| 0x24|
 |m_flFOVRate|float|68 \| 0x44|
 |m_bFOVSmooth|int|72 \| 0x48|
 |m_iHideHUD|int|76 \| 0x4c|
@@ -187,8 +188,8 @@ Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseAnimating](#DT_BaseAnimating)|0 \| 0x0|
-|overlay_vars|[DT_OverlayVars](#DT_OverlayVars)|0 \| 0x0|
+|baseclass|[DT_BaseAnimating](#dt_baseanimating)|0 \| 0x0|
+|overlay_vars|[DT_OverlayVars](#dt_overlayvars)|0 \| 0x0|
 
 ### m_flexWeight
 
@@ -414,8 +415,8 @@ Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseEntity](#DT_BaseEntity)|0 \| 0x0|
-|serveranimdata|[DT_ServerAnimationData](#DT_ServerAnimationData)|0 \| 0x0|
+|baseclass|[DT_BaseEntity](#dt_baseentity)|0 \| 0x0|
+|serveranimdata|[DT_ServerAnimationData](#dt_serveranimationdata)|0 \| 0x0|
 |m_bClientSideRagdoll|int|881 \| 0x371|
 |m_nHitboxSet|int|2696 \| 0xa88|
 |m_flPlaybackRate|float|2728 \| 0xaa8|
@@ -423,7 +424,7 @@ Class client-side.
 |m_nBody|int|2736 \| 0xab0|
 |m_nNewSequenceParity|int|2740 \| 0xab4|
 |m_nResetEventsParity|int|2744 \| 0xab8|
-|m_flEncodedController|[m_flEncodedController](#m_flEncodedController)|2756 \| 0xac4|
+|m_flEncodedController|[m_flEncodedController](#m_flencodedcontroller)|2756 \| 0xac4|
 |m_nMuzzleFlashParity|int|2772 \| 0xad4|
 |m_vecForce|vector|2792 \| 0xae8|
 |m_nForceBone|int|2804 \| 0xaf4|
@@ -431,7 +432,7 @@ Class client-side.
 |m_flFrozen|float|2860 \| 0xb2c|
 |m_flModelScale|float|2940 \| 0xb7c|
 |m_ScaleType|int|2944 \| 0xb80|
-|m_flPoseParameter|[m_flPoseParameter](#m_flPoseParameter)|2988 \| 0xbac|
+|m_flPoseParameter|[m_flPoseParameter](#m_flposeparameter)|2988 \| 0xbac|
 |m_bClientSideAnimation|int|3284 \| 0xcd4|
 |m_nSequence|int|3316 \| 0xcf4|
 |m_hLightingOrigin|int|3452 \| 0xd7c|
@@ -441,13 +442,13 @@ Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|m_AnimOverlay|[_ST_m_AnimOverlay_15](#_ST_m_AnimOverlay_15)|0 \| 0x0|
+|m_AnimOverlay|[_ST_m_AnimOverlay_15](#_st_m_animoverlay_15)|0 \| 0x0|
 
 ### DT_BaseEntity
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#DT_AnimTimeMustBeFirst)|0 \| 0x0|
+|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#dt_animtimemustbefirst)|0 \| 0x0|
 |movecollide|int|0 \| 0x0|
 |movetype|int|0 \| 0x0|
 |m_clrRender|int|108 \| 0x6c|
@@ -472,7 +473,7 @@ Class client-side.
 |m_fadeMinDist|float|1000 \| 0x3e8|
 |m_fadeMaxDist|float|1004 \| 0x3ec|
 |m_flFadeScale|float|1008 \| 0x3f0|
-|m_Collision|[DT_CollisionProperty](#DT_CollisionProperty)|1040 \| 0x410|
+|m_Collision|[DT_CollisionProperty](#dt_collisionproperty)|1040 \| 0x410|
 |m_flElasticity|float|1168 \| 0x490|
 |m_flShadowCastDistance|float|1172 \| 0x494|
 |m_CollisionGroup|int|1384 \| 0x568|
@@ -534,22 +535,22 @@ Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|000|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|001|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|002|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|003|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|004|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|005|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|006|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|007|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|008|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|009|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|010|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|011|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|012|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|013|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|014|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|lengthproxy|[_LPT_m_AnimOverlay_15](#_LPT_m_AnimOverlay_15)|0 \| 0x0|
+|000|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|001|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|002|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|003|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|004|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|005|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|006|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|007|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|008|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|009|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|010|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|011|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|012|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|013|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|014|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|lengthproxy|[_LPT_m_AnimOverlay_15](#_lpt_m_animoverlay_15)|0 \| 0x0|
 
 ### DT_AnimTimeMustBeFirst
 

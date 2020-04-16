@@ -1,4 +1,5 @@
 # AI_ResponseParams
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|

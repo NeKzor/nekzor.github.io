@@ -1,6 +1,6 @@
 # INFRA Datamap
-Dumped server-side datamap.
 
+Dumped server-side datamap.
 - [AI_EnemyInfo_t](/AI_EnemyInfo_t.md)
 - [AI_FollowNavInfo_t](/AI_FollowNavInfo_t.md)
 - [AI_FollowParams_t](/AI_FollowParams_t.md)

@@ -1,4 +1,5 @@
 # CAI_Hint
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
@@ -55,7 +56,7 @@ Datamap server-side.
 |m_iObjectCapsCache|integer|4 \| 0x4||
 |m_pfnMoveDone|function|8 \| 0x8||
 |m_pfnThink|function|12 \| 0xc||
-|m_Network|[CServerNetworkProperty](#CServerNetworkProperty)|16 \| 0x10||
+|m_Network|[CServerNetworkProperty](#cservernetworkproperty)|16 \| 0x10||
 |m_iClassname|string|96 \| 0x60|classname|
 |m_flPrevAnimTime|time|100 \| 0x64||
 |m_flAnimTime|time|104 \| 0x68||
@@ -85,7 +86,7 @@ Datamap server-side.
 |m_hMoveParent|ehandle|220 \| 0xdc||
 |m_hMoveChild|ehandle|224 \| 0xe0||
 |m_hMovePeer|ehandle|228 \| 0xe4||
-|m_Collision|[CCollisionProperty](#CCollisionProperty)|232 \| 0xe8||
+|m_Collision|[CCollisionProperty](#ccollisionproperty)|232 \| 0xe8||
 |m_hOwnerEntity|ehandle|324 \| 0x144||
 |m_CollisionGroup|integer|328 \| 0x148|CollisionGroup|
 |m_pPhysicsObject|custom|332 \| 0x14c||
@@ -154,7 +155,7 @@ Datamap server-side.
 |m_iszVScripts|string|820 \| 0x334|vscripts|
 |m_iszScriptThinkFunction|string|824 \| 0x338|thinkfunction|
 |m_iszScriptId|string|852 \| 0x354||
-|m_NodeData|[HintNodeData](#HintNodeData)|860 \| 0x35c||
+|m_NodeData|[HintNodeData](#hintnodedata)|860 \| 0x35c||
 |m_hHintOwner|ehandle|928 \| 0x3a0||
 |m_flNextUseTime|time|932 \| 0x3a4||
 |m_OnNPCStartedUsing|custom|936 \| 0x3a8|OnNPCStartedUsing|

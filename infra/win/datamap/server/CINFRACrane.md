@@ -1,4 +1,5 @@
 # CINFRACrane
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
@@ -98,7 +99,7 @@ Datamap server-side.
 |m_iObjectCapsCache|integer|4 \| 0x4||
 |m_pfnMoveDone|function|8 \| 0x8||
 |m_pfnThink|function|12 \| 0xc||
-|m_Network|[CServerNetworkProperty](#CServerNetworkProperty)|16 \| 0x10||
+|m_Network|[CServerNetworkProperty](#cservernetworkproperty)|16 \| 0x10||
 |m_iClassname|string|96 \| 0x60|classname|
 |m_flPrevAnimTime|time|100 \| 0x64||
 |m_flAnimTime|time|104 \| 0x68||
@@ -128,7 +129,7 @@ Datamap server-side.
 |m_hMoveParent|ehandle|220 \| 0xdc||
 |m_hMoveChild|ehandle|224 \| 0xe0||
 |m_hMovePeer|ehandle|228 \| 0xe4||
-|m_Collision|[CCollisionProperty](#CCollisionProperty)|232 \| 0xe8||
+|m_Collision|[CCollisionProperty](#ccollisionproperty)|232 \| 0xe8||
 |m_hOwnerEntity|ehandle|324 \| 0x144||
 |m_CollisionGroup|integer|328 \| 0x148|CollisionGroup|
 |m_pPhysicsObject|custom|332 \| 0x14c||
@@ -287,11 +288,11 @@ Datamap server-side.
 |m_bStartDisabled|boolean|1634 \| 0x662|StartDisabled|
 |m_bAnimateEveryFrame|boolean|1635 \| 0x663|AnimateEveryFrame|
 |m_bUseHitboxesForRenderBox|boolean|1636 \| 0x664||
-|m_BoneFollowerManager|[CBoneFollowerManager](#CBoneFollowerManager)|1640 \| 0x668||
+|m_BoneFollowerManager|[CBoneFollowerManager](#cbonefollowermanager)|1640 \| 0x668||
 |m_hPlayer|ehandle|1668 \| 0x684||
-|m_vehicleView|[CINFRACraneVehicleView](#CINFRACraneVehicleView)|1672 \| 0x688||
-|m_ServerVehicle|[CINFRACraneServerVehicle](#CINFRACraneServerVehicle)|1700 \| 0x6a4||
-|m_savedVehicleView|[CINFRACraneVehicleView](#CINFRACraneVehicleView)|2120 \| 0x848||
+|m_vehicleView|[CINFRACraneVehicleView](#cinfracranevehicleview)|1672 \| 0x688||
+|m_ServerVehicle|[CINFRACraneServerVehicle](#cinfracraneservervehicle)|1700 \| 0x6a4||
+|m_savedVehicleView|[CINFRACraneVehicleView](#cinfracranevehicleview)|2120 \| 0x848||
 |m_bLocked|boolean|2148 \| 0x864|vehiclelocked|
 |m_bEnterAnimOn|boolean|2149 \| 0x865||
 |m_bExitAnimOn|boolean|2150 \| 0x866||
@@ -404,3 +405,13 @@ Datamap server-side.
 |flYawMax|float|16 \| 0x10|
 |flPitchMin|float|20 \| 0x14|
 |flPitchMax|float|24 \| 0x18|
+
+### vehiclesounds_t
+
+|Prop|Type|Offset|External|
+|---|:-:|:-:|--:|
+|pGears|custom|4 \| 0x4|
+|crashSounds|custom|24 \| 0x18|
+|iszSound|string|44 \| 0x2c|
+|iszStateSounds|string|80 \| 0x50|
+|minStateTime|float|160 \| 0xa0|

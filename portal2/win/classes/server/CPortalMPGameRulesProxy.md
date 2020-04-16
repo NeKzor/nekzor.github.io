@@ -1,17 +1,17 @@
 # CPortalMPGameRulesProxy
+
 Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_GameRulesProxy](#DT_GameRulesProxy)|0 \| 0x0|
-|portalmp_gamerules_data|[DT_PortalMPGameRules](#DT_PortalMPGameRules)|0 \| 0x0|
+|baseclass|[DT_GameRulesProxy](#dt_gamerulesproxy)|0 \| 0x0|
+|portalmp_gamerules_data|[DT_PortalMPGameRules](#dt_portalmpgamerules)|0 \| 0x0|
 
 ## Recv
 
 ### DT_GameRulesProxy
 
-|Prop|Type|Offset|
-|---|:-:|:-:|
+Prop data not available.
 
 ### DT_PortalMPGameRules
 
@@ -19,7 +19,7 @@ Class server-side.
 |---|:-:|:-:|
 |m_bTeamPlayEnabled|int|556 \| 0x22c|
 |m_nCoopSectionIndex|int|604 \| 0x25c|
-|m_nCoopBranchIndex|[m_nCoopBranchIndex](#m_nCoopBranchIndex)|608 \| 0x260|
+|m_nCoopBranchIndex|[m_nCoopBranchIndex](#m_ncoopbranchindex)|608 \| 0x260|
 |m_nSelectedDLCCourse|int|632 \| 0x278|
 |m_nNumPortalsPlaced|int|636 \| 0x27c|
 |m_bMapNamesLoaded|int|640 \| 0x280|
@@ -119,7 +119,7 @@ Class server-side.
 |m_szLevelNames[5][13]|string|6593 \| 0x19c1|
 |m_szLevelNames[5][14]|string|6657 \| 0x1a01|
 |m_szLevelNames[5][15]|string|6721 \| 0x1a41|
-|m_nLevelCount|[m_nLevelCount](#m_nLevelCount)|6788 \| 0x1a84|
+|m_nLevelCount|[m_nLevelCount](#m_nlevelcount)|6788 \| 0x1a84|
 |m_bCoopCreditsLoaded|int|6812 \| 0x1a9c|
 |m_szCoopCreditsNameSingle|string|6836 \| 0x1ab4|
 |m_szCoopCreditsJobTitle|string|6964 \| 0x1b34|

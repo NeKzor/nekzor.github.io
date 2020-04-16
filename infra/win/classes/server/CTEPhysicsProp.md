@@ -1,9 +1,10 @@
 # CTEPhysicsProp
+
 Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseTempEntity](#DT_BaseTempEntity)|0 \| 0x0|
+|baseclass|[DT_BaseTempEntity](#dt_basetempentity)|0 \| 0x0|
 |m_vecOrigin|vector|12 \| 0xc|
 |m_angRotation[0]|float|24 \| 0x18|
 |m_angRotation[1]|float|28 \| 0x1c|
@@ -18,5 +19,4 @@ Class server-side.
 
 ### DT_BaseTempEntity
 
-|Prop|Type|Offset|
-|---|:-:|:-:|
+Prop data not available.

@@ -1,4 +1,5 @@
 # CParticleSystem
+
 Class client-side.
 
 |Prop|Type|Offset|
@@ -14,10 +15,10 @@ Class client-side.
 |m_bActive|int|2696 \| 0xa88|
 |m_flStartTime|float|2700 \| 0xa8c|
 |m_szSnapshotFileName|string|2704 \| 0xa90|
-|m_vServerControlPoints|[m_vServerControlPoints](#m_vServerControlPoints)|2964 \| 0xb94|
-|m_iServerControlPointAssignments|[m_iServerControlPointAssignments](#m_iServerControlPointAssignments)|3012 \| 0xbc4|
-|m_hControlPointEnts|[m_hControlPointEnts](#m_hControlPointEnts)|3032 \| 0xbd8|
-|m_iControlPointParents|[m_iControlPointParents](#m_iControlPointParents)|3284 \| 0xcd4|
+|m_vServerControlPoints|[m_vServerControlPoints](#m_vservercontrolpoints)|2964 \| 0xb94|
+|m_iServerControlPointAssignments|[m_iServerControlPointAssignments](#m_iservercontrolpointassignments)|3012 \| 0xbc4|
+|m_hControlPointEnts|[m_hControlPointEnts](#m_hcontrolpointents)|3032 \| 0xbd8|
+|m_iControlPointParents|[m_iControlPointParents](#m_icontrolpointparents)|3284 \| 0xcd4|
 
 ## Recv
 

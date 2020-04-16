@@ -1,9 +1,10 @@
 # CINFRA_Player
+
 Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_Portal_Player](#DT_Portal_Player)|0 \| 0x0|
+|baseclass|[DT_Portal_Player](#dt_portal_player)|0 \| 0x0|
 |currentDocument|int|6208 \| 0x1840|
 |currentPhoneCall|int|6212 \| 0x1844|
 |flashlightEnabled|int|6216 \| 0x1848|
@@ -21,7 +22,7 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BasePlayer](#DT_BasePlayer)|0 \| 0x0|
+|baseclass|[DT_BasePlayer](#dt_baseplayer)|0 \| 0x0|
 |m_angRotation|int|0 \| 0x0|
 |m_blinktoggle|int|0 \| 0x0|
 |m_flAnimTime|int|0 \| 0x0|
@@ -38,15 +39,15 @@ Class server-side.
 |m_vecViewOffset[2]|int|0 \| 0x0|
 |m_viewtarget|int|0 \| 0x0|
 |overlay_vars|int|0 \| 0x0|
-|portallocaldata|[DT_PortalLocalPlayerExclusive](#DT_PortalLocalPlayerExclusive)|0 \| 0x0|
-|portalnonlocaldata|[DT_PortalNonLocalPlayerExclusive](#DT_PortalNonLocalPlayerExclusive)|0 \| 0x0|
+|portallocaldata|[DT_PortalLocalPlayerExclusive](#dt_portallocalplayerexclusive)|0 \| 0x0|
+|portalnonlocaldata|[DT_PortalNonLocalPlayerExclusive](#dt_portalnonlocalplayerexclusive)|0 \| 0x0|
 |m_bUseVMGrab|int|5021 \| 0x139d|
 |m_bUsingVMGrabState|int|5022 \| 0x139e|
 |m_hAttachedObject|int|5036 \| 0x13ac|
 |m_hRagdoll|int|5092 \| 0x13e4|
 |m_bPitchReorientation|int|5096 \| 0x13e8|
 |m_hPortalEnvironment|int|5100 \| 0x13ec|
-|m_PortalLocal|[DT_PortalLocal](#DT_PortalLocal)|5116 \| 0x13fc|
+|m_PortalLocal|[DT_PortalLocal](#dt_portallocal)|5116 \| 0x13fc|
 |m_angEyeAngles[0]|float|5544 \| 0x15a8|
 |m_angEyeAngles[1]|float|5548 \| 0x15ac|
 |m_iSpawnInterpCounter|int|5564 \| 0x15bc|
@@ -66,10 +67,10 @@ Class server-side.
 |m_szTauntForce|string|5672 \| 0x1628|
 |m_bHeldObjectOnOppositeSideOfPortal|int|5736 \| 0x1668|
 |m_hHeldObjectPortal|int|5740 \| 0x166c|
-|m_StatsThisLevel|[DT_PortalPlayerStatistics](#DT_PortalPlayerStatistics)|5752 \| 0x1678|
+|m_StatsThisLevel|[DT_PortalPlayerStatistics](#dt_portalplayerstatistics)|5752 \| 0x1678|
 |m_bIsHoldingSomething|int|5804 \| 0x16ac|
 |m_iSpawnCounter|int|5812 \| 0x16b4|
-|m_Shared|[DT_PortalPlayerShared](#DT_PortalPlayerShared)|5816 \| 0x16b8|
+|m_Shared|[DT_PortalPlayerShared](#dt_portalplayershared)|5816 \| 0x16b8|
 |m_flMotionBlurAmount|float|6056 \| 0x17a8|
 |m_bWantsToSwapGuns|int|6060 \| 0x17ac|
 |m_bPotatos|int|6062 \| 0x17ae|
@@ -79,8 +80,8 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseCombatCharacter](#DT_BaseCombatCharacter)|0 \| 0x0|
-|localdata|[DT_LocalPlayerExclusive](#DT_LocalPlayerExclusive)|0 \| 0x0|
+|baseclass|[DT_BaseCombatCharacter](#dt_basecombatcharacter)|0 \| 0x0|
+|localdata|[DT_LocalPlayerExclusive](#dt_localplayerexclusive)|0 \| 0x0|
 |m_hViewModel|array|0 \| 0x0|
 |m_fFlags|int|204 \| 0xcc|
 |m_hGroundEntity|int|344 \| 0x158|
@@ -89,7 +90,7 @@ Class server-side.
 |m_PlayerFog.m_hCtrl|int|2740 \| 0xab4|
 |m_hPostProcessCtrl|int|2816 \| 0xb00|
 |m_hColorCorrectionCtrl|int|2820 \| 0xb04|
-|pl|[DT_PlayerState](#DT_PlayerState)|2844 \| 0xb1c|
+|pl|[DT_PlayerState](#dt_playerstate)|2844 \| 0xb1c|
 |m_hUseEntity|int|3000 \| 0xbb8|
 |m_afPhysicsFlags|int|3012 \| 0xbc4|
 |m_hVehicle|int|3016 \| 0xbc8|
@@ -116,7 +117,7 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|m_EntityPortalledNetworkMessages|[_ST_m_EntityPortalledNetworkMessages_32](#_ST_m_EntityPortalledNetworkMessages_32)|0 \| 0x0|
+|m_EntityPortalledNetworkMessages|[_ST_m_EntityPortalledNetworkMessages_32](#_st_m_entityportallednetworkmessages_32)|0 \| 0x0|
 |m_vecOrigin|vectorXy|700 \| 0x2bc|
 |m_vecOrigin[2]|float|708 \| 0x2c4|
 |m_vecViewOffset|vector|728 \| 0x2d8|
@@ -141,7 +142,7 @@ Class server-side.
 |---|:-:|:-:|
 |m_bShowingViewFinder|int|4 \| 0x4|
 |m_flAirControlSupressionTime|float|8 \| 0x8|
-|m_nLocatorEntityIndices|[m_nLocatorEntityIndices](#m_nLocatorEntityIndices)|12 \| 0xc|
+|m_nLocatorEntityIndices|[m_nLocatorEntityIndices](#m_nlocatorentityindices)|12 \| 0xc|
 |m_bPlacingPhoto|int|76 \| 0x4c|
 |m_StickNormal|vector|160 \| 0xa0|
 |m_OldStickNormal|vector|172 \| 0xac|
@@ -160,7 +161,7 @@ Class server-side.
 |m_vEyeOffset|vector|328 \| 0x148|
 |m_qQuaternionPunch|vector|340 \| 0x154|
 |m_PaintedPowerType|int|352 \| 0x160|
-|m_PaintedPowerTimer|[DT_CountdownTimer](#DT_CountdownTimer)|356 \| 0x164|
+|m_PaintedPowerTimer|[DT_CountdownTimer](#dt_countdowntimer)|356 \| 0x164|
 |m_flAirInputScale|float|368 \| 0x170|
 |m_flCurrentStickTime|float|372 \| 0x174|
 |m_nStickCameraState|int|376 \| 0x178|
@@ -194,8 +195,8 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseFlex](#DT_BaseFlex)|0 \| 0x0|
-|bcc_localdata|[DT_BCCLocalPlayerExclusive](#DT_BCCLocalPlayerExclusive)|0 \| 0x0|
+|baseclass|[DT_BaseFlex](#dt_baseflex)|0 \| 0x0|
+|bcc_localdata|[DT_BCCLocalPlayerExclusive](#dt_bcclocalplayerexclusive)|0 \| 0x0|
 |m_hActiveWeapon|int|2192 \| 0x890|
 
 ### DT_LocalPlayerExclusive
@@ -212,8 +213,8 @@ Class server-side.
 |m_vecViewOffset[0]|float|728 \| 0x2d8|
 |m_vecViewOffset[1]|float|732 \| 0x2dc|
 |m_vecViewOffset[2]|float|736 \| 0x2e0|
-|m_iAmmo|[m_iAmmo](#m_iAmmo)|1872 \| 0x750|
-|m_Local|[DT_Local](#DT_Local)|2224 \| 0x8b0|
+|m_iAmmo|[m_iAmmo](#m_iammo)|1872 \| 0x750|
+|m_Local|[DT_Local](#dt_local)|2224 \| 0x8b0|
 |m_fOnTarget|int|2920 \| 0xb68|
 |m_flDeathTime|float|3076 \| 0xc04|
 |m_hTonemapController|int|3172 \| 0xc64|
@@ -237,39 +238,39 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|000|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|001|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|002|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|003|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|004|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|005|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|006|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|007|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|008|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|009|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|010|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|011|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|012|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|013|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|014|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|015|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|016|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|017|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|018|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|019|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|020|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|021|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|022|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|023|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|024|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|025|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|026|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|027|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|028|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|029|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|030|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|031|[DT_EntityPortalledNetworkMessage](#DT_EntityPortalledNetworkMessage)|0 \| 0x0|
-|lengthproxy|[_LPT_m_EntityPortalledNetworkMessages_32](#_LPT_m_EntityPortalledNetworkMessages_32)|0 \| 0x0|
+|000|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|001|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|002|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|003|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|004|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|005|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|006|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|007|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|008|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|009|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|010|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|011|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|012|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|013|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|014|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|015|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|016|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|017|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|018|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|019|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|020|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|021|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|022|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|023|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|024|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|025|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|026|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|027|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|028|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|029|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|030|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|031|[DT_EntityPortalledNetworkMessage](#dt_entityportallednetworkmessage)|0 \| 0x0|
+|lengthproxy|[_LPT_m_EntityPortalledNetworkMessages_32](#_lpt_m_entityportallednetworkmessages_32)|0 \| 0x0|
 
 ### m_nLocatorEntityIndices
 
@@ -303,8 +304,8 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseAnimatingOverlay](#DT_BaseAnimatingOverlay)|0 \| 0x0|
-|m_flexWeight|[m_flexWeight](#m_flexWeight)|1224 \| 0x4c8|
+|baseclass|[DT_BaseAnimatingOverlay](#dt_baseanimatingoverlay)|0 \| 0x0|
+|m_flexWeight|[m_flexWeight](#m_flexweight)|1224 \| 0x4c8|
 |m_viewtarget|vector|1608 \| 0x648|
 |m_blinktoggle|int|1620 \| 0x654|
 |m_vecLean|vector|1728 \| 0x6c0|
@@ -315,7 +316,7 @@ Class server-side.
 |Prop|Type|Offset|
 |---|:-:|:-:|
 |m_flNextAttack|float|1756 \| 0x6dc|
-|m_hMyWeapons|[m_hMyWeapons](#m_hMyWeapons)|2000 \| 0x7d0|
+|m_hMyWeapons|[m_hMyWeapons](#m_hmyweapons)|2000 \| 0x7d0|
 
 ### m_iAmmo
 
@@ -358,8 +359,8 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|m_chAreaBits|[m_chAreaBits](#m_chAreaBits)|4 \| 0x4|
-|m_chAreaPortalBits|[m_chAreaPortalBits](#m_chAreaPortalBits)|36 \| 0x24|
+|m_chAreaBits|[m_chAreaBits](#m_chareabits)|4 \| 0x4|
+|m_chAreaPortalBits|[m_chAreaPortalBits](#m_chareaportalbits)|36 \| 0x24|
 |m_iHideHUD|int|60 \| 0x3c|
 |m_flFOVRate|float|64 \| 0x40|
 |m_bFOVSmooth|int|68 \| 0x44|
@@ -731,8 +732,8 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseAnimating](#DT_BaseAnimating)|0 \| 0x0|
-|overlay_vars|[DT_OverlayVars](#DT_OverlayVars)|0 \| 0x0|
+|baseclass|[DT_BaseAnimating](#dt_baseanimating)|0 \| 0x0|
+|overlay_vars|[DT_OverlayVars](#dt_overlayvars)|0 \| 0x0|
 
 ### m_flexWeight
 
@@ -958,8 +959,8 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseEntity](#DT_BaseEntity)|0 \| 0x0|
-|serveranimdata|[DT_ServerAnimationData](#DT_ServerAnimationData)|0 \| 0x0|
+|baseclass|[DT_BaseEntity](#dt_baseentity)|0 \| 0x0|
+|serveranimdata|[DT_ServerAnimationData](#dt_serveranimationdata)|0 \| 0x0|
 |m_bClientSideRagdoll|int|552 \| 0x228|
 |m_nForceBone|int|880 \| 0x370|
 |m_vecForce|vector|884 \| 0x374|
@@ -970,8 +971,8 @@ Class server-side.
 |m_flPlaybackRate|float|912 \| 0x390|
 |m_ScaleType|int|916 \| 0x394|
 |m_nSequence|int|960 \| 0x3c0|
-|m_flPoseParameter|[m_flPoseParameter](#m_flPoseParameter)|964 \| 0x3c4|
-|m_flEncodedController|[m_flEncodedController](#m_flEncodedController)|1060 \| 0x424|
+|m_flPoseParameter|[m_flPoseParameter](#m_flposeparameter)|964 \| 0x3c4|
+|m_flEncodedController|[m_flEncodedController](#m_flencodedcontroller)|1060 \| 0x424|
 |m_bClientSideAnimation|int|1076 \| 0x434|
 |m_bClientSideFrameReset|int|1077 \| 0x435|
 |m_nNewSequenceParity|int|1080 \| 0x438|
@@ -985,13 +986,13 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|m_AnimOverlay|[_ST_m_AnimOverlay_15](#_ST_m_AnimOverlay_15)|0 \| 0x0|
+|m_AnimOverlay|[_ST_m_AnimOverlay_15](#_st_m_animoverlay_15)|0 \| 0x0|
 
 ### DT_BaseEntity
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#DT_AnimTimeMustBeFirst)|0 \| 0x0|
+|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#dt_animtimemustbefirst)|0 \| 0x0|
 |m_iObjectCapsCache|int|4 \| 0x4|
 |m_flSimulationTime|int|108 \| 0x6c|
 |m_fEffects|int|168 \| 0xa8|
@@ -1004,7 +1005,7 @@ Class server-side.
 |movetype|int|218 \| 0xda|
 |movecollide|int|219 \| 0xdb|
 |moveparent|int|220 \| 0xdc|
-|m_Collision|[DT_CollisionProperty](#DT_CollisionProperty)|232 \| 0xe8|
+|m_Collision|[DT_CollisionProperty](#dt_collisionproperty)|232 \| 0xe8|
 |m_hOwnerEntity|int|324 \| 0x144|
 |m_CollisionGroup|int|328 \| 0x148|
 |m_flElasticity|float|440 \| 0x1b8|
@@ -1078,22 +1079,22 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|000|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|001|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|002|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|003|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|004|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|005|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|006|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|007|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|008|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|009|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|010|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|011|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|012|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|013|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|014|[DT_Animationlayer](#DT_Animationlayer)|0 \| 0x0|
-|lengthproxy|[_LPT_m_AnimOverlay_15](#_LPT_m_AnimOverlay_15)|0 \| 0x0|
+|000|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|001|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|002|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|003|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|004|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|005|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|006|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|007|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|008|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|009|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|010|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|011|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|012|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|013|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|014|[DT_Animationlayer](#dt_animationlayer)|0 \| 0x0|
+|lengthproxy|[_LPT_m_AnimOverlay_15](#_lpt_m_animoverlay_15)|0 \| 0x0|
 
 ### DT_AnimTimeMustBeFirst
 

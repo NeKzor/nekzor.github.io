@@ -1,4 +1,5 @@
 # C_Portal_Player
+
 Datamap client-side.
 
 |Prop|Type|Offset|External|
@@ -38,7 +39,7 @@ Datamap client-side.
 |m_nWaterLevel|character|854 \| 0x356||
 |m_nWaterLevel|character|854 \| 0x356||
 |m_lifeState|character|855 \| 0x357||
-|m_Collision|[CCollisionProperty](#CCollisionProperty)|1040 \| 0x410||
+|m_Collision|[CCollisionProperty](#ccollisionproperty)|1040 \| 0x410||
 |m_bEverHadPredictionErrorsForThisCommand|boolean|2604 \| 0xa2c||
 |m_nPrevSequence|integer|2720 \| 0xaa0||
 |m_flCycle|float|2724 \| 0xaa4||
@@ -62,8 +63,8 @@ Datamap client-side.
 |m_iAmmo|integer|4628 \| 0x1214||
 |m_hMyWeapons|ehandle|4756 \| 0x1294||
 |m_hActiveWeapon|ehandle|4948 \| 0x1354||
-|m_Local|[CPlayerLocalData](#CPlayerLocalData)|5104 \| 0x13f0||
-|pl|[CPlayerState](#CPlayerState)|5576 \| 0x15c8||
+|m_Local|[CPlayerLocalData](#cplayerlocaldata)|5104 \| 0x13f0||
+|pl|[CPlayerState](#cplayerstate)|5576 \| 0x15c8||
 |m_iFOV|float|5596 \| 0x15dc||
 |m_iFOVStart|float|5600 \| 0x15e0||
 |m_afButtonLast|integer|5608 \| 0x15e8||
@@ -97,15 +98,15 @@ Datamap client-side.
 |m_fOnTarget|boolean|5924 \| 0x1724||
 |m_nTickBase|integer|6248 \| 0x1868||
 |m_vecPreviouslyPredictedOrigin|vector|6512 \| 0x1970||
-|m_PaintPowers[BOUNCE_POWER]|[PaintPowerInfo_t](#PaintPowerInfo_t)|7100 \| 0x1bbc||
-|m_PaintPowers[SPEED_POWER]|[PaintPowerInfo_t](#PaintPowerInfo_t)|7188 \| 0x1c14||
-|m_PaintPowers[NO_POWER]|[PaintPowerInfo_t](#PaintPowerInfo_t)|7276 \| 0x1c6c||
+|m_PaintPowers[BOUNCE_POWER]|[PaintPowerInfo_t](#paintpowerinfo_t)|7100 \| 0x1bbc||
+|m_PaintPowers[SPEED_POWER]|[PaintPowerInfo_t](#paintpowerinfo_t)|7188 \| 0x1c14||
+|m_PaintPowers[NO_POWER]|[PaintPowerInfo_t](#paintpowerinfo_t)|7276 \| 0x1c6c||
 |m_hPortalEnvironment|ehandle|7396 \| 0x1ce4||
-|m_PortalLocal|[C_PortalPlayerLocalData](#C_PortalPlayerLocalData)|7412 \| 0x1cf4||
+|m_PortalLocal|[C_PortalPlayerLocalData](#c_portalplayerlocaldata)|7412 \| 0x1cf4||
 |m_flHullHeight|float|7948 \| 0x1f0c||
 |m_fLatestServerTeleport|float|9032 \| 0x2348||
 |m_matLatestServerTeleportationInverseMatrix|vmatrix|9036 \| 0x234c||
-|m_CachedJumpPower|[PaintPowerInfo_t](#PaintPowerInfo_t)|9100 \| 0x238c||
+|m_CachedJumpPower|[PaintPowerInfo_t](#paintpowerinfo_t)|9100 \| 0x238c||
 |m_flCachedJumpPowerTime|float|9180 \| 0x23dc||
 |m_flUsePostTeleportationBoxTime|float|9184 \| 0x23e0||
 |m_flSpeedDecelerationTime|float|9188 \| 0x23e4||

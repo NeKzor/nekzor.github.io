@@ -1,4 +1,5 @@
 # CShadowControl
+
 Class server-side.
 
 |Prop|Type|Offset|

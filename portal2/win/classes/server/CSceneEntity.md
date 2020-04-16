@@ -1,9 +1,10 @@
 # CSceneEntity
+
 Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|m_hActorList|[_ST_m_hActorList_16](#_ST_m_hActorList_16)|0 \| 0x0|
+|m_hActorList|[_ST_m_hActorList_16](#_st_m_hactorlist_16)|0 \| 0x0|
 |m_bIsPlayingBack|int|944 \| 0x3b0|
 |m_bPaused|int|945 \| 0x3b1|
 |m_bMultiplayer|int|946 \| 0x3b2|
@@ -32,7 +33,7 @@ Class server-side.
 |013|int|0 \| 0x0|
 |014|int|0 \| 0x0|
 |015|int|0 \| 0x0|
-|lengthproxy|[_LPT_m_hActorList_16](#_LPT_m_hActorList_16)|0 \| 0x0|
+|lengthproxy|[_LPT_m_hActorList_16](#_lpt_m_hactorlist_16)|0 \| 0x0|
 
 ### _LPT_m_hActorList_16
 

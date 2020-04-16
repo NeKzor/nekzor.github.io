@@ -1,4 +1,5 @@
 # AI_Response
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
@@ -6,7 +7,7 @@ Datamap server-side.
 |m_Type|character|0 \| 0x0||
 |m_szResponseName|character|1 \| 0x1||
 |m_szMatchingRule|character|65 \| 0x41||
-|m_Params|[AI_ResponseParams](#AI_ResponseParams)|129 \| 0x81||
+|m_Params|[AI_ResponseParams](#ai_responseparams)|129 \| 0x81||
 
 ## Embedded
 

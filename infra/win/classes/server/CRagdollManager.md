@@ -1,4 +1,5 @@
 # CRagdollManager
+
 Class server-side.
 
 |Prop|Type|Offset|

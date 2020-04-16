@@ -1,9 +1,10 @@
 # CPaintStream
+
 Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseAnimating](#DT_BaseAnimating)|0 \| 0x0|
+|baseclass|[DT_BaseAnimating](#dt_baseanimating)|0 \| 0x0|
 |m_nPaintType|int|1312 \| 0x520|
 |m_nRenderMode|int|1316 \| 0x524|
 |m_vLightPosition|vector|1320 \| 0x528|
@@ -15,8 +16,8 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseEntity](#DT_BaseEntity)|0 \| 0x0|
-|serveranimdata|[DT_ServerAnimationData](#DT_ServerAnimationData)|0 \| 0x0|
+|baseclass|[DT_BaseEntity](#dt_baseentity)|0 \| 0x0|
+|serveranimdata|[DT_ServerAnimationData](#dt_serveranimationdata)|0 \| 0x0|
 |m_bClientSideRagdoll|int|552 \| 0x228|
 |m_nForceBone|int|880 \| 0x370|
 |m_vecForce|vector|884 \| 0x374|
@@ -27,8 +28,8 @@ Class server-side.
 |m_flPlaybackRate|float|912 \| 0x390|
 |m_ScaleType|int|916 \| 0x394|
 |m_nSequence|int|960 \| 0x3c0|
-|m_flPoseParameter|[m_flPoseParameter](#m_flPoseParameter)|964 \| 0x3c4|
-|m_flEncodedController|[m_flEncodedController](#m_flEncodedController)|1060 \| 0x424|
+|m_flPoseParameter|[m_flPoseParameter](#m_flposeparameter)|964 \| 0x3c4|
+|m_flEncodedController|[m_flEncodedController](#m_flencodedcontroller)|1060 \| 0x424|
 |m_bClientSideAnimation|int|1076 \| 0x434|
 |m_bClientSideFrameReset|int|1077 \| 0x435|
 |m_nNewSequenceParity|int|1080 \| 0x438|
@@ -42,7 +43,7 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#DT_AnimTimeMustBeFirst)|0 \| 0x0|
+|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#dt_animtimemustbefirst)|0 \| 0x0|
 |m_iObjectCapsCache|int|4 \| 0x4|
 |m_flSimulationTime|int|108 \| 0x6c|
 |m_fEffects|int|168 \| 0xa8|
@@ -55,7 +56,7 @@ Class server-side.
 |movetype|int|218 \| 0xda|
 |movecollide|int|219 \| 0xdb|
 |moveparent|int|220 \| 0xdc|
-|m_Collision|[DT_CollisionProperty](#DT_CollisionProperty)|232 \| 0xe8|
+|m_Collision|[DT_CollisionProperty](#dt_collisionproperty)|232 \| 0xe8|
 |m_hOwnerEntity|int|324 \| 0x144|
 |m_CollisionGroup|int|328 \| 0x148|
 |m_flElasticity|float|440 \| 0x1b8|

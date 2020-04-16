@@ -1,4 +1,5 @@
 # CBaseTeamObjectiveResource
+
 Class client-side.
 
 |Prop|Type|Offset|
@@ -12,25 +13,25 @@ Class client-side.
 |m_bControlPointsReset|int|2705 \| 0xa91|
 |m_iUpdateCapHudParity|int|2708 \| 0xa94|
 |m_vCPPositions[0]|vector|2716 \| 0xa9c|
-|m_bCPIsVisible|[m_bCPIsVisible](#m_bCPIsVisible)|2812 \| 0xafc|
-|m_flLazyCapPerc|[m_flLazyCapPerc](#m_flLazyCapPerc)|2820 \| 0xb04|
-|m_iTeamIcons|[m_iTeamIcons](#m_iTeamIcons)|2884 \| 0xb44|
-|m_iTeamOverlays|[m_iTeamOverlays](#m_iTeamOverlays)|3140 \| 0xc44|
-|m_iTeamReqCappers|[m_iTeamReqCappers](#m_iTeamReqCappers)|3396 \| 0xd44|
-|m_flTeamCapTime|[m_flTeamCapTime](#m_flTeamCapTime)|3652 \| 0xe44|
-|m_iPreviousPoints|[m_iPreviousPoints](#m_iPreviousPoints)|3908 \| 0xf44|
-|m_bTeamCanCap|[m_bTeamCanCap](#m_bTeamCanCap)|4676 \| 0x1244|
-|m_iTeamBaseIcons|[m_iTeamBaseIcons](#m_iTeamBaseIcons)|4740 \| 0x1284|
-|m_iBaseControlPoints|[m_iBaseControlPoints](#m_iBaseControlPoints)|4868 \| 0x1304|
-|m_bInMiniRound|[m_bInMiniRound](#m_bInMiniRound)|4996 \| 0x1384|
-|m_iWarnOnCap|[m_iWarnOnCap](#m_iWarnOnCap)|5004 \| 0x138c|
+|m_bCPIsVisible|[m_bCPIsVisible](#m_bcpisvisible)|2812 \| 0xafc|
+|m_flLazyCapPerc|[m_flLazyCapPerc](#m_fllazycapperc)|2820 \| 0xb04|
+|m_iTeamIcons|[m_iTeamIcons](#m_iteamicons)|2884 \| 0xb44|
+|m_iTeamOverlays|[m_iTeamOverlays](#m_iteamoverlays)|3140 \| 0xc44|
+|m_iTeamReqCappers|[m_iTeamReqCappers](#m_iteamreqcappers)|3396 \| 0xd44|
+|m_flTeamCapTime|[m_flTeamCapTime](#m_flteamcaptime)|3652 \| 0xe44|
+|m_iPreviousPoints|[m_iPreviousPoints](#m_ipreviouspoints)|3908 \| 0xf44|
+|m_bTeamCanCap|[m_bTeamCanCap](#m_bteamcancap)|4676 \| 0x1244|
+|m_iTeamBaseIcons|[m_iTeamBaseIcons](#m_iteambaseicons)|4740 \| 0x1284|
+|m_iBaseControlPoints|[m_iBaseControlPoints](#m_ibasecontrolpoints)|4868 \| 0x1304|
+|m_bInMiniRound|[m_bInMiniRound](#m_binminiround)|4996 \| 0x1384|
+|m_iWarnOnCap|[m_iWarnOnCap](#m_iwarnoncap)|5004 \| 0x138c|
 |m_iszWarnSound[0]|string|5036 \| 0x13ac|
-|m_flPathDistance|[m_flPathDistance](#m_flPathDistance)|7076 \| 0x1ba4|
-|m_iNumTeamMembers|[m_iNumTeamMembers](#m_iNumTeamMembers)|7108 \| 0x1bc4|
-|m_iCappingTeam|[m_iCappingTeam](#m_iCappingTeam)|7364 \| 0x1cc4|
-|m_iTeamInZone|[m_iTeamInZone](#m_iTeamInZone)|7396 \| 0x1ce4|
-|m_bBlocked|[m_bBlocked](#m_bBlocked)|7428 \| 0x1d04|
-|m_iOwner|[m_iOwner](#m_iOwner)|7436 \| 0x1d0c|
+|m_flPathDistance|[m_flPathDistance](#m_flpathdistance)|7076 \| 0x1ba4|
+|m_iNumTeamMembers|[m_iNumTeamMembers](#m_inumteammembers)|7108 \| 0x1bc4|
+|m_iCappingTeam|[m_iCappingTeam](#m_icappingteam)|7364 \| 0x1cc4|
+|m_iTeamInZone|[m_iTeamInZone](#m_iteaminzone)|7396 \| 0x1ce4|
+|m_bBlocked|[m_bBlocked](#m_bblocked)|7428 \| 0x1d04|
+|m_iOwner|[m_iOwner](#m_iowner)|7436 \| 0x1d0c|
 |m_pszCapLayoutInHUD|string|7572 \| 0x1d94|
 
 ## Recv

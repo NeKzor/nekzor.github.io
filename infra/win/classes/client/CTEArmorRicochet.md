@@ -1,9 +1,10 @@
 # CTEArmorRicochet
+
 Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_TEMetalSparks](#DT_TEMetalSparks)|0 \| 0x0|
+|baseclass|[DT_TEMetalSparks](#dt_temetalsparks)|0 \| 0x0|
 
 ## Recv
 

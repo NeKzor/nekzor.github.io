@@ -1,4 +1,5 @@
 # CPhysicsCannister
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
@@ -66,7 +67,7 @@ Datamap server-side.
 |m_iObjectCapsCache|integer|4 \| 0x4||
 |m_pfnMoveDone|function|8 \| 0x8||
 |m_pfnThink|function|12 \| 0xc||
-|m_Network|[CServerNetworkProperty](#CServerNetworkProperty)|16 \| 0x10||
+|m_Network|[CServerNetworkProperty](#cservernetworkproperty)|16 \| 0x10||
 |m_iClassname|string|96 \| 0x60|classname|
 |m_flPrevAnimTime|time|100 \| 0x64||
 |m_flAnimTime|time|104 \| 0x68||
@@ -96,7 +97,7 @@ Datamap server-side.
 |m_hMoveParent|ehandle|220 \| 0xdc||
 |m_hMoveChild|ehandle|224 \| 0xe0||
 |m_hMovePeer|ehandle|228 \| 0xe4||
-|m_Collision|[CCollisionProperty](#CCollisionProperty)|232 \| 0xe8||
+|m_Collision|[CCollisionProperty](#ccollisionproperty)|232 \| 0xe8||
 |m_hOwnerEntity|ehandle|324 \| 0x144||
 |m_CollisionGroup|integer|328 \| 0x148|CollisionGroup|
 |m_pPhysicsObject|custom|332 \| 0x14c||
@@ -227,7 +228,7 @@ Datamap server-side.
 |m_hMyWeapons|ehandle|2000 \| 0x7d0||
 |m_hActiveWeapon|ehandle|2192 \| 0x890||
 |m_thrustOrigin|vector|2224 \| 0x8b0||
-|m_thruster|[CThrustController](#CThrustController)|2236 \| 0x8bc||
+|m_thruster|[CThrustController](#cthrustcontroller)|2236 \| 0x8bc||
 |m_pController|custom|2268 \| 0x8dc||
 |m_pJet|classptr|2272 \| 0x8e0||
 |m_active|boolean|2276 \| 0x8e4||

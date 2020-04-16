@@ -1,4 +1,5 @@
 # CAI_AccelDecay
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|

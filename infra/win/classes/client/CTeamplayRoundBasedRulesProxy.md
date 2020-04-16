@@ -1,17 +1,17 @@
 # CTeamplayRoundBasedRulesProxy
+
 Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_GameRulesProxy](#DT_GameRulesProxy)|0 \| 0x0|
-|teamplayroundbased_gamerules_data|[DT_TeamplayRoundBasedRules](#DT_TeamplayRoundBasedRules)|0 \| 0x0|
+|baseclass|[DT_GameRulesProxy](#dt_gamerulesproxy)|0 \| 0x0|
+|teamplayroundbased_gamerules_data|[DT_TeamplayRoundBasedRules](#dt_teamplayroundbasedrules)|0 \| 0x0|
 
 ## Recv
 
 ### DT_GameRulesProxy
 
-|Prop|Type|Offset|
-|---|:-:|:-:|
+Prop data not available.
 
 ### DT_TeamplayRoundBasedRules
 
@@ -26,10 +26,10 @@ Class client-side.
 |m_bAwaitingReadyRestart|int|57 \| 0x39|
 |m_flRestartRoundTime|float|60 \| 0x3c|
 |m_flMapResetTime|float|64 \| 0x40|
-|m_flNextRespawnWave|[m_flNextRespawnWave](#m_flNextRespawnWave)|68 \| 0x44|
-|m_bTeamReady|[m_bTeamReady](#m_bTeamReady)|196 \| 0xc4|
+|m_flNextRespawnWave|[m_flNextRespawnWave](#m_flnextrespawnwave)|68 \| 0x44|
+|m_bTeamReady|[m_bTeamReady](#m_bteamready)|196 \| 0xc4|
 |m_bStopWatch|int|228 \| 0xe4|
-|m_TeamRespawnWaveTimes|[m_TeamRespawnWaveTimes](#m_TeamRespawnWaveTimes)|232 \| 0xe8|
+|m_TeamRespawnWaveTimes|[m_TeamRespawnWaveTimes](#m_teamrespawnwavetimes)|232 \| 0xe8|
 
 ### m_flNextRespawnWave
 

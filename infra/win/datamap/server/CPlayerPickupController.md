@@ -1,4 +1,5 @@
 # CPlayerPickupController
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
@@ -52,7 +53,7 @@ Datamap server-side.
 |m_iObjectCapsCache|integer|4 \| 0x4||
 |m_pfnMoveDone|function|8 \| 0x8||
 |m_pfnThink|function|12 \| 0xc||
-|m_Network|[CServerNetworkProperty](#CServerNetworkProperty)|16 \| 0x10||
+|m_Network|[CServerNetworkProperty](#cservernetworkproperty)|16 \| 0x10||
 |m_iClassname|string|96 \| 0x60|classname|
 |m_flPrevAnimTime|time|100 \| 0x64||
 |m_flAnimTime|time|104 \| 0x68||
@@ -82,7 +83,7 @@ Datamap server-side.
 |m_hMoveParent|ehandle|220 \| 0xdc||
 |m_hMoveChild|ehandle|224 \| 0xe0||
 |m_hMovePeer|ehandle|228 \| 0xe4||
-|m_Collision|[CCollisionProperty](#CCollisionProperty)|232 \| 0xe8||
+|m_Collision|[CCollisionProperty](#ccollisionproperty)|232 \| 0xe8||
 |m_hOwnerEntity|ehandle|324 \| 0x144||
 |m_CollisionGroup|integer|328 \| 0x148|CollisionGroup|
 |m_pPhysicsObject|custom|332 \| 0x14c||
@@ -151,7 +152,7 @@ Datamap server-side.
 |m_iszVScripts|string|820 \| 0x334|vscripts|
 |m_iszScriptThinkFunction|string|824 \| 0x338|thinkfunction|
 |m_iszScriptId|string|852 \| 0x354||
-|m_grabController|[CGrabController](#CGrabController)|864 \| 0x360||
+|m_grabController|[CGrabController](#cgrabcontroller)|864 \| 0x360||
 |m_grabController.m_controller|custom|9188 \| 0x23e4||
 |m_pPlayer|classptr|9244 \| 0x241c||
 
@@ -211,3 +212,16 @@ Datamap server-side.
 |m_oldTransmitState|integer|8364 \| 0x20ac|
 |m_bOldShadowState|boolean|8368 \| 0x20b0|
 |m_hOldLightingOrigin|ehandle|8372 \| 0x20b4|
+
+### game_shadowcontrol_params_t
+
+|Prop|Type|Offset|External|
+|---|:-:|:-:|--:|
+|targetPosition|pos-vector|0 \| 0x0|
+|targetRotation|vector|12 \| 0xc|
+|maxAngular|float|24 \| 0x18|
+|maxDampAngular|float|28 \| 0x1c|
+|maxSpeed|float|32 \| 0x20|
+|maxDampSpeed|float|36 \| 0x24|
+|dampFactor|float|40 \| 0x28|
+|teleportDistance|float|44 \| 0x2c|

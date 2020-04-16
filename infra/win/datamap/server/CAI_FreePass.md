@@ -1,12 +1,13 @@
 # CAI_FreePass
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
 |---|:-:|:-:|--:|
 |m_hTarget|ehandle|8 \| 0x8||
 |m_FreePassTimeRemaining|float|12 \| 0xc||
-|m_FreePassMoveMonitor|[CAI_MoveMonitor](#CAI_MoveMonitor)|16 \| 0x10||
-|m_Params|[AI_FreePassParams_t](#AI_FreePassParams_t)|32 \| 0x20||
+|m_FreePassMoveMonitor|[CAI_MoveMonitor](#cai_movemonitor)|16 \| 0x10||
+|m_Params|[AI_FreePassParams_t](#ai_freepassparams_t)|32 \| 0x20||
 
 ## Embedded
 

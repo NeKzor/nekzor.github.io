@@ -1,4 +1,5 @@
 # CColorCorrection
+
 Class server-side.
 
 |Prop|Type|Offset|

@@ -1,4 +1,5 @@
 # CTEPlayerAnimEvent
+
 Class client-side.
 
 |Prop|Type|Offset|

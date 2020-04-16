@@ -1,4 +1,5 @@
 # CParticleFire
+
 Class client-side.
 
 |Prop|Type|Offset|

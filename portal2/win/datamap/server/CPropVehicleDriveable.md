@@ -1,4 +1,5 @@
 # CPropVehicleDriveable
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
@@ -68,7 +69,7 @@ Datamap server-side.
 |m_iObjectCapsCache|integer|4 \| 0x4||
 |m_pfnMoveDone|function|8 \| 0x8||
 |m_pfnThink|function|12 \| 0xc||
-|m_Network|[CServerNetworkProperty](#CServerNetworkProperty)|16 \| 0x10||
+|m_Network|[CServerNetworkProperty](#cservernetworkproperty)|16 \| 0x10||
 |m_iClassname|string|96 \| 0x60|classname|
 |m_flPrevAnimTime|time|100 \| 0x64||
 |m_flAnimTime|time|104 \| 0x68||
@@ -98,7 +99,7 @@ Datamap server-side.
 |m_hMoveParent|ehandle|220 \| 0xdc||
 |m_hMoveChild|ehandle|224 \| 0xe0||
 |m_hMovePeer|ehandle|228 \| 0xe4||
-|m_Collision|[CCollisionProperty](#CCollisionProperty)|232 \| 0xe8||
+|m_Collision|[CCollisionProperty](#ccollisionproperty)|232 \| 0xe8||
 |m_hOwnerEntity|ehandle|324 \| 0x144||
 |m_CollisionGroup|integer|328 \| 0x148|CollisionGroup|
 |m_pPhysicsObject|custom|332 \| 0x14c||
@@ -201,7 +202,7 @@ Datamap server-side.
 |m_flFrozenMax|float|1128 \| 0x468||
 |m_OnIgnite|custom|1132 \| 0x46c|OnIgnite|
 |m_OnFizzled|custom|1156 \| 0x484|OnFizzled|
-|m_VehiclePhysics|[CFourWheelVehiclePhysics](#CFourWheelVehiclePhysics)|1204 \| 0x4b4||
+|m_VehiclePhysics|[CFourWheelVehiclePhysics](#cfourwheelvehiclephysics)|1204 \| 0x4b4||
 |m_VehiclePhysics.m_pVehicle|custom|1240 \| 0x4d8||
 |m_VehiclePhysics.m_pWheels|custom|1284 \| 0x504||
 |m_nVehicleType|integer|1516 \| 0x5ec||
@@ -209,7 +210,7 @@ Datamap server-side.
 |m_vecSmoothedVelocity|vector|1524 \| 0x5f4||
 |m_hPhysicsAttacker|ehandle|1536 \| 0x600||
 |m_flLastPhysicsInfluenceTime|time|1540 \| 0x604||
-|m_pServerVehicle|[CFourWheelServerVehicle](#CFourWheelServerVehicle)|1552 \| 0x610||
+|m_pServerVehicle|[CFourWheelServerVehicle](#cfourwheelservervehicle)|1552 \| 0x610||
 |m_playerOn|custom|1556 \| 0x614|PlayerOn|
 |m_playerOff|custom|1580 \| 0x62c|PlayerOff|
 |m_pressedAttack|custom|1604 \| 0x644|PressedAttack|
@@ -325,4 +326,28 @@ Datamap server-side.
 |m_soundState|integer|404 \| 0x194|
 |m_soundStateStartTime|time|408 \| 0x198|
 |m_lastSpeed|float|412 \| 0x19c|
-|m_ViewSmoothing|[ViewSmoothingData_t](#ViewSmoothingData_t)|416 \| 0x1a0|
+|m_ViewSmoothing|[ViewSmoothingData_t](#viewsmoothingdata_t)|416 \| 0x1a0|
+
+### vehiclesounds_t
+
+|Prop|Type|Offset|External|
+|---|:-:|:-:|--:|
+|pGears|custom|4 \| 0x4|
+|crashSounds|custom|24 \| 0x18|
+|iszSound|string|44 \| 0x2c|
+|iszStateSounds|string|80 \| 0x50|
+|minStateTime|float|160 \| 0xa0|
+
+### ViewSmoothingData_t
+
+|Prop|Type|Offset|External|
+|---|:-:|:-:|--:|
+|flFOV|float|24 \| 0x18|
+|bRunningEnterExit|boolean|61 \| 0x3d|
+|bWasRunningAnim|boolean|62 \| 0x3e|
+|flEnterExitStartTime|float|64 \| 0x40|
+|flEnterExitDuration|float|68 \| 0x44|
+|vecAnglesSaved|vector|72 \| 0x48|
+|vecOriginSaved|pos-vector|84 \| 0x54|
+|vecAngleDiffSaved|vector|96 \| 0x60|
+|vecAngleDiffMin|vector|108 \| 0x6c|

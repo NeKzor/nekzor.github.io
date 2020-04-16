@@ -1,4 +1,5 @@
 # CTEBaseBeam
+
 Class server-side.
 
 |Prop|Type|Offset|

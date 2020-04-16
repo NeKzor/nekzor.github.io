@@ -1,10 +1,11 @@
 # CSoundPatch
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
 |---|:-:|:-:|--:|
-|m_pitch|[CSoundEnvelope](#CSoundEnvelope)|0 \| 0x0||
-|m_volume|[CSoundEnvelope](#CSoundEnvelope)|16 \| 0x10||
+|m_pitch|[CSoundEnvelope](#csoundenvelope)|0 \| 0x0||
+|m_volume|[CSoundEnvelope](#csoundenvelope)|16 \| 0x10||
 |m_soundlevel|integer|36 \| 0x24||
 |m_shutdownTime|time|40 \| 0x28||
 |m_iszSoundName|string|44 \| 0x2c||
@@ -17,7 +18,7 @@ Datamap server-side.
 |m_baseFlags|integer|88 \| 0x58||
 |m_isPlaying|integer|92 \| 0x5c||
 |m_flScriptVolume|float|96 \| 0x60||
-|m_Filter|[CCopyRecipientFilter](#CCopyRecipientFilter)|100 \| 0x64||
+|m_Filter|[CCopyRecipientFilter](#ccopyrecipientfilter)|100 \| 0x64||
 |m_flCloseCaptionDuration|float|128 \| 0x80||
 
 ## Embedded

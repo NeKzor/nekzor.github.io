@@ -1,15 +1,16 @@
 # CPlayerResource
+
 Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|m_iPing|[m_iPing](#m_iPing)|860 \| 0x35c|
-|m_iScore|[m_iScore](#m_iScore)|996 \| 0x3e4|
-|m_iDeaths|[m_iDeaths](#m_iDeaths)|1132 \| 0x46c|
-|m_bConnected|[m_bConnected](#m_bConnected)|1268 \| 0x4f4|
-|m_iTeam|[m_iTeam](#m_iTeam)|1404 \| 0x57c|
-|m_bAlive|[m_bAlive](#m_bAlive)|1540 \| 0x604|
-|m_iHealth|[m_iHealth](#m_iHealth)|1676 \| 0x68c|
+|m_iPing|[m_iPing](#m_iping)|860 \| 0x35c|
+|m_iScore|[m_iScore](#m_iscore)|996 \| 0x3e4|
+|m_iDeaths|[m_iDeaths](#m_ideaths)|1132 \| 0x46c|
+|m_bConnected|[m_bConnected](#m_bconnected)|1268 \| 0x4f4|
+|m_iTeam|[m_iTeam](#m_iteam)|1404 \| 0x57c|
+|m_bAlive|[m_bAlive](#m_balive)|1540 \| 0x604|
+|m_iHealth|[m_iHealth](#m_ihealth)|1676 \| 0x68c|
 
 ## Recv
 

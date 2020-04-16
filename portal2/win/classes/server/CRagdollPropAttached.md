@@ -1,9 +1,10 @@
 # CRagdollPropAttached
+
 Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_Ragdoll](#DT_Ragdoll)|0 \| 0x0|
+|baseclass|[DT_Ragdoll](#dt_ragdoll)|0 \| 0x0|
 |m_boneIndexAttached|int|3124 \| 0xc34|
 |m_ragdollAttachedObjectIndex|int|3128 \| 0xc38|
 |m_attachmentPointBoneSpace|vector|3132 \| 0xc3c|
@@ -15,7 +16,7 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseAnimating](#DT_BaseAnimating)|0 \| 0x0|
+|baseclass|[DT_BaseAnimating](#dt_baseanimating)|0 \| 0x0|
 |m_ragAngles|array|0 \| 0x0|
 |m_ragPos|array|0 \| 0x0|
 |m_ragPos|vector|1912 \| 0x778|
@@ -28,8 +29,8 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseEntity](#DT_BaseEntity)|0 \| 0x0|
-|serveranimdata|[DT_ServerAnimationData](#DT_ServerAnimationData)|0 \| 0x0|
+|baseclass|[DT_BaseEntity](#dt_baseentity)|0 \| 0x0|
+|serveranimdata|[DT_ServerAnimationData](#dt_serveranimationdata)|0 \| 0x0|
 |m_bClientSideRagdoll|int|552 \| 0x228|
 |m_nForceBone|int|876 \| 0x36c|
 |m_vecForce|vector|880 \| 0x370|
@@ -40,8 +41,8 @@ Class server-side.
 |m_flPlaybackRate|float|908 \| 0x38c|
 |m_ScaleType|int|912 \| 0x390|
 |m_nSequence|int|956 \| 0x3bc|
-|m_flPoseParameter|[m_flPoseParameter](#m_flPoseParameter)|960 \| 0x3c0|
-|m_flEncodedController|[m_flEncodedController](#m_flEncodedController)|1056 \| 0x420|
+|m_flPoseParameter|[m_flPoseParameter](#m_flposeparameter)|960 \| 0x3c0|
+|m_flEncodedController|[m_flEncodedController](#m_flencodedcontroller)|1056 \| 0x420|
 |m_bClientSideAnimation|int|1072 \| 0x430|
 |m_bClientSideFrameReset|int|1073 \| 0x431|
 |m_nNewSequenceParity|int|1076 \| 0x434|
@@ -55,7 +56,7 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#DT_AnimTimeMustBeFirst)|0 \| 0x0|
+|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#dt_animtimemustbefirst)|0 \| 0x0|
 |m_iObjectCapsCache|int|4 \| 0x4|
 |m_flSimulationTime|int|108 \| 0x6c|
 |m_fEffects|int|168 \| 0xa8|
@@ -68,7 +69,7 @@ Class server-side.
 |movetype|int|218 \| 0xda|
 |movecollide|int|219 \| 0xdb|
 |moveparent|int|220 \| 0xdc|
-|m_Collision|[DT_CollisionProperty](#DT_CollisionProperty)|232 \| 0xe8|
+|m_Collision|[DT_CollisionProperty](#dt_collisionproperty)|232 \| 0xe8|
 |m_hOwnerEntity|int|324 \| 0x144|
 |m_CollisionGroup|int|328 \| 0x148|
 |m_flElasticity|float|440 \| 0x1b8|

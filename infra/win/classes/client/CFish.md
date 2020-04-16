@@ -1,4 +1,5 @@
 # CFish
+
 Class client-side.
 
 |Prop|Type|Offset|

@@ -1,4 +1,5 @@
 # ScriptedNPCInteraction_t
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
@@ -16,7 +17,7 @@ Datamap server-side.
 |flDistSqr|float|72 \| 0x48||
 |iszMyWeapon|string|76 \| 0x4c||
 |iszTheirWeapon|string|80 \| 0x50||
-|sPhases|[ScriptedNPCInteraction_Phases_t](#ScriptedNPCInteraction_Phases_t)|84 \| 0x54||
+|sPhases|[ScriptedNPCInteraction_Phases_t](#scriptednpcinteraction_phases_t)|84 \| 0x54||
 |matDesiredLocalToWorld|vmatrix|108 \| 0x6c||
 |bValidOnCurrentEnemy|boolean|172 \| 0xac||
 |flNextAttemptTime|time|176 \| 0xb0||

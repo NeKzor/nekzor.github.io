@@ -1,4 +1,5 @@
 # CPropVehicle
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
@@ -64,7 +65,7 @@ Datamap server-side.
 |m_iObjectCapsCache|integer|4 \| 0x4||
 |m_pfnMoveDone|function|8 \| 0x8||
 |m_pfnThink|function|12 \| 0xc||
-|m_Network|[CServerNetworkProperty](#CServerNetworkProperty)|16 \| 0x10||
+|m_Network|[CServerNetworkProperty](#cservernetworkproperty)|16 \| 0x10||
 |m_iClassname|string|96 \| 0x60|classname|
 |m_flPrevAnimTime|time|100 \| 0x64||
 |m_flAnimTime|time|104 \| 0x68||
@@ -94,7 +95,7 @@ Datamap server-side.
 |m_hMoveParent|ehandle|220 \| 0xdc||
 |m_hMoveChild|ehandle|224 \| 0xe0||
 |m_hMovePeer|ehandle|228 \| 0xe4||
-|m_Collision|[CCollisionProperty](#CCollisionProperty)|232 \| 0xe8||
+|m_Collision|[CCollisionProperty](#ccollisionproperty)|232 \| 0xe8||
 |m_hOwnerEntity|ehandle|324 \| 0x144||
 |m_CollisionGroup|integer|328 \| 0x148|CollisionGroup|
 |m_pPhysicsObject|custom|332 \| 0x14c||
@@ -197,7 +198,7 @@ Datamap server-side.
 |m_flFrozenMax|float|1132 \| 0x46c||
 |m_OnIgnite|custom|1136 \| 0x470|OnIgnite|
 |m_OnFizzled|custom|1160 \| 0x488|OnFizzled|
-|m_VehiclePhysics|[CFourWheelVehiclePhysics](#CFourWheelVehiclePhysics)|1208 \| 0x4b8||
+|m_VehiclePhysics|[CFourWheelVehiclePhysics](#cfourwheelvehiclephysics)|1208 \| 0x4b8||
 |m_VehiclePhysics.m_pVehicle|custom|1244 \| 0x4dc||
 |m_VehiclePhysics.m_pWheels|custom|1288 \| 0x508||
 |m_nVehicleType|integer|1520 \| 0x5f0||

@@ -1,10 +1,11 @@
 # CFunc_Dust
+
 Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
 |m_nModelIndex|int|186 \| 0xba|
-|m_Collision|[DT_CollisionProperty](#DT_CollisionProperty)|232 \| 0xe8|
+|m_Collision|[DT_CollisionProperty](#dt_collisionproperty)|232 \| 0xe8|
 |m_Color|int|864 \| 0x360|
 |m_SpawnRate|int|868 \| 0x364|
 |m_flSizeMin|float|872 \| 0x368|

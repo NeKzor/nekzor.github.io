@@ -1,9 +1,10 @@
 # CFuncMoveLinear
+
 Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseToggle](#DT_BaseToggle)|0 \| 0x0|
+|baseclass|[DT_BaseToggle](#dt_basetoggle)|0 \| 0x0|
 |m_fFlags|int|248 \| 0xf8|
 |m_vecVelocity|vector|264 \| 0x108|
 
@@ -13,7 +14,7 @@ Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseEntity](#DT_BaseEntity)|0 \| 0x0|
+|baseclass|[DT_BaseEntity](#dt_baseentity)|0 \| 0x0|
 |m_vecFinalDest|vector|2708 \| 0xa94|
 |m_movementType|int|2720 \| 0xaa0|
 |m_flMoveTargetTime|float|2724 \| 0xaa4|
@@ -22,7 +23,7 @@ Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#DT_AnimTimeMustBeFirst)|0 \| 0x0|
+|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#dt_animtimemustbefirst)|0 \| 0x0|
 |movecollide|int|0 \| 0x0|
 |movetype|int|0 \| 0x0|
 |m_clrRender|int|108 \| 0x6c|
@@ -47,7 +48,7 @@ Class client-side.
 |m_fadeMinDist|float|1000 \| 0x3e8|
 |m_fadeMaxDist|float|1004 \| 0x3ec|
 |m_flFadeScale|float|1008 \| 0x3f0|
-|m_Collision|[DT_CollisionProperty](#DT_CollisionProperty)|1040 \| 0x410|
+|m_Collision|[DT_CollisionProperty](#dt_collisionproperty)|1040 \| 0x410|
 |m_flElasticity|float|1168 \| 0x490|
 |m_flShadowCastDistance|float|1172 \| 0x494|
 |m_CollisionGroup|int|1384 \| 0x568|

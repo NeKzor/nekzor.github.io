@@ -1,4 +1,5 @@
 # CEconItemView
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
@@ -8,7 +9,7 @@ Datamap server-side.
 |m_iEntityLevel|integer|12 \| 0xc||
 |m_iItemID|integer|16 \| 0x10||
 |m_bInitialized|boolean|44 \| 0x2c||
-|m_AttributeList|[CAttributeList](#CAttributeList)|48 \| 0x30||
+|m_AttributeList|[CAttributeList](#cattributelist)|48 \| 0x30||
 
 ## Embedded
 

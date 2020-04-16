@@ -1,9 +1,10 @@
 # CBaseButton
+
 Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseToggle](#DT_BaseToggle)|0 \| 0x0|
+|baseclass|[DT_BaseToggle](#dt_basetoggle)|0 \| 0x0|
 
 ## Recv
 
@@ -11,7 +12,7 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseEntity](#DT_BaseEntity)|0 \| 0x0|
+|baseclass|[DT_BaseEntity](#dt_baseentity)|0 \| 0x0|
 |m_vecFinalDest|vector|944 \| 0x3b0|
 |m_movementType|int|968 \| 0x3c8|
 |m_flMoveTargetTime|float|972 \| 0x3cc|
@@ -20,7 +21,7 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#DT_AnimTimeMustBeFirst)|0 \| 0x0|
+|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#dt_animtimemustbefirst)|0 \| 0x0|
 |m_iObjectCapsCache|int|4 \| 0x4|
 |m_flSimulationTime|int|108 \| 0x6c|
 |m_fEffects|int|168 \| 0xa8|
@@ -33,7 +34,7 @@ Class server-side.
 |movetype|int|218 \| 0xda|
 |movecollide|int|219 \| 0xdb|
 |moveparent|int|220 \| 0xdc|
-|m_Collision|[DT_CollisionProperty](#DT_CollisionProperty)|232 \| 0xe8|
+|m_Collision|[DT_CollisionProperty](#dt_collisionproperty)|232 \| 0xe8|
 |m_hOwnerEntity|int|324 \| 0x144|
 |m_CollisionGroup|int|328 \| 0x148|
 |m_flElasticity|float|440 \| 0x1b8|

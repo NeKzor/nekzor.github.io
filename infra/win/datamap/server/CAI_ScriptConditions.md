@@ -1,4 +1,5 @@
 # CAI_ScriptConditions
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
@@ -55,7 +56,7 @@ Datamap server-side.
 |m_iObjectCapsCache|integer|4 \| 0x4||
 |m_pfnMoveDone|function|8 \| 0x8||
 |m_pfnThink|function|12 \| 0xc||
-|m_Network|[CServerNetworkProperty](#CServerNetworkProperty)|16 \| 0x10||
+|m_Network|[CServerNetworkProperty](#cservernetworkproperty)|16 \| 0x10||
 |m_iClassname|string|96 \| 0x60|classname|
 |m_flPrevAnimTime|time|100 \| 0x64||
 |m_flAnimTime|time|104 \| 0x68||
@@ -85,7 +86,7 @@ Datamap server-side.
 |m_hMoveParent|ehandle|220 \| 0xdc||
 |m_hMoveChild|ehandle|224 \| 0xe0||
 |m_hMovePeer|ehandle|228 \| 0xe4||
-|m_Collision|[CCollisionProperty](#CCollisionProperty)|232 \| 0xe8||
+|m_Collision|[CCollisionProperty](#ccollisionproperty)|232 \| 0xe8||
 |m_hOwnerEntity|ehandle|324 \| 0x144||
 |m_CollisionGroup|integer|328 \| 0x148|CollisionGroup|
 |m_pPhysicsObject|custom|332 \| 0x14c||
@@ -162,23 +163,23 @@ Datamap server-side.
 |m_hTarget|ehandle|944 \| 0x3b0||
 |m_flRequiredTime|float|948 \| 0x3b4|RequiredTime|
 |m_hActor|ehandle|952 \| 0x3b8||
-|m_Timer|[CSimTimer](#CSimTimer)|956 \| 0x3bc||
-|m_Timeout|[CSimTimer](#CSimTimer)|964 \| 0x3c4||
+|m_Timer|[CSimTimer](#csimtimer)|956 \| 0x3bc||
+|m_Timeout|[CSimTimer](#csimtimer)|964 \| 0x3c4||
 |m_fMinState|integer|972 \| 0x3cc|MinimumState|
 |m_fMaxState|integer|976 \| 0x3d0|MaximumState|
 |m_fScriptStatus|integer|980 \| 0x3d4|ScriptStatus|
 |m_fActorSeePlayer|integer|984 \| 0x3d8|ActorSeePlayer|
 |m_Actor|string|988 \| 0x3dc|Actor|
 |m_flPlayerActorProximity|float|992 \| 0x3e0|PlayerActorProximity|
-|m_PlayerActorProxTester|[CAI_ProxTester](#CAI_ProxTester)|996 \| 0x3e4||
+|m_PlayerActorProxTester|[CAI_ProxTester](#cai_proxtester)|996 \| 0x3e4||
 |m_flPlayerActorFOV|float|1004 \| 0x3ec|PlayerActorFOV|
 |m_bPlayerActorFOVTrueCone|boolean|1008 \| 0x3f0|PlayerActorFOVTrueCone|
 |m_fPlayerActorLOS|integer|1012 \| 0x3f4|PlayerActorLOS|
 |m_fActorSeeTarget|integer|1016 \| 0x3f8|ActorSeeTarget|
 |m_flActorTargetProximity|float|1020 \| 0x3fc|ActorTargetProximity|
-|m_ActorTargetProxTester|[CAI_ProxTester](#CAI_ProxTester)|1024 \| 0x400||
+|m_ActorTargetProxTester|[CAI_ProxTester](#cai_proxtester)|1024 \| 0x400||
 |m_flPlayerTargetProximity|float|1032 \| 0x408|PlayerTargetProximity|
-|m_PlayerTargetProxTester|[CAI_ProxTester](#CAI_ProxTester)|1036 \| 0x40c||
+|m_PlayerTargetProxTester|[CAI_ProxTester](#cai_proxtester)|1036 \| 0x40c||
 |m_flPlayerTargetFOV|float|1044 \| 0x414|PlayerTargetFOV|
 |m_bPlayerTargetFOVTrueCone|boolean|1048 \| 0x418|PlayerTargetFOVTrueCone|
 |m_fPlayerTargetLOS|integer|1052 \| 0x41c|PlayerTargetLOS|

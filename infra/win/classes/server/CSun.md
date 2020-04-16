@@ -1,4 +1,5 @@
 # CSun
+
 Class server-side.
 
 |Prop|Type|Offset|

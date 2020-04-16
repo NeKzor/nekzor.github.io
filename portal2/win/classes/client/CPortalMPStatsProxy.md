@@ -1,10 +1,11 @@
 # CPortalMPStatsProxy
+
 Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseEntity](#DT_BaseEntity)|0 \| 0x0|
-|portalmp_stats_data|[DT_Portal_MP_Stats](#DT_Portal_MP_Stats)|0 \| 0x0|
+|baseclass|[DT_BaseEntity](#dt_baseentity)|0 \| 0x0|
+|portalmp_stats_data|[DT_Portal_MP_Stats](#dt_portal_mp_stats)|0 \| 0x0|
 
 ## Recv
 
@@ -12,7 +13,7 @@ Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#DT_AnimTimeMustBeFirst)|0 \| 0x0|
+|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#dt_animtimemustbefirst)|0 \| 0x0|
 |movecollide|int|0 \| 0x0|
 |movetype|int|0 \| 0x0|
 |m_clrRender|int|108 \| 0x6c|
@@ -37,7 +38,7 @@ Class client-side.
 |m_fadeMinDist|float|1000 \| 0x3e8|
 |m_fadeMaxDist|float|1004 \| 0x3ec|
 |m_flFadeScale|float|1008 \| 0x3f0|
-|m_Collision|[DT_CollisionProperty](#DT_CollisionProperty)|1040 \| 0x410|
+|m_Collision|[DT_CollisionProperty](#dt_collisionproperty)|1040 \| 0x410|
 |m_flElasticity|float|1168 \| 0x490|
 |m_flShadowCastDistance|float|1172 \| 0x494|
 |m_CollisionGroup|int|1384 \| 0x568|
@@ -55,9 +56,9 @@ Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|m_rgPlayerSteps|[m_rgPlayerSteps](#m_rgPlayerSteps)|12 \| 0xc|
-|m_rgPortalsPlaced|[m_rgPortalsPlaced](#m_rgPortalsPlaced)|20 \| 0x14|
-|m_rgPortalsTraveled|[m_rgPortalsTraveled](#m_rgPortalsTraveled)|28 \| 0x1c|
+|m_rgPlayerSteps|[m_rgPlayerSteps](#m_rgplayersteps)|12 \| 0xc|
+|m_rgPortalsPlaced|[m_rgPortalsPlaced](#m_rgportalsplaced)|20 \| 0x14|
+|m_rgPortalsTraveled|[m_rgPortalsTraveled](#m_rgportalstraveled)|28 \| 0x1c|
 |m_iTeamTaunts_Hug|int|36 \| 0x24|
 
 ### DT_AnimTimeMustBeFirst

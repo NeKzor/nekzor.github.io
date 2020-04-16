@@ -1,9 +1,10 @@
 # CEnvWind
+
 Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|m_EnvWindShared|[DT_EnvWindShared](#DT_EnvWindShared)|860 \| 0x35c|
+|m_EnvWindShared|[DT_EnvWindShared](#dt_envwindshared)|860 \| 0x35c|
 
 ## Recv
 

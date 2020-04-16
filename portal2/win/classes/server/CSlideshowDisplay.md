@@ -1,13 +1,14 @@
 # CSlideshowDisplay
+
 Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseEntity](#DT_BaseEntity)|0 \| 0x0|
+|baseclass|[DT_BaseEntity](#dt_baseentity)|0 \| 0x0|
 |m_bEnabled|int|860 \| 0x35c|
 |m_szDisplayText|string|861 \| 0x35d|
 |m_szSlideshowDirectory|string|989 \| 0x3dd|
-|m_chCurrentSlideLists|[m_chCurrentSlideLists](#m_chCurrentSlideLists)|1144 \| 0x478|
+|m_chCurrentSlideLists|[m_chCurrentSlideLists](#m_chcurrentslidelists)|1144 \| 0x478|
 |m_fMinSlideTime|float|1160 \| 0x488|
 |m_fMaxSlideTime|float|1164 \| 0x48c|
 |m_iCycleType|int|1168 \| 0x490|
@@ -19,7 +20,7 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#DT_AnimTimeMustBeFirst)|0 \| 0x0|
+|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#dt_animtimemustbefirst)|0 \| 0x0|
 |m_iObjectCapsCache|int|4 \| 0x4|
 |m_flSimulationTime|int|108 \| 0x6c|
 |m_fEffects|int|168 \| 0xa8|
@@ -32,7 +33,7 @@ Class server-side.
 |movetype|int|218 \| 0xda|
 |movecollide|int|219 \| 0xdb|
 |moveparent|int|220 \| 0xdc|
-|m_Collision|[DT_CollisionProperty](#DT_CollisionProperty)|232 \| 0xe8|
+|m_Collision|[DT_CollisionProperty](#dt_collisionproperty)|232 \| 0xe8|
 |m_hOwnerEntity|int|324 \| 0x144|
 |m_CollisionGroup|int|328 \| 0x148|
 |m_flElasticity|float|440 \| 0x1b8|

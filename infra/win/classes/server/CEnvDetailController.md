@@ -1,4 +1,5 @@
 # CEnvDetailController
+
 Class server-side.
 
 |Prop|Type|Offset|

@@ -1,4 +1,5 @@
 # CPropTestChamberDoor
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
@@ -65,7 +66,7 @@ Datamap server-side.
 |m_iObjectCapsCache|integer|4 \| 0x4||
 |m_pfnMoveDone|function|8 \| 0x8||
 |m_pfnThink|function|12 \| 0xc||
-|m_Network|[CServerNetworkProperty](#CServerNetworkProperty)|16 \| 0x10||
+|m_Network|[CServerNetworkProperty](#cservernetworkproperty)|16 \| 0x10||
 |m_iClassname|string|96 \| 0x60|classname|
 |m_flPrevAnimTime|time|100 \| 0x64||
 |m_flAnimTime|time|104 \| 0x68||
@@ -95,7 +96,7 @@ Datamap server-side.
 |m_hMoveParent|ehandle|220 \| 0xdc||
 |m_hMoveChild|ehandle|224 \| 0xe0||
 |m_hMovePeer|ehandle|228 \| 0xe4||
-|m_Collision|[CCollisionProperty](#CCollisionProperty)|232 \| 0xe8||
+|m_Collision|[CCollisionProperty](#ccollisionproperty)|232 \| 0xe8||
 |m_hOwnerEntity|ehandle|324 \| 0x144||
 |m_CollisionGroup|integer|328 \| 0x148|CollisionGroup|
 |m_pPhysicsObject|custom|332 \| 0x14c||
@@ -209,7 +210,7 @@ Datamap server-side.
 |m_bIsOpen|boolean|1316 \| 0x524||
 |m_bIsAnimating|boolean|1317 \| 0x525||
 |m_bIsLocked|boolean|1318 \| 0x526||
-|m_BoneFollowerManager|[CBoneFollowerManager](#CBoneFollowerManager)|1320 \| 0x528||
+|m_BoneFollowerManager|[CBoneFollowerManager](#cbonefollowermanager)|1320 \| 0x528||
 |m_strAreaPortalWindowName|string|1344 \| 0x540|AreaPortalWindow|
 |m_hAreaPortalWindow|ehandle|1348 \| 0x544||
 |m_bUseAreaPortalFade|boolean|1352 \| 0x548|UseAreaPortalFade|

@@ -1,9 +1,10 @@
 # CTEFootprintDecal
+
 Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseTempEntity](#DT_BaseTempEntity)|0 \| 0x0|
+|baseclass|[DT_BaseTempEntity](#dt_basetempentity)|0 \| 0x0|
 |m_vecOrigin|vector|16 \| 0x10|
 |m_vecDirection|vector|28 \| 0x1c|
 |m_nEntity|int|52 \| 0x34|
@@ -14,5 +15,4 @@ Class client-side.
 
 ### DT_BaseTempEntity
 
-|Prop|Type|Offset|
-|---|:-:|:-:|
+Prop data not available.

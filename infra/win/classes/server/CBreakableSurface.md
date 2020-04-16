@@ -1,9 +1,10 @@
 # CBreakableSurface
+
 Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseEntity](#DT_BaseEntity)|0 \| 0x0|
+|baseclass|[DT_BaseEntity](#dt_baseentity)|0 \| 0x0|
 |m_nNumWide|int|1040 \| 0x410|
 |m_nNumHigh|int|1044 \| 0x414|
 |m_flPanelWidth|float|1048 \| 0x418|
@@ -12,7 +13,7 @@ Class server-side.
 |m_vCorner|vector|1068 \| 0x42c|
 |m_bIsBroken|int|1080 \| 0x438|
 |m_nSurfaceType|int|1084 \| 0x43c|
-|m_RawPanelBitVec|[m_RawPanelBitVec](#m_RawPanelBitVec)|2172 \| 0x87c|
+|m_RawPanelBitVec|[m_RawPanelBitVec](#m_rawpanelbitvec)|2172 \| 0x87c|
 
 ## Recv
 
@@ -20,7 +21,7 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#DT_AnimTimeMustBeFirst)|0 \| 0x0|
+|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#dt_animtimemustbefirst)|0 \| 0x0|
 |m_iObjectCapsCache|int|4 \| 0x4|
 |m_flSimulationTime|int|108 \| 0x6c|
 |m_fEffects|int|168 \| 0xa8|
@@ -33,7 +34,7 @@ Class server-side.
 |movetype|int|218 \| 0xda|
 |movecollide|int|219 \| 0xdb|
 |moveparent|int|220 \| 0xdc|
-|m_Collision|[DT_CollisionProperty](#DT_CollisionProperty)|232 \| 0xe8|
+|m_Collision|[DT_CollisionProperty](#dt_collisionproperty)|232 \| 0xe8|
 |m_hOwnerEntity|int|324 \| 0x144|
 |m_CollisionGroup|int|328 \| 0x148|
 |m_flElasticity|float|440 \| 0x1b8|

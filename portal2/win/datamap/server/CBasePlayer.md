@@ -1,4 +1,5 @@
 # CBasePlayer
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
@@ -64,7 +65,7 @@ Datamap server-side.
 |m_iObjectCapsCache|integer|4 \| 0x4||
 |m_pfnMoveDone|function|8 \| 0x8||
 |m_pfnThink|function|12 \| 0xc||
-|m_Network|[CServerNetworkProperty](#CServerNetworkProperty)|16 \| 0x10||
+|m_Network|[CServerNetworkProperty](#cservernetworkproperty)|16 \| 0x10||
 |m_iClassname|string|96 \| 0x60|classname|
 |m_flPrevAnimTime|time|100 \| 0x64||
 |m_flAnimTime|time|104 \| 0x68||
@@ -94,7 +95,7 @@ Datamap server-side.
 |m_hMoveParent|ehandle|220 \| 0xdc||
 |m_hMoveChild|ehandle|224 \| 0xe0||
 |m_hMovePeer|ehandle|228 \| 0xe4||
-|m_Collision|[CCollisionProperty](#CCollisionProperty)|232 \| 0xe8||
+|m_Collision|[CCollisionProperty](#ccollisionproperty)|232 \| 0xe8||
 |m_hOwnerEntity|ehandle|324 \| 0x144||
 |m_CollisionGroup|integer|328 \| 0x148|CollisionGroup|
 |m_pPhysicsObject|custom|332 \| 0x14c||
@@ -223,12 +224,12 @@ Datamap server-side.
 |m_hMyWeapons|ehandle|1948 \| 0x79c||
 |m_hActiveWeapon|ehandle|2140 \| 0x85c||
 |m_StuckLast|integer|2188 \| 0x88c||
-|m_Local|[CPlayerLocalData](#CPlayerLocalData)|2192 \| 0x890||
+|m_Local|[CPlayerLocalData](#cplayerlocaldata)|2192 \| 0x890||
 |m_PlayerFog|[fogplayerparams_t](#fogplayerparams_t)|2696 \| 0xa88||
 |m_hPostProcessCtrl|ehandle|2776 \| 0xad8||
 |m_hColorCorrectionCtrl|ehandle|2780 \| 0xadc||
 |m_hTriggerSoundscapeList|custom|2784 \| 0xae0||
-|pl|[CPlayerState](#CPlayerState)|2804 \| 0xaf4||
+|pl|[CPlayerState](#cplayerstate)|2804 \| 0xaf4||
 |m_nButtons|integer|2856 \| 0xb28||
 |m_afButtonPressed|integer|2860 \| 0xb2c||
 |m_afButtonReleased|integer|2864 \| 0xb30||
@@ -406,3 +407,63 @@ Datamap server-side.
 |---|:-:|:-:|--:|
 |deadflag|boolean|4 \| 0x4|
 |v_angle|vector|8 \| 0x8|
+
+### sky3dparams_t
+
+|Prop|Type|Offset|External|
+|---|:-:|:-:|--:|
+|scale|integer|4 \| 0x4|
+|origin|vector|8 \| 0x8|
+|area|integer|20 \| 0x14|
+|fog|[fogparams_t](#fogparams_t)|24 \| 0x18|
+
+### fogparams_t
+
+|Prop|Type|Offset|External|
+|---|:-:|:-:|--:|
+|dirPrimary|vector|4 \| 0x4|
+|colorPrimary|color32|16 \| 0x10|
+|colorSecondary|color32|20 \| 0x14|
+|colorPrimaryLerpTo|color32|24 \| 0x18|
+|colorSecondaryLerpTo|color32|28 \| 0x1c|
+|start|float|32 \| 0x20|
+|end|float|36 \| 0x24|
+|farz|float|40 \| 0x28|
+|maxdensity|float|44 \| 0x2c|
+|startLerpTo|float|48 \| 0x30|
+|endLerpTo|float|52 \| 0x34|
+|maxdensityLerpTo|float|56 \| 0x38|
+|lerptime|time|60 \| 0x3c|
+|duration|float|64 \| 0x40|
+|enable|boolean|68 \| 0x44|
+|blend|boolean|69 \| 0x45|
+
+### audioparams_t
+
+|Prop|Type|Offset|External|
+|---|:-:|:-:|--:|
+|localSound|vector|4 \| 0x4|
+|soundscapeIndex|integer|100 \| 0x64|
+|localBits|integer|104 \| 0x68|
+|entIndex|integer|108 \| 0x6c|
+
+### fogparams_t
+
+|Prop|Type|Offset|External|
+|---|:-:|:-:|--:|
+|dirPrimary|vector|4 \| 0x4|
+|colorPrimary|color32|16 \| 0x10|
+|colorSecondary|color32|20 \| 0x14|
+|colorPrimaryLerpTo|color32|24 \| 0x18|
+|colorSecondaryLerpTo|color32|28 \| 0x1c|
+|start|float|32 \| 0x20|
+|end|float|36 \| 0x24|
+|farz|float|40 \| 0x28|
+|maxdensity|float|44 \| 0x2c|
+|startLerpTo|float|48 \| 0x30|
+|endLerpTo|float|52 \| 0x34|
+|maxdensityLerpTo|float|56 \| 0x38|
+|lerptime|time|60 \| 0x3c|
+|duration|float|64 \| 0x40|
+|enable|boolean|68 \| 0x44|
+|blend|boolean|69 \| 0x45|

@@ -1,4 +1,5 @@
 # CFogController
+
 Class client-side.
 
 |Prop|Type|Offset|

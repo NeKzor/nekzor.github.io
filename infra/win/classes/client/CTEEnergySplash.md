@@ -1,4 +1,5 @@
 # CTEEnergySplash
+
 Class client-side.
 
 |Prop|Type|Offset|

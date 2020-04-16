@@ -1,9 +1,10 @@
 # CINFRA_ViewModel
+
 Class client-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseViewModel](#DT_BaseViewModel)|0 \| 0x0|
+|baseclass|[DT_BaseViewModel](#dt_baseviewmodel)|0 \| 0x0|
 
 ## Recv
 

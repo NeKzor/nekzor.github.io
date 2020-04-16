@@ -1,4 +1,5 @@
 # CParticleSystem
+
 Class server-side.
 
 |Prop|Type|Offset|
@@ -14,10 +15,10 @@ Class server-side.
 |m_nStopType|int|1132 \| 0x46c|
 |m_iEffectIndex|int|1136 \| 0x470|
 |m_flStartTime|float|1140 \| 0x474|
-|m_vServerControlPoints|[m_vServerControlPoints](#m_vServerControlPoints)|1144 \| 0x478|
-|m_iServerControlPointAssignments|[m_iServerControlPointAssignments](#m_iServerControlPointAssignments)|1192 \| 0x4a8|
-|m_hControlPointEnts|[m_hControlPointEnts](#m_hControlPointEnts)|1448 \| 0x5a8|
-|m_iControlPointParents|[m_iControlPointParents](#m_iControlPointParents)|1700 \| 0x6a4|
+|m_vServerControlPoints|[m_vServerControlPoints](#m_vservercontrolpoints)|1144 \| 0x478|
+|m_iServerControlPointAssignments|[m_iServerControlPointAssignments](#m_iservercontrolpointassignments)|1192 \| 0x4a8|
+|m_hControlPointEnts|[m_hControlPointEnts](#m_hcontrolpointents)|1448 \| 0x5a8|
+|m_iControlPointParents|[m_iControlPointParents](#m_icontrolpointparents)|1700 \| 0x6a4|
 
 ## Recv
 

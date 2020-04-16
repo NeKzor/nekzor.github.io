@@ -1,6 +1,6 @@
 # INFRA Datamap
-Dumped client-side datamap.
 
+Dumped client-side datamap.
 - [C_BaseAnimating](/C_BaseAnimating.md)
 - [C_BaseAnimatingOverlay](/C_BaseAnimatingOverlay.md)
 - [C_BaseCombatCharacter](/C_BaseCombatCharacter.md)

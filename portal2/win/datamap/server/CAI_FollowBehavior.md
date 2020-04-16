@@ -1,15 +1,16 @@
 # CAI_FollowBehavior
+
 Datamap server-side.
 
 |Prop|Type|Offset|External|
 |---|:-:|:-:|--:|
 |m_ScheduleChannels|custom|12 \| 0xc||
 |m_hFollowTarget|ehandle|48 \| 0x30||
-|m_FollowNavGoal|[AI_FollowNavInfo_t](#AI_FollowNavInfo_t)|52 \| 0x34||
+|m_FollowNavGoal|[AI_FollowNavInfo_t](#ai_follownavinfo_t)|52 \| 0x34||
 |m_flTimeUpdatedFollowPosition|time|108 \| 0x6c||
 |m_bFirstFacing|boolean|112 \| 0x70||
 |m_flTimeFollowTargetVisible|time|116 \| 0x74||
-|m_TargetMonitor|[CAI_MoveMonitor](#CAI_MoveMonitor)|120 \| 0x78||
+|m_TargetMonitor|[CAI_MoveMonitor](#cai_movemonitor)|120 \| 0x78||
 |m_bTargetUnreachable|boolean|136 \| 0x88||
 |m_bFollowNavFailed|boolean|137 \| 0x89||
 |m_nFailedFollowAttempts|integer|140 \| 0x8c||
@@ -18,15 +19,15 @@ Datamap server-side.
 |m_bMovingToCover|boolean|160 \| 0xa0||
 |m_flOriginalEnemyDiscardTime|float|164 \| 0xa4||
 |m_SavedDistTooFar|float|168 \| 0xa8||
-|m_FollowDelay|[CRandStopwatch](#CRandStopwatch)|172 \| 0xac||
-|m_RepathOnFollowTimer|[CSimpleSimTimer](#CSimpleSimTimer)|188 \| 0xbc||
+|m_FollowDelay|[CRandStopwatch](#crandstopwatch)|172 \| 0xac||
+|m_RepathOnFollowTimer|[CSimpleSimTimer](#csimplesimtimer)|188 \| 0xbc||
 |m_CurrentFollowActivity|custom|192 \| 0xc0||
-|m_TimeBlockUseWaitPoint|[CRandSimTimer](#CRandSimTimer)|196 \| 0xc4||
-|m_TimeCheckForWaitPoint|[CSimTimer](#CSimTimer)|208 \| 0xd0||
+|m_TimeBlockUseWaitPoint|[CRandSimTimer](#crandsimtimer)|196 \| 0xc4||
+|m_TimeCheckForWaitPoint|[CSimTimer](#csimtimer)|208 \| 0xd0||
 |m_pInterruptWaitPoint|classptr|216 \| 0xd8||
-|m_TimeBeforeSpreadFacing|[CRandSimTimer](#CRandSimTimer)|220 \| 0xdc||
-|m_TimeNextSpreadFacing|[CRandSimTimer](#CRandSimTimer)|232 \| 0xe8||
-|m_params|[AI_FollowParams_t](#AI_FollowParams_t)|252 \| 0xfc||
+|m_TimeBeforeSpreadFacing|[CRandSimTimer](#crandsimtimer)|220 \| 0xdc||
+|m_TimeNextSpreadFacing|[CRandSimTimer](#crandsimtimer)|232 \| 0xe8||
+|m_params|[AI_FollowParams_t](#ai_followparams_t)|252 \| 0xfc||
 |m_hFollowGoalEnt|ehandle|260 \| 0x104||
 
 ## Embedded

@@ -1,4 +1,5 @@
 # CBaseViewModel
+
 Datamap client-side.
 
 |Prop|Type|Offset|External|
@@ -35,7 +36,7 @@ Datamap client-side.
 |m_MoveCollide|character|853 \| 0x355||
 |m_nWaterLevel|character|854 \| 0x356||
 |m_flAnimTime|float|856 \| 0x358||
-|m_Collision|[CCollisionProperty](#CCollisionProperty)|1040 \| 0x410||
+|m_Collision|[CCollisionProperty](#ccollisionproperty)|1040 \| 0x410||
 |m_bEverHadPredictionErrorsForThisCommand|boolean|2604 \| 0xa2c||
 |m_nPrevSequence|integer|2720 \| 0xaa0||
 |m_flCycle|float|2724 \| 0xaa4||

@@ -1,4 +1,5 @@
 # CInfoOverlayAccessor
+
 Class client-side.
 
 |Prop|Type|Offset|

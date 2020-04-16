@@ -1,9 +1,10 @@
 # CTEBeamPoints
+
 Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseBeam](#DT_BaseBeam)|0 \| 0x0|
+|baseclass|[DT_BaseBeam](#dt_basebeam)|0 \| 0x0|
 |m_vecStartPoint|vector|72 \| 0x48|
 |m_vecEndPoint|vector|84 \| 0x54|
 

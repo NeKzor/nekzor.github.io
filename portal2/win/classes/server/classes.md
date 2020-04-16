@@ -1,4 +1,5 @@
 # Portal 2 Classes
+
 Dumped server-side classes.
 
 - [AR2Explosion](/AR2Explosion.md)
@@ -19,7 +20,7 @@ Dumped server-side classes.
 - [CBaseProjectedEntity](/CBaseProjectedEntity.md)
 - [CBaseProjector](/CBaseProjector.md)
 - [CBasePropDoor](/CBasePropDoor.md)
-- [CBaseTempEntity](/CBaseTempEntity.md)
+- CBaseTempEntity
 - [CBaseToggle](/CBaseToggle.md)
 - [CBaseTrigger](/CBaseTrigger.md)
 - [CBaseViewModel](/CBaseViewModel.md)
@@ -71,7 +72,7 @@ Dumped server-side classes.
 - [CFuncRotating](/CFuncRotating.md)
 - [CFuncSmokeVolume](/CFuncSmokeVolume.md)
 - [CFuncTrackTrain](/CFuncTrackTrain.md)
-- [CGameRulesProxy](/CGameRulesProxy.md)
+- CGameRulesProxy
 - [CHalfLife2Proxy](/CHalfLife2Proxy.md)
 - [CHandleTest](/CHandleTest.md)
 - [CHLMachineGun](/CHLMachineGun.md)

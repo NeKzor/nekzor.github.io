@@ -1,4 +1,5 @@
 # INFRA Classes
+
 Dumped client-side classes.
 
 - [AR2Explosion](/AR2Explosion.md)
@@ -21,7 +22,7 @@ Dumped client-side classes.
 - [CBaseProjector](/CBaseProjector.md)
 - [CBasePropDoor](/CBasePropDoor.md)
 - [CBaseTeamObjectiveResource](/CBaseTeamObjectiveResource.md)
-- [CBaseTempEntity](/CBaseTempEntity.md)
+- CBaseTempEntity
 - [CBaseToggle](/CBaseToggle.md)
 - [CBaseTrigger](/CBaseTrigger.md)
 - [CBaseViewModel](/CBaseViewModel.md)
@@ -75,7 +76,7 @@ Dumped client-side classes.
 - [CFuncRotating](/CFuncRotating.md)
 - [CFuncSmokeVolume](/CFuncSmokeVolume.md)
 - [CFuncTrackTrain](/CFuncTrackTrain.md)
-- [CGameRulesProxy](/CGameRulesProxy.md)
+- CGameRulesProxy
 - [CHalfLife2Proxy](/CHalfLife2Proxy.md)
 - [CHandleTest](/CHandleTest.md)
 - [CHL2_Player](/CHL2_Player.md)

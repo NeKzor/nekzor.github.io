@@ -1,9 +1,10 @@
 # CProp_Portal
+
 Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_Portal_Base2D](#DT_Portal_Base2D)|0 \| 0x0|
+|baseclass|[DT_Portal_Base2D](#dt_portal_base2d)|0 \| 0x0|
 |m_hFiredByPlayer|int|11084 \| 0x2b4c|
 |m_nPlacementAttemptParity|int|11092 \| 0x2b54|
 
@@ -13,7 +14,7 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseAnimating](#DT_BaseAnimating)|0 \| 0x0|
+|baseclass|[DT_BaseAnimating](#dt_baseanimating)|0 \| 0x0|
 |m_angRotation|int|0 \| 0x0|
 |m_vecOrigin|int|0 \| 0x0|
 |m_vecOrigin|vector|700 \| 0x2bc|
@@ -22,7 +23,7 @@ Class server-side.
 |m_bIsPortal2|int|1284 \| 0x504|
 |m_ptOrigin|vector|1508 \| 0x5e4|
 |m_qAbsAngle|vector|1556 \| 0x614|
-|m_PortalSimulator|[DT_PortalSimulator](#DT_PortalSimulator)|1640 \| 0x668|
+|m_PortalSimulator|[DT_PortalSimulator](#dt_portalsimulator)|1640 \| 0x668|
 |m_bActivated|int|11020 \| 0x2b0c|
 |m_bOldActivatedState|int|11021 \| 0x2b0d|
 |m_fNetworkHalfWidth|float|11044 \| 0x2b24|
@@ -33,8 +34,8 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|baseclass|[DT_BaseEntity](#DT_BaseEntity)|0 \| 0x0|
-|serveranimdata|[DT_ServerAnimationData](#DT_ServerAnimationData)|0 \| 0x0|
+|baseclass|[DT_BaseEntity](#dt_baseentity)|0 \| 0x0|
+|serveranimdata|[DT_ServerAnimationData](#dt_serveranimationdata)|0 \| 0x0|
 |m_bClientSideRagdoll|int|552 \| 0x228|
 |m_nForceBone|int|876 \| 0x36c|
 |m_vecForce|vector|880 \| 0x370|
@@ -45,8 +46,8 @@ Class server-side.
 |m_flPlaybackRate|float|908 \| 0x38c|
 |m_ScaleType|int|912 \| 0x390|
 |m_nSequence|int|956 \| 0x3bc|
-|m_flPoseParameter|[m_flPoseParameter](#m_flPoseParameter)|960 \| 0x3c0|
-|m_flEncodedController|[m_flEncodedController](#m_flEncodedController)|1056 \| 0x420|
+|m_flPoseParameter|[m_flPoseParameter](#m_flposeparameter)|960 \| 0x3c0|
+|m_flEncodedController|[m_flEncodedController](#m_flencodedcontroller)|1056 \| 0x420|
 |m_bClientSideAnimation|int|1072 \| 0x430|
 |m_bClientSideFrameReset|int|1073 \| 0x431|
 |m_nNewSequenceParity|int|1076 \| 0x434|
@@ -60,13 +61,13 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|m_InternalData|[DT_PS_InternalData_t](#DT_PS_InternalData_t)|32 \| 0x20|
+|m_InternalData|[DT_PS_InternalData_t](#dt_ps_internaldata_t)|32 \| 0x20|
 
 ### DT_BaseEntity
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#DT_AnimTimeMustBeFirst)|0 \| 0x0|
+|AnimTimeMustBeFirst|[DT_AnimTimeMustBeFirst](#dt_animtimemustbefirst)|0 \| 0x0|
 |m_iObjectCapsCache|int|4 \| 0x4|
 |m_flSimulationTime|int|108 \| 0x6c|
 |m_fEffects|int|168 \| 0xa8|
@@ -79,7 +80,7 @@ Class server-side.
 |movetype|int|218 \| 0xda|
 |movecollide|int|219 \| 0xdb|
 |moveparent|int|220 \| 0xdc|
-|m_Collision|[DT_CollisionProperty](#DT_CollisionProperty)|232 \| 0xe8|
+|m_Collision|[DT_CollisionProperty](#dt_collisionproperty)|232 \| 0xe8|
 |m_hOwnerEntity|int|324 \| 0x144|
 |m_CollisionGroup|int|328 \| 0x148|
 |m_flElasticity|float|440 \| 0x1b8|
@@ -153,7 +154,7 @@ Class server-side.
 
 |Prop|Type|Offset|
 |---|:-:|:-:|
-|Simulation|[DT_PS_SimulationData_t](#DT_PS_SimulationData_t)|344 \| 0x158|
+|Simulation|[DT_PS_SimulationData_t](#dt_ps_simulationdata_t)|344 \| 0x158|
 
 ### DT_AnimTimeMustBeFirst
 

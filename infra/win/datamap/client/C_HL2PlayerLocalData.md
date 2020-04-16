@@ -1,4 +1,5 @@
 # C_HL2PlayerLocalData
+
 Datamap client-side.
 
 |Prop|Type|Offset|External|
