@@ -1208,6 +1208,10 @@ $@"			<div id=""{profile.Id}"" class=""modal blue-grey darken-3"">
             {
                 get
                 {
+                    if (!Records.Any()) {
+                        return 0;
+                    }
+
                     var sorted = Records.OrderBy(x => x.Date);
                     return (sorted.First().Date.Value - sorted.Last().Date.Value).TotalDays;
                 }
