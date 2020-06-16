@@ -167,7 +167,7 @@ $@"<!-- {App.Version} -->
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Skill Points | nekzor.github.io</title>
+		<title>Skill Points | {App.Title}</title>
 		<link href=""https://fonts.googleapis.com/css?family=Roboto"" rel=""stylesheet"">
 		<link href=""https://fonts.googleapis.com/icon?family=Material+Icons"" rel=""stylesheet"">
 		<link href=""https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css"" rel=""stylesheet"">
@@ -179,7 +179,7 @@ $@"<!-- {App.Version} -->
 			<div class=""nav-wrapper"">
 				<div class=""col s12 hide-on-small-only"">
                     <a href=""#"" data-target=""slide-out"" class=""sidenav-trigger show-on-large""><i class=""material-icons"">menu</i></a>
-                    <a href=""index.html"">&nbsp;&nbsp;&nbsp;nekzor.github.io</a>
+                    <a href=""index.html"">&nbsp;&nbsp;&nbsp;{App.Title}</a>
                     <a class=""breadcrumb""></a>
                     <a href=""skill.html"">Skill Points</a>
                 </div>
@@ -198,10 +198,11 @@ $@"<!-- {App.Version} -->
 			</div>
 		</nav>
 		<ul id=""slide-out"" class=""sidenav"">
-            <li><a href=""index.html"">nekzor.github.io</a></li>
+            <li><a href=""index.html"">{App.Title}</a></li>
             <li><a href=""stats.html"">Statistics</a></li>
             <li><a href=""history.html"">History</a></li>
             <li><a href=""skill.html"">Skill Points</a></li>
+            <li><a href=""seum.html"">SEUM</a></li>
             <li><a href=""yearly.html"">Yearly</a></li>
         </ul>
 		<div id=""sp"">

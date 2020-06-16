@@ -9,6 +9,7 @@ namespace nekzor.github.io
         public static readonly string CurDir = $"{System.IO.Path.GetDirectoryName(typeof(App).Assembly.Location)}/";
         public static readonly string Destination = $"{CurDir}../../";
         public static readonly string Cache = $"{CurDir}cache/";
+        public static readonly string Title = "nekz.me";
 
         private static async Task Main(string[] args)
         {

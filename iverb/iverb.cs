@@ -29,6 +29,7 @@ namespace nekzor.github.io
         public static readonly int CurrentYear = 2020;
         public static readonly string Version = "nekzor.github.io/1.0";
         public static readonly string Destination = $"{System.IO.Path.GetDirectoryName(typeof(App).Assembly.Location)}/../../";
+        public static readonly string Title = "nekz.me";
 
         private static async Task Main()
         {
