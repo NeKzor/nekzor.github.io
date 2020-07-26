@@ -1,7 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" style="overflow-y: auto">
+<html lang="en" dir="ltr" style="overflow-y: auto;">
   <head>
+    <title>Trackmania Leaderboard | nekz.me</title>
     <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
+    />
+    <meta name="theme-color" content="#000000" />
+    <meta property="og:site_name" content="nekz.me/trackmania" />
+    <meta property="og:type" content="object" />
+    <meta property="og:title" content="Trackmania Leaderboard" />
+    <meta property="og:url" content="https://nekz.me/trackmania" />
     <link
       href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
       rel="stylesheet"
@@ -14,36 +24,11 @@
       href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css"
       rel="stylesheet"
     />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
-    />
-    <meta name="theme-color" content="#000000" />
-    <meta property="og:site_name" content="nekz.me/trackmania" />
-    <meta property="og:type" content="object" />
-    <meta property="og:title" content="TrackMania Leaderboard" />
-    <meta property="og:url" content="https://nekz.me/trackmania" />
-    <title>TrackMania Leaderboard | nekz.me</title>
   </head>
 
   <body>
     <div id="app">
       <v-app>
-        <v-btn
-          fixed
-          fab
-          bottom
-          right
-          color="primary"
-          @click="$vuetify.theme.dark = !$vuetify.theme.dark"
-        >
-          <v-icon v-if="!$vuetify.theme.dark">mdi-lightbulb-outline</v-icon>
-          <v-icon v-else="$vuetify.theme.dark">mdi-lightbulb</v-icon>
-        </v-btn>
         <v-main>
           <v-row>
             <v-col>
@@ -55,6 +40,8 @@
                   <v-select
                     v-model="campaign"
                     :items="campaigns"
+                    item-text="name"
+                    item-value="name"
                     label="Campaign"
                     hide-details
                     @change="updateScores"
@@ -89,6 +76,17 @@
               </v-row>
             </v-col>
           </v-row>
+          <v-btn
+            fixed
+            fab
+            bottom
+            right
+            color="primary"
+            @click="$vuetify.theme.dark = !$vuetify.theme.dark"
+          >
+            <v-icon v-if="!$vuetify.theme.dark">mdi-lightbulb-outline</v-icon>
+            <v-icon v-else="$vuetify.theme.dark">mdi-lightbulb</v-icon>
+          </v-btn>
         </v-main>
       </v-app>
     </div>
@@ -99,32 +97,6 @@
       new Vue({
         el: "#app",
         vuetify: new Vuetify({ theme: { dark: false } }),
-        mounted() {
-          this.updateScores();
-        },
-        methods: {
-          updateScores() {
-            this.scores = [];
-            fetch(
-              `https://raw.githubusercontent.com/jonese1234/Trackmania-Leaderboard/master/${this.campaign}/${this.track}/latest.json`
-            )
-              .then((res) => res.json())
-              .then((latest) => (this.scores = latest.tops[0].top));
-          },
-          formatScore: (score) => {
-            let msec = score % 1000;
-            let tsec = Math.floor(score / 1000);
-            let sec = tsec % 60;
-            let min = Math.floor(tsec / 60);
-
-            return (
-              (min > 0 ? min + ":" : "") +
-              (sec < 10 && min > 0 ? "0" + sec : sec) +
-              "." +
-              (msec < 100 ? (msec < 10 ? "00" + msec : "0" + msec) : msec)
-            );
-          },
-        },
         data() {
           return {
             dark: false,
@@ -149,13 +121,86 @@
               },
             ],
             scores: [],
-            campaigns: ["Summer-2020"],
-            tracks: Array(25)
-              .fill()
-              .map((_, i) => i + 1),
-            campaign: "Summer-2020",
-            track: 1,
+            campaigns: [
+              {
+                name: "Summer 2020",
+                path: "summer2020",
+                route: "Summer-2020",
+                tracks: Array(25)
+                  .fill()
+                  .map((_, i) => `${i + 1}`),
+              },
+            ],
+            campaign: "Summer 2020",
+            track: "1",
           };
+        },
+        mounted() {
+          const paths = document.location.hash.slice(1).split(/\//g);
+
+          if (paths.length === 1) {
+            const campaignName = paths[0].toLowerCase();
+            const campaign = this.campaigns.find(
+              ({ path }) => path === campaignName
+            );
+
+            if (campaign) {
+              this.campaign = campaign.name;
+            }
+          } else if (paths.length === 2) {
+            const campaignName = paths[0].toLowerCase();
+            const campaign = this.campaigns.find(
+              ({ path }) => path === campaignName
+            );
+
+            if (campaign) {
+              this.campaign = campaign.name;
+
+              const trackName = paths[1];
+              if (campaign.tracks.find((track) => track === trackName)) {
+                this.track = trackName;
+              }
+            }
+          }
+
+          this.updateScores();
+        },
+        computed: {
+          tracks() {
+            return this.campaigns.find(({ name }) => name === this.campaign)
+              .tracks;
+          },
+        },
+        methods: {
+          updateScores() {
+            this.scores = [];
+
+            const campaign = this.campaigns.find(
+              ({ name }) => name === this.campaign
+            );
+            if (!campaign) {
+              return;
+            }
+
+            fetch(
+              `https://raw.githubusercontent.com/jonese1234/Trackmania-Leaderboard/master/${campaign.route}/${this.track}/latest.json`
+            )
+              .then((res) => res.json())
+              .then((latest) => (this.scores = latest.tops[0].top));
+          },
+          formatScore: (score) => {
+            let msec = score % 1000;
+            let tsec = Math.floor(score / 1000);
+            let sec = tsec % 60;
+            let min = Math.floor(tsec / 60);
+
+            return (
+              (min > 0 ? min + ":" : "") +
+              (sec < 10 && min > 0 ? "0" + sec : sec) +
+              "." +
+              (msec < 100 ? (msec < 10 ? "00" + msec : "0" + msec) : msec)
+            );
+          },
         },
       });
     </script>
