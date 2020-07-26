@@ -82,7 +82,7 @@
             bottom
             right
             color="primary"
-            @click="$vuetify.theme.dark = !$vuetify.theme.dark"
+            @click="toggleDarkTheme"
           >
             <v-icon v-if="!$vuetify.theme.dark">mdi-lightbulb-outline</v-icon>
             <v-icon v-else="$vuetify.theme.dark">mdi-lightbulb</v-icon>
@@ -96,7 +96,7 @@
     <script>
       new Vue({
         el: "#app",
-        vuetify: new Vuetify({ theme: { dark: false } }),
+        vuetify: new Vuetify({ theme: { dark: localStorage.getItem('dark-theme') === 'true' } }),
         data() {
           return {
             dark: false,
@@ -188,7 +188,7 @@
               .then((res) => res.json())
               .then((latest) => (this.scores = latest.tops[0].top));
           },
-          formatScore: (score) => {
+          formatScore(score) {
             let msec = score % 1000;
             let tsec = Math.floor(score / 1000);
             let sec = tsec % 60;
@@ -200,6 +200,11 @@
               "." +
               (msec < 100 ? (msec < 10 ? "00" + msec : "0" + msec) : msec)
             );
+          },
+          toggleDarkTheme() {
+            let dark = window.localStorage.getItem('dark-theme') !== 'true';
+            window.localStorage.setItem('dark-theme', dark);
+            this.$vuetify.theme.dark = dark;
           },
         },
       });
