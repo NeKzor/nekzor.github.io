@@ -198,8 +198,6 @@
               this.zones = zones.data;
               this.updateScores();
             });
-
-          this.updateScores();
         },
         computed: {
           tracks() {
@@ -226,7 +224,7 @@
               .then((scores) => {
                 this.scores = scores.tops[0].top.map((score) => {
                   const zone = this.findZone(score.zoneId);
-                  const country = zone ? zone[countryZone] : null;
+                  const country = zone.length > countryZone ? zone[countryZone] : null;
                   const zoneName = country ? country.name : score.zoneName;
 
                   return {
