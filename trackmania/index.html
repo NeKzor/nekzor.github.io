@@ -12,18 +12,9 @@
     <meta property="og:type" content="object" />
     <meta property="og:title" content="Trackmania Leaderboard" />
     <meta property="og:url" content="https://nekz.me/trackmania" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet" />
   </head>
 
   <body>
@@ -32,10 +23,22 @@
         <v-main>
           <v-row>
             <v-col>
-              <v-row
-                justify="center"
-                style="padding-left: 20px; padding-right: 20px;"
-              >
+              <v-row justify="center" style="padding-left: 20px; padding-right: 20px;">
+                <v-col cols="12" sm="6" md="3" lg="4" xl="4">
+                  <v-img
+                    :src="mapImage"
+                    aspect-ratio="7"
+                    style="opacity: 1; border-radius: 10px; box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.8);"
+                  >
+                    <template v-slot:placeholder>
+                      <v-row class="fill-height ma-0" align="center" justify="center">
+                        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+                      </v-row>
+                    </template>
+                  </v-img>
+                </v-col>
+              </v-row>
+              <v-row justify="center" style="padding-left: 20px; padding-right: 20px;">
                 <v-col cols="12" sm="6" md="3" lg="4" xl="4">
                   <v-select
                     v-model="campaign"
@@ -57,10 +60,7 @@
                   ></v-select>
                 </v-col>
               </v-row>
-              <v-row
-                justify="center"
-                style="padding-left: 20px; padding-right: 20px;"
-              >
+              <v-row justify="center" style="padding-left: 20px; padding-right: 20px;">
                 <v-col cols="12" md="6" xl="5">
                   <v-data-table
                     :headers="headers"
@@ -72,21 +72,50 @@
                       {{ formatScore(item.score) }}
                     </template>
                   </v-data-table>
+                  <br />
+                  <v-tooltip bottom open-delay="500">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        v-bind="attrs"
+                        v-on="on"
+                        icon
+                        color="primary"
+                        :disabled="track === '1'"
+                        @click="previousTrack"
+                      >
+                        <v-icon>mdi-arrow-left</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Previous Track</span>
+                  </v-tooltip>
+                  <v-tooltip bottom open-delay="500">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        v-bind="attrs"
+                        v-on="on"
+                        icon
+                        color="primary"
+                        :disabled="track === tracks.length.toString()"
+                        @click="nextTrack"
+                      >
+                        <v-icon>mdi-arrow-right</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Next Track</span>
+                  </v-tooltip>
                 </v-col>
               </v-row>
             </v-col>
           </v-row>
-          <v-btn
-            fixed
-            fab
-            bottom
-            right
-            color="primary"
-            @click="toggleDarkTheme"
-          >
-            <v-icon v-if="!$vuetify.theme.dark">mdi-lightbulb-outline</v-icon>
-            <v-icon v-else="$vuetify.theme.dark">mdi-lightbulb</v-icon>
-          </v-btn>
+          <v-tooltip left>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn v-bind="attrs" v-on="on" fixed fab bottom right color="primary" @click="toggleDarkTheme">
+                <v-icon v-if="!$vuetify.theme.dark">mdi-lightbulb-outline</v-icon>
+                <v-icon v-else="$vuetify.theme.dark">mdi-lightbulb</v-icon>
+              </v-btn>
+            </template>
+            <span>Toggle light/dark theme</span>
+          </v-tooltip>
         </v-main>
       </v-app>
     </div>
@@ -95,44 +124,47 @@
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
     <script>
       new Vue({
-        el: "#app",
-        vuetify: new Vuetify({ theme: { dark: localStorage.getItem('dark-theme') === 'true' } }),
+        el: '#app',
+        vuetify: new Vuetify({
+          theme: { dark: localStorage.getItem('dark-theme') === 'true' },
+        }),
         data() {
           return {
             dark: false,
             headers: [
               {
-                align: "start",
-                text: "Player",
-                value: "displayName",
+                align: 'start',
+                text: 'Player',
+                value: 'displayName',
                 sortable: false,
               },
               {
-                align: "start",
-                text: "Zone",
-                value: "zoneName",
+                align: 'start',
+                text: 'Zone',
+                value: 'zoneName',
                 sortable: false,
               },
               {
-                align: "end",
-                text: "Score",
-                value: "score",
+                align: 'end',
+                text: 'Score',
+                value: 'score',
                 sortable: false,
               },
             ],
             scores: [],
             campaigns: [
               {
-                name: "Summer 2020",
-                path: "summer2020",
-                route: "Summer-2020",
+                name: 'Summer 2020',
+                path: 'summer2020',
+                route: 'Summer-2020',
                 tracks: Array(25)
                   .fill()
                   .map((_, i) => `${i + 1}`),
               },
             ],
-            campaign: "Summer 2020",
-            track: "1",
+            campaign: 'Summer 2020',
+            track: '1',
+            zones: [],
           };
         },
         mounted() {
@@ -140,18 +172,14 @@
 
           if (paths.length === 1) {
             const campaignName = paths[0].toLowerCase();
-            const campaign = this.campaigns.find(
-              ({ path }) => path === campaignName
-            );
+            const campaign = this.campaigns.find(({ path }) => path === campaignName);
 
             if (campaign) {
               this.campaign = campaign.name;
             }
           } else if (paths.length === 2) {
             const campaignName = paths[0].toLowerCase();
-            const campaign = this.campaigns.find(
-              ({ path }) => path === campaignName
-            );
+            const campaign = this.campaigns.find(({ path }) => path === campaignName);
 
             if (campaign) {
               this.campaign = campaign.name;
@@ -163,30 +191,78 @@
             }
           }
 
+          const zones = 'https://raw.githubusercontent.com/NeKzor/nekzor.github.io/master/trackmania/zones.json';
+          fetch(zones)
+            .then((res) => res.json())
+            .then((zones) => {
+              this.zones = zones.data;
+              this.updateScores();
+            });
+
           this.updateScores();
         },
         computed: {
           tracks() {
-            return this.campaigns.find(({ name }) => name === this.campaign)
-              .tracks;
+            return this.campaigns.find(({ name }) => name === this.campaign).tracks;
+          },
+          mapImage() {
+            return `https://raw.githubusercontent.com/NeKzor/nekzor.github.io/master/trackmania/images/summer2020/${this.track}.webp`;
           },
         },
         methods: {
           updateScores() {
             this.scores = [];
 
-            const campaign = this.campaigns.find(
-              ({ name }) => name === this.campaign
-            );
+            const campaign = this.campaigns.find(({ name }) => name === this.campaign);
             if (!campaign) {
               return;
             }
 
-            fetch(
-              `https://raw.githubusercontent.com/jonese1234/Trackmania-Leaderboard/master/${campaign.route}/${this.track}/latest.json`
-            )
+            const leaderboard = 'https://raw.githubusercontent.com/jonese1234/Trackmania-Leaderboard/master/';
+            const countryZone = 2;
+
+            fetch(`${leaderboard}${campaign.route}/${this.track}/latest.json`)
               .then((res) => res.json())
-              .then((latest) => (this.scores = latest.tops[0].top));
+              .then((scores) => {
+                this.scores = scores.tops[0].top.map((score) => {
+                  const zone = this.findZone(score.zoneId);
+                  const country = zone ? zone[countryZone] : null;
+                  const zoneName = country ? country.name : score.zoneName;
+
+                  return {
+                    ...score,
+                    zoneName,
+                  };
+                });
+              });
+          },
+          findZone(zoneId) {
+            const result = [];
+
+            for (const zone of this.zones) {
+              if (zone.zoneId === zoneId) {
+                if (zone.parentId !== null) {
+                  result.push(...this.findZone(zone.parentId));
+                }
+                result.push(zone);
+              }
+            }
+
+            return result;
+          },
+          previousTrack() {
+            const tracks = this.tracks;
+            const curIndex = tracks.indexOf(this.track);
+            this.track = tracks[curIndex - 1];
+
+            this.updateScores();
+          },
+          nextTrack() {
+            const tracks = this.tracks;
+            const curIndex = tracks.indexOf(this.track);
+            this.track = tracks[curIndex + 1];
+
+            this.updateScores();
           },
           formatScore(score) {
             let msec = score % 1000;
@@ -195,10 +271,10 @@
             let min = Math.floor(tsec / 60);
 
             return (
-              (min > 0 ? min + ":" : "") +
-              (sec < 10 && min > 0 ? "0" + sec : sec) +
-              "." +
-              (msec < 100 ? (msec < 10 ? "00" + msec : "0" + msec) : msec)
+              (min > 0 ? min + ':' : '') +
+              (sec < 10 && min > 0 ? '0' + sec : sec) +
+              '.' +
+              (msec < 100 ? (msec < 10 ? '00' + msec : '0' + msec) : msec)
             );
           },
           toggleDarkTheme() {
