@@ -39,7 +39,7 @@
                 </v-col>
               </v-row>
               <v-row justify="center" style="padding-left: 20px; padding-right: 20px;">
-                <v-col cols="12" sm="6" md="3" lg="4" xl="4">
+                <v-col cols="12" sm="12" md="3" lg="2" xl="3">
                   <v-select
                     v-model="campaign"
                     :items="campaigns"
@@ -50,7 +50,7 @@
                     @change="updateScores"
                   ></v-select>
                 </v-col>
-                <v-col cols="12" sm="6" md="3" lg="2" xl="1">
+                <v-col cols="12" sm="12" md="3" lg="2" xl="1">
                   <v-select
                     v-model="track"
                     :items="tracks"
@@ -59,12 +59,23 @@
                     @change="updateScores"
                   ></v-select>
                 </v-col>
+                <v-col cols="12" sm="12" md="3" lg="2" xl="1">
+                  <v-autocomplete
+                    v-model="zoneType"
+                    :items="zoneTypes"
+                    item-text="name"
+                    item-value="zoneId"
+                    label="Zone"
+                    hide-details
+                    return-object
+                  ></v-autocomplete>
+                </v-col>
               </v-row>
               <v-row justify="center" style="padding-left: 20px; padding-right: 20px;">
-                <v-col cols="12" md="6" xl="5">
+                <v-col cols="12" sm="12" md="9" lg="6" xl="5">
                   <v-data-table
                     :headers="headers"
-                    :items="scores"
+                    :items="filteredScores"
                     :footer-props="{'items-per-page-options': [10, 100, 1000]}"
                     :loading="scores.length === 0"
                   >
@@ -130,7 +141,6 @@
         }),
         data() {
           return {
-            dark: false,
             headers: [
               {
                 align: 'start',
@@ -165,6 +175,9 @@
             campaign: 'Summer 2020',
             track: '1',
             zones: [],
+            zoneTypes: [],
+            zoneType: {},
+            search: '',
           };
         },
         mounted() {
@@ -196,10 +209,31 @@
             .then((res) => res.json())
             .then((zones) => {
               this.zones = zones.data;
+
+              const world = this.zones.find((zone) => zone.parentId === null);
+
+              const continents = this.zones
+                .filter((zone) => zone.parentId === world.zoneId)
+                .map((zone) => ({ ...zone, index: 1 }));
+
+              const continentsIds = continents.map((zone) => zone.zoneId);
+
+              const countries = this.zones
+                .filter((zone) => continentsIds.includes(zone.parentId))
+                .map((zone) => ({ ...zone, index: 2 }));
+
+              this.zoneTypes = [{ ...world, index: 0 }, ...continents, ...countries];
+              this.zoneType = world;
+
               this.updateScores();
             });
         },
         computed: {
+          filteredScores() {
+            return this.scores && this.zoneType
+              ? this.scores.filter((score) => score.zone.filter((zone) => zone.zoneId === this.zoneType.zoneId).length)
+              : [];
+          },
           tracks() {
             return this.campaigns.find(({ name }) => name === this.campaign).tracks;
           },
@@ -224,12 +258,10 @@
               .then((scores) => {
                 this.scores = scores.tops[0].top.map((score) => {
                   const zone = this.findZone(score.zoneId);
-                  const country = zone.length > countryZone ? zone[countryZone] : null;
-                  const zoneName = country ? country.name : score.zoneName;
-
                   return {
                     ...score,
-                    zoneName,
+                    zone,
+                    zoneName: zone[countryZone].name,
                   };
                 });
               });
