@@ -175,13 +175,14 @@
             campaign: 'Summer 2020',
             track: '1',
             zones: [],
+            zonesCache: {},
             zoneTypes: [],
             zoneType: {},
             search: '',
           };
         },
         mounted() {
-          const paths = document.location.hash.slice(1).split(/\//g);
+          const paths = document.location.hash.slice(2).split(/\//g);
 
           if (paths.length === 1) {
             const campaignName = paths[0].toLowerCase();
@@ -256,8 +257,14 @@
             fetch(`${leaderboard}${campaign.route}/${this.track}/latest.json`)
               .then((res) => res.json())
               .then((scores) => {
+                document.location.hash = `#/${campaign.path}/${this.track}`;
+
                 this.scores = scores.tops[0].top.map((score) => {
-                  const zone = this.findZone(score.zoneId);
+                  let zone = this.zonesCache[score.zoneId];
+                  if (!zone) {
+                    zone = this.zonesCache[score.zoneId] = this.findZone(score.zoneId);
+                  }
+
                   return {
                     ...score,
                     zone,
