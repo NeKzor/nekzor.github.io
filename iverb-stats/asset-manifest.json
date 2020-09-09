@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/iverb-stats/static/js/main.f9d9871a.chunk.js",
-    "main.js.map": "/iverb-stats/static/js/main.f9d9871a.chunk.js.map",
+    "main.js": "/iverb-stats/static/js/main.1b16e43a.chunk.js",
+    "main.js.map": "/iverb-stats/static/js/main.1b16e43a.chunk.js.map",
     "runtime-main.js": "/iverb-stats/static/js/runtime-main.7fed1f9c.js",
     "runtime-main.js.map": "/iverb-stats/static/js/runtime-main.7fed1f9c.js.map",
-    "static/js/2.5698c362.chunk.js": "/iverb-stats/static/js/2.5698c362.chunk.js",
-    "static/js/2.5698c362.chunk.js.map": "/iverb-stats/static/js/2.5698c362.chunk.js.map",
+    "static/js/2.a9275322.chunk.js": "/iverb-stats/static/js/2.a9275322.chunk.js",
+    "static/js/2.a9275322.chunk.js.map": "/iverb-stats/static/js/2.a9275322.chunk.js.map",
     "index.html": "/iverb-stats/index.html",
-    "precache-manifest.0cf5081f4e881f1d5c3699122b115297.js": "/iverb-stats/precache-manifest.0cf5081f4e881f1d5c3699122b115297.js",
+    "precache-manifest.608060e2abaaf9118a8e5e314193dadb.js": "/iverb-stats/precache-manifest.608060e2abaaf9118a8e5e314193dadb.js",
     "service-worker.js": "/iverb-stats/service-worker.js",
-    "static/js/2.5698c362.chunk.js.LICENSE.txt": "/iverb-stats/static/js/2.5698c362.chunk.js.LICENSE.txt"
+    "static/js/2.a9275322.chunk.js.LICENSE.txt": "/iverb-stats/static/js/2.a9275322.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.7fed1f9c.js",
-    "static/js/2.5698c362.chunk.js",
-    "static/js/main.f9d9871a.chunk.js"
+    "static/js/2.a9275322.chunk.js",
+    "static/js/main.1b16e43a.chunk.js"
   ]
 }
