@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/iverb-stats/precache-manifest.608060e2abaaf9118a8e5e314193dadb.js"
+  "/iverb-stats/precache-manifest.cfdb1b59cc1ae5aa91d5e6005ed632c7.js"
 );
 
 self.addEventListener('message', (event) => {
