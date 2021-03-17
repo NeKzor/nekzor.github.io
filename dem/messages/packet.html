@@ -166,11 +166,11 @@
                         <h1><a class="header" href="#signon--packet" id="signon--packet">SignOn &amp; Packet</a></h1>
 <p>Packets contain simulated information about a session. A SignOn message is the same as a Packet message but only appears once at the very beginning to indicate that the server is ready.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
-<tr><td>PacketInfo</td><td>byte[]</td><td>76*MSSC</td><td>76*MSSC*8</td><td><a href="/classes/cmdinfo.html">CmdInfo[MSSC]</a></td></tr>
+<tr><td>PacketInfo</td><td>byte[]</td><td>76*MSSC</td><td>76*MSSC*8</td><td><a href="classes/cmdinfo.html">CmdInfo[MSSC]</a></td></tr>
 <tr><td>InSequence</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
 <tr><td>OutSequence</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
 <tr><td>Size</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
-<tr><td>Data</td><td>byte[]</td><td>Size</td><td>Size*8</td><td><a href="/classes/netsvc.html">NET/SVC-Message[]</a></td></tr>
+<tr><td>Data</td><td>byte[]</td><td>Size</td><td>Size*8</td><td><a href="classes/netsvc.html">NET/SVC-Message[]</a></td></tr>
 </tbody></table>
 <h2><a class="header" href="#maxsplitscreenclients-mssc" id="maxsplitscreenclients-mssc">MaxSplitScreenClients (MSSC)</a></h2>
 <p>This value is most likely 1 for single-player-only games but 2 for multiplayer games which support split screen mode (Portal 2, CS:GO etc.). Although it can be missleading if a game is does not have multiplayer mode but yet supports this feature. The console command <code>maxplayers</code> can be executed in the developer console and should help to find out the exact value for a specific game.</p>

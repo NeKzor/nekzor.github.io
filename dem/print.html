@@ -181,13 +181,13 @@
 <h3><a class="header" href="#2021-03-14" id="2021-03-14">2021-03-14</a></h3>
 <ul>
 <li>Integrated docs to <a href="https://github.com/rust-lang/mdBook">mdbook</a></li>
-<li>Fixed order of <code>ForwardMove</code> and <code>SideMove</code> in <a href="/classes/usercmdinfo.html">UserCmdInfo</a></li>
+<li>Fixed order of <code>ForwardMove</code> and <code>SideMove</code> in <a href="classes/usercmdinfo.html">UserCmdInfo</a></li>
 <li>Added some additional caveats</li>
 <li>Added short descriptions</li>
 <li>Added pseudocode examples for decoding complex data structures</li>
-<li>Added license, dependencies, features and applications to <a href="/examples.html">examples</a></li>
+<li>Added license, dependencies, features and applications to <a href="examples.html">examples</a></li>
 <li>Added changelog</li>
-<li>Added docs for <a href="/classes/netsvc.html">NET/SVC messages</a></li>
+<li>Added docs for <a href="classes/netsvc.html">NET/SVC messages</a></li>
 </ul>
 <h2><a class="header" href="#todo" id="todo">TODO</a></h2>
 <ul>
@@ -208,7 +208,7 @@
 </li>
 </ul>
 <h1><a class="header" href="#demo" id="demo">Demo</a></h1>
-<p>Demo files contain a header starting with a constant magic followed by information about the engine, the player and the current session. The main contents are stored in an array of <a href="/messages.html">messages</a>.</p>
+<p>Demo files contain a header starting with a constant magic followed by information about the engine, the player and the current session. The main contents are stored in an array of <a href="messages.html">messages</a>.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>DemoFileStamp</td><td>string</td><td>8</td><td>64</td><td>HL2DEMO\0</td></tr>
 <tr><td>DemoProtocol</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
@@ -221,7 +221,7 @@
 <tr><td>PlaybackTicks</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
 <tr><td>PlaybackFrames</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
 <tr><td>SignOnLength</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
-<tr><td>DemoMessages</td><td><a href="/messages.html">Message[]</a></td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>DemoMessages</td><td><a href="messages.html">Message[]</a></td><td>-</td><td>-</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#messages" id="messages">Messages</a></h1>
 <p>Demo messages are stored in sequential order as the engine records them. A message always starts with a tagged type followed by the current session tick¹, a slot² index and the type-specific message data.</p>
@@ -231,19 +231,19 @@
 <tr><td>Slot<sup title="New Engine">NE</sup>²</td><td>byte</td><td>1</td><td>8</td><td>-</td></tr>
 <tr><td>Data</td><td>Based on Type</td><td>-</td><td>-</td><td>-</td></tr>
 </tbody></table>
-<p>¹ Old engines might not even include the message tick after the stop byte, see <a href="/messages/stop.html">Stop</a>.</p>
+<p>¹ Old engines might not even include the message tick after the stop byte, see <a href="messages/stop.html">Stop</a>.</p>
 <p>² The term slot here refers to the selected split-screen index. This byte is only used in engines which support split-screen mode.</p>
 <h2><a class="header" href="#types" id="types">Types</a></h2>
 <table><thead><tr><th>Type</th><th>Value</th><th>Description</th></tr></thead><tbody>
-<tr><td><a href="/messages/packet.html">SignOn</a></td><td>1</td><td>-</td></tr>
-<tr><td><a href="/messages/packet.html">Packet</a></td><td>2</td><td>-</td></tr>
-<tr><td><a href="/messages/synctick.html">SyncTick</a></td><td>3</td><td>-</td></tr>
-<tr><td><a href="/messages/consolecmd.html">Consolecmd</a></td><td>4</td><td>-</td></tr>
-<tr><td><a href="/messages/usercmd.html">Usercmd</a></td><td>5</td><td>-</td></tr>
-<tr><td><a href="/messages/datatables.html">DataTables</a></td><td>6</td><td>-</td></tr>
-<tr><td><a href="/messages/stop.html">Stop</a></td><td>7</td><td>-</td></tr>
-<tr><td><a href="/messages/customdata.html">CustomData</a></td><td>8</td><td>-</td></tr>
-<tr><td><a href="/messages/stringtables.html">StringTables</a></td><td>9</td><td>8 for old engine.</td></tr>
+<tr><td><a href="messages/packet.html">SignOn</a></td><td>1</td><td>-</td></tr>
+<tr><td><a href="messages/packet.html">Packet</a></td><td>2</td><td>-</td></tr>
+<tr><td><a href="messages/synctick.html">SyncTick</a></td><td>3</td><td>-</td></tr>
+<tr><td><a href="messages/consolecmd.html">Consolecmd</a></td><td>4</td><td>-</td></tr>
+<tr><td><a href="messages/usercmd.html">Usercmd</a></td><td>5</td><td>-</td></tr>
+<tr><td><a href="messages/datatables.html">DataTables</a></td><td>6</td><td>-</td></tr>
+<tr><td><a href="messages/stop.html">Stop</a></td><td>7</td><td>-</td></tr>
+<tr><td><a href="messages/customdata.html">CustomData</a></td><td>8</td><td>-</td></tr>
+<tr><td><a href="messages/stringtables.html">StringTables</a></td><td>9</td><td>8 for old engine.</td></tr>
 </tbody></table>
 <h2><a class="header" href="#pseudocode-example" id="pseudocode-example">Pseudocode Example</a></h2>
 <p>To keep this example simple the stop message might contain additonal data which is not read here. We also ignore the fact that that reading past the buffer might be possible when parsing corrupted demos.</p>
@@ -263,11 +263,11 @@
 <h1><a class="header" href="#signon--packet" id="signon--packet">SignOn &amp; Packet</a></h1>
 <p>Packets contain simulated information about a session. A SignOn message is the same as a Packet message but only appears once at the very beginning to indicate that the server is ready.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
-<tr><td>PacketInfo</td><td>byte[]</td><td>76*MSSC</td><td>76*MSSC*8</td><td><a href="messages//classes/cmdinfo.html">CmdInfo[MSSC]</a></td></tr>
+<tr><td>PacketInfo</td><td>byte[]</td><td>76*MSSC</td><td>76*MSSC*8</td><td><a href="messages/classes/cmdinfo.html">CmdInfo[MSSC]</a></td></tr>
 <tr><td>InSequence</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
 <tr><td>OutSequence</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
 <tr><td>Size</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
-<tr><td>Data</td><td>byte[]</td><td>Size</td><td>Size*8</td><td><a href="messages//classes/netsvc.html">NET/SVC-Message[]</a></td></tr>
+<tr><td>Data</td><td>byte[]</td><td>Size</td><td>Size*8</td><td><a href="messages/classes/netsvc.html">NET/SVC-Message[]</a></td></tr>
 </tbody></table>
 <h2><a class="header" href="#maxsplitscreenclients-mssc" id="maxsplitscreenclients-mssc">MaxSplitScreenClients (MSSC)</a></h2>
 <p>This value is most likely 1 for single-player-only games but 2 for multiplayer games which support split screen mode (Portal 2, CS:GO etc.). Although it can be missleading if a game is does not have multiplayer mode but yet supports this feature. The console command <code>maxplayers</code> can be executed in the developer console and should help to find out the exact value for a specific game.</p>
@@ -285,13 +285,13 @@
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Cmd</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
 <tr><td>Size</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
-<tr><td>Data</td><td>byte[]</td><td>Size</td><td>Size*8</td><td><a href="messages//classes/usercmdinfo.html">UserCmdInfo</a></td></tr>
+<tr><td>Data</td><td>byte[]</td><td>Size</td><td>Size*8</td><td><a href="messages/classes/usercmdinfo.html">UserCmdInfo</a></td></tr>
 </tbody></table>
 <h1><a class="header" href="#datatables" id="datatables">DataTables</a></h1>
 <p>This message only appears once at the beginning of a demo. It contains network data which the engine used for simulation.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Size</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
-<tr><td>Data</td><td>byte[]</td><td>Size</td><td>Size*8</td><td><a href="messages//classes/sendtable.html">SendTable[]</a><br><a href="messages//classes/serverclassinfo.html">ServerClassInfo[]</a></td></tr>
+<tr><td>Data</td><td>byte[]</td><td>Size</td><td>Size*8</td><td><a href="messages/classes/sendtable.html">SendTable[]</a><br><a href="messages/classes/serverclassinfo.html">ServerClassInfo[]</a></td></tr>
 </tbody></table>
 <h2><a class="header" href="#pseudocode-example-1" id="pseudocode-example-1">Pseudocode Example</a></h2>
 <pre><code class="language-rust noplaypen">while read_one_bit() {
@@ -320,7 +320,7 @@ for _ in 0..classes {
 <p>This message only appears once at the beginning of a demo. It contains network data which the engine used for simulation.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Size</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
-<tr><td>Data</td><td>byte[]</td><td>Size</td><td>Size*8</td><td><a href="messages//classes/stringtable.html">StringTable[]</a></td></tr>
+<tr><td>Data</td><td>byte[]</td><td>Size</td><td>Size*8</td><td><a href="messages/classes/stringtable.html">StringTable[]</a></td></tr>
 </tbody></table>
 <h2><a class="header" href="#pseudocode-example-2" id="pseudocode-example-2">Pseudocode Example</a></h2>
 <pre><code class="language-rust noplaypen">let tables = read_le_i8();
@@ -332,7 +332,7 @@ for _ in 0..tables {
 <h1><a class="header" href="#classes" id="classes">Classes</a></h1>
 <p>Defined classes or structs defined in the engine w.</p>
 <h1><a class="header" href="#cmdinfo" id="cmdinfo">CmdInfo</a></h1>
-<p>Part of <a href="classes//messages/packet.html">Packet</a> message.</p>
+<p>Part of <a href="classes/messages/packet.html">Packet</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Flags</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
 <tr><td>ViewOrigin</td><td>float[]</td><td>12</td><td>96</td><td>-</td></tr>
@@ -343,47 +343,47 @@ for _ in 0..tables {
 <tr><td>LocalViewAngles2</td><td>float[]</td><td>12</td><td>96</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#netsvc-message" id="netsvc-message">NET/SVC Message</a></h1>
-<p>Part of <a href="classes//messages/packet.html">Packet</a> message.</p>
+<p>Part of <a href="classes/messages/packet.html">Packet</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Type</td><td><a href="classes/netsvc.html#types">Message Type</a></td><td>0.75</td><td>6</td><td>-</td></tr>
 <tr><td>Data</td><td>Based on Type</td><td>-</td><td>-</td><td>-</td></tr>
 </tbody></table>
 <h2><a class="header" href="#types-1" id="types-1">Types</a></h2>
 <table><thead><tr><th>Name</th><th>Value</th><th>Description</th></tr></thead><tbody>
-<tr><td><a href="classes//classes/netsvc/netnop.html">NetNop</a></td><td>0</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/netdisconnect.html">NetDisconnect</a></td><td>1</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/netfile.html">NetFile</a></td><td>2</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/netsplitscreenuser.html">NetSplitScreenUser</a></td><td>3</td><td>New engine.</td></tr>
-<tr><td><a href="classes//classes/netsvc/nettick.html">NetTick</a></td><td>4</td><td>3 in old engine.</td></tr>
-<tr><td><a href="classes//classes/netsvc/netstringcmd.html">NetStringCmd</a></td><td>5</td><td>4 in old engine.</td></tr>
-<tr><td><a href="classes//classes/netsvc/netsetconvar.html">NetSetConVar</a></td><td>6</td><td>5 in old engine.</td></tr>
-<tr><td><a href="classes//classes/netsvc/netsignonstate.html">NetSignonState</a></td><td>7</td><td>6 in old engine.</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcserverinfo.html">SvcServerInfo</a></td><td>8</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcsendtable.html">SvcSendTable</a></td><td>9</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcclassinfo.html">SvcClassInfo</a></td><td>10</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcsetpause.html">SvcSetPause</a></td><td>11</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svccreatestringtable.html">SvcCreateStringTable</a></td><td>12</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcupdatestringtable.html">SvcUpdateStringTable</a></td><td>13</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcvoiceinit.html">SvcVoiceInit</a></td><td>14</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcvoicedata.html">SvcVoiceData</a></td><td>15</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcprint.html">SvcPrint</a></td><td>16</td><td>7 in old engine.</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcsounds.html">SvcSounds</a></td><td>17</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcsetview.html">SvcSetView</a></td><td>18</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcfixangle.html">SvcFixAngle</a></td><td>19</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svccrosshairangle.html">SvcCrosshairAngle</a></td><td>20</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcbspdecal.html">SvcBspDecal</a></td><td>21</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcsplitscreen.html">SvcSplitScreen</a></td><td>22</td><td>New engine.</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcusermessage.html">SvcUserMessage</a></td><td>23</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcentitymessage.html">SvcEntityMessage</a></td><td>24</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcgameevent.html">SvcGameEvent</a></td><td>25</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcpacketentities.html">SvcPacketEntities</a></td><td>26</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svctempentities.html">SvcTempEntities</a></td><td>27</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcprefetch.html">SvcPrefetch</a></td><td>28</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcmenu.html">SvcMenu</a></td><td>29</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcgameeventlist.html">SvcGameEventList</a></td><td>30</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcgetcvarvalue.html">SvcGetCvarValue</a></td><td>31</td><td>-</td></tr>
-<tr><td><a href="classes//classes/netsvc/svccmdkeyvalues.html">SvcCmdKeyValues</a></td><td>32</td><td>34 in CS:GO.</td></tr>
-<tr><td><a href="classes//classes/netsvc/svcpaintmapdata.html">SvcPaintmapData</a></td><td>33</td><td>New engine.</td></tr>
+<tr><td><a href="classes/classes/netsvc/netnop.html">NetNop</a></td><td>0</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/netdisconnect.html">NetDisconnect</a></td><td>1</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/netfile.html">NetFile</a></td><td>2</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/netsplitscreenuser.html">NetSplitScreenUser</a></td><td>3</td><td>New engine.</td></tr>
+<tr><td><a href="classes/classes/netsvc/nettick.html">NetTick</a></td><td>4</td><td>3 in old engine.</td></tr>
+<tr><td><a href="classes/classes/netsvc/netstringcmd.html">NetStringCmd</a></td><td>5</td><td>4 in old engine.</td></tr>
+<tr><td><a href="classes/classes/netsvc/netsetconvar.html">NetSetConVar</a></td><td>6</td><td>5 in old engine.</td></tr>
+<tr><td><a href="classes/classes/netsvc/netsignonstate.html">NetSignonState</a></td><td>7</td><td>6 in old engine.</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcserverinfo.html">SvcServerInfo</a></td><td>8</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcsendtable.html">SvcSendTable</a></td><td>9</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcclassinfo.html">SvcClassInfo</a></td><td>10</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcsetpause.html">SvcSetPause</a></td><td>11</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svccreatestringtable.html">SvcCreateStringTable</a></td><td>12</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcupdatestringtable.html">SvcUpdateStringTable</a></td><td>13</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcvoiceinit.html">SvcVoiceInit</a></td><td>14</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcvoicedata.html">SvcVoiceData</a></td><td>15</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcprint.html">SvcPrint</a></td><td>16</td><td>7 in old engine.</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcsounds.html">SvcSounds</a></td><td>17</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcsetview.html">SvcSetView</a></td><td>18</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcfixangle.html">SvcFixAngle</a></td><td>19</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svccrosshairangle.html">SvcCrosshairAngle</a></td><td>20</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcbspdecal.html">SvcBspDecal</a></td><td>21</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcsplitscreen.html">SvcSplitScreen</a></td><td>22</td><td>New engine.</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcusermessage.html">SvcUserMessage</a></td><td>23</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcentitymessage.html">SvcEntityMessage</a></td><td>24</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcgameevent.html">SvcGameEvent</a></td><td>25</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcpacketentities.html">SvcPacketEntities</a></td><td>26</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svctempentities.html">SvcTempEntities</a></td><td>27</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcprefetch.html">SvcPrefetch</a></td><td>28</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcmenu.html">SvcMenu</a></td><td>29</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcgameeventlist.html">SvcGameEventList</a></td><td>30</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcgetcvarvalue.html">SvcGetCvarValue</a></td><td>31</td><td>-</td></tr>
+<tr><td><a href="classes/classes/netsvc/svccmdkeyvalues.html">SvcCmdKeyValues</a></td><td>32</td><td>34 in CS:GO.</td></tr>
+<tr><td><a href="classes/classes/netsvc/svcpaintmapdata.html">SvcPaintmapData</a></td><td>33</td><td>New engine.</td></tr>
 <tr><td>SvcEncryptedData</td><td>35</td><td>Seen in CS:GO.</td></tr>
 <tr><td>SvcHltvReplay</td><td>36</td><td>Seen in CS:GO.</td></tr>
 <tr><td>SvcBroadcastCommand</td><td>38</td><td>Seen in CS:GO.</td></tr>
@@ -397,27 +397,27 @@ for _ in 0..tables {
 }
 </code></pre>
 <h1><a class="header" href="#netnop" id="netnop">NetNop</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <p>Does not contain any data.</p>
 <h1><a class="header" href="#netdisconnect" id="netdisconnect">NetDisconnect</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Text</td><td>string</td><td>-</td><td>-</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#netfile" id="netfile">NetFile</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>TransferId</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
 <tr><td>FileName</td><td>string</td><td>-</td><td>-</td><td>-</td></tr>
 <tr><td>FileRequested</td><td>boolean</td><td>0.125</td><td>1</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#netsplitscreenuser" id="netsplitscreenuser">NetSplitScreenUser</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Unknown</td><td>boolean</td><td>0.125</td><td>1</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#nettick" id="nettick">NetTick</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Tick</td><td>integer</td><td>4</td><td>32</td><td>-</td></tr>
 <tr><td>HostFrameTime¹</td><td>integer</td><td>2</td><td>16</td><td>-</td></tr>
@@ -430,12 +430,12 @@ let host_frame_time = read_le_16() / 1e5;
 let host_frame_time_std_deviation = read_le_16() / 1e5;
 </code></pre>
 <h1><a class="header" href="#netstringcmd" id="netstringcmd">NetStringCmd</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Command</td><td>string</td><td>-</td><td>-</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#netsetconvar" id="netsetconvar">NetSetConVar</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Length</td><td>int</td><td>1</td><td>8</td><td>-</td></tr>
 <tr><td>ConVars</td><td>ConVar[]</td><td>-</td><td>-</td><td>ConVar[]</td></tr>
@@ -449,7 +449,7 @@ for _ 0..length {
 }
 </code></pre>
 <h1><a class="header" href="#netsignonstate" id="netsignonstate">NetSignonState</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>SignonState</td><td>int</td><td>1</td><td>8</td><td>-</td></tr>
 <tr><td>SpawnCount</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
@@ -474,7 +474,7 @@ if demo_protocol_3_or_4() {
 }
 </code></pre>
 <h1><a class="header" href="#svcserverinfo" id="svcserverinfo">SvcServerInfo</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Protocol</td><td>int</td><td>1</td><td>8</td><td>-</td></tr>
 <tr><td>ServerCount</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
@@ -519,14 +519,14 @@ let sky_name = read_ascii_string();
 let host_name = read_ascii_string();
 </code></pre>
 <h1><a class="header" href="#svcsendtable" id="svcsendtable">SvcSendTable</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>NeedsDecoder</td><td>boolean</td><td>0.125</td><td>8</td><td>-</td></tr>
 <tr><td>Length</td><td>int</td><td>1</td><td>8</td><td>-</td></tr>
 <tr><td>Props</td><td>int</td><td>Length / 8</td><td>Length</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#svcclassinfo" id="svcclassinfo">SvcClassInfo</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Length</td><td>integer</td><td>2</td><td>16</td><td>-</td></tr>
 <tr><td>CreateOnClient</td><td>boolean</td><td>0.125</td><td>1</td><td>-</td></tr>
@@ -546,12 +546,12 @@ if create_on_client {
 }
 </code></pre>
 <h1><a class="header" href="#svcsetpause" id="svcsetpause">SvcSetPause</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Paused</td><td>bool</td><td>0.125</td><td>1</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#svccreatestringtable" id="svccreatestringtable">SvcCreateStringTable</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Name</td><td>string</td><td>-</td><td>-</td><td>-</td></tr>
 <tr><td>MaxEntries</td><td>int</td><td>2</td><td>16</td><td>-</td></tr>
@@ -565,7 +565,7 @@ if create_on_client {
 </tbody></table>
 <p>¹ Depends if UserDataFixedSize was set.</p>
 <h1><a class="header" href="#svcupdatestringtable" id="svcupdatestringtable">SvcUpdateStringTable</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>TableId</td><td>int</td><td>0.625</td><td>5</td><td>-</td></tr>
 <tr><td>NumChangedEntries¹</td><td>int</td><td>2</td><td>16</td><td>-</td></tr>
@@ -574,7 +574,7 @@ if create_on_client {
 </tbody></table>
 <p>¹ Optional: Only set if the bit before was set.</p>
 <h1><a class="header" href="#svcvoiceinit" id="svcvoiceinit">SvcVoiceInit</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Codec</td><td>string</td><td>-</td><td>-</td><td>-</td></tr>
 <tr><td>Quality</td><td>int</td><td>1</td><td>8</td><td>-</td></tr>
@@ -582,7 +582,7 @@ if create_on_client {
 </tbody></table>
 <p>¹ Optional: Only read if <code>Quality</code> byte was set (value 255).</p>
 <h1><a class="header" href="#svcvoicedata" id="svcvoicedata">SvcVoiceData</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Client</td><td>int</td><td>1</td><td>8</td><td>-</td></tr>
 <tr><td>Proximity</td><td>int</td><td>1</td><td>8</td><td>-</td></tr>
@@ -590,12 +590,12 @@ if create_on_client {
 <tr><td>Data</td><td>byte[]</td><td>Length / 8</td><td>Length</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#svcprint" id="svcprint">SvcPrint</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Message</td><td>string</td><td>-</td><td>-</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#svcsounds" id="svcsounds">SvcSounds</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>ReliableSound</td><td>bool</td><td>0.125</td><td>1</td><td>-</td></tr>
 <tr><td>Size¹</td><td>int</td><td>1</td><td>8</td><td>1 if ReliableSound bit is set.</td></tr>
@@ -621,23 +621,23 @@ let length = if reliable_sound {
 let data = read_bit_array(length);
 </code></pre>
 <h1><a class="header" href="#svcsetview" id="svcsetview">SvcSetView</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>EntityIndex</td><td>int</td><td>1.375</td><td>11</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#svcfixangle" id="svcfixangle">SvcFixAngle</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Relative</td><td>bool</td><td>0.125</td><td>1</td><td>-</td></tr>
 <tr><td>Angle</td><td>(int, int, int)</td><td>6</td><td>48</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#svccrosshairangle" id="svccrosshairangle">SvcCrosshairAngle</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Angle</td><td>(int, int, int)</td><td>6</td><td>48</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#svcbspdecal" id="svcbspdecal">SvcBspDecal</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Pos</td><td>(int?, int?, int?)</td><td>0.375 to 8.625</td><td>3 to 69</td><td>VectorCoord</td></tr>
 <tr><td>DecalTextureIndex</td><td>int</td><td>1.125</td><td>9</td><td>-</td></tr>
@@ -698,14 +698,14 @@ if read_one_bit() {
 let low_priority = read_one_bit();
 </code></pre>
 <h1><a class="header" href="#svcsplitscreen" id="svcsplitscreen">SvcSplitScreen</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Unk</td><td>int</td><td>0.125</td><td>1</td><td>-</td></tr>
 <tr><td>Length</td><td>int</td><td>1.375</td><td>11</td><td>-</td></tr>
 <tr><td>Data</td><td>byte[]</td><td>Length / 8</td><td>Length</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#svcusermessage" id="svcusermessage">SvcUserMessage</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>MsgType</td><td>int</td><td>1</td><td>8</td><td>-</td></tr>
 <tr><td>Length</td><td>int</td><td>1.5<sup title="New Engine">NE</sup><br>1.375<sup title="Old Engine">OE</sup></td><td>12<sup title="New Engine">NE</sup><br>11<sup title="Old Engine">OE</sup></td><td>-</td></tr>
@@ -717,7 +717,7 @@ let length = read_bits(if demo_protocol_3_or_4() { 12 } else { 11 });
 let msg_data = read_bits(length);
 </code></pre>
 <h1><a class="header" href="#svcentitymessage" id="svcentitymessage">SvcEntityMessage</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>EntityIndex</td><td>int</td><td>1.375</td><td>11</td><td>-</td></tr>
 <tr><td>ClassId</td><td>int</td><td>1.125</td><td>9</td><td>-</td></tr>
@@ -725,14 +725,14 @@ let msg_data = read_bits(length);
 <tr><td>Data</td><td>byte[]</td><td>Length / 8</td><td>Length</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#svcgameevent" id="svcgameevent">SvcGameEvent</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
-<p>The data for SvcGameEvent can only be decoded with <a href="classes/netsvc//classes/netsvc/svcgameeventlist.html">SvcGameEventList</a> which appears only once before this message is allowed to appear.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
+<p>The data for SvcGameEvent can only be decoded with <a href="classes/netsvc/classes/netsvc/svcgameeventlist.html">SvcGameEventList</a> which appears only once before this message is allowed to appear.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Length</td><td>int</td><td>1.375</td><td>11</td><td>-</td></tr>
-<tr><td>Data</td><td>byte[]</td><td>Length / 8</td><td>Length</td><td><a href="classes/netsvc//classes/gameevent.html">GameEvent[]</a></td></tr>
+<tr><td>Data</td><td>byte[]</td><td>Length / 8</td><td>Length</td><td><a href="classes/netsvc/classes/gameevent.html">GameEvent[]</a></td></tr>
 </tbody></table>
 <h1><a class="header" href="#svcpacketentities" id="svcpacketentities">SvcPacketEntities</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>MaxEntries</td><td>int</td><td>1.375</td><td>11</td><td>-</td></tr>
 <tr><td>IsDelta</td><td>bool</td><td>0.125</td><td>1</td><td>-</td></tr>
@@ -757,26 +757,26 @@ let update_baseline = read_one_bit();
 let data = read_bits(length);
 </code></pre>
 <h1><a class="header" href="#svctempentities" id="svctempentities">SvcTempEntities</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>NumEntries</td><td>int</td><td>1</td><td>8</td><td>-</td></tr>
 <tr><td>Length</td><td>int</td><td>2.125</td><td>17</td><td>-</td></tr>
 <tr><td>Data</td><td>byte[]</td><td>Length / 8</td><td>Length</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#svcprefetch" id="svcprefetch">SvcPrefetch</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>SoundIndex</td><td>int</td><td>1.625</td><td>13</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#svcmenu" id="svcmenu">SvcMenu</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>MenuType</td><td>int</td><td>2</td><td>16</td><td>-</td></tr>
 <tr><td>Length</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
 <tr><td>Data</td><td>byte[]</td><td>Length / 8</td><td>Length</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#svcgameeventlist" id="svcgameeventlist">SvcGameEventList</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Text</td><td>string</td><td>-</td><td>-</td><td>-</td></tr>
 </tbody></table>
@@ -804,25 +804,25 @@ for _ 0..events {
 }
 </code></pre>
 <h1><a class="header" href="#svcgetcvarvalue" id="svcgetcvarvalue">SvcGetCvarValue</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Cookie</td><td>string</td><td>4</td><td>32</td><td>-</td></tr>
 <tr><td>CvarName</td><td>string</td><td>-</td><td>-</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#svccmdkeyvalues" id="svccmdkeyvalues">SvcCmdKeyValues</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Length</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
 <tr><td>Data</td><td>byte[]</td><td>Length</td><td>Length*8</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#svcpaintmapdata" id="svcpaintmapdata">SvcPaintmapData</a></h1>
-<p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="classes/netsvc/classes/netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Length</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
 <tr><td>Data</td><td>byte[]</td><td>Length / 8</td><td>Length</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#usercmdinfo" id="usercmdinfo">UserCmdInfo</a></h1>
-<p>Part of <a href="classes//messages/usercmd.html">UserCmd</a> message.</p>
+<p>Part of <a href="classes/messages/usercmd.html">UserCmd</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>CommandNumber</td><td>int</td><td>4</td><td>32</td><td>Optional¹</td></tr>
 <tr><td>TickCount</td><td>int</td><td>4</td><td>32</td><td>Optional</td></tr>
@@ -859,7 +859,7 @@ if read_one_bit() {
 ...
 </code></pre>
 <h1><a class="header" href="#sendtable" id="sendtable">SendTable</a></h1>
-<p>Part of <a href="classes//messages/datatables.html">DataTables</a> message.</p>
+<p>Part of <a href="classes/messages/datatables.html">DataTables</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>NeedsDecoder</td><td>bool</td><td>0.125</td><td>1</td><td>-</td></tr>
 <tr><td>NetTableName</td><td>string</td><td>-</td><td>-</td><td>-</td></tr>
@@ -869,7 +869,7 @@ if read_one_bit() {
 <tr><td>SendPropFlags</td><td>int</td><td>2<br>1.375 OE</td><td>16<br>11 OE</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#serverclassinfo" id="serverclassinfo">ServerClassInfo</a></h1>
-<p>Part of <a href="classes//messages/datatables.html">DataTables</a> message.</p>
+<p>Part of <a href="classes/messages/datatables.html">DataTables</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>NumOfClasses</td><td>short</td><td>2</td><td>16</td><td>-</td></tr>
 <tr><td>ClassId</td><td>short</td><td>2</td><td>16</td><td>-</td></tr>
@@ -877,7 +877,7 @@ if read_one_bit() {
 <tr><td>DataTableName</td><td>string</td><td>-</td><td>-</td><td>-</td></tr>
 </tbody></table>
 <h1><a class="header" href="#singtable" id="singtable">SingTable</a></h1>
-<p>Part of <a href="classes//messages/stringtables.html">StringTables</a> message.</p>
+<p>Part of <a href="classes/messages/stringtables.html">StringTables</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>NumOfTables</td><td>int</td><td>1</td><td>8</td><td>-</td></tr>
 <tr><td>TableName</td><td>string</td><td>-</td><td>-</td><td>-</td></tr>
