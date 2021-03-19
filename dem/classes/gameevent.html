@@ -168,7 +168,35 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#gameevent" id="gameevent">GameEvent</a></h1>
-<p>TODO</p>
+<p>Part of <a href="/classes/netsvc/svcgameevent.html">SvcGameEvent</a> message.</p>
+<table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
+<tr><td>Length</td><td>int</td><td>1.125</td><td>9</td><td>-</td></tr>
+<tr><td>Data</td><td>T</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2><a class="header" href="#pseudocode-example" id="pseudocode-example">Pseudocode Example</a></h2>
+<p>The omitted function <code>find_event_list_descriptor</code> finds an event descriptor in the game event list by id. The list
+should be constructed when parsing the <a href="/classes/netsvc/svcgameeventlist.html">SvcGameEventList</a> message.</p>
+<pre><code class="language-rust noplaypen">let event_id = read_bits(9);
+
+if let Some(descriptor) = find_event_list_descriptor(event_id) {
+    let mut event = HashMap::new();
+
+    for (key_name, value_type) in descriptor.keys() {
+        let value = match value_type {
+            0 =&gt; EventValue::None,
+            1 =&gt; EventValue::String(read_ascii_string()),
+            2 =&gt; EventValue::Float(read_le_f32()),
+            3 =&gt; EventValue::Int32(read_le_i32()),
+            4 =&gt; EventValue::Int16(read_le_i16()),
+            5 =&gt; EventValue::Int8(read_le_i8()),
+            6 =&gt; EventValue::Boolean(read_boolean()),
+            _ =&gt; panic!(&quot;Unknown type {} for key {}`, type, key_name),
+        };
+
+        event.insert(key_name, value);
+    }
+}
+</code></pre>
 
                     </main>
 

@@ -186,7 +186,7 @@ if demo_protocol_3_or_4() {
     let num_server_players = read_le_u32();
 
     let length = read_le_u32();
-    let player_network_ids = read_array_of_bytes(length);
+    let player_network_ids = read_byte_slice(length);
 
     let length = read_le_u32();
     let map_name = read_ascii_string(length);

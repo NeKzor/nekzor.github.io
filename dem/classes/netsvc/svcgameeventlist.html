@@ -169,21 +169,24 @@
                     <main>
                         <h1><a class="header" href="#svcgameeventlist" id="svcgameeventlist">SvcGameEventList</a></h1>
 <p>Part of <a href="/classes/netsvc.html">NET/SVC</a> message.</p>
+<p>The data of this message is a list of descriptors which contain an event id and a set of keys. This will later be used to decode <a href="/classes/netsvc/svcgameevent.html">SvcGameEvent</a> messages.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
-<tr><td>Text</td><td>string</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>Events</td><td>int</td><td>1.125</td><td>9</td><td>-</td></tr>
+<tr><td>Length</td><td>int</td><td>2.5</td><td>20</td><td>-</td></tr>
+<tr><td>Data</td><td>byte[]</td><td>Length[]</td><td>-</td><td>GameEventDescriptor[]</td></tr>
 </tbody></table>
 <h2><a class="header" href="#pseudocode-example" id="pseudocode-example">Pseudocode Example</a></h2>
-<pre><code class="language-rust noplaypen">fn read_game_event() {
+<pre><code class="language-rust noplaypen">fn read_game_event_descriptor() {
     let event_id = read_bits(9);
     let name = read_ascii_string();
     let keys = HasMap::new();
 
-    let mut type = read_bits(3);
-    while type != 0 {
+    let mut value_type = read_bits(3);
+    while value_type != 0 {
         keys.entry(read_ascii_string())
-            .or_insert(type);
+            .or_insert(value_type);
 
-        type = read_bits(3);
+        value_type = read_bits(3);
     }
 }
 
@@ -192,7 +195,7 @@ let length = read_bits(20);
 let data = read_bit_slice(length);
 
 for _ 0..events {
-    let event = read_game_event();
+    read_game_event_descriptor();
 }
 </code></pre>
 

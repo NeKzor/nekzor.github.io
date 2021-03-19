@@ -256,7 +256,7 @@
 <tr><td>Data</td><td>byte[]</td><td>Size</td><td>Size*8</td><td><a href="messages//classes/netsvc.html">NET/SVC-Message[]</a></td></tr>
 </tbody></table>
 <h2><a class="header" href="#maxsplitscreenclients-mssc" id="maxsplitscreenclients-mssc">MaxSplitScreenClients (MSSC)</a></h2>
-<p>This value is most likely 1 for single-player-only games but 2 for multiplayer games which support split screen mode (Portal 2, CS:GO etc.). Although it can be missleading if a game is does not have multiplayer mode but yet supports this feature. The console command <code>maxplayers</code> can be executed in the developer console and should help to find out the exact value for a specific game.</p>
+<p>This value is most likely 1 for single-player-only games but 2 for multiplayer games which support split screen mode (Portal 2, CS:GO etc.). Although it can be missleading if a game does not have multiplayer mode but yet supports this feature. The console command <code>maxplayers</code> can be executed in the developer console and should help to find out the exact value for a specific game.</p>
 <h1><a class="header" href="#synctick" id="synctick">SyncTick</a></h1>
 <p>This message indicates the start of a session. It does not contain any data.</p>
 <h1><a class="header" href="#consolecmd" id="consolecmd">ConsoleCmd</a></h1>
@@ -399,7 +399,35 @@ if read_one_bit() {
 </tbody></table>
 <p>¹ Optional means to only read the field if the bit before was set.</p>
 <h1><a class="header" href="#gameevent" id="gameevent">GameEvent</a></h1>
-<p>TODO</p>
+<p>Part of <a href="classes//classes/netsvc/svcgameevent.html">SvcGameEvent</a> message.</p>
+<table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
+<tr><td>Length</td><td>int</td><td>1.125</td><td>9</td><td>-</td></tr>
+<tr><td>Data</td><td>T</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2><a class="header" href="#pseudocode-example-4" id="pseudocode-example-4">Pseudocode Example</a></h2>
+<p>The omitted function <code>find_event_list_descriptor</code> finds an event descriptor in the game event list by id. The list
+should be constructed when parsing the <a href="classes//classes/netsvc/svcgameeventlist.html">SvcGameEventList</a> message.</p>
+<pre><code class="language-rust noplaypen">let event_id = read_bits(9);
+
+if let Some(descriptor) = find_event_list_descriptor(event_id) {
+    let mut event = HashMap::new();
+
+    for (key_name, value_type) in descriptor.keys() {
+        let value = match value_type {
+            0 =&gt; EventValue::None,
+            1 =&gt; EventValue::String(read_ascii_string()),
+            2 =&gt; EventValue::Float(read_le_f32()),
+            3 =&gt; EventValue::Int32(read_le_i32()),
+            4 =&gt; EventValue::Int16(read_le_i16()),
+            5 =&gt; EventValue::Int8(read_le_i8()),
+            6 =&gt; EventValue::Boolean(read_boolean()),
+            _ =&gt; panic!(&quot;Unknown type {} for key {}`, type, key_name),
+        };
+
+        event.insert(key_name, value);
+    }
+}
+</code></pre>
 <h1><a class="header" href="#netsvc-message" id="netsvc-message">NET/SVC Message</a></h1>
 <p>Part of <a href="classes//messages/packet.html">Packet</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
@@ -447,7 +475,7 @@ if read_one_bit() {
 <tr><td>SvcBroadcastCommand</td><td>38</td><td>Seen in CS:GO.</td></tr>
 <tr><td>NetPlayerAvatarData</td><td>100</td><td>Seen in CS:GO.</td></tr>
 </tbody></table>
-<h2><a class="header" href="#pseudocode-example-4" id="pseudocode-example-4">Pseudocode Example</a></h2>
+<h2><a class="header" href="#pseudocode-example-5" id="pseudocode-example-5">Pseudocode Example</a></h2>
 <pre><code class="language-rust noplaypen">while bits_left &gt; 6 {
     let message_type = read_bits(6);
 
@@ -482,7 +510,7 @@ if read_one_bit() {
 <tr><td>HostFrameTimeStdDeviation¹</td><td>integer</td><td>2</td><td>16</td><td>-</td></tr>
 </tbody></table>
 <p>¹ Value is scaled up by a factor of 10<sup title="undefined">5</sup> (NET_TICK_SCALEUP).</p>
-<h2><a class="header" href="#pseudocode-example-5" id="pseudocode-example-5">Pseudocode Example</a></h2>
+<h2><a class="header" href="#pseudocode-example-6" id="pseudocode-example-6">Pseudocode Example</a></h2>
 <pre><code class="language-rust noplaypen">let tick = read_le_32();
 let host_frame_time = read_le_16() / 1e5;
 let host_frame_time_std_deviation = read_le_16() / 1e5;
@@ -498,7 +526,7 @@ let host_frame_time_std_deviation = read_le_16() / 1e5;
 <tr><td>Length</td><td>int</td><td>1</td><td>8</td><td>-</td></tr>
 <tr><td>ConVars</td><td>ConVar[]</td><td>-</td><td>-</td><td>ConVar[]</td></tr>
 </tbody></table>
-<h2><a class="header" href="#pseudocode-example-6" id="pseudocode-example-6">Pseudocode Example</a></h2>
+<h2><a class="header" href="#pseudocode-example-7" id="pseudocode-example-7">Pseudocode Example</a></h2>
 <pre><code class="language-rust noplaypen">let length = read_le_i8();
 
 for _ 0..length {
@@ -517,7 +545,7 @@ for _ 0..length {
 <tr><td>MapNameLength<sup title="New Engine">NE</sup></td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
 <tr><td>MapName<sup title="New Engine">NE</sup></td><td>string</td><td>MapNameLength</td><td>MapNameLength*8</td><td>-</td></tr>
 </tbody></table>
-<h2><a class="header" href="#pseudocode-example-7" id="pseudocode-example-7">Pseudocode Example</a></h2>
+<h2><a class="header" href="#pseudocode-example-8" id="pseudocode-example-8">Pseudocode Example</a></h2>
 <pre><code class="language-rust noplaypen">let signon_state = read_le_u8();
 let spawn_count = read_le_u32();
 
@@ -525,7 +553,7 @@ if demo_protocol_3_or_4() {
     let num_server_players = read_le_u32();
 
     let length = read_le_u32();
-    let player_network_ids = read_array_of_bytes(length);
+    let player_network_ids = read_byte_slice(length);
 
     let length = read_le_u32();
     let map_name = read_ascii_string(length);
@@ -552,7 +580,7 @@ if demo_protocol_3_or_4() {
 <tr><td>SkyName</td><td>string</td><td>-</td><td>-</td><td>-</td></tr>
 <tr><td>HostName</td><td>string</td><td>-</td><td>-</td><td>-</td></tr>
 </tbody></table>
-<h2><a class="header" href="#pseudocode-example-8" id="pseudocode-example-8">Pseudocode Example</a></h2>
+<h2><a class="header" href="#pseudocode-example-9" id="pseudocode-example-9">Pseudocode Example</a></h2>
 <pre><code class="language-rust noplaypen">let protocol = read_le_u16();
 let server_count = read_le_u32();
 let is_hltv = read_one_bit();
@@ -591,7 +619,7 @@ let host_name = read_ascii_string();
 <tr><td>ServerClasses¹</td><td>byte[]</td><td>-</td><td>-</td><td>ServerClass[]</td></tr>
 </tbody></table>
 <p>¹ Depends if the <code>CreateOnClient</code> bit was set.</p>
-<h2><a class="header" href="#pseudocode-example-9" id="pseudocode-example-9">Pseudocode Example</a></h2>
+<h2><a class="header" href="#pseudocode-example-10" id="pseudocode-example-10">Pseudocode Example</a></h2>
 <pre><code class="language-rust noplaypen">let length = read_le_i16();
 let create_on_client = read_one_bit();
 
@@ -661,7 +689,7 @@ if create_on_client {
 <tr><td>Data</td><td>byte[]</td><td>0.125</td><td>Length</td><td>SoundInfo[]</td></tr>
 </tbody></table>
 <p>¹ Optional: Only set if the <code>ReliableSound</code> bit is zero.</p>
-<h2><a class="header" href="#pseudocode-example-10" id="pseudocode-example-10">Pseudocode Example</a></h2>
+<h2><a class="header" href="#pseudocode-example-11" id="pseudocode-example-11">Pseudocode Example</a></h2>
 <pre><code class="language-rust noplaypen">let reliable_sound = read_one_bit();
 
 let size = if reliable_sound {
@@ -676,7 +704,7 @@ let length = if reliable_sound {
     read_bits(16)
 };
 
-let data = read_bit_array(length);
+let data = read_bit_slice(length);
 </code></pre>
 <h1><a class="header" href="#svcsetview" id="svcsetview">SvcSetView</a></h1>
 <p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
@@ -705,7 +733,7 @@ let data = read_bit_array(length);
 </tbody></table>
 <p>¹ Optional means to only read the field if the bit before was set.</p>
 <p>² This field depends on <code>EntityIndex</code>.</p>
-<h2><a class="header" href="#pseudocode-example-11" id="pseudocode-example-11">Pseudocode Example</a></h2>
+<h2><a class="header" href="#pseudocode-example-12" id="pseudocode-example-12">Pseudocode Example</a></h2>
 <pre><code class="language-rust noplaypen">fn read_vector_coords() -&gt; (Optional&lt;f32&gt;, Optional&lt;f32&gt;, Optional&lt;f32&gt;) {
     fn read_vector_coord() -&gt; f32 {
         const COORD_INTEGER_BITS: u8 = 14;
@@ -769,7 +797,7 @@ let low_priority = read_one_bit();
 <tr><td>Length</td><td>int</td><td>1.5<sup title="New Engine">NE</sup><br>1.375<sup title="Old Engine">OE</sup></td><td>12<sup title="New Engine">NE</sup><br>11<sup title="Old Engine">OE</sup></td><td>-</td></tr>
 <tr><td>Data</td><td>byte[]</td><td>Length / 8</td><td>Length</td><td>-</td></tr>
 </tbody></table>
-<h2><a class="header" href="#pseudocode-example-12" id="pseudocode-example-12">Pseudocode Example</a></h2>
+<h2><a class="header" href="#pseudocode-example-13" id="pseudocode-example-13">Pseudocode Example</a></h2>
 <pre><code class="language-rust noplaypen">let msg_type = read_le_u8();
 let length = read_bits(if demo_protocol_3_or_4() { 12 } else { 11 });
 let msg_data = read_bits(length);
@@ -784,7 +812,7 @@ let msg_data = read_bits(length);
 </tbody></table>
 <h1><a class="header" href="#svcgameevent" id="svcgameevent">SvcGameEvent</a></h1>
 <p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
-<p>The data for SvcGameEvent can only be decoded with <a href="classes/netsvc//classes/netsvc/svcgameeventlist.html">SvcGameEventList</a> which appears only once before this message is allowed to appear.</p>
+<p>The data for this message can only be decoded with <a href="classes/netsvc//classes/netsvc/svcgameeventlist.html">SvcGameEventList</a> which appears once before this message is allowed to appear.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Length</td><td>int</td><td>1.375</td><td>11</td><td>-</td></tr>
 <tr><td>Data</td><td>byte[]</td><td>Length / 8</td><td>Length</td><td><a href="classes/netsvc//classes/gameevent.html">GameEvent[]</a></td></tr>
@@ -802,7 +830,7 @@ let msg_data = read_bits(length);
 <tr><td>Data</td><td>byte[]</td><td>Length / 8</td><td>Length</td><td>-</td></tr>
 </tbody></table>
 <p>¹ Depends if the IsDelta bit is set.</p>
-<h2><a class="header" href="#pseudocode-example-13" id="pseudocode-example-13">Pseudocode Example</a></h2>
+<h2><a class="header" href="#pseudocode-example-14" id="pseudocode-example-14">Pseudocode Example</a></h2>
 <pre><code class="language-rust noplaypen">let max_entries = read_bits(11);
 let is_delta = read_one_bit();
 if is_delta {
@@ -835,21 +863,24 @@ let data = read_bits(length);
 </tbody></table>
 <h1><a class="header" href="#svcgameeventlist" id="svcgameeventlist">SvcGameEventList</a></h1>
 <p>Part of <a href="classes/netsvc//classes/netsvc.html">NET/SVC</a> message.</p>
+<p>The data of this message is a list of descriptors which contain an event id and a set of keys. This will later be used to decode <a href="classes/netsvc//classes/netsvc/svcgameevent.html">SvcGameEvent</a> messages.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
-<tr><td>Text</td><td>string</td><td>-</td><td>-</td><td>-</td></tr>
+<tr><td>Events</td><td>int</td><td>1.125</td><td>9</td><td>-</td></tr>
+<tr><td>Length</td><td>int</td><td>2.5</td><td>20</td><td>-</td></tr>
+<tr><td>Data</td><td>byte[]</td><td>Length[]</td><td>-</td><td>GameEventDescriptor[]</td></tr>
 </tbody></table>
-<h2><a class="header" href="#pseudocode-example-14" id="pseudocode-example-14">Pseudocode Example</a></h2>
-<pre><code class="language-rust noplaypen">fn read_game_event() {
+<h2><a class="header" href="#pseudocode-example-15" id="pseudocode-example-15">Pseudocode Example</a></h2>
+<pre><code class="language-rust noplaypen">fn read_game_event_descriptor() {
     let event_id = read_bits(9);
     let name = read_ascii_string();
     let keys = HasMap::new();
 
-    let mut type = read_bits(3);
-    while type != 0 {
+    let mut value_type = read_bits(3);
+    while value_type != 0 {
         keys.entry(read_ascii_string())
-            .or_insert(type);
+            .or_insert(value_type);
 
-        type = read_bits(3);
+        value_type = read_bits(3);
     }
 }
 
@@ -858,7 +889,7 @@ let length = read_bits(20);
 let data = read_bit_slice(length);
 
 for _ 0..events {
-    let event = read_game_event();
+    read_game_event_descriptor();
 }
 </code></pre>
 <h1><a class="header" href="#svcgetcvarvalue" id="svcgetcvarvalue">SvcGetCvarValue</a></h1>
