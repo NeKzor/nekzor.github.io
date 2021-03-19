@@ -1,4 +1,5 @@
+title: nekz.me
 exclude:
+  - docs/
   - .gitignore
   - .gitattributes
-title: nekz.me
