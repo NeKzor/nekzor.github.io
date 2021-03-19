@@ -28,5 +28,5 @@ let length = if reliable_sound {
     read_bits(16)
 };
 
-let data = read_bit_array(length);
+let data = read_bit_slice(length);
 ```

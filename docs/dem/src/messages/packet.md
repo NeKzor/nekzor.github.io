@@ -12,4 +12,4 @@ Packets contain simulated information about a session. A SignOn message is the s
 
 ## MaxSplitScreenClients (MSSC)
 
-This value is most likely 1 for single-player-only games but 2 for multiplayer games which support split screen mode (Portal 2, CS:GO etc.). Although it can be missleading if a game is does not have multiplayer mode but yet supports this feature. The console command `maxplayers` can be executed in the developer console and should help to find out the exact value for a specific game.
+This value is most likely 1 for single-player-only games but 2 for multiplayer games which support split screen mode (Portal 2, CS:GO etc.). Although it can be missleading if a game does not have multiplayer mode but yet supports this feature. The console command `maxplayers` can be executed in the developer console and should help to find out the exact value for a specific game.
