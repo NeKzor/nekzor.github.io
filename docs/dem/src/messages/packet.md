@@ -4,11 +4,11 @@ Packets contain simulated information about a session. A SignOn message is the s
 
 | Name | Type | Size in bytes | Size in bits | Value |
 | --- | --- | --- | --- | --- |
-| PacketInfo | byte[] | 76*MSSC | 76*MSSC*8 | [CmdInfo[MSSC]](/classes/cmdinfo.md) |
+| PacketInfo | byte[] | 76*MSSC | 76*MSSC*8 | [CmdInfo[MSSC]](../classes/cmdinfo.md) |
 | InSequence | int | 4 | 32 | - |
 | OutSequence | int | 4 | 32 | - |
 | Size | int | 4 | 32 | - |
-| Data | byte[] | Size | Size*8 | [NET/SVC-Message[]](/classes/netsvc.md) |
+| Data | byte[] | Size | Size*8 | [NET/SVC-Message[]](../classes/netsvc.md) |
 
 ## MaxSplitScreenClients (MSSC)
 

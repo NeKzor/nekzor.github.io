@@ -1,6 +1,6 @@
 # SvcBspDecal
 
-Part of [NET/SVC](/classes/netsvc.md) message.
+Part of [NET/SVC](../netsvc.md) message.
 
 | Name | Type | Size in bytes | Size in bits | Value |
 | --- | --- | --- | --- | --- |
@@ -16,7 +16,7 @@ Part of [NET/SVC](/classes/netsvc.md) message.
 
 ## Pseudocode Example
 
-```rust,noplaypen
+```rust,noplaypen,ignore
 fn read_vector_coords() -> (Optional<f32>, Optional<f32>, Optional<f32>) {
     fn read_vector_coord() -> f32 {
         const COORD_INTEGER_BITS: u8 = 14;

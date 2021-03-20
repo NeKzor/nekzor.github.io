@@ -1,6 +1,6 @@
 # SvcPacketEntities
 
-Part of [NET/SVC](/classes/netsvc.md) message.
+Part of [NET/SVC](../netsvc.md) message.
 
 | Name | Type | Size in bytes | Size in bits | Value |
 | --- | --- | --- | --- | --- |
@@ -17,7 +17,7 @@ Part of [NET/SVC](/classes/netsvc.md) message.
 
 ## Pseudocode Example
 
-```rust,noplaypen
+```rust,noplaypen,ignore
 let max_entries = read_bits(11);
 let is_delta = read_one_bit();
 if is_delta {

@@ -1,6 +1,6 @@
 # Demo
 
-Demo files contain a header starting with a constant magic followed by information about the engine, the player and the current session. The main contents are stored in an array of [messages](/messages.md).
+Demo files contain a header starting with a constant magic followed by information about the engine, the player and the current session. The main contents are stored in an array of [messages](./messages.md).
 
 | Name | Type | Size in bytes | Size in bits | Value |
 | --- | --- | --- | --- | --- |
@@ -15,4 +15,4 @@ Demo files contain a header starting with a constant magic followed by informati
 | PlaybackTicks | int | 4 | 32 | - |
 | PlaybackFrames | int | 4 | 32 | - |
 | SignOnLength | int | 4 | 32 | - |
-| DemoMessages | [Message[]](/messages.md) | - | - | - |
+| DemoMessages | [Message[]](./messages.md) | - | - | - |

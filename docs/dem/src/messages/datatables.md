@@ -5,11 +5,11 @@ This message only appears once at the beginning of a demo. It contains network d
 | Name | Type | Size in bytes | Size in bits | Value |
 | --- | --- | --- | --- | --- |
 | Size | int | 4 | 32 | - |
-| Data | byte[] | Size | Size*8 | [SendTable[]](/classes/sendtable.md)<br>[ServerClassInfo[]](/classes/serverclassinfo.md) |
+| Data | byte[] | Size | Size*8 | [SendTable[]](../classes/sendtable.md)<br>[ServerClassInfo[]](../classes/serverclassinfo.md) |
 
 ## Pseudocode Example
 
-```rust,noplaypen
+```rust,noplaypen,ignore
 while read_one_bit() {
     read_send_table();
 }

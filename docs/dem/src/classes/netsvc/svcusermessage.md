@@ -1,6 +1,6 @@
 # SvcUserMessage
 
-Part of [NET/SVC](/classes/netsvc.md) message.
+Part of [NET/SVC](../netsvc.md) message.
 
 | Name | Type | Size in bytes | Size in bits | Value |
 | --- | --- | --- | --- | --- |
@@ -10,7 +10,7 @@ Part of [NET/SVC](/classes/netsvc.md) message.
 
 ## Pseudocode Example
 
-```rust,noplaypen
+```rust,noplaypen,ignore
 let msg_type = read_le_u8();
 let length = read_bits(if demo_protocol_3_or_4() { 12 } else { 11 });
 let msg_data = read_bits(length);

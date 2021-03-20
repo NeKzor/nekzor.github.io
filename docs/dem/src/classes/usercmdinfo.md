@@ -1,6 +1,6 @@
 # UserCmdInfo
 
-Part of [UserCmd](/messages/usercmd.md) message.
+Part of [UserCmd](../messages/usercmd.md) message.
 
 | Name | Type | Size in bytes | Size in bits | Value |
 | --- | --- | --- | --- | --- |
@@ -25,7 +25,7 @@ Part of [UserCmd](/messages/usercmd.md) message.
 
 ## Pseudocode Example
 
-```rust,noplaypen
+```rust,noplaypen,ignore
 if read_one_bit() {
     command_number = read_le_u32();
 }

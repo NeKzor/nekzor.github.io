@@ -8,5 +8,3 @@ title = ".dem"
 [output.html]
 git-repository-url = "https://github.com/NeKzor/nekzor.github.io"
 git-repository-icon = "fa-github"
-site-url = "/dem/"
-input-404 = "not-found.md"

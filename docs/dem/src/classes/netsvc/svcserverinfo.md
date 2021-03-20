@@ -1,6 +1,6 @@
 # SvcServerInfo
 
-Part of [NET/SVC](/classes/netsvc.md) message.
+Part of [NET/SVC](../netsvc.md) message.
 
 | Name | Type | Size in bytes | Size in bits | Value |
 | --- | --- | --- | --- | --- |
@@ -24,7 +24,7 @@ Part of [NET/SVC](/classes/netsvc.md) message.
 
 ## Pseudocode Example
 
-```rust,noplaypen
+```rust,noplaypen,ignore
 let protocol = read_le_u16();
 let server_count = read_le_u32();
 let is_hltv = read_one_bit();

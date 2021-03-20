@@ -1,6 +1,6 @@
 # NetTick
 
-Part of [NET/SVC](/classes/netsvc.md) message.
+Part of [NET/SVC](../netsvc.md) message.
 
 | Name | Type | Size in bytes | Size in bits | Value |
 | --- | --- | --- | --- | --- |
@@ -12,7 +12,7 @@ Part of [NET/SVC](/classes/netsvc.md) message.
 
 ## Pseudocode Example
 
-```rust,noplaypen
+```rust,noplaypen,ignore
 let tick = read_le_32();
 let host_frame_time = read_le_16() / 1e5;
 let host_frame_time_std_deviation = read_le_16() / 1e5;

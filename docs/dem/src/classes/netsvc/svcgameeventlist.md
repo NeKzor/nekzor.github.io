@@ -1,8 +1,8 @@
 # SvcGameEventList
 
-Part of [NET/SVC](/classes/netsvc.md) message.
+Part of [NET/SVC](../netsvc.md) message.
 
-The data of this message is a list of descriptors which contain an event id and a set of keys. This will later be used to decode [SvcGameEvent](/classes/netsvc/svcgameevent.md) messages.
+The data of this message is a list of descriptors which contain an event id and a set of keys. This will later be used to decode [SvcGameEvent](./svcgameevent.md) messages.
 
 | Name | Type | Size in bytes | Size in bits | Value |
 | --- | --- | --- | --- | --- |
@@ -12,7 +12,7 @@ The data of this message is a list of descriptors which contain an event id and 
 
 ## Pseudocode Example
 
-```rust,noplaypen
+```rust,noplaypen,ignore
 fn read_game_event_descriptor() {
     let event_id = read_bits(9);
     let name = read_ascii_string();

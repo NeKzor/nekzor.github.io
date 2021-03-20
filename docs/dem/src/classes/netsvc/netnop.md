@@ -1,5 +1,5 @@
 # NetNop
 
-Part of [NET/SVC](/classes/netsvc.md) message.
+Part of [NET/SVC](../netsvc.md) message.
 
 Does not contain any data.

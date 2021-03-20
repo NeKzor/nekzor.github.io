@@ -1,6 +1,6 @@
 # SingTable
 
-Part of [StringTables](/messages/stringtables.md) message.
+Part of [StringTables](../messages/stringtables.md) message.
 
 | Name | Type | Size in bytes | Size in bits | Value |
 | --- | --- | --- | --- | --- |

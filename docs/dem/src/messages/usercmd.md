@@ -6,4 +6,4 @@ This message contains the player's polled inputs which was used to process their
 | --- | --- | --- | --- | --- |
 | Cmd | int | 4 | 32 | - |
 | Size | int | 4 | 32 | - |
-| Data | byte[] | Size | Size*8 | [UserCmdInfo](/classes/usercmdinfo.md) |
+| Data | byte[] | Size | Size*8 | [UserCmdInfo](../classes/usercmdinfo.md) |

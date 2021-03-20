@@ -9,7 +9,7 @@ Demo messages are stored in sequential order as the engine records them. A messa
 | Slot<sup title="New Engine">NE</sup>² | byte | 1 | 8 | - |
 | Data | Based on Type | - | - | - |
 
-¹ Old engines might not even include the message tick after the stop byte, see [Stop](/messages/stop.md).
+¹ Old engines might not even include the message tick after the stop byte, see [Stop](./messages/stop.md).
 
 ² The term slot here refers to the selected split-screen index. This byte is only used in engines which support split-screen mode.
 
@@ -17,21 +17,21 @@ Demo messages are stored in sequential order as the engine records them. A messa
 
 | Type | Value | Description |
 | --- | --- | --- |
-| [SignOn](/messages/packet.md) | 1 | - |
-| [Packet](/messages/packet.md) | 2 | - |
-| [SyncTick](/messages/synctick.md) | 3 | - |
-| [Consolecmd](/messages/consolecmd.md) | 4 | - |
-| [Usercmd](/messages/usercmd.md) | 5 | - |
-| [DataTables](/messages/datatables.md) | 6 | - |
-| [Stop](/messages/stop.md) | 7 | - |
-| [CustomData](/messages/customdata.md) | 8 | - |
-| [StringTables](/messages/stringtables.md) | 9 | 8 for old engine. |
+| [SignOn](./messages/packet.md) | 1 | - |
+| [Packet](./messages/packet.md) | 2 | - |
+| [SyncTick](./messages/synctick.md) | 3 | - |
+| [Consolecmd](./messages/consolecmd.md) | 4 | - |
+| [Usercmd](./messages/usercmd.md) | 5 | - |
+| [DataTables](./messages/datatables.md) | 6 | - |
+| [Stop](./messages/stop.md) | 7 | - |
+| [CustomData](./messages/customdata.md) | 8 | - |
+| [StringTables](./messages/stringtables.md) | 9 | 8 for old engine. |
 
 ## Pseudocode Example
 
 To keep this example simple the stop message might contain additonal data which is not read here. We also ignore the fact that that reading past the buffer might be possible when parsing corrupted demos.
 
-```rust,noplaypen
+```rust,noplaypen,ignore
 loop {
     let message_type = read_le_i8();
 

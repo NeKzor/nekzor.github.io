@@ -17,10 +17,10 @@ Unofficial documentation of the reverse-engineered `.dem` file format used in So
 ### 2021-03-14
 
 - Integrated docs to [mdbook](https://github.com/rust-lang/mdBook)
-- Fixed order of `ForwardMove` and `SideMove` in [UserCmdInfo](/classes/usercmdinfo.md)
+- Fixed order of `ForwardMove` and `SideMove` in [UserCmdInfo](./classes/usercmdinfo.md)
 - Added some additional caveats
 - Added short descriptions
 - Added pseudocode examples for decoding complex data structures
-- Added license, dependencies, features and applications to [examples](/examples.md)
+- Added license, dependencies, features and applications to [examples](./examples.md)
 - Added changelog
-- Added docs for [NET/SVC messages](/classes/netsvc.md)
+- Added docs for [NET/SVC messages](./classes/netsvc.md)

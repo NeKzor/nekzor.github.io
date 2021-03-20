@@ -1,6 +1,6 @@
 # CmdInfo
 
-Part of [Packet](/messages/packet.md) message.
+Part of [Packet](../messages/packet.md) message.
 
 | Name | Type | Size in bytes | Size in bits | Value |
 | --- | --- | --- | --- | --- |

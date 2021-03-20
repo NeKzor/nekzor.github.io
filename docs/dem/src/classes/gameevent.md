@@ -1,6 +1,6 @@
 # GameEvent
 
-Part of [SvcGameEvent](/classes/netsvc/svcgameevent.md) message.
+Part of [SvcGameEvent](./netsvc/svcgameevent.md) message.
 
 | Name | Type | Size in bytes | Size in bits | Value |
 | --- | --- | --- | --- | --- |
@@ -10,9 +10,9 @@ Part of [SvcGameEvent](/classes/netsvc/svcgameevent.md) message.
 ## Pseudocode Example
 
 The omitted function `find_event_list_descriptor` finds an event descriptor in the game event list by id. The list
-should be constructed when parsing the [SvcGameEventList](/classes/netsvc/svcgameeventlist.md) message.
+should be constructed when parsing the [SvcGameEventList](./netsvc/svcgameeventlist.md) message.
 
-```rust,noplaypen
+```rust,noplaypen,ignore
 let event_id = read_bits(9);
 
 if let Some(descriptor) = find_event_list_descriptor(event_id) {
