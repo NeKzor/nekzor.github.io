@@ -168,15 +168,15 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#svcgameeventlist" id="svcgameeventlist">SvcGameEventList</a></h1>
-<p>Part of <a href="/classes/netsvc.html">NET/SVC</a> message.</p>
-<p>The data of this message is a list of descriptors which contain an event id and a set of keys. This will later be used to decode <a href="/classes/netsvc/svcgameevent.html">SvcGameEvent</a> messages.</p>
+<p>Part of <a href="../netsvc.html">NET/SVC</a> message.</p>
+<p>The data of this message is a list of descriptors which contain an event id and a set of keys. This will later be used to decode <a href="./svcgameevent.html">SvcGameEvent</a> messages.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Events</td><td>int</td><td>1.125</td><td>9</td><td>-</td></tr>
 <tr><td>Length</td><td>int</td><td>2.5</td><td>20</td><td>-</td></tr>
 <tr><td>Data</td><td>byte[]</td><td>Length[]</td><td>-</td><td>GameEventDescriptor[]</td></tr>
 </tbody></table>
 <h2><a class="header" href="#pseudocode-example" id="pseudocode-example">Pseudocode Example</a></h2>
-<pre><code class="language-rust noplaypen">fn read_game_event_descriptor() {
+<pre><code class="language-rust noplaypen ignore">fn read_game_event_descriptor() {
     let event_id = read_bits(9);
     let name = read_ascii_string();
     let keys = HasMap::new();

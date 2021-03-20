@@ -168,7 +168,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#svcserverinfo" id="svcserverinfo">SvcServerInfo</a></h1>
-<p>Part of <a href="/classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="../netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Protocol</td><td>int</td><td>1</td><td>8</td><td>-</td></tr>
 <tr><td>ServerCount</td><td>int</td><td>4</td><td>32</td><td>-</td></tr>
@@ -189,7 +189,7 @@
 <tr><td>HostName</td><td>string</td><td>-</td><td>-</td><td>-</td></tr>
 </tbody></table>
 <h2><a class="header" href="#pseudocode-example" id="pseudocode-example">Pseudocode Example</a></h2>
-<pre><code class="language-rust noplaypen">let protocol = read_le_u16();
+<pre><code class="language-rust noplaypen ignore">let protocol = read_le_u16();
 let server_count = read_le_u32();
 let is_hltv = read_one_bit();
 let is_dedicated = read_one_bit();

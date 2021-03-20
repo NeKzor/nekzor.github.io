@@ -168,7 +168,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#svcpacketentities" id="svcpacketentities">SvcPacketEntities</a></h1>
-<p>Part of <a href="/classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="../netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>MaxEntries</td><td>int</td><td>1.375</td><td>11</td><td>-</td></tr>
 <tr><td>IsDelta</td><td>bool</td><td>0.125</td><td>1</td><td>-</td></tr>
@@ -181,7 +181,7 @@
 </tbody></table>
 <p>¹ Depends if the IsDelta bit is set.</p>
 <h2><a class="header" href="#pseudocode-example" id="pseudocode-example">Pseudocode Example</a></h2>
-<pre><code class="language-rust noplaypen">let max_entries = read_bits(11);
+<pre><code class="language-rust noplaypen ignore">let max_entries = read_bits(11);
 let is_delta = read_one_bit();
 if is_delta {
     let delta_from = read_int32();

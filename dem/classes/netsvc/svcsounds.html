@@ -168,7 +168,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#svcsounds" id="svcsounds">SvcSounds</a></h1>
-<p>Part of <a href="/classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="../netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>ReliableSound</td><td>bool</td><td>0.125</td><td>1</td><td>-</td></tr>
 <tr><td>Size¹</td><td>int</td><td>1</td><td>8</td><td>1 if ReliableSound bit is set.</td></tr>
@@ -177,7 +177,7 @@
 </tbody></table>
 <p>¹ Optional: Only set if the <code>ReliableSound</code> bit is zero.</p>
 <h2><a class="header" href="#pseudocode-example" id="pseudocode-example">Pseudocode Example</a></h2>
-<pre><code class="language-rust noplaypen">let reliable_sound = read_one_bit();
+<pre><code class="language-rust noplaypen ignore">let reliable_sound = read_one_bit();
 
 let size = if reliable_sound {
     1

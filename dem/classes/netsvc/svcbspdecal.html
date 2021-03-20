@@ -168,7 +168,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#svcbspdecal" id="svcbspdecal">SvcBspDecal</a></h1>
-<p>Part of <a href="/classes/netsvc.html">NET/SVC</a> message.</p>
+<p>Part of <a href="../netsvc.html">NET/SVC</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Pos</td><td>float?[]</td><td>0.375 to 8.625</td><td>3 to 69</td><td>VectorCoord</td></tr>
 <tr><td>DecalTextureIndex</td><td>int</td><td>1.125</td><td>9</td><td>-</td></tr>
@@ -179,7 +179,7 @@
 <p>¹ Optional means to only read the field if the bit before was set.</p>
 <p>² This field depends on <code>EntityIndex</code>.</p>
 <h2><a class="header" href="#pseudocode-example" id="pseudocode-example">Pseudocode Example</a></h2>
-<pre><code class="language-rust noplaypen">fn read_vector_coords() -&gt; (Optional&lt;f32&gt;, Optional&lt;f32&gt;, Optional&lt;f32&gt;) {
+<pre><code class="language-rust noplaypen ignore">fn read_vector_coords() -&gt; (Optional&lt;f32&gt;, Optional&lt;f32&gt;, Optional&lt;f32&gt;) {
     fn read_vector_coord() -&gt; f32 {
         const COORD_INTEGER_BITS: u8 = 14;
         const COORD_FRACTIONAL_BITS: u8 = 5;

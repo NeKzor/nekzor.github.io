@@ -175,23 +175,23 @@
 <tr><td>Slot<sup title="New Engine">NE</sup>²</td><td>byte</td><td>1</td><td>8</td><td>-</td></tr>
 <tr><td>Data</td><td>Based on Type</td><td>-</td><td>-</td><td>-</td></tr>
 </tbody></table>
-<p>¹ Old engines might not even include the message tick after the stop byte, see <a href="/messages/stop.html">Stop</a>.</p>
+<p>¹ Old engines might not even include the message tick after the stop byte, see <a href="./messages/stop.html">Stop</a>.</p>
 <p>² The term slot here refers to the selected split-screen index. This byte is only used in engines which support split-screen mode.</p>
 <h2><a class="header" href="#types" id="types">Types</a></h2>
 <table><thead><tr><th>Type</th><th>Value</th><th>Description</th></tr></thead><tbody>
-<tr><td><a href="/messages/packet.html">SignOn</a></td><td>1</td><td>-</td></tr>
-<tr><td><a href="/messages/packet.html">Packet</a></td><td>2</td><td>-</td></tr>
-<tr><td><a href="/messages/synctick.html">SyncTick</a></td><td>3</td><td>-</td></tr>
-<tr><td><a href="/messages/consolecmd.html">Consolecmd</a></td><td>4</td><td>-</td></tr>
-<tr><td><a href="/messages/usercmd.html">Usercmd</a></td><td>5</td><td>-</td></tr>
-<tr><td><a href="/messages/datatables.html">DataTables</a></td><td>6</td><td>-</td></tr>
-<tr><td><a href="/messages/stop.html">Stop</a></td><td>7</td><td>-</td></tr>
-<tr><td><a href="/messages/customdata.html">CustomData</a></td><td>8</td><td>-</td></tr>
-<tr><td><a href="/messages/stringtables.html">StringTables</a></td><td>9</td><td>8 for old engine.</td></tr>
+<tr><td><a href="./messages/packet.html">SignOn</a></td><td>1</td><td>-</td></tr>
+<tr><td><a href="./messages/packet.html">Packet</a></td><td>2</td><td>-</td></tr>
+<tr><td><a href="./messages/synctick.html">SyncTick</a></td><td>3</td><td>-</td></tr>
+<tr><td><a href="./messages/consolecmd.html">Consolecmd</a></td><td>4</td><td>-</td></tr>
+<tr><td><a href="./messages/usercmd.html">Usercmd</a></td><td>5</td><td>-</td></tr>
+<tr><td><a href="./messages/datatables.html">DataTables</a></td><td>6</td><td>-</td></tr>
+<tr><td><a href="./messages/stop.html">Stop</a></td><td>7</td><td>-</td></tr>
+<tr><td><a href="./messages/customdata.html">CustomData</a></td><td>8</td><td>-</td></tr>
+<tr><td><a href="./messages/stringtables.html">StringTables</a></td><td>9</td><td>8 for old engine.</td></tr>
 </tbody></table>
 <h2><a class="header" href="#pseudocode-example" id="pseudocode-example">Pseudocode Example</a></h2>
 <p>To keep this example simple the stop message might contain additonal data which is not read here. We also ignore the fact that that reading past the buffer might be possible when parsing corrupted demos.</p>
-<pre><code class="language-rust noplaypen">loop {
+<pre><code class="language-rust noplaypen ignore">loop {
     let message_type = read_le_i8();
 
     if message_type == 0x07 {

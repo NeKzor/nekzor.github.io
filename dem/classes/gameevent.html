@@ -168,15 +168,15 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#gameevent" id="gameevent">GameEvent</a></h1>
-<p>Part of <a href="/classes/netsvc/svcgameevent.html">SvcGameEvent</a> message.</p>
+<p>Part of <a href="./netsvc/svcgameevent.html">SvcGameEvent</a> message.</p>
 <table><thead><tr><th>Name</th><th>Type</th><th>Size in bytes</th><th>Size in bits</th><th>Value</th></tr></thead><tbody>
 <tr><td>Length</td><td>int</td><td>1.125</td><td>9</td><td>-</td></tr>
 <tr><td>Data</td><td>T</td><td>-</td><td>-</td><td>-</td></tr>
 </tbody></table>
 <h2><a class="header" href="#pseudocode-example" id="pseudocode-example">Pseudocode Example</a></h2>
 <p>The omitted function <code>find_event_list_descriptor</code> finds an event descriptor in the game event list by id. The list
-should be constructed when parsing the <a href="/classes/netsvc/svcgameeventlist.html">SvcGameEventList</a> message.</p>
-<pre><code class="language-rust noplaypen">let event_id = read_bits(9);
+should be constructed when parsing the <a href="./netsvc/svcgameeventlist.html">SvcGameEventList</a> message.</p>
+<pre><code class="language-rust noplaypen ignore">let event_id = read_bits(9);
 
 if let Some(descriptor) = find_event_list_descriptor(event_id) {
     let mut event = HashMap::new();
