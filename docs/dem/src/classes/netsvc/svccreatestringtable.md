@@ -9,7 +9,7 @@ Part of [NET/SVC](../netsvc.md) message.
 | NumEntries | int | (log2(MaxEntries)+1)/8 | log2(MaxEntries)+1 | - |
 | Length | int | 2.5 | 20 | - |
 | UserDataFixedSize | bool | 0.125 | 1 | - |
-| UserDataSize¹ | int | 4 | 1.5 | - |
+| UserDataSize¹ | int | 1.5 | 12 | - |
 | UserDataSizeBits¹ | int | 0.5 | 4 | - |
 | Flags | int | 0.25<sup title="New Engine">NE</sup><br>0.125<sup title="Old Engine">OE</sup> | 2<sup title="New Engine">NE</sup><br>1<sup title="Old Engine">OE</sup> | - |
 | StringData | int | Length / 8 | Length | - |

@@ -8,7 +8,7 @@ Part of [NET/SVC](../netsvc.md) message.
 | IsDelta | bool | 0.125 | 1 | - |
 | DeltaFrom¹ | int | 4 | 32 | - |
 | BaseLine | boolean | 0.125 | 1 | - |
-| UpdatedEntries | 1.375 | 11 | - | - |
+| UpdatedEntries | int | 1.375 | 11 | - | - |
 | Length | int | 2.5 | 20 | - |
 | UpdateBaseline | bool | 0.125 | 1 | - |
 | Data | byte[] | Length / 8 | Length | - |
