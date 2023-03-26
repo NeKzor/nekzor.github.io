@@ -1,4 +1,4 @@
-# SingTable
+# StringTable
 
 Part of [StringTables](../messages/stringtables.md) message.
 
