@@ -117,6 +117,7 @@
         <table>
           <thead>
             <tr>
+              <th>Filename</th>
               <th>Map</th>
               <th>Client</th>
               <th>Ticks</th>
@@ -722,8 +723,8 @@ SAR: ${formatTime(demo.sar.delta * demo.getIntervalPerTick())}`,
             curTicks += demo.playbackTicks;
             curTime += demo.playbackTime;
 
+            const filename = document.createElement("td");
             const map = document.createElement("td");
-            map.setAttribute("title", demo.fileInfo.name);
             const client = document.createElement("td");
             const ticks = document.createElement("td");
             const time = document.createElement("td");
@@ -731,6 +732,7 @@ SAR: ${formatTime(demo.sar.delta * demo.getIntervalPerTick())}`,
             const totalTime = document.createElement("td");
             const btnOptions = document.createElement("td");
 
+            filename.textContent = demo.fileInfo.name;
             map.textContent = demo.mapName;
             client.textContent = demo.clientName;
             ticks.textContent = demo.playbackTicks;
@@ -764,6 +766,7 @@ SAR: ${formatTime(demo.sar.delta * demo.getIntervalPerTick())}`,
             }
 
             const entry = document.createElement("tr");
+            entry.appendChild(filename);
             entry.appendChild(map);
             entry.appendChild(client);
             entry.appendChild(ticks);
@@ -1031,7 +1034,7 @@ SAR: ${formatTime(demo.sar.delta * demo.getIntervalPerTick())}`,
     });
     document.getElementById("save-list").addEventListener("click", () => {
         if (demos.length > 0) {
-            const rows = ["Map,Client,Ticks,Time,Total Ticks,Total Time"];
+            const rows = ["Filename,Map,Client,Ticks,Time,Total Ticks,Total Time"];
             for (const row of listEntries.children) {
                 const items = [];
                 for (let i = 0; i < row.children.length - 1; ++i) {
